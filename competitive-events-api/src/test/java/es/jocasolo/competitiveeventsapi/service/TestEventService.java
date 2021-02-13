@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import org.dozer.DozerBeanMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -32,6 +33,9 @@ class TestEventService {
 	
 	@Mock
 	private EventDAO eventDao;
+	
+	@Mock
+	private DozerBeanMapper dozer;
 	
 	@Mock
 	private RestTemplate restTemplate = new RestTemplate();

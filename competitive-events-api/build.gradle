@@ -25,11 +25,17 @@ dependencies {
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'mysql:mysql-connector-java'
 	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	
 	compile group: 'net.sf.dozer', name: 'dozer', version: '5.5.1'
 	compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '3.0.0'
 	compile group: 'io.springfox', name: 'springfox-swagger2', version: '3.0.0'
 	compile group: 'com.amazonaws', name: 'aws-java-sdk', version: '1.11.950'
+	
+	testRuntime		('org.hsqldb:hsqldb:2.5.1')
+	testCompile 	('org.springframework.boot:spring-boot-starter-test')
+	testCompile 	('junit:junit:4.12')
+	testCompile		('org.mockito:mockito-core:2.15.0')
+	testCompile		('org.mockito:mockito-inline:2.15.0')
 	
 }
 

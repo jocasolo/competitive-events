@@ -7,19 +7,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.dozer.DozerBeanMapper;
-import org.junit.Test;
+import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import es.jocasolo.competitiveeventsapi.dto.event.EventDTO;
 import es.jocasolo.competitiveeventsapi.model.event.Event;
 
 @RunWith(MockitoJUnitRunner.class)
-public class TestCommonService {
+class TestCommonService {
 	
 	@InjectMocks
 	private CommonService commonService = new CommonServiceImpl();
@@ -33,6 +35,8 @@ public class TestCommonService {
 	
 	@BeforeEach
 	public void init() {
+		
+		MockitoAnnotations.initMocks(this);
 		
 		events.add(event1);
 		events.add(event2);
@@ -57,7 +61,6 @@ public class TestCommonService {
 	void testTransformList(){
 		final List<EventDTO> eventsTransformed = commonService.transform(events, EventDTO.class);
 		assertEquals(2, eventsTransformed.size());
-		
 	}
 
 }
