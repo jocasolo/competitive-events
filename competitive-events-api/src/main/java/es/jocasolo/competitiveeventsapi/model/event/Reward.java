@@ -1,5 +1,7 @@
 package es.jocasolo.competitiveeventsapi.model.event;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -13,7 +15,9 @@ import es.jocasolo.competitiveeventsapi.enums.event.EventSortScoreType;
 import es.jocasolo.competitiveeventsapi.model.user.User;
 
 @Entity
-public class Reward {
+public class Reward implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue

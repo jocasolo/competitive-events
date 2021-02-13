@@ -1,4 +1,4 @@
-package es.jocasolo.competitiveeventsapi.exceptions;
+package es.jocasolo.competitiveeventsapi.exceptions.event;
 
 public class EventNotFoundException extends Exception {
 

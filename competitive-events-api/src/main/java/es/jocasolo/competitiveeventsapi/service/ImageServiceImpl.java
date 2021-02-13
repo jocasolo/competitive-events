@@ -4,9 +4,11 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Date;
+import java.util.Optional;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +28,6 @@ import es.jocasolo.competitiveeventsapi.dao.ImageDAO;
 import es.jocasolo.competitiveeventsapi.dto.image.ImageDTO;
 import es.jocasolo.competitiveeventsapi.enums.ImageType;
 import es.jocasolo.competitiveeventsapi.model.Image;
-import es.jocasolo.competitiveeventsapi.model.user.User;
 
 @Service
 public class ImageServiceImpl implements ImageService {
@@ -68,23 +69,27 @@ public class ImageServiceImpl implements ImageService {
 		ImageDTO imageDto = new ImageDTO();
 		
 		try {
-			final File file = convertMultiPartToFile(multipart);
-			final String fileName = generateFileName(multipart);
-			final String folder = type.name().toLowerCase();
-			final String id = folder + "/" + fileName;
 			
-			//uploadFileToS3bucket(id, file);
-			
-			final Image image = new Image();
-			image.setUrl(url + id);
-			image.setType(type);
-			image.setFolder(folder);
-			image.setName(fileName);
-			image.setStorageId(id);
-			// TODO owner
-			
-			// Save
-			return commonService.transform(imageDao.save(image), ImageDTO.class);
+			Optional<File> file = convertMultiPartToFile(multipart);
+			if(file.isPresent()) {
+				
+				final String fileName = generateFileName(multipart);
+				final String folder = type.name().toLowerCase();
+				final String id = folder + "/" + fileName;
+				
+				uploadFileToS3bucket(id, file.get());
+				
+				final Image image = new Image();
+				image.setUrl(url + id);
+				image.setType(type);
+				image.setFolder(folder);
+				image.setName(fileName);
+				image.setStorageId(id);
+				// TODO owner
+				
+				// Save
+				return commonService.transform(imageDao.save(image), ImageDTO.class);
+			} 
 			
 		} catch (IOException e) {
 			log.error("Error uploading image.");
@@ -99,16 +104,23 @@ public class ImageServiceImpl implements ImageService {
 		s3client.deleteObject(bucketName, folder + "/" + name);
 	}
 	
-	private File convertMultiPartToFile(MultipartFile file) throws IOException {
-	    File convFile = new File(file.getOriginalFilename());
-	    FileOutputStream fos = new FileOutputStream(convFile);
-	    fos.write(file.getBytes());
-	    fos.close();
-	    return convFile;
+	private Optional<File> convertMultiPartToFile(MultipartFile multipartFile) throws IOException {
+		Optional<File> optional = Optional.empty();
+		File convFile = new File(multipartFile.getOriginalFilename());
+	    try(FileOutputStream fos = new FileOutputStream(convFile)) {
+		    fos.write(multipartFile.getBytes());
+		    optional = Optional.of(convFile);
+	    } 
+	    return optional;
 	}
 	
 	private String generateFileName(MultipartFile multiPart) {
-	    return new Date().getTime() + "-" + multiPart.getOriginalFilename().replace(" ", "_");
+		String fileName = String.valueOf(new Date().getTime());
+		final String multipartName = multiPart.getOriginalFilename();
+	    if(StringUtils.isNotEmpty(multipartName)) {
+	    	fileName += "-" + multipartName.replace(" ", "_");
+	    }
+		return fileName;
 	}
 	
 	private void uploadFileToS3bucket(String fileName, File file) {

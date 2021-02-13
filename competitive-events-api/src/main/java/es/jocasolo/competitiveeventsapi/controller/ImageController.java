@@ -3,9 +3,10 @@ package es.jocasolo.competitiveeventsapi.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,17 +29,17 @@ public class ImageController {
 	@Autowired
 	private ImageService imageService;
 	
+	@PostMapping
 	@ApiOperation(value = "Upload an image")
-	@RequestMapping(method = { RequestMethod.POST })
 	public ImageDTO upload(@RequestParam("file") MultipartFile file, @RequestParam("type") ImageType type) {
 		log.debug("Uploading image");
 		return commonService.transform(imageService.upload(file, type), ImageDTO.class);
 	}
 	
+	@DeleteMapping(value = "/{folder}/{name}")
 	@ApiOperation(value = "Delete an image")
-	@RequestMapping(value = "/{folder}/{name}", method = { RequestMethod.DELETE })
 	public void delete(@PathVariable("folder") String folder, @PathVariable("name") String name) {
-		log.debug(String.format("Delete image %s/%s", folder, name));
+		log.debug("Delete image {}/{}", folder, name);
 		imageService.delete(folder, name);
 	}
 

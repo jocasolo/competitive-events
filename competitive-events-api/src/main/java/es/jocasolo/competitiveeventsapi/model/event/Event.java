@@ -5,14 +5,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
@@ -22,7 +21,6 @@ import es.jocasolo.competitiveeventsapi.enums.event.EventInscriptionType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventStatusType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventVisibilityType;
-import es.jocasolo.competitiveeventsapi.model.Image;
 import es.jocasolo.competitiveeventsapi.model.user.User;
 
 @Entity
@@ -34,13 +32,13 @@ public class Event implements Serializable {
 	@GeneratedValue
 	private Integer id;
 
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date initDate;
 
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date endDate;
 
-	@Temporal(TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
 	@Column(nullable = false)
 	private Date creationDate;
 
@@ -59,10 +57,10 @@ public class Event implements Serializable {
 	@Column(columnDefinition = "TEXT")
 	private String description;
 
-	@OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "event", fetch = FetchType.LAZY)
 	private List<Reward> rewards;
 
-	@OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "event", fetch = FetchType.LAZY)
 	private List<Punishment> punishments;
 
 	@ManyToMany(mappedBy = "events")

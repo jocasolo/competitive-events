@@ -6,13 +6,10 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 import org.dozer.Mapping;
 
 import es.jocasolo.competitiveeventsapi.enums.ImageType;
-import es.jocasolo.competitiveeventsapi.model.user.User;
 
 @Entity
 public class Image {
@@ -27,10 +24,6 @@ public class Image {
 
 	@Enumerated(EnumType.STRING)
 	private ImageType type;
-
-	@ManyToOne()
-	@JoinColumn(name = "user_id")
-	private User owner;
 
 	private String folder;
 
@@ -86,14 +79,6 @@ public class Image {
 
 	public void setUrl(String url) {
 		this.url = url;
-	}
-
-	public User getOwner() {
-		return owner;
-	}
-
-	public void setOwner(User owner) {
-		this.owner = owner;
 	}
 
 }

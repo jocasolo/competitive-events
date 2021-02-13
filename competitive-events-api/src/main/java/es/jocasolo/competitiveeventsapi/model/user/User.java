@@ -9,18 +9,15 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import es.jocasolo.competitiveeventsapi.enums.user.UserType;
-import es.jocasolo.competitiveeventsapi.model.Image;
 import es.jocasolo.competitiveeventsapi.model.event.Event;
 
 @Entity
@@ -54,11 +51,6 @@ public class User implements Serializable {
 
 	@Column(nullable = false)
 	private String password;
-
-	// Que columna en la tabla Tuition tiene la FK
-    @JoinColumn(name = "avatar_id")
-    @OneToOne(fetch = FetchType.LAZY)
-    private Image avatar;
 
 	private String name;
 
@@ -174,14 +166,6 @@ public class User implements Serializable {
 
 	public void setEvents(Set<Event> events) {
 		this.events = events;
-	}
-
-	public Image getAvatar() {
-		return avatar;
-	}
-
-	public void setAvatar(Image avatar) {
-		this.avatar = avatar;
 	}
 
 }

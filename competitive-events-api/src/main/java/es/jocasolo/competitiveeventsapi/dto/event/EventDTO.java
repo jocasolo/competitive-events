@@ -11,6 +11,8 @@ public class EventDTO extends DTO implements Serializable {
 	private String uuid;
 
 	private String title;
+	
+	private String subtitle;
 
 	private String description;
 
@@ -36,6 +38,14 @@ public class EventDTO extends DTO implements Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	public String getSubtitle() {
+		return subtitle;
+	}
+
+	public void setSubtitle(String subtitle) {
+		this.subtitle = subtitle;
 	}
 
 	@Override
