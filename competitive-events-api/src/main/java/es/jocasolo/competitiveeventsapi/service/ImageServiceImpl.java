@@ -53,14 +53,18 @@ public class ImageServiceImpl implements ImageService {
 
 	@Value("${amazon.s3.secret-key}")
 	private String secretKey;
+	
+	@Value("${amazon.s3.enabled}")
+	private boolean enabled;
 
 	@PostConstruct
 	private void init() {
-
-		BasicAWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
-
-		this.s3client = AmazonS3ClientBuilder.standard().withRegion(Regions.EU_WEST_3)
-				.withCredentials(new AWSStaticCredentialsProvider(credentials)).build();
+		if(enabled) {
+			BasicAWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
+	
+			this.s3client = AmazonS3ClientBuilder.standard().withRegion(Regions.EU_WEST_3)
+					.withCredentials(new AWSStaticCredentialsProvider(credentials)).build();
+		}
 	}
 
 	@Override

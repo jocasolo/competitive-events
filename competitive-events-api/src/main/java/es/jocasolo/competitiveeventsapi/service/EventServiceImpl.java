@@ -12,6 +12,7 @@ import es.jocasolo.competitiveeventsapi.dao.EventDAO;
 import es.jocasolo.competitiveeventsapi.dto.event.EventDTO;
 import es.jocasolo.competitiveeventsapi.dto.event.EventPostDTO;
 import es.jocasolo.competitiveeventsapi.dto.event.EventPutDTO;
+import es.jocasolo.competitiveeventsapi.enums.event.EventStatusType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventType;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventInvalidStatusException;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventNotFoundException;
@@ -42,7 +43,7 @@ public class EventServiceImpl implements EventService {
 		Event event = commonService.transform(eventDto, Event.class);
 		event.setCreationDate(new Date());
 		event.setUuid(UUID.randomUUID().toString());
-		event.setType(EventType.SPORTS);
+		event.setType(EventType.SPORTS); // TODO
 		return commonService.transform(eventDao.save(event), EventDTO.class);
 	}
 
@@ -70,7 +71,11 @@ public class EventServiceImpl implements EventService {
 
 	@Override
 	public void delete(String uuid) throws EventNotFoundException {
-		// TODO Auto-generated method stub
+		
+		// TODO validate delete
+		Event event = eventDao.findOne(uuid);
+		event.setStatus(EventStatusType.DELETED);
+		eventDao.save(event);
 		
 	}
 	
