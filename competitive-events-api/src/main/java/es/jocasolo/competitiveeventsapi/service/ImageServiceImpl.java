@@ -27,16 +27,17 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import es.jocasolo.competitiveeventsapi.dao.ImageDAO;
 import es.jocasolo.competitiveeventsapi.dto.image.ImageDTO;
 import es.jocasolo.competitiveeventsapi.enums.ImageType;
+import es.jocasolo.competitiveeventsapi.exceptions.image.ImageNotFoundException;
 import es.jocasolo.competitiveeventsapi.model.Image;
 
 @Service
 public class ImageServiceImpl implements ImageService {
-	
+
 	private static final Logger log = LoggerFactory.getLogger(ImageServiceImpl.class);
-	
+
 	@Autowired
 	private ImageDAO imageDao;
-	
+
 	@Autowired
 	private CommonService commonService;
 
@@ -53,83 +54,114 @@ public class ImageServiceImpl implements ImageService {
 
 	@Value("${amazon.s3.secret-key}")
 	private String secretKey;
-	
+
 	@Value("${amazon.s3.enabled}")
 	private boolean enabled;
 
 	@PostConstruct
 	private void init() {
-		if(enabled) {
+		if (enabled) {
 			BasicAWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
-	
-			this.s3client = AmazonS3ClientBuilder.standard().withRegion(Regions.EU_WEST_3)
-					.withCredentials(new AWSStaticCredentialsProvider(credentials)).build();
+			this.s3client = AmazonS3ClientBuilder.standard().withRegion(Regions.EU_WEST_3).withCredentials(new AWSStaticCredentialsProvider(credentials)).build();
 		}
+	}
+
+	@Override
+	public Image findOne(String id) throws ImageNotFoundException {
+		final Image image = imageDao.findOne(id);
+		if (image == null)
+			throw new ImageNotFoundException();
+
+		return image;
 	}
 
 	@Override
 	public ImageDTO upload(MultipartFile multipart, ImageType type) {
-		
+
 		ImageDTO imageDto = new ImageDTO();
-		
-		try {
-			
-			Optional<File> file = convertMultiPartToFile(multipart);
-			if(file.isPresent()) {
-				
-				final String fileName = generateFileName(multipart);
-				final String folder = type.name().toLowerCase();
-				final String id = folder + "/" + fileName;
-				
-				uploadFileToS3bucket(id, file.get());
-				
-				final Image image = new Image();
-				image.setUrl(url + id);
-				image.setType(type);
-				image.setFolder(folder);
-				image.setName(fileName);
-				image.setStorageId(id);
-				// TODO owner
-				
-				// Save
-				return commonService.transform(imageDao.save(image), ImageDTO.class);
-			} 
-			
-		} catch (IOException e) {
-			log.error("Error uploading image.");
-			// TODO custom exception
+
+		Optional<File> file = convertMultiPartToFile(multipart);
+		if (file.isPresent()) {
+
+			final String fileName = generateFileName(multipart);
+			final String folder = type.name().toLowerCase();
+			final String id = folder + "/" + fileName;
+
+			uploadFileToS3bucket(id, file.get());
+
+			final Image image = new Image();
+			image.setUrl(url + id);
+			image.setType(type);
+			image.setFolder(folder);
+			image.setName(fileName);
+			image.setStorageId(id);
+			// TODO add owner
+
+			// Save
+			return commonService.transform(imageDao.save(image), ImageDTO.class);
 		}
-		
+
 		return imageDto;
 	}
 
 	@Override
-	public void delete(String folder, String name) {
-		s3client.deleteObject(bucketName, folder + "/" + name);
+	public void delete(String id) throws ImageNotFoundException {
+		final Image image = imageDao.findOne(id);
+		if (image == null)
+			throw new ImageNotFoundException();
+
+		imageDao.delete(image);
+		s3client.deleteObject(bucketName, id);
+
 	}
-	
-	private Optional<File> convertMultiPartToFile(MultipartFile multipartFile) throws IOException {
+
+	/**
+	 * Convert a multipart file into a temporary file that will be deleted
+	 * 
+	 * @param multipartFile Multipart file
+	 * @return Optional with the file or empty
+	 */
+	private Optional<File> convertMultiPartToFile(MultipartFile multipartFile) {
 		Optional<File> optional = Optional.empty();
-		File convFile = new File(multipartFile.getOriginalFilename());
-	    try(FileOutputStream fos = new FileOutputStream(convFile)) {
-		    fos.write(multipartFile.getBytes());
-		    optional = Optional.of(convFile);
-	    } 
-	    return optional;
+
+		try {
+			File convFile = File.createTempFile(multipartFile.getOriginalFilename(), null, null);
+			convFile.deleteOnExit();
+
+			try (FileOutputStream fos = new FileOutputStream(convFile)) {
+				fos.write(multipartFile.getBytes());
+				optional = Optional.of(convFile);
+			}
+
+		} catch (IOException e) {
+			log.error("Error creating image file.");
+		}
+
+		return optional;
 	}
-	
+
+	/**
+	 * Generates a unique file name with the current time and the real name
+	 * 
+	 * @param multiPart Multipart file
+	 * @return File name
+	 */
 	private String generateFileName(MultipartFile multiPart) {
 		String fileName = String.valueOf(new Date().getTime());
 		final String multipartName = multiPart.getOriginalFilename();
-	    if(StringUtils.isNotEmpty(multipartName)) {
-	    	fileName += "-" + multipartName.replace(" ", "_");
-	    }
+		if (StringUtils.isNotEmpty(multipartName)) {
+			fileName += "-" + multipartName.replace(" ", "_");
+		}
 		return fileName;
 	}
-	
+
+	/**
+	 * Upload the image to the storage system
+	 * @param fileName File name
+	 * @param file Temp file
+	 */
 	private void uploadFileToS3bucket(String fileName, File file) {
-	    s3client.putObject(new PutObjectRequest(bucketName, fileName, file)
-	            .withCannedAcl(CannedAccessControlList.PublicRead));
+		s3client.putObject(new PutObjectRequest(bucketName, fileName, file).withCannedAcl(CannedAccessControlList.PublicRead));
 	}
-	
+
 }

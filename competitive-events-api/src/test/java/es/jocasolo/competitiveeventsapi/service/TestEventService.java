@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.util.Date;
+
 import org.dozer.DozerBeanMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,13 +15,15 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.web.client.RestTemplate;
 
 import es.jocasolo.competitiveeventsapi.dao.EventDAO;
 import es.jocasolo.competitiveeventsapi.dto.event.EventDTO;
 import es.jocasolo.competitiveeventsapi.dto.event.EventPostDTO;
 import es.jocasolo.competitiveeventsapi.dto.event.EventPutDTO;
+import es.jocasolo.competitiveeventsapi.enums.event.EventInscriptionType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventStatusType;
+import es.jocasolo.competitiveeventsapi.enums.event.EventType;
+import es.jocasolo.competitiveeventsapi.enums.event.EventVisibilityType;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventInvalidStatusException;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventNotFoundException;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventWrongUpdateException;
@@ -38,9 +42,6 @@ class TestEventService {
 	private DozerBeanMapper dozer;
 	
 	@Mock
-	private RestTemplate restTemplate = new RestTemplate();
-	
-	@Mock
 	private CommonService commonService = new CommonServiceImpl();
 	
 	private static final String UUID = "c8c71353-bb9a-4fe0-b8bc-df9fba82108b";
@@ -53,7 +54,7 @@ class TestEventService {
 	private EventPostDTO postDto = new EventPostDTO();
 	
 	@BeforeEach
-	public void init() {
+	void init() {
 		
 		MockitoAnnotations.initMocks(this);
 		
@@ -90,12 +91,22 @@ class TestEventService {
 		EventPutDTO dto = new EventPutDTO();
 		dto.setUuid(UUID);
 		dto.setTitle("New title");
+		dto.setSubtitle("New subtitle");
+		dto.setInitDate(new Date());
+		dto.setEndDate(new Date());
 		dto.setDescription("New description");
+		dto.setType(EventType.ACADEMIC);
+		dto.setInscription(EventInscriptionType.INVITATION);
+		dto.setVisibility(EventVisibilityType.PRIVATE);
+		dto.setStatus(EventStatusType.ACTIVE);
+		dto.setMaxPlaces(1);
+		dto.setAppovalNeeded(false);
 		
 		eventService.update(UUID, dto);
 		
 		assertEquals("New title", mockedEvent.getTitle());
 		assertEquals("New description", mockedEvent.getDescription());
+		assertEquals("EventPostDTO [title=" + dto.getTitle() + "]", dto.toString());
 		
 		dto.setUuid("don't exists");
 		assertThrows(EventWrongUpdateException.class, () -> {
@@ -113,7 +124,7 @@ class TestEventService {
 	void testCreate() {
 		
 		EventDTO eventDto = eventService.create(postDto);
-		assertEquals(eventDto.getUuid(), UUID2);
+		assertEquals(UUID2, eventDto.getUuid());
 		
 	}
 	

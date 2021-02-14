@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.dozer.DozerBeanMapper;
-import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -34,7 +33,7 @@ class TestCommonService {
 	List<Event> events = new ArrayList<>();
 	
 	@BeforeEach
-	public void init() {
+	void init() {
 		
 		MockitoAnnotations.initMocks(this);
 		
@@ -53,8 +52,8 @@ class TestCommonService {
 	void testTransform(){
 		EventDTO eventTransformed = commonService.transform(event1, EventDTO.class);
 		assertNotNull(eventTransformed);
-		assertEquals(eventTransformed.getUuid(), "1111");
-		assertEquals(eventTransformed.getTitle(), "Event 1");
+		assertEquals("1111", eventTransformed.getUuid());
+		assertEquals("Event 1", eventTransformed.getTitle());
 	}
 	
 	@Test

@@ -10,7 +10,6 @@ import es.jocasolo.competitiveeventsapi.model.event.Event;
 @Repository
 public interface EventDAO extends CrudRepository<Event, String> {
 	
-	
 	/**
 	 * Search for a book by uuid.
 	 * @param uuid
