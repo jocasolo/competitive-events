@@ -5,6 +5,7 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.jocasolo.competitiveeventsapi.dto.user.UserDTO;
@@ -48,6 +50,7 @@ public class UserController {
 	}
 	
 	@PostMapping
+	@ResponseStatus(HttpStatus.CREATED)
 	@ApiOperation(value = "Creates a new user.")
 	public UserDTO create(@Valid @RequestBody UserPostDTO user) throws UserEmailExistsException, UserIdentifierExistsException {
 		log.debug("Creating the user: {} ", user);
@@ -61,7 +64,7 @@ public class UserController {
 			@Valid @RequestBody UserPutDTO userDTO)
 			throws UserWrongUpdateException, UserInvalidStatusException, UserEmailExistsException, UserIdentifierExistsException, UserWrongPasswordException,
 			UserNotFoundException {
-		log.debug("Modificando el libro: {}", userDTO);
+		log.debug("Updating user with id: {}", identifier);
 		userService.update(identifier, userDTO);
 	}
 	
@@ -70,13 +73,14 @@ public class UserController {
 	public void updatePassword(
 			@PathVariable("identifier") String identifier, 
 			@Valid @RequestBody UserPasswordDTO userDTO)
-			throws UserWrongUpdateException, UserInvalidStatusException, UserWrongPasswordException,
+			throws UserWrongUpdateException, UserWrongPasswordException,
 			UserNotFoundException {
-		log.debug("Modificando el libro: {}", userDTO);
+		log.debug("Updating user password with id: {}", identifier);
 		userService.updatePassword(identifier, userDTO);
 	}
 
 	@DeleteMapping(value = "/{identifier}")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@ApiOperation(value = "Delete an user by identifier.")
 	public void delete(@PathVariable("identifier") String identifier) throws UserNotFoundException {
 		log.debug("Deleting user with identifier: {} ", identifier);

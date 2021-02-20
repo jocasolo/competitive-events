@@ -4,12 +4,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.WebRequest;
@@ -36,6 +38,7 @@ public class ImageController {
 	private ImageService imageService;
 	
 	@GetMapping(value = "/**")
+	@ResponseStatus(HttpStatus.CREATED)
 	@ApiOperation(value = "Search for an image based on its id.")
 	public ImageDTO findOne(WebRequest request) throws ImageNotFoundException {
 		String id = getIdFromPath(request);
@@ -51,6 +54,7 @@ public class ImageController {
 	}
 	
 	@DeleteMapping(value = "/{id}")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@ApiOperation(value = "Delete an image")
 	public void delete(@PathVariable("id") String id) throws ImageNotFoundException {
 		log.debug("Delete image {}", id);

@@ -87,9 +87,7 @@ public class UserServiceImpl implements UserService {
 		user.setEmail(EventUtils.getValue(dto.getEmail(), user.getEmail()));
 		user.setName(EventUtils.getValue(dto.getName(), user.getName()));
 		user.setSurname(EventUtils.getValue(dto.getSurname(),user.getSurname()));
-		/*if(StringUtils.isNotEmpty(dto.getNewPassword()))
-			user.setPassword(passwordEncoder.encode(dto.getNewPassword()));*/
-
+		
 		userDao.save(user);
 	}
 	

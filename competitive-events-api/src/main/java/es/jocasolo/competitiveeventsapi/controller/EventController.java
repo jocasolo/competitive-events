@@ -3,6 +3,7 @@ package es.jocasolo.competitiveeventsapi.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.jocasolo.competitiveeventsapi.dto.event.EventDTO;
@@ -42,6 +44,7 @@ public class EventController {
 	}
 	
 	@PostMapping
+	@ResponseStatus(HttpStatus.CREATED)
 	@ApiOperation(value = "Creates a new event.")
 	public EventDTO create(@RequestBody EventPostDTO event) {
 		log.debug("Creating the event: {} ", event);
@@ -58,6 +61,7 @@ public class EventController {
 	}
 
 	@DeleteMapping(value = "/{uuid}")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@ApiOperation(value = "Delete an event by uuid.")
 	public void delete(@PathVariable("id") String uuid) throws EventNotFoundException {
 		log.debug("Deleting event with uuid: {} ", uuid);
