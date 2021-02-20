@@ -20,11 +20,9 @@ public class UserPutDTO extends DTO implements Serializable {
 	private String email;
 
 	@ValidPassword
+	@NotNull
 	private String password;
 	
-	@ValidPassword
-	private String newPassword;
-
 	private String name;
 
 	private String surname;
@@ -87,14 +85,6 @@ public class UserPutDTO extends DTO implements Serializable {
 
 	public void setIdentifier(String identifier) {
 		this.identifier = identifier;
-	}
-
-	public String getNewPassword() {
-		return newPassword;
-	}
-
-	public void setNewPassword(String newPassword) {
-		this.newPassword = newPassword;
 	}
 
 	@Override

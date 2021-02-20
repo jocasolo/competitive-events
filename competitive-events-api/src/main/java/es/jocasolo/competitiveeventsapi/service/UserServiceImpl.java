@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import es.jocasolo.competitiveeventsapi.dao.UserDAO;
 import es.jocasolo.competitiveeventsapi.dto.user.UserDTO;
+import es.jocasolo.competitiveeventsapi.dto.user.UserPasswordDTO;
 import es.jocasolo.competitiveeventsapi.dto.user.UserPostDTO;
 import es.jocasolo.competitiveeventsapi.dto.user.UserPutDTO;
 import es.jocasolo.competitiveeventsapi.enums.user.UserStatusType;
@@ -21,6 +22,7 @@ import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotFoundException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserWrongPasswordException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserWrongUpdateException;
 import es.jocasolo.competitiveeventsapi.model.user.User;
+import es.jocasolo.competitiveeventsapi.utils.EventUtils;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -74,21 +76,41 @@ public class UserServiceImpl implements UserService {
 		if (user == null)
 			throw new UserNotFoundException();
 
-		if (StringUtils.isNotEmpty(dto.getEmail()) && user.getIdentifier().equals(dto.getIdentifier()) && emailExist(dto.getEmail()))
+		if (StringUtils.isNotEmpty(dto.getEmail()) && emailExist(dto.getEmail()))
 			throw new UserEmailExistsException();
 
 		if (!validPassword(user.getPassword(), dto.getPassword()))
 			throw new UserWrongPasswordException();
 
-		// TODO validate update
-		user.setBirthDate(dto.getBirthDate());
-		user.setDescription(dto.getDescription());
-		user.setEmail(dto.getEmail());
-		user.setName(dto.getName());
-		user.setSurname(dto.getSurname());
-		user.setPassword(passwordEncoder.encode(dto.getNewPassword()));
+		user.setBirthDate(EventUtils.getValue(dto.getBirthDate(), user.getBirthDate()));
+		user.setDescription(EventUtils.getValue(dto.getDescription(), user.getDescription()));
+		user.setEmail(EventUtils.getValue(dto.getEmail(), user.getEmail()));
+		user.setName(EventUtils.getValue(dto.getName(), user.getName()));
+		user.setSurname(EventUtils.getValue(dto.getSurname(),user.getSurname()));
+		/*if(StringUtils.isNotEmpty(dto.getNewPassword()))
+			user.setPassword(passwordEncoder.encode(dto.getNewPassword()));*/
 
 		userDao.save(user);
+	}
+	
+	@Override
+	public void updatePassword(String identifier, UserPasswordDTO dto) throws UserWrongUpdateException, UserNotFoundException, UserWrongPasswordException {
+		
+		if (StringUtils.isNotEmpty(dto.getIdentifier()) && !dto.getIdentifier().equals(identifier))
+			throw new UserWrongUpdateException();
+
+		User user = userDao.findOne(identifier);
+		if (user == null)
+			throw new UserNotFoundException();
+
+		if (!validPassword(user.getPassword(), dto.getPassword()))
+			throw new UserWrongPasswordException();
+
+		if(StringUtils.isNotEmpty(dto.getNewPassword()))
+			user.setPassword(passwordEncoder.encode(dto.getNewPassword()));
+
+		userDao.save(user);
+		
 	}
 
 	@Override

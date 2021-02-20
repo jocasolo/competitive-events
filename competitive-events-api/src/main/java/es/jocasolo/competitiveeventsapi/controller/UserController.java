@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import es.jocasolo.competitiveeventsapi.dto.user.UserDTO;
+import es.jocasolo.competitiveeventsapi.dto.user.UserPasswordDTO;
 import es.jocasolo.competitiveeventsapi.dto.user.UserPostDTO;
 import es.jocasolo.competitiveeventsapi.dto.user.UserPutDTO;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserEmailExistsException;
@@ -57,11 +58,22 @@ public class UserController {
 	@ApiOperation(value = "Updates an user by identifier.")
 	public void update(
 			@PathVariable("identifier") String identifier, 
-			@RequestBody UserPutDTO userDTO)
+			@Valid @RequestBody UserPutDTO userDTO)
 			throws UserWrongUpdateException, UserInvalidStatusException, UserEmailExistsException, UserIdentifierExistsException, UserWrongPasswordException,
 			UserNotFoundException {
 		log.debug("Modificando el libro: {}", userDTO);
 		userService.update(identifier, userDTO);
+	}
+	
+	@PutMapping(value = "/{identifier}/password")
+	@ApiOperation(value = "Updates an user by identifier.")
+	public void updatePassword(
+			@PathVariable("identifier") String identifier, 
+			@Valid @RequestBody UserPasswordDTO userDTO)
+			throws UserWrongUpdateException, UserInvalidStatusException, UserWrongPasswordException,
+			UserNotFoundException {
+		log.debug("Modificando el libro: {}", userDTO);
+		userService.updatePassword(identifier, userDTO);
 	}
 
 	@DeleteMapping(value = "/{identifier}")

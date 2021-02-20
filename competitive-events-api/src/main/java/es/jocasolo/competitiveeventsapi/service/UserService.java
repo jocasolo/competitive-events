@@ -1,6 +1,7 @@
 package es.jocasolo.competitiveeventsapi.service;
 
 import es.jocasolo.competitiveeventsapi.dto.user.UserDTO;
+import es.jocasolo.competitiveeventsapi.dto.user.UserPasswordDTO;
 import es.jocasolo.competitiveeventsapi.dto.user.UserPostDTO;
 import es.jocasolo.competitiveeventsapi.dto.user.UserPutDTO;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserEmailExistsException;
@@ -49,5 +50,16 @@ public interface UserService {
 	 * @throws UserNotFoundException
 	 */
 	void delete(String identifier) throws UserNotFoundException;
+
+	/**
+	 * Update user password
+	 * 
+	 * @param identifier User identifier
+	 * @param userDTO    User password dto
+	 * @throws UserWrongUpdateException
+	 * @throws UserNotFoundException
+	 * @throws UserWrongPasswordException
+	 */
+	void updatePassword(String identifier, UserPasswordDTO userDTO) throws UserWrongUpdateException, UserNotFoundException, UserWrongPasswordException;
 
 }
