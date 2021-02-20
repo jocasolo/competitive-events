@@ -26,7 +26,7 @@ import es.jocasolo.competitiveeventsapi.service.ImageService;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
-@RequestMapping(value = "/image")
+@RequestMapping(value = "/images")
 public class ImageController {
 	
 	private static final Logger log = LoggerFactory.getLogger(ImageController.class);

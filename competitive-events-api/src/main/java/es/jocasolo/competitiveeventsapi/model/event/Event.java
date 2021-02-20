@@ -73,7 +73,7 @@ public class Event implements Serializable {
 
 	private String subtitle;
 
-	private Boolean appovalNeeded; // needs appoval to join
+	private Boolean approvalNeeded; // needs appoval to join
 
 	private Integer maxPlaces;
 
@@ -160,11 +160,11 @@ public class Event implements Serializable {
 	}
 
 	public Boolean getAppovalNeeded() {
-		return appovalNeeded;
+		return approvalNeeded;
 	}
 
 	public void setAppovalNeeded(Boolean appovalNeeded) {
-		this.appovalNeeded = appovalNeeded;
+		this.approvalNeeded = appovalNeeded;
 	}
 
 	public EventStatusType getStatus() {

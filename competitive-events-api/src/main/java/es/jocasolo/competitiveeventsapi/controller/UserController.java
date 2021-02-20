@@ -31,7 +31,7 @@ import es.jocasolo.competitiveeventsapi.service.UserService;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
-@RequestMapping(value = "/user")
+@RequestMapping(value = "/users")
 public class UserController {
 	
 	private static final Logger log = LoggerFactory.getLogger(UserController.class);
@@ -69,7 +69,7 @@ public class UserController {
 	}
 	
 	@PutMapping(value = "/{identifier}/password")
-	@ApiOperation(value = "Updates an user by identifier.")
+	@ApiOperation(value = "Updates an user password by identifier.")
 	public void updatePassword(
 			@PathVariable("identifier") String identifier, 
 			@Valid @RequestBody UserPasswordDTO userDTO)
