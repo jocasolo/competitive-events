@@ -17,6 +17,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import es.jocasolo.competitiveeventsapi.enums.user.UserStatusType;
 import es.jocasolo.competitiveeventsapi.enums.user.UserType;
 import es.jocasolo.competitiveeventsapi.model.event.Event;
 
@@ -30,10 +31,16 @@ public class User implements Serializable {
 	private Integer id;
 
 	@Column(unique = true, nullable = false)
+	private String identifier;
+
+	@Column(unique = true, nullable = false)
 	private String email;
 
 	@Enumerated(EnumType.STRING)
 	private UserType type;
+
+	@Enumerated(EnumType.STRING)
+	private UserStatusType status;
 
 	@Column(length = 1000)
 	private String description;
@@ -45,8 +52,7 @@ public class User implements Serializable {
 	private Date birthDate;
 
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JoinTable(name = "event_user", joinColumns = { @JoinColumn(name = "event_id") }, inverseJoinColumns = {
-			@JoinColumn(name = "user_id") })
+	@JoinTable(name = "event_user", joinColumns = { @JoinColumn(name = "event_id") }, inverseJoinColumns = { @JoinColumn(name = "user_id") })
 	private Set<Event> events;
 
 	@Column(nullable = false)
@@ -55,10 +61,6 @@ public class User implements Serializable {
 	private String name;
 
 	private String surname;
-
-	private String nick;
-
-	private Boolean active;
 
 	private Boolean confirmed;
 
@@ -104,28 +106,12 @@ public class User implements Serializable {
 		this.surname = surname;
 	}
 
-	public String getNick() {
-		return nick;
-	}
-
-	public void setNick(String nick) {
-		this.nick = nick;
-	}
-
 	public UserType getType() {
 		return type;
 	}
 
 	public void setType(UserType type) {
 		this.type = type;
-	}
-
-	public Boolean getActive() {
-		return active;
-	}
-
-	public void setActive(Boolean active) {
-		this.active = active;
 	}
 
 	public Boolean getConfirmed() {
@@ -166,6 +152,22 @@ public class User implements Serializable {
 
 	public void setEvents(Set<Event> events) {
 		this.events = events;
+	}
+
+	public String getIdentifier() {
+		return identifier;
+	}
+
+	public void setIdentifier(String identifier) {
+		this.identifier = identifier;
+	}
+
+	public UserStatusType getStatus() {
+		return status;
+	}
+
+	public void setStatus(UserStatusType status) {
+		this.status = status;
 	}
 
 }
