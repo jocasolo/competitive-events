@@ -11,7 +11,7 @@ public interface ImageService {
 	
 	/**
 	 * Search for a image by id.
-	 * @param uuid Image id
+	 * @param id Image id
 	 * @return Image corresponding to the id searched.
 	 * @throws ImageNotFoundException
 	 */

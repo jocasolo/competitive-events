@@ -2,6 +2,10 @@ package es.jocasolo.competitiveeventsapi.enums.event;
 
 public enum EventStatusType {
 
-	ACTIVE, INACTIVE, DELETED;
+	ACTIVE, FINISHED, DELETED;
+	
+	public static EventStatusType getValue(EventStatusType newValue, EventStatusType actualValue) {
+		return newValue != null ? newValue : actualValue;
+	}
 	
 }

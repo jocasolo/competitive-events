@@ -12,7 +12,7 @@ public interface UserDAO extends CrudRepository<User, String> {
 	
 	/**
 	 * Search for a user by identifier.
-	 * @param uuid
+	 * @param code
 	 * @return Event corresponding to the id searched.
 	 */
 	@Query(value = "SELECT u FROM User AS u WHERE identifier = :identifier")
@@ -20,7 +20,7 @@ public interface UserDAO extends CrudRepository<User, String> {
 	
 	/**
 	 * Search for a user by email.
-	 * @param uuid
+	 * @param code
 	 * @return Event corresponding to the id searched.
 	 */
 	@Query(value = "SELECT u FROM User AS u WHERE email = :email")

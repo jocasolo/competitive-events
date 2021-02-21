@@ -43,11 +43,11 @@ public class EventController {
 	@Autowired
 	private CommonService commonService;
 	
-	@GetMapping(value = "/{uuid}")
-	@ApiOperation(value = "Search for an event based on its uuid.")
-	public EventDTO findOne(@PathVariable("uuid") String uuid) throws EventNotFoundException {
-		log.debug("Looking for the event with uuid: {}", uuid);
-		return commonService.transform(eventService.findOne(uuid), EventDTO.class);
+	@GetMapping(value = "/{code}")
+	@ApiOperation(value = "Search for an event based on its code.")
+	public EventDTO findOne(@PathVariable("code") String code) throws EventNotFoundException {
+		log.debug("Looking for the event with code: {}", code);
+		return commonService.transform(eventService.findOne(code), EventDTO.class);
 	}
 	
 	@GetMapping
@@ -60,7 +60,6 @@ public class EventController {
 			@RequestParam(value = "endDate", required = false) Date endDate,
 			@RequestParam(value = "type", required = false) EventType type,
 			@RequestParam(value = "inscription", required = false) EventInscriptionType inscription,
-			@RequestParam(value = "approvalNeeded", required = false) Boolean approvalNeeded,
 			@RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
 			@RequestParam(value = "size", required = false, defaultValue = "10") Integer size) {
 		log.debug("Looking for events");
@@ -75,21 +74,21 @@ public class EventController {
 		return eventService.create(event);
 	}
 	
-	@PutMapping(value = "/{uuid}")
-	@ApiOperation(value = "Updates an event by uuid.")
+	@PutMapping(value = "/{code}")
+	@ApiOperation(value = "Updates an event by code.")
 	public void update(
-			@PathVariable("uuid") String uuid, 
+			@PathVariable("code") String code, 
 			@RequestBody EventPutDTO eventDTO) throws EventWrongUpdateException, EventInvalidStatusException {
 		log.debug("Modificando el libro: {}", eventDTO);
-		eventService.update(uuid, eventDTO);
+		eventService.update(code, eventDTO);
 	}
 
-	@DeleteMapping(value = "/{uuid}")
+	@DeleteMapping(value = "/{code}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	@ApiOperation(value = "Delete an event by uuid.")
-	public void delete(@PathVariable("id") String uuid) throws EventNotFoundException {
-		log.debug("Deleting event with uuid: {} ", uuid);
-		eventService.delete(uuid);
+	@ApiOperation(value = "Delete an event by code.")
+	public void delete(@PathVariable("id") String code) throws EventNotFoundException {
+		log.debug("Deleting event with code: {} ", code);
+		eventService.delete(code);
 	}
 	
 }

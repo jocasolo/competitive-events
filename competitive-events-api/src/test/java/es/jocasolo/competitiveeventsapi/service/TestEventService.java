@@ -44,8 +44,8 @@ class TestEventService {
 	@Mock
 	private CommonService commonService = new CommonServiceImpl();
 	
-	private static final String UUID = "c8c71353-bb9a-4fe0-b8bc-df9fba82108b";
-	private static final String UUID2 = "557ccb52-3c11-4b1a-922a-86e5cfbc85c8";
+	private static final String CODE = "c8c71353-bb9a-4fe0-b8bc-df9fba82108b";
+	private static final String CODE2 = "557ccb52-3c11-4b1a-922a-86e5cfbc85c8";
 	
 	private Event mockedEvent = new Event();
 	private Event createdEvent = new Event();
@@ -59,15 +59,15 @@ class TestEventService {
 		MockitoAnnotations.initMocks(this);
 		
 		mockedEvent.setId(1);
-		mockedEvent.setUuid(UUID);
+		mockedEvent.setCode(CODE);
 		
-		dto.setUuid(UUID2);
-		putDto.setUuid(UUID);
+		dto.setCode(CODE2);
+		putDto.setCode(CODE);
 		postDto.setTitle("Created event");
 		
 		createdEvent.setId(2);
 		
-		Mockito.when(eventDao.findOne(UUID)).thenReturn(mockedEvent);
+		Mockito.when(eventDao.findOne(CODE)).thenReturn(mockedEvent);
 		Mockito.when(eventDao.save(mockedEvent)).thenReturn(mockedEvent);
 		Mockito.when(commonService.transform(postDto, Event.class)).thenReturn(createdEvent);
 		Mockito.when(eventDao.save(createdEvent)).thenReturn(createdEvent);
@@ -76,7 +76,7 @@ class TestEventService {
 	
 	@Test
 	void testFindOne() throws EventNotFoundException {
-		Event e = eventService.findOne(UUID);
+		Event e = eventService.findOne(CODE);
 		assertNotNull(e);
 		assertEquals(1, e.getId());
 		
@@ -89,7 +89,7 @@ class TestEventService {
 	void testUpdate() throws EventWrongUpdateException, EventInvalidStatusException {
 		
 		EventPutDTO dto = new EventPutDTO();
-		dto.setUuid(UUID);
+		dto.setCode(CODE);
 		dto.setTitle("New title");
 		dto.setSubtitle("New subtitle");
 		dto.setInitDate(new Date());
@@ -102,21 +102,21 @@ class TestEventService {
 		dto.setMaxPlaces(1);
 		dto.setAppovalNeeded(false);
 		
-		eventService.update(UUID, dto);
+		eventService.update(CODE, dto);
 		
 		assertEquals("New title", mockedEvent.getTitle());
 		assertEquals("New description", mockedEvent.getDescription());
 		assertEquals("EventPostDTO [title=" + dto.getTitle() + "]", dto.toString());
 		
-		dto.setUuid("don't exists");
+		dto.setCode("don't exists");
 		assertThrows(EventWrongUpdateException.class, () -> {
-			eventService.update(UUID, dto);
+			eventService.update(CODE, dto);
 	    });
 	}
 	
 	@Test
 	void testDelete() throws EventNotFoundException{
-		eventService.delete(UUID);
+		eventService.delete(CODE);
 		assertEquals(EventStatusType.DELETED, mockedEvent.getStatus());
 	}
 	
@@ -124,7 +124,7 @@ class TestEventService {
 	void testCreate() {
 		
 		EventDTO eventDto = eventService.create(postDto);
-		assertEquals(UUID2, eventDto.getUuid());
+		assertEquals(CODE2, eventDto.getCode());
 		
 	}
 	

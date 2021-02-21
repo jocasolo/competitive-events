@@ -2,6 +2,7 @@ package es.jocasolo.competitiveeventsapi.model.user;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -52,8 +53,8 @@ public class User implements Serializable {
 	private Date birthDate;
 
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JoinTable(name = "event_user", joinColumns = { @JoinColumn(name = "event_id") }, inverseJoinColumns = { @JoinColumn(name = "user_id") })
-	private Set<Event> events;
+	@JoinTable(name = "event_user", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = { @JoinColumn(name = "event_id") })
+	private Set<Event> events = new HashSet<>();
 
 	@Column(nullable = false)
 	private String password;
@@ -168,6 +169,11 @@ public class User implements Serializable {
 
 	public void setStatus(UserStatusType status) {
 		this.status = status;
+	}
+	
+	@Override
+	public String toString() {
+		return String.format("User [identifier=%s, id=%s]", identifier, id);
 	}
 
 }

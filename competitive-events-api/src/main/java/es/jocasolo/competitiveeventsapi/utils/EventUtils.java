@@ -2,14 +2,12 @@ package es.jocasolo.competitiveeventsapi.utils;
 
 import java.util.Date;
 
-import org.apache.commons.lang3.StringUtils;
-
 public class EventUtils {
 	
 	private EventUtils() {}
 	
 	public static String getValue(String newValue, String actualValue) {
-		return StringUtils.isNotEmpty(newValue) ? newValue : actualValue;
+		return newValue != null ? newValue : actualValue;
 	}
 	
 	public static Date getValue(Date newValue, Date actualValue) {
@@ -19,5 +17,9 @@ public class EventUtils {
 	public static Boolean getValue(Boolean newValue, Boolean actualValue) {
 		return newValue != null ? newValue : actualValue;
 	}
-
+	
+	public static Integer getValue(Integer newValue, Integer actualValue) {
+		return newValue != null ? newValue : actualValue;
+	}
+	
 }

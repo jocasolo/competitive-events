@@ -2,7 +2,7 @@ package es.jocasolo.competitiveeventsapi.model.event;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -58,16 +58,16 @@ public class Event implements Serializable {
 	private String description;
 
 	@OneToMany(mappedBy = "event", fetch = FetchType.LAZY)
-	private List<Reward> rewards;
+	private Set<Reward> rewards = new HashSet<>();
 
 	@OneToMany(mappedBy = "event", fetch = FetchType.LAZY)
-	private List<Punishment> punishments;
+	private Set<Punishment> punishments = new HashSet<>();
 
 	@ManyToMany(mappedBy = "events")
-	private Set<User> users;
+	private Set<User> users = new HashSet<>();
 
 	@Column(unique = true)
-	private String uuid;
+	private String code;
 
 	private String title;
 
@@ -87,12 +87,20 @@ public class Event implements Serializable {
 		this.id = id;
 	}
 
-	public String getUuid() {
-		return uuid;
+	public String getCode() {
+		return code;
 	}
 
-	public void setUuid(String uuid) {
-		this.uuid = uuid;
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public Boolean getApprovalNeeded() {
+		return approvalNeeded;
+	}
+
+	public void setApprovalNeeded(Boolean approvalNeeded) {
+		this.approvalNeeded = approvalNeeded;
 	}
 
 	public Date getInitDate() {
@@ -159,14 +167,6 @@ public class Event implements Serializable {
 		this.description = description;
 	}
 
-	public Boolean getAppovalNeeded() {
-		return approvalNeeded;
-	}
-
-	public void setAppovalNeeded(Boolean appovalNeeded) {
-		this.approvalNeeded = appovalNeeded;
-	}
-
 	public EventStatusType getStatus() {
 		return status;
 	}
@@ -199,20 +199,25 @@ public class Event implements Serializable {
 		this.creationDate = creationDate;
 	}
 
-	public List<Reward> getRewards() {
+	public Set<Reward> getRewards() {
 		return rewards;
 	}
 
-	public void setRewards(List<Reward> rewards) {
+	public void setRewards(Set<Reward> rewards) {
 		this.rewards = rewards;
 	}
 
-	public List<Punishment> getPunishments() {
+	public Set<Punishment> getPunishments() {
 		return punishments;
 	}
 
-	public void setPunishments(List<Punishment> punishments) {
+	public void setPunishments(Set<Punishment> punishments) {
 		this.punishments = punishments;
+	}
+	
+	@Override
+	public String toString() {
+		return String.format("Event [code=%s, id=%s]", code, id);
 	}
 
 }
