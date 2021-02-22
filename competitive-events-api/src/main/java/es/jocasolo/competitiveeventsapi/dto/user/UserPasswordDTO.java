@@ -5,7 +5,7 @@ import java.io.Serializable;
 import javax.validation.constraints.NotNull;
 
 import es.jocasolo.competitiveeventsapi.dto.DTO;
-import es.jocasolo.competitiveeventsapi.utils.password.ValidPassword;
+import es.jocasolo.competitiveeventsapi.utils.authentication.ValidPassword;
 
 public class UserPasswordDTO extends DTO implements Serializable {
 

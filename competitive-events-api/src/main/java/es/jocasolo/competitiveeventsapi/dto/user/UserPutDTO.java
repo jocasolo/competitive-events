@@ -7,7 +7,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
 import es.jocasolo.competitiveeventsapi.dto.DTO;
-import es.jocasolo.competitiveeventsapi.utils.password.ValidPassword;
+import es.jocasolo.competitiveeventsapi.utils.authentication.ValidPassword;
 
 public class UserPutDTO extends DTO implements Serializable {
 

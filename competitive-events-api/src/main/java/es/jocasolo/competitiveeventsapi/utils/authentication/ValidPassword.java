@@ -1,4 +1,4 @@
-package es.jocasolo.competitiveeventsapi.utils.password;
+package es.jocasolo.competitiveeventsapi.utils.authentication;
 
 import javax.validation.Payload;
 import javax.validation.Constraint;
