@@ -13,7 +13,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -35,10 +34,6 @@ public class User implements UserDetails, Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue
-	private Integer id;
-
-	@Column(unique = true, nullable = false)
 	private String username;
 
 	@Column(unique = true, nullable = false)
@@ -60,7 +55,7 @@ public class User implements UserDetails, Serializable {
 	private Date birthDate;
 
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JoinTable(name = "event_user", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = { @JoinColumn(name = "event_id") })
+	@JoinTable(name = "event_user", joinColumns = { @JoinColumn(name = "username") }, inverseJoinColumns = { @JoinColumn(name = "event_id") })
 	private Set<Event> events = new HashSet<>();
 
 	@Column(nullable = false)
@@ -74,13 +69,6 @@ public class User implements UserDetails, Serializable {
 
 	// GETTERS AND SETTERS
 
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
 
 	public String getPassword() {
 		return password;
@@ -176,7 +164,7 @@ public class User implements UserDetails, Serializable {
 
 	@Override
 	public String toString() {
-		return String.format("User [username=%s, id=%s]", username, id);
+		return String.format("User [username=%s]", username);
 	}
 
 	@Override

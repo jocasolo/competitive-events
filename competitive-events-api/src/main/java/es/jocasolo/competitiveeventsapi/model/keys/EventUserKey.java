@@ -10,31 +10,31 @@ import javax.persistence.Embeddable;
 public class EventUserKey implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	@Column(name = "event_id")
-    private Integer eventId;
-	
-	@Column(name = "user_id")
-    private Integer userId;
-	
+	private Integer eventId;
+
+	@Column(name = "username")
+	private String username;
+
 	@Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
- 
-        if (o == null || getClass() != o.getClass())
-            return false;
- 
-        EventUserKey that = (EventUserKey) o;
-        return Objects.equals(eventId, that.eventId) &&
-               Objects.equals(userId, that.userId);
-    }
- 
-    @Override
-    public int hashCode() {
-        return Objects.hash(eventId, userId);
-    }
-    
-    // GETTERS AND SETTERS
+	public boolean equals(Object o) {
+		if (this == o)
+			return true;
+
+		if (o == null || getClass() != o.getClass())
+			return false;
+
+		EventUserKey that = (EventUserKey) o;
+		return Objects.equals(eventId, that.eventId) && Objects.equals(username, that.username);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(eventId, username);
+	}
+
+	// GETTERS AND SETTERS
 
 	public Integer getEventId() {
 		return eventId;
@@ -44,12 +44,12 @@ public class EventUserKey implements Serializable {
 		this.eventId = eventId;
 	}
 
-	public Integer getUserId() {
-		return userId;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setUserId(Integer userId) {
-		this.userId = userId;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 }
