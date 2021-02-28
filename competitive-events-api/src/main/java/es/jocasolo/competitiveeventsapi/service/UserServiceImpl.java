@@ -4,6 +4,8 @@ import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +18,7 @@ import es.jocasolo.competitiveeventsapi.dto.user.UserPutDTO;
 import es.jocasolo.competitiveeventsapi.enums.user.UserStatusType;
 import es.jocasolo.competitiveeventsapi.enums.user.UserType;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserEmailExistsException;
-import es.jocasolo.competitiveeventsapi.exceptions.user.UserIdentifierExistsException;
+import es.jocasolo.competitiveeventsapi.exceptions.user.UserUsenameExistsException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserInvalidStatusException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotFoundException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserWrongPasswordException;
@@ -47,14 +49,14 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserDTO create(UserPostDTO userDto) throws UserEmailExistsException, UserIdentifierExistsException {
+	public UserDTO create(UserPostDTO userDto) throws UserEmailExistsException, UserUsenameExistsException {
 		User user = commonService.transform(userDto, User.class);
 
 		if (emailExist(userDto.getEmail()))
 			throw new UserEmailExistsException();
 
-		if (identifierExists(userDto.getIdentifier()))
-			throw new UserIdentifierExistsException();
+		if (usernameExists(userDto.getUsername()))
+			throw new UserUsenameExistsException();
 
 		user.setType(UserType.NORMAL);
 		user.setStatus(UserStatusType.ACTIVE);
@@ -66,13 +68,13 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void update(String identifier, UserPutDTO dto) throws UserWrongUpdateException, UserInvalidStatusException, UserEmailExistsException, UserIdentifierExistsException,
+	public void update(String username, UserPutDTO dto) throws UserWrongUpdateException, UserInvalidStatusException, UserEmailExistsException, UserUsenameExistsException,
 			UserWrongPasswordException, UserNotFoundException {
 
-		if (StringUtils.isNotEmpty(dto.getIdentifier()) && !dto.getIdentifier().equals(identifier))
+		if (StringUtils.isNotEmpty(dto.getUsername()) && !dto.getUsername().equals(username))
 			throw new UserWrongUpdateException();
 
-		User user = userDao.findOne(identifier);
+		User user = userDao.findOne(username);
 		if (user == null)
 			throw new UserNotFoundException();
 
@@ -92,12 +94,12 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public void updatePassword(String identifier, UserPasswordDTO dto) throws UserWrongUpdateException, UserNotFoundException, UserWrongPasswordException {
+	public void updatePassword(String username, UserPasswordDTO dto) throws UserWrongUpdateException, UserNotFoundException, UserWrongPasswordException {
 		
-		if (StringUtils.isNotEmpty(dto.getIdentifier()) && !dto.getIdentifier().equals(identifier))
+		if (StringUtils.isNotEmpty(dto.getUsername()) && !dto.getUsername().equals(username))
 			throw new UserWrongUpdateException();
 
-		User user = userDao.findOne(identifier);
+		User user = userDao.findOne(username);
 		if (user == null)
 			throw new UserNotFoundException();
 
@@ -112,10 +114,10 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void delete(String identifier) throws UserNotFoundException {
+	public void delete(String username) throws UserNotFoundException {
 
 		// TODO validate delete
-		User user = userDao.findOne(identifier);
+		User user = userDao.findOne(username);
 		user.setStatus(UserStatusType.DELETED);
 		userDao.save(user);
 
@@ -133,18 +135,23 @@ public class UserServiceImpl implements UserService {
 	}
 
 	/**
-	 * Checks if there is another user with the same identifier
+	 * Checks if there is another user with the same username
 	 * 
-	 * @param identifier User identifier
-	 * @return True if there is an user tith the same identifier
+	 * @param username User username
+	 * @return True if there is an user tith the same username
 	 */
-	private boolean identifierExists(String identifier) {
-		final User user = userDao.findOne(identifier);
+	private boolean usernameExists(String username) {
+		final User user = userDao.findOne(username);
 		return user != null;
 	}
 
 	private boolean validPassword(String encoded, String raw) {
 		return passwordEncoder.matches(raw, encoded);
+	}
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+		return userDao.findOne(username);
 	}
 
 }

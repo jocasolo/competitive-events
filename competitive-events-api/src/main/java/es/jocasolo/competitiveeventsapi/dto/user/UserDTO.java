@@ -8,7 +8,7 @@ public class UserDTO extends DTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private String identifier;
+	private String username;
 
 	private String name;
 
@@ -16,12 +16,12 @@ public class UserDTO extends DTO implements Serializable {
 
 	private String description;
 
-	public String getIdentifier() {
-		return identifier;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setIdentifier(String identifier) {
-		this.identifier = identifier;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getName() {
@@ -50,7 +50,7 @@ public class UserDTO extends DTO implements Serializable {
 
 	@Override
 	public String toString() {
-		return "UserDTO [identifier=" + identifier + "]";
+		return "UserDTO [username=" + username + "]";
 	}
 
 }

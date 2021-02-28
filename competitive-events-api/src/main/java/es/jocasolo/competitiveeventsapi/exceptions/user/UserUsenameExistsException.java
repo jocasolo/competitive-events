@@ -1,9 +1,9 @@
 package es.jocasolo.competitiveeventsapi.exceptions.user;
 
-public class UserIdentifierExistsException extends Exception {
+public class UserUsenameExistsException extends Exception {
 	
 	private static final long serialVersionUID = 1L;
-	private static final String MSG = "Identifier already exists";
+	private static final String MSG = "Username already exists";
 	
 	@Override
 	public String getMessage() {

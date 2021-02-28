@@ -21,7 +21,7 @@ import es.jocasolo.competitiveeventsapi.dto.user.UserPasswordDTO;
 import es.jocasolo.competitiveeventsapi.dto.user.UserPostDTO;
 import es.jocasolo.competitiveeventsapi.dto.user.UserPutDTO;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserEmailExistsException;
-import es.jocasolo.competitiveeventsapi.exceptions.user.UserIdentifierExistsException;
+import es.jocasolo.competitiveeventsapi.exceptions.user.UserUsenameExistsException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserInvalidStatusException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotFoundException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserWrongPasswordException;
@@ -42,49 +42,49 @@ public class UserController {
 	@Autowired
 	private CommonService commonService;
 	
-	@GetMapping(value = "/{identifier}")
-	@ApiOperation(value = "Search for an user based on its identifier.")
-	public UserDTO findOne(@PathVariable("identifier") String identifier) throws UserNotFoundException {
-		log.debug("Looking for the user with identifier: {}", identifier);
-		return commonService.transform(userService.findOne(identifier), UserDTO.class);
+	@GetMapping(value = "/{username}")
+	@ApiOperation(value = "Search for an user based on its username.")
+	public UserDTO findOne(@PathVariable("username") String username) throws UserNotFoundException {
+		log.debug("Looking for the user with username: {}", username);
+		return commonService.transform(userService.findOne(username), UserDTO.class);
 	}
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	@ApiOperation(value = "Creates a new user.")
-	public UserDTO create(@Valid @RequestBody UserPostDTO user) throws UserEmailExistsException, UserIdentifierExistsException {
+	public UserDTO create(@Valid @RequestBody UserPostDTO user) throws UserEmailExistsException, UserUsenameExistsException {
 		log.debug("Creating the user: {} ", user);
 		return userService.create(user);
 	}
 	
-	@PutMapping(value = "/{identifier}")
-	@ApiOperation(value = "Updates an user by identifier.")
+	@PutMapping(value = "/{username}")
+	@ApiOperation(value = "Updates an user by username.")
 	public void update(
-			@PathVariable("identifier") String identifier, 
+			@PathVariable("username") String username, 
 			@Valid @RequestBody UserPutDTO userDTO)
-			throws UserWrongUpdateException, UserInvalidStatusException, UserEmailExistsException, UserIdentifierExistsException, UserWrongPasswordException,
+			throws UserWrongUpdateException, UserInvalidStatusException, UserEmailExistsException, UserUsenameExistsException, UserWrongPasswordException,
 			UserNotFoundException {
-		log.debug("Updating user with id: {}", identifier);
-		userService.update(identifier, userDTO);
+		log.debug("Updating user with id: {}", username);
+		userService.update(username, userDTO);
 	}
 	
-	@PutMapping(value = "/{identifier}/password")
-	@ApiOperation(value = "Updates an user password by identifier.")
+	@PutMapping(value = "/{username}/password")
+	@ApiOperation(value = "Updates an user password by username.")
 	public void updatePassword(
-			@PathVariable("identifier") String identifier, 
+			@PathVariable("username") String username, 
 			@Valid @RequestBody UserPasswordDTO userDTO)
 			throws UserWrongUpdateException, UserWrongPasswordException,
 			UserNotFoundException {
-		log.debug("Updating user password with id: {}", identifier);
-		userService.updatePassword(identifier, userDTO);
+		log.debug("Updating user password with id: {}", username);
+		userService.updatePassword(username, userDTO);
 	}
 
-	@DeleteMapping(value = "/{identifier}")
+	@DeleteMapping(value = "/{username}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	@ApiOperation(value = "Delete an user by identifier.")
-	public void delete(@PathVariable("identifier") String identifier) throws UserNotFoundException {
-		log.debug("Deleting user with identifier: {} ", identifier);
-		userService.delete(identifier);
+	@ApiOperation(value = "Delete an user by username.")
+	public void delete(@PathVariable("username") String username) throws UserNotFoundException {
+		log.debug("Deleting user with username: {} ", username);
+		userService.delete(username);
 	}
 	
 }

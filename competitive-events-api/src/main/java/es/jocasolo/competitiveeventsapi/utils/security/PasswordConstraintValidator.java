@@ -1,4 +1,4 @@
-package es.jocasolo.competitiveeventsapi.utils.password;
+package es.jocasolo.competitiveeventsapi.utils.security;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;

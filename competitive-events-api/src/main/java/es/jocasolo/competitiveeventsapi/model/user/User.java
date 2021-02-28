@@ -1,8 +1,11 @@
 package es.jocasolo.competitiveeventsapi.model.user;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -18,12 +21,16 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import es.jocasolo.competitiveeventsapi.enums.user.UserStatusType;
 import es.jocasolo.competitiveeventsapi.enums.user.UserType;
 import es.jocasolo.competitiveeventsapi.model.event.Event;
 
 @Entity
-public class User implements Serializable {
+public class User implements UserDetails, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -32,7 +39,7 @@ public class User implements Serializable {
 	private Integer id;
 
 	@Column(unique = true, nullable = false)
-	private String identifier;
+	private String username;
 
 	@Column(unique = true, nullable = false)
 	private String email;
@@ -155,12 +162,8 @@ public class User implements Serializable {
 		this.events = events;
 	}
 
-	public String getIdentifier() {
-		return identifier;
-	}
-
-	public void setIdentifier(String identifier) {
-		this.identifier = identifier;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public UserStatusType getStatus() {
@@ -170,10 +173,42 @@ public class User implements Serializable {
 	public void setStatus(UserStatusType status) {
 		this.status = status;
 	}
-	
+
 	@Override
 	public String toString() {
-		return String.format("User [identifier=%s, id=%s]", identifier, id);
+		return String.format("User [username=%s, id=%s]", username, id);
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		List<GrantedAuthority> authorities = new ArrayList<>();
+		authorities.add(new SimpleGrantedAuthority(type.name()));
+		return authorities;
+	}
+
+	@Override
+	public String getUsername() {
+		return username;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return status.equals(UserStatusType.ACTIVE);
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return status.equals(UserStatusType.ACTIVE);
 	}
 
 }

@@ -5,14 +5,14 @@ import java.io.Serializable;
 import javax.validation.constraints.NotNull;
 
 import es.jocasolo.competitiveeventsapi.dto.DTO;
-import es.jocasolo.competitiveeventsapi.utils.password.ValidPassword;
+import es.jocasolo.competitiveeventsapi.utils.security.ValidPassword;
 
 public class UserPasswordDTO extends DTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@NotNull
-	private String identifier;
+	private String username;
 
 	@ValidPassword
 	@NotNull
@@ -22,12 +22,12 @@ public class UserPasswordDTO extends DTO implements Serializable {
 	@NotNull
 	private String newPassword;
 
-	public String getIdentifier() {
-		return identifier;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setIdentifier(String identifier) {
-		this.identifier = identifier;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getPassword() {
@@ -48,7 +48,7 @@ public class UserPasswordDTO extends DTO implements Serializable {
 
 	@Override
 	public String toString() {
-		return "UserPostDTO [identifier=" + identifier + "]";
+		return "UserPostDTO [username=" + username + "]";
 	}
 
 }

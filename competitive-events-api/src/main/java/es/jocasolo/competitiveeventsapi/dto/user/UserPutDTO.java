@@ -7,14 +7,14 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
 import es.jocasolo.competitiveeventsapi.dto.DTO;
-import es.jocasolo.competitiveeventsapi.utils.password.ValidPassword;
+import es.jocasolo.competitiveeventsapi.utils.security.ValidPassword;
 
 public class UserPutDTO extends DTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@NotNull
-	private String identifier;
+	private String username;
 
 	@Email
 	private String email;
@@ -22,7 +22,7 @@ public class UserPutDTO extends DTO implements Serializable {
 	@ValidPassword
 	@NotNull
 	private String password;
-	
+
 	private String name;
 
 	private String surname;
@@ -79,12 +79,12 @@ public class UserPutDTO extends DTO implements Serializable {
 		this.birthDate = birthDate;
 	}
 
-	public String getIdentifier() {
-		return identifier;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setIdentifier(String identifier) {
-		this.identifier = identifier;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	@Override
