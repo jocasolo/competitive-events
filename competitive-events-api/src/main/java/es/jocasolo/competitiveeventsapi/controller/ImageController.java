@@ -37,7 +37,7 @@ public class ImageController {
 	@Autowired
 	private ImageService imageService;
 	
-	@GetMapping(value = "/**")
+	@GetMapping(value = "/**", produces = "application/json;charset=utf8")
 	@ResponseStatus(HttpStatus.CREATED)
 	@ApiOperation(value = "Search for an image based on its id.")
 	public ImageDTO findOne(WebRequest request) throws ImageNotFoundException {
@@ -46,7 +46,7 @@ public class ImageController {
 		return commonService.transform(imageService.findOne(id), ImageDTO.class);
 	}
 	
-	@PostMapping
+	@PostMapping(produces = "application/json;charset=utf8")
 	@ApiOperation(value = "Upload an image")
 	public ImageDTO upload(@RequestParam("file") MultipartFile file, @RequestParam("type") ImageType type) {
 		log.debug("Uploading image");

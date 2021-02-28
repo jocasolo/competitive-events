@@ -43,14 +43,14 @@ public class EventController {
 	@Autowired
 	private CommonService commonService;
 	
-	@GetMapping(value = "/{code}")
+	@GetMapping(value = "/{code}", produces = "application/json;charset=utf8")
 	@ApiOperation(value = "Search for an event based on its code.")
 	public EventDTO findOne(@PathVariable("code") String code) throws EventNotFoundException {
 		log.debug("Looking for the event with code: {}", code);
 		return commonService.transform(eventService.findOne(code), EventDTO.class);
 	}
 	
-	@GetMapping
+	@GetMapping(produces = "application/json;charset=utf8")
 	@ApiOperation(value = "Find all events that match your search parameters.")
 	public EventPageDTO search(
 			@RequestParam(value = "title", required = false) String title,
@@ -66,7 +66,7 @@ public class EventController {
 		return eventService.search(title, initDate, endDate, type, inscription, PageRequest.of(page, size));
 	}
 	
-	@PostMapping
+	@PostMapping(produces = "application/json;charset=utf8")
 	@ResponseStatus(HttpStatus.CREATED)
 	@ApiOperation(value = "Creates a new event.")
 	public EventDTO create(@RequestBody EventPostDTO event) {

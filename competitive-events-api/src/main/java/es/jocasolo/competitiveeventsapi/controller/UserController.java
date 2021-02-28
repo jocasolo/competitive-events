@@ -42,14 +42,14 @@ public class UserController {
 	@Autowired
 	private CommonService commonService;
 	
-	@GetMapping(value = "/{username}")
+	@GetMapping(value = "/{username}", produces = "application/json;charset=utf8")
 	@ApiOperation(value = "Search for an user based on its username.")
 	public UserDTO findOne(@PathVariable("username") String username) throws UserNotFoundException {
 		log.debug("Looking for the user with username: {}", username);
 		return commonService.transform(userService.findOne(username), UserDTO.class);
 	}
 	
-	@PostMapping
+	@PostMapping(produces = "application/json;charset=utf8")
 	@ResponseStatus(HttpStatus.CREATED)
 	@ApiOperation(value = "Creates a new user.")
 	public UserDTO create(@Valid @RequestBody UserPostDTO user) throws UserEmailExistsException, UserUsenameExistsException {
@@ -57,7 +57,7 @@ public class UserController {
 		return userService.create(user);
 	}
 	
-	@PutMapping(value = "/{username}")
+	@PutMapping(value = "/{username}", produces = "application/json;charset=utf8")
 	@ApiOperation(value = "Updates an user by username.")
 	public void update(
 			@PathVariable("username") String username, 
