@@ -15,7 +15,7 @@ public interface UserDAO extends CrudRepository<User, String> {
 	 * @param id
 	 * @return User corresponding to the id searched.
 	 */
-	@Query(value = "SELECT u FROM User AS u WHERE id = :id")
+	@Query(value = "SELECT u FROM User AS u WHERE id = :id AND status = 'ACTIVE'")
 	public User findOne(@Param("id") String id);
 	
 	/**
@@ -23,7 +23,7 @@ public interface UserDAO extends CrudRepository<User, String> {
 	 * @param email User email
 	 * @return User corresponding to the email searched.
 	 */
-	@Query(value = "SELECT u FROM User AS u WHERE email = :email")
+	@Query(value = "SELECT u FROM User AS u WHERE email = :email AND status = 'ACTIVE'")
 	public User findOneByEmail(@Param("email") String email);
 	
 }

@@ -18,7 +18,7 @@ public interface EventDAO extends CrudRepository<Event, String> {
 	 * @param id
 	 * @return Event corresponding to the id searched.
 	 */
-	@Query(value = "SELECT e FROM Event AS e WHERE id = :id")
+	@Query(value = "SELECT e FROM Event AS e WHERE id = :id AND status <> 'DELETED'")
 	public Event findOne(@Param("id") String id);
 
 	@Query(value = "SELECT e from Event as e WHERE ("
