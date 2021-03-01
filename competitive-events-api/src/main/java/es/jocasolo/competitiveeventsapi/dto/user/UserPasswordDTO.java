@@ -12,7 +12,7 @@ public class UserPasswordDTO extends DTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@NotNull
-	private String username;
+	private String id;
 
 	@ValidPassword
 	@NotNull
@@ -22,12 +22,12 @@ public class UserPasswordDTO extends DTO implements Serializable {
 	@NotNull
 	private String newPassword;
 
-	public String getUsername() {
-		return username;
+	public String getId() {
+		return id;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getPassword() {
@@ -48,7 +48,7 @@ public class UserPasswordDTO extends DTO implements Serializable {
 
 	@Override
 	public String toString() {
-		return "UserPostDTO [username=" + username + "]";
+		return "UserPostDTO [id=" + id + "]";
 	}
 
 }

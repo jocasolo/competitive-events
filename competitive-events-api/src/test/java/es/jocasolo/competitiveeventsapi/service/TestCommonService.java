@@ -41,7 +41,7 @@ class TestCommonService {
 		events.add(event2);
 		
 		EventDTO dto1 = new EventDTO();
-		dto1.setCode("1111");
+		dto1.setId("1111");
 		dto1.setTitle("Event 1");
 		
 		Mockito.when(dozer.map(event1, EventDTO.class)).thenReturn(dto1);
@@ -52,7 +52,7 @@ class TestCommonService {
 	void testTransform(){
 		EventDTO eventTransformed = commonService.transform(event1, EventDTO.class);
 		assertNotNull(eventTransformed);
-		assertEquals("1111", eventTransformed.getCode());
+		assertEquals("1111", eventTransformed.getId());
 		assertEquals("Event 1", eventTransformed.getTitle());
 	}
 	

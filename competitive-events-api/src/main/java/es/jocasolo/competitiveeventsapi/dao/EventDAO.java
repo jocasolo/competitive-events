@@ -13,13 +13,13 @@ import es.jocasolo.competitiveeventsapi.model.event.Event;
 public interface EventDAO extends CrudRepository<Event, String> {
 
 	/**
-	 * Search for a event by code.
+	 * Search for a event by id.
 	 * 
-	 * @param code
+	 * @param id
 	 * @return Event corresponding to the id searched.
 	 */
-	@Query(value = "SELECT e FROM Event AS e WHERE code = :code")
-	public Event findOne(@Param("code") String code);
+	@Query(value = "SELECT e FROM Event AS e WHERE id = :id")
+	public Event findOne(@Param("id") String id);
 
 	@Query(value = "SELECT e from Event as e WHERE ("
 			+ "e.title LIKE %:title% OR :title IS NULL)")

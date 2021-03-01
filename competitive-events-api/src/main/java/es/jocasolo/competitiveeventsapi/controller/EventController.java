@@ -1,5 +1,6 @@
 package es.jocasolo.competitiveeventsapi.controller;
 
+import java.security.Principal;
 import java.util.Date;
 
 import org.slf4j.Logger;
@@ -43,11 +44,11 @@ public class EventController {
 	@Autowired
 	private CommonService commonService;
 	
-	@GetMapping(value = "/{code}", produces = "application/json;charset=utf8")
-	@ApiOperation(value = "Search for an event based on its code.")
-	public EventDTO findOne(@PathVariable("code") String code) throws EventNotFoundException {
-		log.debug("Looking for the event with code: {}", code);
-		return commonService.transform(eventService.findOne(code), EventDTO.class);
+	@GetMapping(value = "/{id}", produces = "application/json;charset=utf8")
+	@ApiOperation(value = "Search for an event based on its id.")
+	public EventDTO findOne(@PathVariable("id") String id, Principal principal) throws EventNotFoundException {
+		log.debug("Looking for the event with id: {}", id);
+		return commonService.transform(eventService.findOne(id), EventDTO.class);
 	}
 	
 	@GetMapping(produces = "application/json;charset=utf8")
@@ -61,7 +62,8 @@ public class EventController {
 			@RequestParam(value = "type", required = false) EventType type,
 			@RequestParam(value = "inscription", required = false) EventInscriptionType inscription,
 			@RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
-			@RequestParam(value = "size", required = false, defaultValue = "10") Integer size) {
+			@RequestParam(value = "size", required = false, defaultValue = "10") Integer size, 
+			Principal principal) {
 		log.debug("Looking for events");
 		return eventService.search(title, initDate, endDate, type, inscription, PageRequest.of(page, size));
 	}
@@ -69,26 +71,26 @@ public class EventController {
 	@PostMapping(produces = "application/json;charset=utf8")
 	@ResponseStatus(HttpStatus.CREATED)
 	@ApiOperation(value = "Creates a new event.")
-	public EventDTO create(@RequestBody EventPostDTO event) {
+	public EventDTO create(@RequestBody EventPostDTO event, Principal principal) {
 		log.debug("Creating the event: {} ", event);
 		return eventService.create(event);
 	}
 	
-	@PutMapping(value = "/{code}")
-	@ApiOperation(value = "Updates an event by code.")
+	@PutMapping(value = "/{id}")
+	@ApiOperation(value = "Updates an event by id.")
 	public void update(
-			@PathVariable("code") String code, 
-			@RequestBody EventPutDTO eventDTO) throws EventWrongUpdateException, EventInvalidStatusException {
+			@PathVariable("id") String id, 
+			@RequestBody EventPutDTO eventDTO, Principal principal) throws EventWrongUpdateException, EventInvalidStatusException {
 		log.debug("Modificando el libro: {}", eventDTO);
-		eventService.update(code, eventDTO);
+		eventService.update(id, eventDTO);
 	}
 
-	@DeleteMapping(value = "/{code}")
+	@DeleteMapping(value = "/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	@ApiOperation(value = "Delete an event by code.")
-	public void delete(@PathVariable("id") String code) throws EventNotFoundException {
-		log.debug("Deleting event with code: {} ", code);
-		eventService.delete(code);
+	@ApiOperation(value = "Delete an event by id.")
+	public void delete(@PathVariable("id") String id, Principal principal) throws EventNotFoundException {
+		log.debug("Deleting event with id: {} ", id);
+		eventService.delete(id);
 	}
 	
 }

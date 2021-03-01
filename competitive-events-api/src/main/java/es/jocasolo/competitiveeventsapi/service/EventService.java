@@ -18,13 +18,13 @@ import es.jocasolo.competitiveeventsapi.model.event.Event;
 public interface EventService {
 
 	/**
-	 * Search for a event by code.
+	 * Search for a event by id.
 	 * 
-	 * @param code Event code
+	 * @param id Event id
 	 * @return Event corresponding to the id searched.
 	 * @throws EventNotFoundException
 	 */
-	Event findOne(String code) throws EventNotFoundException;
+	Event findOne(String id) throws EventNotFoundException;
 
 	/**
 	 * Creates a new event.
@@ -37,20 +37,20 @@ public interface EventService {
 	/**
 	 * Updates an event.
 	 * 
-	 * @param code  Event code
+	 * @param id  Event id
 	 * @param event
 	 * @throws EventWrongUpdateException
 	 * @throws EventInvalidStatusException
 	 */
-	void update(String code, EventPutDTO eventDto) throws EventWrongUpdateException, EventInvalidStatusException;
+	void update(String id, EventPutDTO eventDto) throws EventWrongUpdateException, EventInvalidStatusException;
 
 	/**
-	 * Deletes a event by code
+	 * Deletes a event by id
 	 * 
-	 * @param code Event code
+	 * @param id Event id
 	 * @throws EventNotFoundException
 	 */
-	void delete(String code) throws EventNotFoundException;
+	void delete(String id) throws EventNotFoundException;
 
 	/**
 	 * @param title

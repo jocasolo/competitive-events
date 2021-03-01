@@ -24,6 +24,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import es.jocasolo.competitiveeventsapi.enums.user.UserStatusType;
 import es.jocasolo.competitiveeventsapi.enums.user.UserType;
 import es.jocasolo.competitiveeventsapi.model.event.Event;
@@ -34,7 +36,7 @@ public class User implements UserDetails, Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	private String username;
+	private String id;
 
 	@Column(unique = true, nullable = false)
 	private String email;
@@ -55,7 +57,7 @@ public class User implements UserDetails, Serializable {
 	private Date birthDate;
 
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JoinTable(name = "event_user", joinColumns = { @JoinColumn(name = "username") }, inverseJoinColumns = { @JoinColumn(name = "event_id") })
+	@JoinTable(name = "event_user", joinColumns = { @JoinColumn(name = "user_id") }, inverseJoinColumns = { @JoinColumn(name = "event_id") })
 	private Set<Event> events = new HashSet<>();
 
 	@Column(nullable = false)
@@ -150,10 +152,6 @@ public class User implements UserDetails, Serializable {
 		this.events = events;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
 	public UserStatusType getStatus() {
 		return status;
 	}
@@ -161,12 +159,23 @@ public class User implements UserDetails, Serializable {
 	public void setStatus(UserStatusType status) {
 		this.status = status;
 	}
+	
+	@JsonProperty("username")
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 
 	@Override
 	public String toString() {
-		return String.format("User [username=%s]", username);
+		return String.format("User [id=%s]", id);
 	}
 
+	// USER DETAILS (Security)
+	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		List<GrantedAuthority> authorities = new ArrayList<>();
@@ -176,7 +185,7 @@ public class User implements UserDetails, Serializable {
 
 	@Override
 	public String getUsername() {
-		return username;
+		return getId();
 	}
 
 	@Override
@@ -198,5 +207,6 @@ public class User implements UserDetails, Serializable {
 	public boolean isEnabled() {
 		return status.equals(UserStatusType.ACTIVE);
 	}
+
 
 }

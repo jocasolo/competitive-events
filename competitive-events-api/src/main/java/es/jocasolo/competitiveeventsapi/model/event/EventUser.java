@@ -33,10 +33,10 @@ public class EventUser {
     @MapsId("userId")
     private User user;
     
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date incorporationDate;
     
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date lastStatusDate;
     
     @Enumerated(EnumType.STRING)

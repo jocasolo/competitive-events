@@ -12,10 +12,10 @@ public class EventUserKey implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Column(name = "event_id")
-	private Integer eventId;
+	private String eventId;
 
-	@Column(name = "username")
-	private String username;
+	@Column(name = "user_id")
+	private String userId;
 
 	@Override
 	public boolean equals(Object o) {
@@ -26,30 +26,30 @@ public class EventUserKey implements Serializable {
 			return false;
 
 		EventUserKey that = (EventUserKey) o;
-		return Objects.equals(eventId, that.eventId) && Objects.equals(username, that.username);
+		return Objects.equals(eventId, that.eventId) && Objects.equals(userId, that.userId);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(eventId, username);
+		return Objects.hash(eventId, userId);
 	}
 
 	// GETTERS AND SETTERS
 
-	public Integer getEventId() {
+	public String getEventId() {
 		return eventId;
 	}
 
-	public void setEventId(Integer eventId) {
+	public void setEventId(String eventId) {
 		this.eventId = eventId;
 	}
 
-	public String getUsername() {
-		return username;
+	public String getUserId() {
+		return userId;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
 }

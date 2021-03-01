@@ -42,11 +42,11 @@ public class UserController {
 	@Autowired
 	private CommonService commonService;
 	
-	@GetMapping(value = "/{username}", produces = "application/json;charset=utf8")
-	@ApiOperation(value = "Search for an user based on its username.")
-	public UserDTO findOne(@PathVariable("username") String username) throws UserNotFoundException {
-		log.debug("Looking for the user with username: {}", username);
-		return commonService.transform(userService.findOne(username), UserDTO.class);
+	@GetMapping(value = "/{id}", produces = "application/json;charset=utf8")
+	@ApiOperation(value = "Search for an user based on its id.")
+	public UserDTO findOne(@PathVariable("id") String id) throws UserNotFoundException {
+		log.debug("Looking for the user with id: {}", id);
+		return commonService.transform(userService.findOne(id), UserDTO.class);
 	}
 	
 	@PostMapping(produces = "application/json;charset=utf8")
@@ -57,34 +57,34 @@ public class UserController {
 		return userService.create(user);
 	}
 	
-	@PutMapping(value = "/{username}", produces = "application/json;charset=utf8")
-	@ApiOperation(value = "Updates an user by username.")
+	@PutMapping(value = "/{id}", produces = "application/json;charset=utf8")
+	@ApiOperation(value = "Updates an user by id.")
 	public void update(
-			@PathVariable("username") String username, 
+			@PathVariable("id") String id, 
 			@Valid @RequestBody UserPutDTO userDTO)
 			throws UserWrongUpdateException, UserInvalidStatusException, UserEmailExistsException, UserUsenameExistsException, UserWrongPasswordException,
 			UserNotFoundException {
-		log.debug("Updating user with id: {}", username);
-		userService.update(username, userDTO);
+		log.debug("Updating user with id: {}", id);
+		userService.update(id, userDTO);
 	}
 	
-	@PutMapping(value = "/{username}/password")
-	@ApiOperation(value = "Updates an user password by username.")
+	@PutMapping(value = "/{id}/password")
+	@ApiOperation(value = "Updates an user password by id.")
 	public void updatePassword(
-			@PathVariable("username") String username, 
+			@PathVariable("id") String id, 
 			@Valid @RequestBody UserPasswordDTO userDTO)
 			throws UserWrongUpdateException, UserWrongPasswordException,
 			UserNotFoundException {
-		log.debug("Updating user password with id: {}", username);
-		userService.updatePassword(username, userDTO);
+		log.debug("Updating user password with id: {}", id);
+		userService.updatePassword(id, userDTO);
 	}
 
-	@DeleteMapping(value = "/{username}")
+	@DeleteMapping(value = "/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	@ApiOperation(value = "Delete an user by username.")
-	public void delete(@PathVariable("username") String username) throws UserNotFoundException {
-		log.debug("Deleting user with username: {} ", username);
-		userService.delete(username);
+	@ApiOperation(value = "Delete an user by id.")
+	public void delete(@PathVariable("id") String id) throws UserNotFoundException {
+		log.debug("Deleting user with id: {} ", id);
+		userService.delete(id);
 	}
 	
 }

@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
 		if (emailExist(userDto.getEmail()))
 			throw new UserEmailExistsException();
 
-		if (usernameExists(userDto.getUsername()))
+		if (usernameExists(userDto.getId()))
 			throw new UserUsenameExistsException();
 
 		user.setType(UserType.NORMAL);
@@ -68,13 +68,13 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void update(String username, UserPutDTO dto) throws UserWrongUpdateException, UserInvalidStatusException, UserEmailExistsException, UserUsenameExistsException,
+	public void update(String id, UserPutDTO dto) throws UserWrongUpdateException, UserInvalidStatusException, UserEmailExistsException, UserUsenameExistsException,
 			UserWrongPasswordException, UserNotFoundException {
 
-		if (StringUtils.isNotEmpty(dto.getUsername()) && !dto.getUsername().equals(username))
+		if (StringUtils.isNotEmpty(dto.getId()) && !dto.getId().equals(id))
 			throw new UserWrongUpdateException();
 
-		User user = userDao.findOne(username);
+		User user = userDao.findOne(id);
 		if (user == null)
 			throw new UserNotFoundException();
 
@@ -94,12 +94,12 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public void updatePassword(String username, UserPasswordDTO dto) throws UserWrongUpdateException, UserNotFoundException, UserWrongPasswordException {
+	public void updatePassword(String id, UserPasswordDTO dto) throws UserWrongUpdateException, UserNotFoundException, UserWrongPasswordException {
 		
-		if (StringUtils.isNotEmpty(dto.getUsername()) && !dto.getUsername().equals(username))
+		if (StringUtils.isNotEmpty(dto.getId()) && !dto.getId().equals(id))
 			throw new UserWrongUpdateException();
 
-		User user = userDao.findOne(username);
+		User user = userDao.findOne(id);
 		if (user == null)
 			throw new UserNotFoundException();
 
@@ -114,10 +114,10 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void delete(String username) throws UserNotFoundException {
+	public void delete(String id) throws UserNotFoundException {
 
 		// TODO validate delete
-		User user = userDao.findOne(username);
+		User user = userDao.findOne(id);
 		user.setStatus(UserStatusType.DELETED);
 		userDao.save(user);
 
@@ -135,13 +135,13 @@ public class UserServiceImpl implements UserService {
 	}
 
 	/**
-	 * Checks if there is another user with the same username
+	 * Checks if there is another user with the same id
 	 * 
-	 * @param username User username
-	 * @return True if there is an user tith the same username
+	 * @param id User id
+	 * @return True if there is an user tith the same id
 	 */
-	private boolean usernameExists(String username) {
-		final User user = userDao.findOne(username);
+	private boolean usernameExists(String id) {
+		final User user = userDao.findOne(id);
 		return user != null;
 	}
 
@@ -150,8 +150,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		return userDao.findOne(username);
+	public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
+		return userDao.findOne(id);
 	}
 
 }

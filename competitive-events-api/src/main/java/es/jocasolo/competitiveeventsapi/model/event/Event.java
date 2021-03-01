@@ -10,7 +10,6 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
@@ -29,8 +28,7 @@ public class Event implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue
-	private Integer id;
+	private String id;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date initDate;
@@ -66,9 +64,6 @@ public class Event implements Serializable {
 	@ManyToMany(mappedBy = "events")
 	private Set<User> users = new HashSet<>();
 
-	@Column(unique = true)
-	private String code;
-
 	private String title;
 
 	private String subtitle;
@@ -79,24 +74,16 @@ public class Event implements Serializable {
 
 	// GETTERS AND SETTERS
 
-	public Integer getId() {
+	public Boolean getApprovalNeeded() {
+		return approvalNeeded;
+	}
+
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id = id;
-	}
-
-	public String getCode() {
-		return code;
-	}
-
-	public void setCode(String code) {
-		this.code = code;
-	}
-
-	public Boolean getApprovalNeeded() {
-		return approvalNeeded;
 	}
 
 	public void setApprovalNeeded(Boolean approvalNeeded) {
@@ -214,10 +201,10 @@ public class Event implements Serializable {
 	public void setPunishments(Set<Punishment> punishments) {
 		this.punishments = punishments;
 	}
-	
+
 	@Override
 	public String toString() {
-		return String.format("Event [code=%s, id=%s]", code, id);
+		return String.format("Event [id=%s]", id);
 	}
 
 }

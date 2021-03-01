@@ -11,17 +11,17 @@ import es.jocasolo.competitiveeventsapi.model.user.User;
 public interface UserDAO extends CrudRepository<User, String> {
 	
 	/**
-	 * Search for a user by username.
-	 * @param username
-	 * @return User corresponding to the username searched.
+	 * Search for a user by id.
+	 * @param id
+	 * @return User corresponding to the id searched.
 	 */
-	@Query(value = "SELECT u FROM User AS u WHERE username = :username")
-	public User findOne(@Param("username") String username);
+	@Query(value = "SELECT u FROM User AS u WHERE id = :id")
+	public User findOne(@Param("id") String id);
 	
 	/**
 	 * Search for a user by email.
-	 * @param username
-	 * @return User corresponding to the id searched.
+	 * @param email User email
+	 * @return User corresponding to the email searched.
 	 */
 	@Query(value = "SELECT u FROM User AS u WHERE email = :email")
 	public User findOneByEmail(@Param("email") String email);

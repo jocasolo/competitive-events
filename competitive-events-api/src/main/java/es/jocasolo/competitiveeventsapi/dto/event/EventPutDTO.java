@@ -13,7 +13,7 @@ public class EventPutDTO extends DTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private String code;
+	private String id;
 
 	private String title;
 
@@ -53,12 +53,12 @@ public class EventPutDTO extends DTO implements Serializable {
 		this.description = description;
 	}
 
-	public String getCode() {
-		return code;
+	public String getId() {
+		return id;
 	}
 
-	public void setCode(String code) {
-		this.code = code;
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getSubtitle() {

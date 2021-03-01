@@ -12,7 +12,7 @@ public class EventDTO extends DTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private String code;
+	private String id;
 
 	private String title;
 
@@ -34,12 +34,12 @@ public class EventDTO extends DTO implements Serializable {
 
 	private Integer maxPlaces;
 
-	public String getCode() {
-		return code;
+	public String getId() {
+		return id;
 	}
 
-	public void setCode(String code) {
-		this.code = code;
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getTitle() {
@@ -124,7 +124,7 @@ public class EventDTO extends DTO implements Serializable {
 
 	@Override
 	public String toString() {
-		return "EventDTO [code=" + code + "]";
+		return "EventDTO [id=" + id + "]";
 	}
 
 }

@@ -14,7 +14,7 @@ public class UserPostDTO extends DTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@NotBlank
-	private String username;
+	private String id;
 
 	@NotBlank
 	@Email
@@ -32,12 +32,12 @@ public class UserPostDTO extends DTO implements Serializable {
 
 	private Date birthDate;
 
-	public String getUsername() {
-		return username;
+	public String getId() {
+		return id;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -90,7 +90,7 @@ public class UserPostDTO extends DTO implements Serializable {
 
 	@Override
 	public String toString() {
-		return "UserPostDTO [username=" + username + "]";
+		return "UserPostDTO [id=" + id + "]";
 	}
 
 }

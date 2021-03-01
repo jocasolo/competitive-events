@@ -17,13 +17,13 @@ import es.jocasolo.competitiveeventsapi.model.user.User;
 public interface UserService extends UserDetailsService {
 
 	/**
-	 * Search for a user by username.
+	 * Search for a user by id.
 	 * 
-	 * @param username User username
+	 * @param id User id
 	 * @return User corresponding to the id searched.
 	 * @throws UserNotFoundException
 	 */
-	User findOne(String username) throws UserNotFoundException;
+	User findOne(String id) throws UserNotFoundException;
 
 	/**
 	 * Creates a new user.
@@ -36,32 +36,32 @@ public interface UserService extends UserDetailsService {
 	/**
 	 * Updates an user.
 	 * 
-	 * @param username User username
+	 * @param id User id
 	 * @param user
 	 * @throws UserWrongUpdateException
 	 * @throws UserInvalidStatusException
 	 * @throws UserNotFoundException
 	 */
-	void update(String username, UserPutDTO userDto)
+	void update(String id, UserPutDTO userDto)
 			throws UserInvalidStatusException, UserEmailExistsException, UserUsenameExistsException, UserWrongPasswordException, UserWrongUpdateException, UserNotFoundException;
 
 	/**
-	 * Deletes a user by username
+	 * Deletes a user by id
 	 * 
-	 * @param username User username
+	 * @param id User id
 	 * @throws UserNotFoundException
 	 */
-	void delete(String username) throws UserNotFoundException;
+	void delete(String id) throws UserNotFoundException;
 
 	/**
 	 * Update user password
 	 * 
-	 * @param username User username
+	 * @param id User id
 	 * @param userDTO    User password dto
 	 * @throws UserWrongUpdateException
 	 * @throws UserNotFoundException
 	 * @throws UserWrongPasswordException
 	 */
-	void updatePassword(String username, UserPasswordDTO userDTO) throws UserWrongUpdateException, UserNotFoundException, UserWrongPasswordException;
+	void updatePassword(String id, UserPasswordDTO userDTO) throws UserWrongUpdateException, UserNotFoundException, UserWrongPasswordException;
 
 }
