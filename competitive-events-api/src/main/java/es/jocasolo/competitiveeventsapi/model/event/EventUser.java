@@ -103,4 +103,9 @@ public class EventUser {
 		this.lastStatusDate = lastStatusDate;
 	}
 	
+	@Override
+	public String toString() {
+		return String.format("EventUser [event_id=%s, user_id=%s]", event, user);
+	}
+	
 }

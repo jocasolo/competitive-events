@@ -80,5 +80,10 @@ public class Image {
 	public void setUrl(String url) {
 		this.url = url;
 	}
+	
+	@Override
+	public String toString() {
+		return String.format("Image [id=%s]", id);
+	}
 
 }

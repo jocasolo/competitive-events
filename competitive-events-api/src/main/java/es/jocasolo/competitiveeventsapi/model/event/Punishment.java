@@ -81,5 +81,10 @@ public class Punishment implements Serializable {
 	public void setRequiredPosition(Integer requiredPosition) {
 		this.requiredPosition = requiredPosition;
 	}
+	
+	@Override
+	public String toString() {
+		return String.format("Punishment [id=%s]", id);
+	}
 
 }

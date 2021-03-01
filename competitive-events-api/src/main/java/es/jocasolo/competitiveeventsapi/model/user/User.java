@@ -71,7 +71,6 @@ public class User implements UserDetails, Serializable {
 
 	// GETTERS AND SETTERS
 
-
 	public String getPassword() {
 		return password;
 	}
@@ -159,7 +158,7 @@ public class User implements UserDetails, Serializable {
 	public void setStatus(UserStatusType status) {
 		this.status = status;
 	}
-	
+
 	@JsonProperty("username")
 	public String getId() {
 		return id;
@@ -174,8 +173,25 @@ public class User implements UserDetails, Serializable {
 		return String.format("User [id=%s]", id);
 	}
 
-	// USER DETAILS (Security)
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null)
+			return false;
+
+		if (this.getClass() != obj.getClass())
+			return false;
+
+		User user = (User) obj;
+		return getId().equals(user.getId());
+	}
 	
+	@Override
+	public int hashCode() {
+		return super.hashCode();
+	}
+
+	// USER DETAILS (Security)
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		List<GrantedAuthority> authorities = new ArrayList<>();
@@ -207,6 +223,5 @@ public class User implements UserDetails, Serializable {
 	public boolean isEnabled() {
 		return status.equals(UserStatusType.ACTIVE);
 	}
-
 
 }

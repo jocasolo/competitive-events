@@ -95,7 +95,7 @@ class TestEventService {
 		dto.setEndDate(new Date());
 		dto.setDescription("New description");
 		dto.setType(EventType.ACADEMIC);
-		dto.setInscription(EventInscriptionType.INVITATION);
+		dto.setInscription(EventInscriptionType.PRIVATE);
 		dto.setVisibility(EventVisibilityType.PRIVATE);
 		dto.setStatus(EventStatusType.ACTIVE);
 		dto.setMaxPlaces(1);

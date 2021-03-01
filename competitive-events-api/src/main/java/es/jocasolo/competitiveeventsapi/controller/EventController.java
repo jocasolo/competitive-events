@@ -23,6 +23,8 @@ import es.jocasolo.competitiveeventsapi.dto.event.EventDTO;
 import es.jocasolo.competitiveeventsapi.dto.event.EventPageDTO;
 import es.jocasolo.competitiveeventsapi.dto.event.EventPostDTO;
 import es.jocasolo.competitiveeventsapi.dto.event.EventPutDTO;
+import es.jocasolo.competitiveeventsapi.dto.event.EventUserDTO;
+import es.jocasolo.competitiveeventsapi.dto.event.EventUserPostDTO;
 import es.jocasolo.competitiveeventsapi.enums.event.EventInscriptionType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventType;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventInvalidStatusException;
@@ -81,7 +83,7 @@ public class EventController {
 	public void update(
 			@PathVariable("id") String id, 
 			@RequestBody EventPutDTO eventDTO, Principal principal) throws EventWrongUpdateException, EventInvalidStatusException {
-		log.debug("Modificando el libro: {}", eventDTO);
+		log.debug("Updating event: {}", eventDTO);
 		eventService.update(id, eventDTO);
 	}
 
@@ -91,6 +93,17 @@ public class EventController {
 	public void delete(@PathVariable("id") String id, Principal principal) throws EventNotFoundException {
 		log.debug("Deleting event with id: {} ", id);
 		eventService.delete(id);
+	}
+	
+	// EVENT USER
+	@PostMapping(value = "/{id}/users", produces = "application/json;charset=utf8")
+	@ResponseStatus(HttpStatus.CREATED)
+	@ApiOperation(value = "Adds user to an event.")
+	public EventUserDTO addUser(
+			@PathVariable("id") String id,
+			@RequestBody EventUserPostDTO event, Principal principal) throws EventWrongUpdateException {
+		log.debug("Adding user to event: {} ", event);
+		return eventService.addUser(id, event);
 	}
 	
 }

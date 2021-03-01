@@ -8,6 +8,8 @@ import es.jocasolo.competitiveeventsapi.dto.event.EventDTO;
 import es.jocasolo.competitiveeventsapi.dto.event.EventPageDTO;
 import es.jocasolo.competitiveeventsapi.dto.event.EventPostDTO;
 import es.jocasolo.competitiveeventsapi.dto.event.EventPutDTO;
+import es.jocasolo.competitiveeventsapi.dto.event.EventUserDTO;
+import es.jocasolo.competitiveeventsapi.dto.event.EventUserPostDTO;
 import es.jocasolo.competitiveeventsapi.enums.event.EventInscriptionType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventType;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventInvalidStatusException;
@@ -62,5 +64,14 @@ public interface EventService {
 	 * @return
 	 */
 	EventPageDTO search(String title, Date initDate, Date endDate, EventType type, EventInscriptionType inscription, Pageable pageRequest);
+	
+	// EVENT USER
+	/**
+	 * @param eventId
+	 * @param eventUserDto
+	 * @return
+	 * @throws EventWrongUpdateException
+	 */
+	EventUserDTO addUser(String eventId, EventUserPostDTO eventUserDto) throws EventWrongUpdateException;
 
 }

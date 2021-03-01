@@ -12,10 +12,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import es.jocasolo.competitiveeventsapi.dao.EventDAO;
 import es.jocasolo.competitiveeventsapi.dao.EventUserDAO;
+import es.jocasolo.competitiveeventsapi.dao.UserDAO;
 import es.jocasolo.competitiveeventsapi.dto.event.EventDTO;
 import es.jocasolo.competitiveeventsapi.dto.event.EventPageDTO;
 import es.jocasolo.competitiveeventsapi.dto.event.EventPostDTO;
 import es.jocasolo.competitiveeventsapi.dto.event.EventPutDTO;
+import es.jocasolo.competitiveeventsapi.dto.event.EventUserDTO;
+import es.jocasolo.competitiveeventsapi.dto.event.EventUserPostDTO;
 import es.jocasolo.competitiveeventsapi.enums.event.EventInscriptionType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventStatusType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventType;
@@ -43,6 +46,9 @@ public class EventServiceImpl implements EventService {
 	private EventDAO eventDao;
 
 	@Autowired
+	private UserDAO userDao;
+
+	@Autowired
 	private EventUserDAO eventUserDao;
 
 	@Autowired
@@ -67,7 +73,7 @@ public class EventServiceImpl implements EventService {
 		event.setCreationDate(new Date());
 		event.setId(RandomStringUtils.randomAlphanumeric(8)); // Random id
 		event.setType(EventType.getValue(dto.getType(), EventType.OTHER));
-		event.setInscription(EventInscriptionType.getValue(dto.getInscription(), EventInscriptionType.INVITATION));
+		event.setInscription(EventInscriptionType.getValue(dto.getInscription(), EventInscriptionType.PRIVATE));
 		event.setVisibility(EventVisibilityType.getValue(dto.getVisibility(), EventVisibilityType.PRIVATE));
 		event.setStatus(EventStatusType.ACTIVE);
 		event.setApprovalNeeded(EventUtils.getValue(dto.getApprovalNeeded(), true));
@@ -75,18 +81,8 @@ public class EventServiceImpl implements EventService {
 
 		// Assign event to the actual user
 		final User user = authentication.getUser();
-		EventUser eventUser = new EventUser();
-		EventUserKey key = new EventUserKey();
-		key.setEventId(event.getId());
-		key.setUserId(user.getId());
-		eventUser.setId(key);
-		eventUser.setEvent(event);
-		eventUser.setUser(user);
+		EventUser eventUser = createEventUser(event, user);
 		eventUser.setPrivilege(UserPrivilegeType.OWNER);
-		eventUser.setStatus(UserEventStatusType.ACCEPTED);
-		Date date = new Date();
-		eventUser.setIncorporationDate(date);
-		eventUser.setLastStatusDate(date);
 		eventUserDao.save(eventUser);
 
 		return commonService.transform(event, EventDTO.class);
@@ -165,6 +161,78 @@ public class EventServiceImpl implements EventService {
 		}
 
 		return false;
+	}
+
+	// EVENT USER
+	
+	@Override
+	public EventUserDTO addUser(String eventId, EventUserPostDTO eventUserDto) throws EventWrongUpdateException {
+
+		UserEventStatusType status = null;
+
+		Event event = eventDao.findOne(eventId);
+		User targetUser = userDao.findOne(eventUserDto.getUserId());
+		if (event == null || targetUser == null)
+			throw new EventWrongUpdateException();
+
+		User authenticatedUser = authentication.getUser();
+		EventUser newEventUser = createEventUser(event, targetUser);
+
+		// if the type of registration is private
+		if (event.getInscription().equals(EventInscriptionType.PRIVATE)) {
+			EventUser authenticatedEventUser = eventUserDao.findOne(eventId, authenticatedUser.getId());
+			EventUser targetEventUser = eventUserDao.findOne(eventId, targetUser.getId());
+
+			// If the logged-in user is an owner/admin of the event, sets the user waiting
+			// to join. If the logged-in user is waiting for join, it status change to accepted
+			if (authenticatedEventUser != null
+					&& (authenticatedEventUser.getPrivilege().equals(UserPrivilegeType.OWNER) || authenticatedEventUser.getPrivilege().equals(UserPrivilegeType.ADMIN))) {
+				status = UserEventStatusType.WAITING;
+				newEventUser.setIncorporationDate(null);
+
+			} else if (targetEventUser != null && targetEventUser.getStatus().equals(UserEventStatusType.WAITING) && targetUser.equals(authenticatedUser)) {
+				status = UserEventStatusType.ACCEPTED;
+			}
+
+		} else {
+			// Public inscription
+			status = UserEventStatusType.ACCEPTED;
+		}
+
+		if (status == null)
+			throw new EventWrongUpdateException();
+
+		// Save
+		newEventUser.setStatus(status);
+		eventUserDao.save(newEventUser);
+
+		// Sets the dto for response
+		EventUserDTO dto = new EventUserDTO();
+		dto.setEventId(eventId);
+		dto.setUserId(eventUserDto.getUserId());
+		dto.setIncorporationDate(newEventUser.getIncorporationDate());
+		dto.setLastStatusDate(newEventUser.getLastStatusDate());
+		dto.setPrivilege(newEventUser.getPrivilege());
+		dto.setStatus(status);
+
+		return dto;
+	}
+
+	private EventUser createEventUser(Event event, User user) {
+		EventUser eventUser = new EventUser();
+		EventUserKey key = new EventUserKey();
+		key.setEventId(event.getId());
+		key.setUserId(user.getId());
+		eventUser.setId(key);
+		eventUser.setEvent(event);
+		eventUser.setUser(user);
+		Date date = new Date();
+		eventUser.setIncorporationDate(date);
+		eventUser.setLastStatusDate(date);
+		eventUser.setPrivilege(UserPrivilegeType.USER);
+		eventUser.setStatus(UserEventStatusType.ACCEPTED);
+
+		return eventUser;
 	}
 
 }

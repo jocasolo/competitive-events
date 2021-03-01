@@ -90,4 +90,9 @@ public class Reward implements Serializable {
 		this.sortScore = sortScore;
 	}
 	
+	@Override
+	public String toString() {
+		return String.format("Reward [_id=%s]", id);
+	}
+	
 }
