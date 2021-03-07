@@ -44,11 +44,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.cors().and()
 			.csrf().disable()
 			.authorizeRequests()
+            .antMatchers("/css/**", "/js/**", "/img/**", "/icon/**").permitAll()
+            .antMatchers("/confirmation.html").permitAll()
 			.antMatchers(HttpMethod.POST, "/login").permitAll()
+			.antMatchers(HttpMethod.GET, "/users/confirm/**").permitAll()
 			.antMatchers(HttpMethod.POST, "/users").permitAll()
 			.anyRequest().authenticated().and()
-				.addFilter(new JWTAuthenticationFilter(authenticationManager()))
-				.addFilter(new JWTAuthorizationFilter(authenticationManager()));
+			.addFilter(new JWTAuthenticationFilter(authenticationManager()))
+			.addFilter(new JWTAuthorizationFilter(authenticationManager()));
 	}
 	
 	@Override

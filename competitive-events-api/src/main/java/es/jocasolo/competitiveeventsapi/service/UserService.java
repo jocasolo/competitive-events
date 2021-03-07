@@ -63,5 +63,13 @@ public interface UserService extends UserDetailsService {
 	 * @throws UserWrongPasswordException
 	 */
 	void updatePassword(String id, UserPasswordDTO userDTO) throws UserWrongUpdateException, UserNotFoundException, UserWrongPasswordException;
+	
+	/**
+	 * User email confirmation.
+	 * @param key Generated key for confirmation
+	 * @return
+	 * @throws UserNotFoundException 
+	 */
+	UserDTO confirm(String key) throws UserNotFoundException;
 
 }

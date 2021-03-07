@@ -67,7 +67,7 @@ public class User implements UserDetails, Serializable {
 
 	private String surname;
 
-	private Boolean confirmed;
+	private String confirmKey;
 
 	// GETTERS AND SETTERS
 
@@ -111,14 +111,6 @@ public class User implements UserDetails, Serializable {
 		this.type = type;
 	}
 
-	public Boolean getConfirmed() {
-		return confirmed;
-	}
-
-	public void setConfirmed(Boolean confirmed) {
-		this.confirmed = confirmed;
-	}
-
 	public String getDescription() {
 		return description;
 	}
@@ -159,11 +151,20 @@ public class User implements UserDetails, Serializable {
 		this.status = status;
 	}
 
+	public String getConfirmKey() {
+		return confirmKey;
+	}
+
+	public void setConfirmKey(String confirmKey) {
+		this.confirmKey = confirmKey;
+	}
+
 	@JsonProperty("username")
 	public String getId() {
 		return id;
 	}
 
+	@JsonProperty("username")
 	public void setId(String id) {
 		this.id = id;
 	}
@@ -184,7 +185,7 @@ public class User implements UserDetails, Serializable {
 		User user = (User) obj;
 		return getId().equals(user.getId());
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return super.hashCode();

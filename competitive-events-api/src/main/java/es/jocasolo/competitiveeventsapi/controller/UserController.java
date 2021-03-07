@@ -21,9 +21,9 @@ import es.jocasolo.competitiveeventsapi.dto.user.UserPasswordDTO;
 import es.jocasolo.competitiveeventsapi.dto.user.UserPostDTO;
 import es.jocasolo.competitiveeventsapi.dto.user.UserPutDTO;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserEmailExistsException;
-import es.jocasolo.competitiveeventsapi.exceptions.user.UserUsenameExistsException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserInvalidStatusException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotFoundException;
+import es.jocasolo.competitiveeventsapi.exceptions.user.UserUsenameExistsException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserWrongPasswordException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserWrongUpdateException;
 import es.jocasolo.competitiveeventsapi.service.CommonService;
@@ -47,6 +47,13 @@ public class UserController {
 	public UserDTO findOne(@PathVariable("id") String id) throws UserNotFoundException {
 		log.debug("Looking for the user with id: {}", id);
 		return commonService.transform(userService.findOne(id), UserDTO.class);
+	}
+	
+	@GetMapping(value = "/confirm/{key}", produces = "application/json;charset=utf8")
+	@ApiOperation(value = "Confirm an user registration.")
+	public UserDTO confirm(@PathVariable("key") String key) throws UserNotFoundException {
+		log.debug("Confirming user with key: {}", key);
+		return commonService.transform(userService.confirm(key), UserDTO.class);
 	}
 	
 	@PostMapping(produces = "application/json;charset=utf8")

@@ -1,6 +1,10 @@
 package es.jocasolo.competitiveeventsapi.service;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import es.jocasolo.competitiveeventsapi.constants.CommonConstants;
 import es.jocasolo.competitiveeventsapi.dao.UserDAO;
 import es.jocasolo.competitiveeventsapi.dto.user.UserDTO;
 import es.jocasolo.competitiveeventsapi.dto.user.UserPasswordDTO;
@@ -18,9 +23,9 @@ import es.jocasolo.competitiveeventsapi.dto.user.UserPutDTO;
 import es.jocasolo.competitiveeventsapi.enums.user.UserStatusType;
 import es.jocasolo.competitiveeventsapi.enums.user.UserType;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserEmailExistsException;
-import es.jocasolo.competitiveeventsapi.exceptions.user.UserUsenameExistsException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserInvalidStatusException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotFoundException;
+import es.jocasolo.competitiveeventsapi.exceptions.user.UserUsenameExistsException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserWrongPasswordException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserWrongUpdateException;
 import es.jocasolo.competitiveeventsapi.model.user.User;
@@ -28,7 +33,7 @@ import es.jocasolo.competitiveeventsapi.utils.EventUtils;
 
 @Service
 public class UserServiceImpl implements UserService {
-
+	
 	@Autowired
 	private UserDAO userDao;
 
@@ -37,6 +42,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private EmailService emailService;
 
 	@Override
 	@Transactional(readOnly = true)
@@ -44,7 +52,7 @@ public class UserServiceImpl implements UserService {
 		final User user = userDao.findOne(id);
 		if (user == null)
 			throw new UserNotFoundException();
-
+		
 		return user;
 	}
 
@@ -57,14 +65,23 @@ public class UserServiceImpl implements UserService {
 
 		if (usernameExists(userDto.getId()))
 			throw new UserUsenameExistsException();
-
+		
 		user.setType(UserType.NORMAL);
-		user.setStatus(UserStatusType.ACTIVE);
+		user.setStatus(UserStatusType.NOT_CONFIRMED);
+		final String key = UUID.randomUUID().toString();
+		user.setConfirmKey(key);
 		user.setRegisterDate(new Date());
-		user.setConfirmed(false);
 		user.setPassword(passwordEncoder.encode(userDto.getPassword()));
+		
+		sendConfirmationEmail(userDto, key);
 
 		return commonService.transform(userDao.save(user), UserDTO.class);
+	}
+	
+	private void sendConfirmationEmail(UserPostDTO userDto, String key) {
+		Map<String,Object> parameters = new HashMap<>();
+		parameters.put("key", key);
+		emailService.sendSimpleMessage(userDto.getEmail(), CommonConstants.EMAIL_CONFIRMATION_SUBJECT, CommonConstants.EMAIL_CONFIRMATION_TEMPLATE, parameters);
 	}
 
 	@Override
@@ -156,6 +173,17 @@ public class UserServiceImpl implements UserService {
 			throw new UsernameNotFoundException("Username or password not valid");
 		
 		return userDao.findOne(id);
+	}
+
+	@Override
+	public UserDTO confirm(String key) throws UserNotFoundException {
+		List<User> users = userDao.findByConfirmKey(key);
+		if(users.isEmpty())
+			throw new UserNotFoundException();
+		
+		User user = users.get(0);
+		user.setStatus(UserStatusType.ACTIVE);
+		return commonService.transform(userDao.save(user), UserDTO.class);
 	}
 
 }

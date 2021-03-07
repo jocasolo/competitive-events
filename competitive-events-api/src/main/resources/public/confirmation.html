@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>SmartCompetition | Tu email ha sido confirmado</title>
+  <link rel="icon" type="image/svg+xml" href="img/icon.svg" sizes="any">
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <nav class="navbar navbar-light bg-light">
+    <a class="navbar-brand" href="#">
+      <img src="img/logo.svg" width="200px" alt="">
+    </a>
+  </nav>
+
+  <div class="jumbotron hero text-white">
+    <h1 class="display-4">Tu Cuenta <em>Ha Sido Activada</em></h1>
+    <hr class="my-4">
+    <p class="lead">Gracias por registrate.</p>
+  </div>
+
+  <div class="container mt-5 body">
+    <h3>Gracias por confirmar tu direcci&oacute;n de correo electr&oacute;nico.</h3>
+    <p>
+      Se ha activado tu nueva cuenta SmartCompetition y ahora puedes iniciar sesi&oacute;n en la aplicaci&oacute;n. Todos los detalles de tu cuenta pueden consl y editarse en el apartado de usuarios. Inicia sesi&oacute;n con tu nombre de usuario y contrase&ntilde;a para comenzar.
+    </p>
+  </div>
+
+  <footer class="footer mt-auto py-3 bg-light">
+    <div class="container-fluid">
+      <span class="text-muted">&copy; Copyright <script>document.write(new Date().getFullYear());</script> SmartCompetition. All Rights Reserved.</span>
+    </div>
+  </footer>
+
+<script>
+	$.urlParam = function(name){
+		var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+		return results[1] || 0;
+	}
+
+	$(document).ready(function(){
+		url = 'http://localhost:8080/users/confirm/' + $.urlParam('key');
+		$.ajax({
+		  url: url,
+		  dataType: 'application/json'
+		});
+	});
+</script>
+
+</body>
+</html>

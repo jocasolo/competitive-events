@@ -1,5 +1,7 @@
 package es.jocasolo.competitiveeventsapi.dao;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -25,5 +27,12 @@ public interface UserDAO extends CrudRepository<User, String> {
 	 */
 	@Query(value = "SELECT u FROM User AS u WHERE email = :email AND status = 'ACTIVE'")
 	public User findOneByEmail(@Param("email") String email);
+	
+	/**
+	 * Find one user by confirm key
+	 * @param confirmKey Activation key
+	 * @return The user with the key
+	 */
+	public List<User> findByConfirmKey(String confirmKey);
 	
 }
