@@ -17,7 +17,6 @@ import es.jocasolo.competitiveeventsapi.dto.event.EventDTO;
 import es.jocasolo.competitiveeventsapi.dto.event.EventPageDTO;
 import es.jocasolo.competitiveeventsapi.dto.event.EventPostDTO;
 import es.jocasolo.competitiveeventsapi.dto.event.EventPutDTO;
-import es.jocasolo.competitiveeventsapi.dto.event.EventSummaryDTO;
 import es.jocasolo.competitiveeventsapi.dto.eventuser.EventUserDTO;
 import es.jocasolo.competitiveeventsapi.dto.eventuser.EventUserPostDTO;
 import es.jocasolo.competitiveeventsapi.enums.event.EventInscriptionType;
@@ -151,7 +150,7 @@ public class EventServiceImpl implements EventService {
 		}
 		
 		EventPageDTO dto = new EventPageDTO();
-		dto.setEvents(commonService.transform(events.getContent(), EventSummaryDTO.class));
+		dto.setEvents(commonService.transform(events.getContent(), EventDTO.class));
 		dto.setTotal(events.getTotalElements());
 		dto.setHasNext(events.hasNext());
 		dto.setHasPrevious(events.hasPrevious());
