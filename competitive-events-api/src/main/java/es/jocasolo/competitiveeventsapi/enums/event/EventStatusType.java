@@ -8,4 +8,8 @@ public enum EventStatusType {
 		return newValue != null ? newValue : actualValue;
 	}
 	
+	public static EventStatusType getEnumOrNull(EventStatusType value) {
+		return value != null ? value : null;
+	}
+	
 }

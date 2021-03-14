@@ -1,8 +1,5 @@
 package es.jocasolo.competitiveeventsapi.controller;
 
-import java.security.Principal;
-import java.util.Date;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,13 +20,15 @@ import es.jocasolo.competitiveeventsapi.dto.event.EventDTO;
 import es.jocasolo.competitiveeventsapi.dto.event.EventPageDTO;
 import es.jocasolo.competitiveeventsapi.dto.event.EventPostDTO;
 import es.jocasolo.competitiveeventsapi.dto.event.EventPutDTO;
-import es.jocasolo.competitiveeventsapi.dto.event.EventUserDTO;
-import es.jocasolo.competitiveeventsapi.dto.event.EventUserPostDTO;
+import es.jocasolo.competitiveeventsapi.dto.eventuser.EventUserDTO;
+import es.jocasolo.competitiveeventsapi.dto.eventuser.EventUserPostDTO;
 import es.jocasolo.competitiveeventsapi.enums.event.EventInscriptionType;
+import es.jocasolo.competitiveeventsapi.enums.event.EventStatusType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventType;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventInvalidStatusException;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventNotFoundException;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventWrongUpdateException;
+import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotValidException;
 import es.jocasolo.competitiveeventsapi.service.CommonService;
 import es.jocasolo.competitiveeventsapi.service.EventService;
 import io.swagger.annotations.ApiOperation;
@@ -48,7 +47,7 @@ public class EventController {
 	
 	@GetMapping(value = "/{id}", produces = "application/json;charset=utf8")
 	@ApiOperation(value = "Search for an event based on its id.")
-	public EventDTO findOne(@PathVariable("id") String id, Principal principal) throws EventNotFoundException {
+	public EventDTO findOne(@PathVariable("id") String id) throws EventNotFoundException {
 		log.debug("Looking for the event with id: {}", id);
 		return commonService.transform(eventService.findOne(id), EventDTO.class);
 	}
@@ -57,23 +56,20 @@ public class EventController {
 	@ApiOperation(value = "Find all events that match your search parameters.")
 	public EventPageDTO search(
 			@RequestParam(value = "title", required = false) String title,
-			@RequestParam(value = "subtitle", required = false) String subtitle,
-			@RequestParam(value = "description", required = false) String description,
-			@RequestParam(value = "initDate", required = false) Date initDate,
-			@RequestParam(value = "endDate", required = false) Date endDate,
 			@RequestParam(value = "type", required = false) EventType type,
+			@RequestParam(value = "status", required = false) EventStatusType status,
 			@RequestParam(value = "inscription", required = false) EventInscriptionType inscription,
+			@RequestParam(value = "username", required = false) String username,
 			@RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
-			@RequestParam(value = "size", required = false, defaultValue = "10") Integer size, 
-			Principal principal) {
+			@RequestParam(value = "size", required = false, defaultValue = "10") Integer size) throws UserNotValidException {
 		log.debug("Looking for events");
-		return eventService.search(title, initDate, endDate, type, inscription, PageRequest.of(page, size));
+		return eventService.search(title, type, status, inscription, username, PageRequest.of(page, size));
 	}
 	
 	@PostMapping(produces = "application/json;charset=utf8")
 	@ResponseStatus(HttpStatus.CREATED)
 	@ApiOperation(value = "Creates a new event.")
-	public EventDTO create(@RequestBody EventPostDTO event, Principal principal) {
+	public EventDTO create(@RequestBody EventPostDTO event) {
 		log.debug("Creating the event: {} ", event);
 		return eventService.create(event);
 	}
@@ -82,7 +78,7 @@ public class EventController {
 	@ApiOperation(value = "Updates an event by id.")
 	public void update(
 			@PathVariable("id") String id, 
-			@RequestBody EventPutDTO eventDTO, Principal principal) throws EventWrongUpdateException, EventInvalidStatusException {
+			@RequestBody EventPutDTO eventDTO) throws EventWrongUpdateException, EventInvalidStatusException {
 		log.debug("Updating event: {}", eventDTO);
 		eventService.update(id, eventDTO);
 	}
@@ -90,7 +86,7 @@ public class EventController {
 	@DeleteMapping(value = "/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@ApiOperation(value = "Delete an event by id.")
-	public void delete(@PathVariable("id") String id, Principal principal) throws EventNotFoundException {
+	public void delete(@PathVariable("id") String id) throws EventNotFoundException {
 		log.debug("Deleting event with id: {} ", id);
 		eventService.delete(id);
 	}
@@ -101,7 +97,7 @@ public class EventController {
 	@ApiOperation(value = "Adds user to an event.")
 	public EventUserDTO addUser(
 			@PathVariable("id") String id,
-			@RequestBody EventUserPostDTO event, Principal principal) throws EventWrongUpdateException {
+			@RequestBody EventUserPostDTO event) throws EventWrongUpdateException {
 		log.debug("Adding user to event: {} ", event);
 		return eventService.addUser(id, event);
 	}

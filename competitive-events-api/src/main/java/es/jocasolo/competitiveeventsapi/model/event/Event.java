@@ -71,7 +71,7 @@ public class Event implements Serializable {
 	private Boolean approvalNeeded; // needs appoval to join
 
 	private Integer maxPlaces;
-
+	
 	// GETTERS AND SETTERS
 
 	public Boolean getApprovalNeeded() {
@@ -201,7 +201,7 @@ public class Event implements Serializable {
 	public void setPunishments(Set<Punishment> punishments) {
 		this.punishments = punishments;
 	}
-
+	
 	@Override
 	public String toString() {
 		return String.format("Event [id=%s]", id);

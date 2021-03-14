@@ -1,4 +1,4 @@
-package es.jocasolo.competitiveeventsapi.dto.event;
+package es.jocasolo.competitiveeventsapi.dto.eventuser;
 
 import java.io.Serializable;
 

@@ -7,5 +7,9 @@ public enum EventType {
 	public static EventType getValue(EventType newValue, EventType actualValue) {
 		return newValue != null ? newValue : actualValue;
 	}
+	
+	public static EventType getEnumOrNull(EventType value) {
+		return value != null ? value : null;
+	}
 
 }

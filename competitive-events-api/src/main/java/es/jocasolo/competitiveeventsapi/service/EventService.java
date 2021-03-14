@@ -1,20 +1,20 @@
 package es.jocasolo.competitiveeventsapi.service;
 
-import java.util.Date;
-
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 
 import es.jocasolo.competitiveeventsapi.dto.event.EventDTO;
 import es.jocasolo.competitiveeventsapi.dto.event.EventPageDTO;
 import es.jocasolo.competitiveeventsapi.dto.event.EventPostDTO;
 import es.jocasolo.competitiveeventsapi.dto.event.EventPutDTO;
-import es.jocasolo.competitiveeventsapi.dto.event.EventUserDTO;
-import es.jocasolo.competitiveeventsapi.dto.event.EventUserPostDTO;
+import es.jocasolo.competitiveeventsapi.dto.eventuser.EventUserDTO;
+import es.jocasolo.competitiveeventsapi.dto.eventuser.EventUserPostDTO;
 import es.jocasolo.competitiveeventsapi.enums.event.EventInscriptionType;
+import es.jocasolo.competitiveeventsapi.enums.event.EventStatusType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventType;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventInvalidStatusException;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventNotFoundException;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventWrongUpdateException;
+import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotValidException;
 import es.jocasolo.competitiveeventsapi.model.event.Event;
 
 public interface EventService {
@@ -55,15 +55,17 @@ public interface EventService {
 	void delete(String id) throws EventNotFoundException;
 
 	/**
-	 * @param title
-	 * @param initDate
-	 * @param endDate
-	 * @param type
-	 * @param inscription
-	 * @param pageRequest
+	 * Searches for events based on supplied search parameters.
+	 * @param title Event title text
+	 * @param type Type of event
+	 * @param status Status of the event
+	 * @param inscription Inscription type
+	 * @param username User name
+	 * @param pageRequest Pagination data
 	 * @return
+	 * @throws UserNotValidException 
 	 */
-	EventPageDTO search(String title, Date initDate, Date endDate, EventType type, EventInscriptionType inscription, Pageable pageRequest);
+	EventPageDTO search(String title, EventType type, EventStatusType status, EventInscriptionType inscription, String username, PageRequest pageRequest) throws UserNotValidException;
 	
 	// EVENT USER
 	/**

@@ -1,10 +1,10 @@
-package es.jocasolo.competitiveeventsapi.dto.event;
+package es.jocasolo.competitiveeventsapi.dto.eventuser;
 
 import java.io.Serializable;
 import java.util.Date;
 
 import es.jocasolo.competitiveeventsapi.dto.DTO;
-import es.jocasolo.competitiveeventsapi.enums.user.UserEventStatusType;
+import es.jocasolo.competitiveeventsapi.enums.event.EventUserStatusType;
 import es.jocasolo.competitiveeventsapi.enums.user.UserPrivilegeType;
 
 public class EventUserDTO extends DTO implements Serializable {
@@ -21,7 +21,7 @@ public class EventUserDTO extends DTO implements Serializable {
 
 	private UserPrivilegeType privilege;
 
-	private UserEventStatusType status;
+	private EventUserStatusType status;
 
 	public String getUserId() {
 		return userId;
@@ -63,11 +63,11 @@ public class EventUserDTO extends DTO implements Serializable {
 		this.privilege = privilege;
 	}
 
-	public UserEventStatusType getStatus() {
+	public EventUserStatusType getStatus() {
 		return status;
 	}
 
-	public void setStatus(UserEventStatusType status) {
+	public void setStatus(EventUserStatusType status) {
 		this.status = status;
 	}
 

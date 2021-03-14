@@ -21,6 +21,7 @@ import com.google.gson.Gson;
 
 import es.jocasolo.competitiveeventsapi.constants.SecurityConstants;
 import es.jocasolo.competitiveeventsapi.dto.TokenDTO;
+import es.jocasolo.competitiveeventsapi.exceptions.CustomRuntimeException;
 import es.jocasolo.competitiveeventsapi.model.user.User;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -40,7 +41,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
 			return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), new ArrayList<>()));
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			throw new CustomRuntimeException(e);
 		}
 	}
 

@@ -13,7 +13,7 @@ public class AuthenticationFacade implements AuthenticationFacadeImpl {
 	
 	@Autowired
 	private UserDAO userDao;
-
+	
     @Override
     public Authentication getAuthentication() {
         return SecurityContextHolder.getContext().getAuthentication();

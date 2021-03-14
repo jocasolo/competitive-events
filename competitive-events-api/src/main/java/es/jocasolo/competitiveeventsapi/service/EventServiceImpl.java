@@ -6,7 +6,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,18 +17,20 @@ import es.jocasolo.competitiveeventsapi.dto.event.EventDTO;
 import es.jocasolo.competitiveeventsapi.dto.event.EventPageDTO;
 import es.jocasolo.competitiveeventsapi.dto.event.EventPostDTO;
 import es.jocasolo.competitiveeventsapi.dto.event.EventPutDTO;
-import es.jocasolo.competitiveeventsapi.dto.event.EventUserDTO;
-import es.jocasolo.competitiveeventsapi.dto.event.EventUserPostDTO;
+import es.jocasolo.competitiveeventsapi.dto.event.EventSummaryDTO;
+import es.jocasolo.competitiveeventsapi.dto.eventuser.EventUserDTO;
+import es.jocasolo.competitiveeventsapi.dto.eventuser.EventUserPostDTO;
 import es.jocasolo.competitiveeventsapi.enums.event.EventInscriptionType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventStatusType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventType;
+import es.jocasolo.competitiveeventsapi.enums.event.EventUserStatusType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventVisibilityType;
-import es.jocasolo.competitiveeventsapi.enums.user.UserEventStatusType;
 import es.jocasolo.competitiveeventsapi.enums.user.UserPrivilegeType;
 import es.jocasolo.competitiveeventsapi.enums.user.UserType;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventInvalidStatusException;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventNotFoundException;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventWrongUpdateException;
+import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotValidException;
 import es.jocasolo.competitiveeventsapi.model.event.Event;
 import es.jocasolo.competitiveeventsapi.model.event.EventUser;
 import es.jocasolo.competitiveeventsapi.model.keys.EventUserKey;
@@ -130,10 +132,26 @@ public class EventServiceImpl implements EventService {
 	}
 
 	@Override
-	public EventPageDTO search(String title, Date initDate, Date endDate, EventType type, EventInscriptionType inscription, Pageable pageable) {
-		final Page<Event> events = eventDao.search(title, pageable);
+	public EventPageDTO search(String title, EventType type, EventStatusType status, EventInscriptionType inscription, 
+			String username, PageRequest pageRequest) throws UserNotValidException {
+		
+		Page<Event> events = null;
+		User user = authentication.getUser();
+		
+		if(StringUtils.isEmpty(username)) {
+			// Public events
+			events = eventDao.search(title, EventType.getEnumOrNull(type), EventStatusType.getEnumOrNull(status), 
+				EventInscriptionType.getEnumOrNull(inscription), pageRequest);
+		} else if(username.equals(user.getUsername())) {
+			// User events
+			events = eventDao.searchByUser(title, EventType.getEnumOrNull(type), EventStatusType.getEnumOrNull(status), 
+					EventInscriptionType.getEnumOrNull(inscription), user, pageRequest);
+		} else {
+			throw new UserNotValidException();
+		}
+		
 		EventPageDTO dto = new EventPageDTO();
-		dto.setEvents(commonService.transform(events.getContent(), EventDTO.class));
+		dto.setEvents(commonService.transform(events.getContent(), EventSummaryDTO.class));
 		dto.setTotal(events.getTotalElements());
 		dto.setHasNext(events.hasNext());
 		dto.setHasPrevious(events.hasPrevious());
@@ -163,12 +181,14 @@ public class EventServiceImpl implements EventService {
 		return false;
 	}
 
+	// ************************************
 	// EVENT USER
-	
+	// ************************************
+
 	@Override
 	public EventUserDTO addUser(String eventId, EventUserPostDTO eventUserDto) throws EventWrongUpdateException {
 
-		UserEventStatusType status = null;
+		EventUserStatusType status = null;
 
 		Event event = eventDao.findOne(eventId);
 		User targetUser = userDao.findOne(eventUserDto.getUserId());
@@ -184,19 +204,20 @@ public class EventServiceImpl implements EventService {
 			EventUser targetEventUser = eventUserDao.findOne(eventId, targetUser.getId());
 
 			// If the logged-in user is an owner/admin of the event, sets the user waiting
-			// to join. If the logged-in user is waiting for join, it status change to accepted
+			// to join. If the logged-in user is waiting for join, it status change to
+			// accepted
 			if (authenticatedEventUser != null
 					&& (authenticatedEventUser.getPrivilege().equals(UserPrivilegeType.OWNER) || authenticatedEventUser.getPrivilege().equals(UserPrivilegeType.ADMIN))) {
-				status = UserEventStatusType.WAITING;
+				status = EventUserStatusType.WAITING;
 				newEventUser.setIncorporationDate(null);
 
-			} else if (targetEventUser != null && targetEventUser.getStatus().equals(UserEventStatusType.WAITING) && targetUser.equals(authenticatedUser)) {
-				status = UserEventStatusType.ACCEPTED;
+			} else if (targetEventUser != null && targetEventUser.getStatus().equals(EventUserStatusType.WAITING) && targetUser.equals(authenticatedUser)) {
+				status = EventUserStatusType.ACCEPTED;
 			}
 
 		} else {
 			// Public inscription
-			status = UserEventStatusType.ACCEPTED;
+			status = EventUserStatusType.ACCEPTED;
 		}
 
 		if (status == null)
@@ -230,7 +251,7 @@ public class EventServiceImpl implements EventService {
 		eventUser.setIncorporationDate(date);
 		eventUser.setLastStatusDate(date);
 		eventUser.setPrivilege(UserPrivilegeType.USER);
-		eventUser.setStatus(UserEventStatusType.ACCEPTED);
+		eventUser.setStatus(EventUserStatusType.ACCEPTED);
 
 		return eventUser;
 	}

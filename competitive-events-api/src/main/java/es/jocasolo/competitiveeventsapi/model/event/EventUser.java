@@ -13,7 +13,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import es.jocasolo.competitiveeventsapi.enums.user.UserEventStatusType;
+import es.jocasolo.competitiveeventsapi.enums.event.EventUserStatusType;
 import es.jocasolo.competitiveeventsapi.enums.user.UserPrivilegeType;
 import es.jocasolo.competitiveeventsapi.model.keys.EventUserKey;
 import es.jocasolo.competitiveeventsapi.model.user.User;
@@ -43,7 +43,7 @@ public class EventUser {
 	private UserPrivilegeType privilege;
     
     @Enumerated(EnumType.STRING)
-	private UserEventStatusType status;
+	private EventUserStatusType status;
     
     // GETTERS AND SETTERS
 
@@ -79,11 +79,11 @@ public class EventUser {
 		this.incorporationDate = incorporationDate;
 	}
 
-	public UserEventStatusType getStatus() {
+	public EventUserStatusType getStatus() {
 		return status;
 	}
 
-	public void setStatus(UserEventStatusType status) {
+	public void setStatus(EventUserStatusType status) {
 		this.status = status;
 	}
 

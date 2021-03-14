@@ -13,7 +13,7 @@ public class EventPageDTO extends DTO implements Serializable {
 	private Integer pages;
 	private Boolean hasNext;
 	private Boolean hasPrevious;
-	private List<EventDTO> events;
+	private List<EventSummaryDTO> events;
 
 	public Long getTotal() {
 		return total;
@@ -39,11 +39,11 @@ public class EventPageDTO extends DTO implements Serializable {
 		this.hasPrevious = hasPrevious;
 	}
 
-	public List<EventDTO> getEvents() {
+	public List<EventSummaryDTO> getEvents() {
 		return events;
 	}
 
-	public void setEvents(List<EventDTO> events) {
+	public void setEvents(List<EventSummaryDTO> events) {
 		this.events = events;
 	}
 

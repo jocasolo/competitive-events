@@ -7,5 +7,5 @@ public enum EventVisibilityType {
 	public static EventVisibilityType getValue(EventVisibilityType newValue, EventVisibilityType actualValue) {
 		return newValue != null ? newValue : actualValue;
 	}
-
+	
 }
