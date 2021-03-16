@@ -27,6 +27,7 @@ import es.jocasolo.competitiveeventsapi.enums.event.EventVisibilityType;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventInvalidStatusException;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventNotFoundException;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventWrongUpdateException;
+import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotValidException;
 import es.jocasolo.competitiveeventsapi.model.event.Event;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -114,7 +115,7 @@ class TestEventService {
 	}
 	
 	@Test
-	void testDelete() throws EventNotFoundException{
+	void testDelete() throws EventNotFoundException, UserNotValidException{
 		eventService.delete(ID);
 		assertEquals(EventStatusType.DELETED, mockedEvent.getStatus());
 	}

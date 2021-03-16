@@ -13,8 +13,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import es.jocasolo.competitiveeventsapi.enums.event.EventUserStatusType;
-import es.jocasolo.competitiveeventsapi.enums.user.UserPrivilegeType;
+import es.jocasolo.competitiveeventsapi.enums.eventuser.EventUserPrivilegeType;
+import es.jocasolo.competitiveeventsapi.enums.eventuser.EventUserStatusType;
 import es.jocasolo.competitiveeventsapi.model.keys.EventUserKey;
 import es.jocasolo.competitiveeventsapi.model.user.User;
 
@@ -40,7 +40,7 @@ public class EventUser {
     private Date lastStatusDate;
     
     @Enumerated(EnumType.STRING)
-	private UserPrivilegeType privilege;
+	private EventUserPrivilegeType privilege;
     
     @Enumerated(EnumType.STRING)
 	private EventUserStatusType status;
@@ -87,11 +87,11 @@ public class EventUser {
 		this.status = status;
 	}
 
-	public UserPrivilegeType getPrivilege() {
+	public EventUserPrivilegeType getPrivilege() {
 		return privilege;
 	}
 
-	public void setPrivilege(UserPrivilegeType privilege) {
+	public void setPrivilege(EventUserPrivilegeType privilege) {
 		this.privilege = privilege;
 	}
 
@@ -103,9 +103,25 @@ public class EventUser {
 		this.lastStatusDate = lastStatusDate;
 	}
 	
+	// UTILS
+	
+	public boolean isOwner() {
+		return this.privilege.equals(EventUserPrivilegeType.OWNER);
+	}
+	
+	public boolean isAdmin() {
+		return this.privilege.equals(EventUserPrivilegeType.ADMIN);
+	}
+	
+	public boolean isUser() {
+		return this.privilege.equals(EventUserPrivilegeType.USER);
+	}
+	
+	
+	
 	@Override
 	public String toString() {
-		return String.format("EventUser [event_id=%s, user_id=%s]", event, user);
+		return String.format("EventUser [%s, %s]", event, user);
 	}
 	
 }

@@ -8,12 +8,15 @@ import es.jocasolo.competitiveeventsapi.dto.event.EventPostDTO;
 import es.jocasolo.competitiveeventsapi.dto.event.EventPutDTO;
 import es.jocasolo.competitiveeventsapi.dto.eventuser.EventUserDTO;
 import es.jocasolo.competitiveeventsapi.dto.eventuser.EventUserPostDTO;
+import es.jocasolo.competitiveeventsapi.dto.eventuser.EventUserPutDTO;
 import es.jocasolo.competitiveeventsapi.enums.event.EventInscriptionType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventStatusType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventType;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventInvalidStatusException;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventNotFoundException;
+import es.jocasolo.competitiveeventsapi.exceptions.event.EventUserRejectedException;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventWrongUpdateException;
+import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotFoundException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotValidException;
 import es.jocasolo.competitiveeventsapi.model.event.Event;
 
@@ -51,8 +54,9 @@ public interface EventService {
 	 * 
 	 * @param id Event id
 	 * @throws EventNotFoundException
+	 * @throws UserNotValidException 
 	 */
-	void delete(String id) throws EventNotFoundException;
+	void delete(String id) throws EventNotFoundException, UserNotValidException;
 
 	/**
 	 * Searches for events based on supplied search parameters.
@@ -73,7 +77,31 @@ public interface EventService {
 	 * @param eventUserDto
 	 * @return
 	 * @throws EventWrongUpdateException
+	 * @throws UserNotValidException 
+	 * @throws UserNotFoundException 
+	 * @throws EventUserRejectedException 
 	 */
-	EventUserDTO addUser(String eventId, EventUserPostDTO eventUserDto) throws EventWrongUpdateException;
+	EventUserDTO addUser(String eventId, EventUserPostDTO eventUserDto) throws EventWrongUpdateException, UserNotValidException, UserNotFoundException, EventUserRejectedException;
+
+	/**
+	 * Removes an user from an event
+	 * @param id Event id
+	 * @param event Post dto
+	 * @return
+	 * @throws UserNotFoundException 
+	 * @throws EventWrongUpdateException 
+	 */
+	void removeUser(String id, EventUserPostDTO eventUserDto) throws UserNotFoundException, EventWrongUpdateException;
+
+	/**
+	 * Updates info of user in an event
+	 * @param id Event id
+	 * @param eventDTO Put dto
+	 * @throws UserNotFoundException 
+	 * @throws EventWrongUpdateException 
+	 */
+	void updateUser(String id, EventUserPutDTO eventDTO) throws UserNotFoundException, EventWrongUpdateException;
+
+	
 
 }

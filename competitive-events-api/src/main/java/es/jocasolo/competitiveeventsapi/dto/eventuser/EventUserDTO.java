@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 import es.jocasolo.competitiveeventsapi.dto.DTO;
-import es.jocasolo.competitiveeventsapi.enums.event.EventUserStatusType;
-import es.jocasolo.competitiveeventsapi.enums.user.UserPrivilegeType;
+import es.jocasolo.competitiveeventsapi.enums.eventuser.EventUserPrivilegeType;
+import es.jocasolo.competitiveeventsapi.enums.eventuser.EventUserStatusType;
 
 public class EventUserDTO extends DTO implements Serializable {
 
@@ -19,7 +19,7 @@ public class EventUserDTO extends DTO implements Serializable {
 
 	private Date lastStatusDate;
 
-	private UserPrivilegeType privilege;
+	private EventUserPrivilegeType privilege;
 
 	private EventUserStatusType status;
 
@@ -55,11 +55,11 @@ public class EventUserDTO extends DTO implements Serializable {
 		this.lastStatusDate = lastStatusDate;
 	}
 
-	public UserPrivilegeType getPrivilege() {
+	public EventUserPrivilegeType getPrivilege() {
 		return privilege;
 	}
 
-	public void setPrivilege(UserPrivilegeType privilege) {
+	public void setPrivilege(EventUserPrivilegeType privilege) {
 		this.privilege = privilege;
 	}
 

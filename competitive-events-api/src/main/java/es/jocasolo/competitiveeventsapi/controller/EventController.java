@@ -22,12 +22,15 @@ import es.jocasolo.competitiveeventsapi.dto.event.EventPostDTO;
 import es.jocasolo.competitiveeventsapi.dto.event.EventPutDTO;
 import es.jocasolo.competitiveeventsapi.dto.eventuser.EventUserDTO;
 import es.jocasolo.competitiveeventsapi.dto.eventuser.EventUserPostDTO;
+import es.jocasolo.competitiveeventsapi.dto.eventuser.EventUserPutDTO;
 import es.jocasolo.competitiveeventsapi.enums.event.EventInscriptionType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventStatusType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventType;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventInvalidStatusException;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventNotFoundException;
+import es.jocasolo.competitiveeventsapi.exceptions.event.EventUserRejectedException;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventWrongUpdateException;
+import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotFoundException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotValidException;
 import es.jocasolo.competitiveeventsapi.service.CommonService;
 import es.jocasolo.competitiveeventsapi.service.EventService;
@@ -86,20 +89,42 @@ public class EventController {
 	@DeleteMapping(value = "/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@ApiOperation(value = "Delete an event by id.")
-	public void delete(@PathVariable("id") String id) throws EventNotFoundException {
+	public void delete(@PathVariable("id") String id) throws EventNotFoundException, UserNotValidException {
 		log.debug("Deleting event with id: {} ", id);
 		eventService.delete(id);
 	}
 	
+	// *************************************
 	// EVENT USER
+	// *************************************
+	
 	@PostMapping(value = "/{id}/users", produces = "application/json;charset=utf8")
 	@ResponseStatus(HttpStatus.CREATED)
 	@ApiOperation(value = "Adds user to an event.")
 	public EventUserDTO addUser(
 			@PathVariable("id") String id,
-			@RequestBody EventUserPostDTO event) throws EventWrongUpdateException {
+			@RequestBody EventUserPostDTO event) throws EventWrongUpdateException, UserNotValidException, UserNotFoundException, EventUserRejectedException {
 		log.debug("Adding user to event: {} ", event);
 		return eventService.addUser(id, event);
+	}
+	
+	@DeleteMapping(value = "/{id}/users", produces = "application/json;charset=utf8")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@ApiOperation(value = "Remove user from an event.")
+	public void removeUser(
+			@PathVariable("id") String id,
+			@RequestBody EventUserPostDTO event) throws EventWrongUpdateException, UserNotValidException, UserNotFoundException {
+		log.debug("Removing user from an event: {} ", event);
+		eventService.removeUser(id, event);
+	}
+	
+	@PutMapping(value = "/{id}/users")
+	@ApiOperation(value = "Updates an user in an event.")
+	public void updateUser(
+			@PathVariable("id") String id, 
+			@RequestBody EventUserPutDTO eventDTO) throws EventWrongUpdateException, EventInvalidStatusException, UserNotFoundException {
+		log.debug("Updating event: {}", eventDTO);
+		eventService.updateUser(id, eventDTO);
 	}
 	
 }
