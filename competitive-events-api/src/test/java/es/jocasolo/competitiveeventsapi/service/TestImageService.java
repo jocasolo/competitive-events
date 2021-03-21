@@ -25,6 +25,7 @@ import es.jocasolo.competitiveeventsapi.dao.ImageDAO;
 import es.jocasolo.competitiveeventsapi.dto.image.ImageDTO;
 import es.jocasolo.competitiveeventsapi.enums.ImageType;
 import es.jocasolo.competitiveeventsapi.exceptions.image.ImageNotFoundException;
+import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotValidException;
 import es.jocasolo.competitiveeventsapi.model.Image;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -81,7 +82,7 @@ class TestImageService {
 	}
 	
 	@Test
-	void testDelete() throws ImageNotFoundException{
+	void testDelete() throws ImageNotFoundException, UserNotValidException{
 		imageService.delete(IMAGE_ID);
 		assertThrows(ImageNotFoundException.class, () -> {
 			imageService.delete("don't exists");
