@@ -11,8 +11,11 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -20,6 +23,7 @@ import es.jocasolo.competitiveeventsapi.enums.event.EventInscriptionType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventStatusType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventVisibilityType;
+import es.jocasolo.competitiveeventsapi.model.Image;
 import es.jocasolo.competitiveeventsapi.model.user.User;
 
 @Entity
@@ -64,6 +68,16 @@ public class Event implements Serializable {
 	@ManyToMany(mappedBy = "events")
 	private Set<User> users = new HashSet<>();
 
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "image_id")
+	private Image image;
+
+	@ManyToMany
+	@JoinTable(name = "image_event", 
+			  joinColumns = @JoinColumn(name = "event_id"), 
+			  inverseJoinColumns = @JoinColumn(name = "image_id"))
+	private Set<Image> images = new HashSet<>();
+
 	private String title;
 
 	private String subtitle;
@@ -71,7 +85,7 @@ public class Event implements Serializable {
 	private Boolean approvalNeeded; // needs appoval to join
 
 	private Integer maxPlaces;
-	
+
 	// GETTERS AND SETTERS
 
 	public Boolean getApprovalNeeded() {
@@ -201,7 +215,23 @@ public class Event implements Serializable {
 	public void setPunishments(Set<Punishment> punishments) {
 		this.punishments = punishments;
 	}
-	
+
+	public Image getImage() {
+		return image;
+	}
+
+	public void setImage(Image image) {
+		this.image = image;
+	}
+
+	public Set<Image> getImages() {
+		return images;
+	}
+
+	public void setImages(Set<Image> images) {
+		this.images = images;
+	}
+
 	@Override
 	public String toString() {
 		return String.format("Event [id=%s]", id);

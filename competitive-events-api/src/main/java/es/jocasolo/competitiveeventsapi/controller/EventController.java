@@ -113,7 +113,7 @@ public class EventController {
 	@ApiOperation(value = "Remove user from an event.")
 	public void removeUser(
 			@PathVariable("id") String id,
-			@RequestBody EventUserPostDTO event) throws EventWrongUpdateException, UserNotValidException, UserNotFoundException {
+			@RequestBody EventUserPostDTO event) throws EventWrongUpdateException, UserNotFoundException {
 		log.debug("Removing user from an event: {} ", event);
 		eventService.removeUser(id, event);
 	}
@@ -122,7 +122,7 @@ public class EventController {
 	@ApiOperation(value = "Updates an user in an event.")
 	public void updateUser(
 			@PathVariable("id") String id, 
-			@RequestBody EventUserPutDTO eventDTO) throws EventWrongUpdateException, EventInvalidStatusException, UserNotFoundException {
+			@RequestBody EventUserPutDTO eventDTO) throws EventWrongUpdateException, UserNotFoundException {
 		log.debug("Updating event: {}", eventDTO);
 		eventService.updateUser(id, eventDTO);
 	}

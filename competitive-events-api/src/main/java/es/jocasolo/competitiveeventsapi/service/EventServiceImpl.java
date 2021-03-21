@@ -203,10 +203,10 @@ public class EventServiceImpl implements EventService {
 		EventUser newEventUser = createEventUser(event, targetUser);
 
 		// add or reject user
-		if(!eventUserDto.getReject())
+		if(Boolean.FALSE.equals(eventUserDto.getReject()))
 			status = addUserToEvent(event, targetUser, authenticatedUser, newEventUser);
 		else
-			status = rejectUserToEvent(event, targetUser, authenticatedUser, newEventUser);
+			status = rejectUserToEvent(event, targetUser, authenticatedUser);
 
 		if (status == null)
 			throw new EventWrongUpdateException();
@@ -293,8 +293,8 @@ public class EventServiceImpl implements EventService {
 		return status;
 	}
 	
-	private EventUserStatusType rejectUserToEvent(Event event, User targetUser, User authenticatedUser, EventUser newEventUser) 
-			throws EventWrongUpdateException, EventUserRejectedException {
+	private EventUserStatusType rejectUserToEvent(Event event, User targetUser, User authenticatedUser) 
+			throws EventWrongUpdateException {
 		
 		EventUserStatusType status = null;
 		
@@ -305,12 +305,9 @@ public class EventServiceImpl implements EventService {
 				|| targetEventUser.getStatus().equals(EventUserStatusType.DELETED) || targetEventUser.getStatus().equals(EventUserStatusType.REJECTED)))
 			throw new EventWrongUpdateException();
 		
-		if(targetUser.equals(authenticatedUser)) {
-			status = EventUserStatusType.REJECTED;
-			
-		} else if(targetEventUser != null && (authenticatedEventUser.isOwner()
+		if(targetUser.equals(authenticatedUser) || (targetEventUser != null && (authenticatedEventUser.isOwner()
 				|| authenticatedEventUser.isAdmin()
-				|| authenticatedUser.isSuperuser())) {
+				|| authenticatedUser.isSuperuser()))) {
 				
 			status = EventUserStatusType.REJECTED;
 		}

@@ -1,18 +1,27 @@
 package es.jocasolo.competitiveeventsapi.model;
 
+import java.io.Serializable;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 
 import org.dozer.Mapping;
 
 import es.jocasolo.competitiveeventsapi.enums.ImageType;
+import es.jocasolo.competitiveeventsapi.model.event.Event;
 
 @Entity
-public class Image {
+public class Image implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue
@@ -24,6 +33,12 @@ public class Image {
 
 	@Enumerated(EnumType.STRING)
 	private ImageType type;
+
+	@OneToOne(mappedBy = "image", fetch = FetchType.LAZY)
+	private Event event;
+
+	@ManyToMany(mappedBy = "images")
+	private Set<Event> events;
 
 	private String folder;
 
@@ -80,7 +95,23 @@ public class Image {
 	public void setUrl(String url) {
 		this.url = url;
 	}
-	
+
+	public Set<Event> getEvents() {
+		return events;
+	}
+
+	public void setEvents(Set<Event> events) {
+		this.events = events;
+	}
+
+	public Event getEvent() {
+		return event;
+	}
+
+	public void setEvent(Event event) {
+		this.event = event;
+	}
+
 	@Override
 	public String toString() {
 		return String.format("Image [id=%s]", id);
