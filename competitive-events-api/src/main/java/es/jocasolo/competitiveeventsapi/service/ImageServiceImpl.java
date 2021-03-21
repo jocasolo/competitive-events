@@ -28,7 +28,9 @@ import es.jocasolo.competitiveeventsapi.dao.ImageDAO;
 import es.jocasolo.competitiveeventsapi.dto.image.ImageDTO;
 import es.jocasolo.competitiveeventsapi.enums.ImageType;
 import es.jocasolo.competitiveeventsapi.exceptions.image.ImageNotFoundException;
+import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotValidException;
 import es.jocasolo.competitiveeventsapi.model.Image;
+import es.jocasolo.competitiveeventsapi.utils.security.AuthenticationFacade;
 
 @Service
 public class ImageServiceImpl implements ImageService {
@@ -40,6 +42,9 @@ public class ImageServiceImpl implements ImageService {
 
 	@Autowired
 	private CommonService commonService;
+	
+	@Autowired
+	private AuthenticationFacade authentication;
 
 	private AmazonS3 s3client;
 
@@ -95,7 +100,7 @@ public class ImageServiceImpl implements ImageService {
 			image.setFolder(folder);
 			image.setName(fileName);
 			image.setStorageId(id);
-			// TODO add owner
+			image.setOwner(authentication.getUser());
 
 			// Save
 			return commonService.transform(imageDao.save(image), ImageDTO.class);
@@ -105,10 +110,13 @@ public class ImageServiceImpl implements ImageService {
 	}
 
 	@Override
-	public void delete(String id) throws ImageNotFoundException {
+	public void delete(String id) throws ImageNotFoundException, UserNotValidException {
 		final Image image = imageDao.findOne(id);
 		if (image == null)
 			throw new ImageNotFoundException();
+		
+		if(!image.getOwner().equals(authentication.getUser()))
+			throw new UserNotValidException();
 
 		imageDao.delete(image);
 		s3client.deleteObject(bucketName, id);

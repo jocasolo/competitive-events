@@ -17,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -28,6 +29,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import es.jocasolo.competitiveeventsapi.enums.user.UserStatusType;
 import es.jocasolo.competitiveeventsapi.enums.user.UserType;
+import es.jocasolo.competitiveeventsapi.model.Image;
 import es.jocasolo.competitiveeventsapi.model.event.Event;
 
 @Entity
@@ -62,6 +64,10 @@ public class User implements UserDetails, Serializable {
 
 	@Column(nullable = false)
 	private String password;
+
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "owner")
+	private List<Image> images;
 
 	private String name;
 
@@ -159,6 +165,14 @@ public class User implements UserDetails, Serializable {
 		this.confirmKey = confirmKey;
 	}
 
+	public List<Image> getImages() {
+		return images;
+	}
+
+	public void setImages(List<Image> images) {
+		this.images = images;
+	}
+
 	@JsonProperty("username")
 	public String getId() {
 		return id;
@@ -224,7 +238,7 @@ public class User implements UserDetails, Serializable {
 	public boolean isEnabled() {
 		return status.equals(UserStatusType.ACTIVE);
 	}
-	
+
 	public boolean isSuperuser() {
 		return type.equals(UserType.SUPERUSER);
 	}

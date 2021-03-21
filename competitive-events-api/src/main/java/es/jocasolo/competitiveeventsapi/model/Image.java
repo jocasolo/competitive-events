@@ -10,13 +10,16 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
 import org.dozer.Mapping;
 
 import es.jocasolo.competitiveeventsapi.enums.ImageType;
 import es.jocasolo.competitiveeventsapi.model.event.Event;
+import es.jocasolo.competitiveeventsapi.model.user.User;
 
 @Entity
 public class Image implements Serializable {
@@ -39,6 +42,10 @@ public class Image implements Serializable {
 
 	@ManyToMany(mappedBy = "images")
 	private Set<Event> events;
+
+	@ManyToOne()
+	@JoinColumn(name = "owner")
+	private User owner;
 
 	private String folder;
 
@@ -110,6 +117,14 @@ public class Image implements Serializable {
 
 	public void setEvent(Event event) {
 		this.event = event;
+	}
+
+	public User getOwner() {
+		return owner;
+	}
+
+	public void setOwner(User owner) {
+		this.owner = owner;
 	}
 
 	@Override

@@ -21,6 +21,7 @@ import org.springframework.web.servlet.HandlerMapping;
 import es.jocasolo.competitiveeventsapi.dto.image.ImageDTO;
 import es.jocasolo.competitiveeventsapi.enums.ImageType;
 import es.jocasolo.competitiveeventsapi.exceptions.image.ImageNotFoundException;
+import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotValidException;
 import es.jocasolo.competitiveeventsapi.service.CommonService;
 import es.jocasolo.competitiveeventsapi.service.ImageService;
 import io.swagger.annotations.ApiOperation;
@@ -56,7 +57,7 @@ public class ImageController {
 	@DeleteMapping(value = "/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@ApiOperation(value = "Delete an image")
-	public void delete(@PathVariable("id") String id) throws ImageNotFoundException {
+	public void delete(@PathVariable("id") String id) throws ImageNotFoundException, UserNotValidException {
 		log.debug("Delete image {}", id);
 		imageService.delete(id);
 	}

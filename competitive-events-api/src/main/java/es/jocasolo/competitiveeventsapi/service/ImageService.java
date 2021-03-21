@@ -5,6 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 import es.jocasolo.competitiveeventsapi.dto.image.ImageDTO;
 import es.jocasolo.competitiveeventsapi.enums.ImageType;
 import es.jocasolo.competitiveeventsapi.exceptions.image.ImageNotFoundException;
+import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotValidException;
 import es.jocasolo.competitiveeventsapi.model.Image;
 
 public interface ImageService {
@@ -29,7 +30,8 @@ public interface ImageService {
 	 * Deletes an image from storage system and bbdd table.
 	 * @param folder Image folder
 	 * @param name Image name
+	 * @throws UserNotValidException 
 	 */
-	void delete(String id) throws ImageNotFoundException;
+	void delete(String id) throws ImageNotFoundException, UserNotValidException;
 
 }
