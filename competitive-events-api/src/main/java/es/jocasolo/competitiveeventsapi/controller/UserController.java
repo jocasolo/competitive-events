@@ -13,16 +13,21 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import es.jocasolo.competitiveeventsapi.dto.user.UserDTO;
 import es.jocasolo.competitiveeventsapi.dto.user.UserPasswordDTO;
 import es.jocasolo.competitiveeventsapi.dto.user.UserPostDTO;
 import es.jocasolo.competitiveeventsapi.dto.user.UserPutDTO;
+import es.jocasolo.competitiveeventsapi.exceptions.image.ImageNotFoundException;
+import es.jocasolo.competitiveeventsapi.exceptions.image.ImageUploadException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserEmailExistsException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserInvalidStatusException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotFoundException;
+import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotValidException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserUsenameExistsException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserWrongPasswordException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserWrongUpdateException;
@@ -89,9 +94,28 @@ public class UserController {
 	@DeleteMapping(value = "/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@ApiOperation(value = "Delete an user by id.")
-	public void delete(@PathVariable("id") String id) throws UserNotFoundException {
+	public void delete(@PathVariable("id") String id) throws UserNotFoundException, UserNotValidException {
 		log.debug("Deleting user with id: {} ", id);
 		userService.delete(id);
+	}
+	
+	@PutMapping(value = "/{id}/avatar", produces = "application/json;charset=utf8")
+	@ApiOperation(value = "Updates an user avatar.")
+	public UserDTO updateAvatar(
+			@PathVariable("id") String id, 
+			@RequestParam("file") MultipartFile file)
+			throws UserNotFoundException, UserNotValidException, ImageUploadException {
+		log.debug("Updating user avatar with id: {}", id);
+		return commonService.transform(userService.updateAvatar(id, file), UserDTO.class);
+	}
+	
+	@DeleteMapping(value = "/{id}/avatar")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	@ApiOperation(value = "Delete an user avatar.")
+	public void deleteAvatar(@PathVariable("id") String id) 
+			throws UserNotFoundException, UserNotValidException, ImageNotFoundException {
+		log.debug("Deleting user avatar with id: {} ", id);
+		userService.deleteAvatar(id);
 	}
 	
 }

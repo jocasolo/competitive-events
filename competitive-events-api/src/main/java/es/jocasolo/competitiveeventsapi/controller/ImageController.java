@@ -21,6 +21,7 @@ import org.springframework.web.servlet.HandlerMapping;
 import es.jocasolo.competitiveeventsapi.dto.image.ImageDTO;
 import es.jocasolo.competitiveeventsapi.enums.ImageType;
 import es.jocasolo.competitiveeventsapi.exceptions.image.ImageNotFoundException;
+import es.jocasolo.competitiveeventsapi.exceptions.image.ImageUploadException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotValidException;
 import es.jocasolo.competitiveeventsapi.service.CommonService;
 import es.jocasolo.competitiveeventsapi.service.ImageService;
@@ -29,15 +30,15 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping(value = "/images")
 public class ImageController {
-	
+
 	private static final Logger log = LoggerFactory.getLogger(ImageController.class);
-	
+
 	@Autowired
 	private CommonService commonService;
-	
+
 	@Autowired
 	private ImageService imageService;
-	
+
 	@GetMapping(value = "/**", produces = "application/json;charset=utf8")
 	@ResponseStatus(HttpStatus.CREATED)
 	@ApiOperation(value = "Search for an image based on its id.")
@@ -46,14 +47,14 @@ public class ImageController {
 		log.debug("Looking for the image with id: {}", id);
 		return commonService.transform(imageService.findOne(id), ImageDTO.class);
 	}
-	
+
 	@PostMapping(produces = "application/json;charset=utf8")
 	@ApiOperation(value = "Upload an image")
-	public ImageDTO upload(@RequestParam("file") MultipartFile file, @RequestParam("type") ImageType type) {
+	public ImageDTO upload(@RequestParam("file") MultipartFile file, @RequestParam("type") ImageType type) throws ImageUploadException {
 		log.debug("Uploading image");
 		return commonService.transform(imageService.upload(file, type), ImageDTO.class);
 	}
-	
+
 	@DeleteMapping(value = "/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@ApiOperation(value = "Delete an image")
@@ -61,10 +62,10 @@ public class ImageController {
 		log.debug("Delete image {}", id);
 		imageService.delete(id);
 	}
-	
+
 	private String getIdFromPath(WebRequest request) {
 		String id = (String) request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE, RequestAttributes.SCOPE_REQUEST);
-		if(StringUtils.isNotEmpty(id)) {
+		if (StringUtils.isNotEmpty(id)) {
 			id = id.replaceFirst("/image/", "");
 		}
 		return id;

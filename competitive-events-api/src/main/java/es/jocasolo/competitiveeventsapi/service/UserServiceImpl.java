@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import es.jocasolo.competitiveeventsapi.constants.CommonConstants;
 import es.jocasolo.competitiveeventsapi.dao.UserDAO;
@@ -20,16 +21,22 @@ import es.jocasolo.competitiveeventsapi.dto.user.UserDTO;
 import es.jocasolo.competitiveeventsapi.dto.user.UserPasswordDTO;
 import es.jocasolo.competitiveeventsapi.dto.user.UserPostDTO;
 import es.jocasolo.competitiveeventsapi.dto.user.UserPutDTO;
+import es.jocasolo.competitiveeventsapi.enums.ImageType;
 import es.jocasolo.competitiveeventsapi.enums.user.UserStatusType;
 import es.jocasolo.competitiveeventsapi.enums.user.UserType;
+import es.jocasolo.competitiveeventsapi.exceptions.image.ImageNotFoundException;
+import es.jocasolo.competitiveeventsapi.exceptions.image.ImageUploadException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserEmailExistsException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserInvalidStatusException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotFoundException;
+import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotValidException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserUsenameExistsException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserWrongPasswordException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserWrongUpdateException;
+import es.jocasolo.competitiveeventsapi.model.Image;
 import es.jocasolo.competitiveeventsapi.model.user.User;
 import es.jocasolo.competitiveeventsapi.utils.EventUtils;
+import es.jocasolo.competitiveeventsapi.utils.security.AuthenticationFacade;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -45,6 +52,12 @@ public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	private EmailService emailService;
+	
+	@Autowired
+	private ImageService imageService;
+	
+	@Autowired
+	private AuthenticationFacade authentication;
 
 	@Override
 	@Transactional(readOnly = true)
@@ -131,10 +144,16 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void delete(String id) throws UserNotFoundException {
+	public void delete(String username) throws UserNotFoundException, UserNotValidException {
 
-		// TODO validate delete
-		User user = userDao.findOne(id);
+		if(!validUpdateDelete(username))
+			throw new UserNotValidException();
+		
+		User user = userDao.findOne(username);
+		
+		if(user == null)
+			throw new UserNotFoundException();
+		
 		user.setStatus(UserStatusType.DELETED);
 		userDao.save(user);
 
@@ -165,6 +184,10 @@ public class UserServiceImpl implements UserService {
 	private boolean validPassword(String encoded, String raw) {
 		return passwordEncoder.matches(raw, encoded);
 	}
+	
+	private boolean validUpdateDelete(String username) {
+		return authentication.getUser().isSuperuser() || authentication.getUser().getId().equals(username);
+	}
 
 	@Override
 	public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
@@ -184,6 +207,40 @@ public class UserServiceImpl implements UserService {
 		User user = users.get(0);
 		user.setStatus(UserStatusType.ACTIVE);
 		return commonService.transform(userDao.save(user), UserDTO.class);
+	}
+
+	@Override
+	public UserDTO updateAvatar(String username, MultipartFile multipart) throws UserNotFoundException, UserNotValidException, ImageUploadException {
+		
+		User user = userDao.findOne(username);
+		
+		if(!validUpdateDelete(username))
+			throw new UserNotValidException();
+		
+		if (user == null)
+			throw new UserNotFoundException();
+		
+		Image avatar = imageService.upload(multipart, ImageType.AVATAR);
+		user.setAvatar(avatar);
+		
+		return commonService.transform(userDao.save(user), UserDTO.class);
+		
+	}
+
+	@Override
+	public void deleteAvatar(String username) throws UserNotFoundException, UserNotValidException, ImageNotFoundException {
+		
+		User user = userDao.findOne(username);
+		
+		if (user == null)
+			throw new UserNotFoundException();
+		
+		final String avatarId = user.getAvatar().getStorageId();
+		user.setAvatar(null);
+		userDao.save(user);
+		
+		imageService.delete(avatarId);
+		
 	}
 
 }

@@ -25,9 +25,9 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 
 import es.jocasolo.competitiveeventsapi.dao.ImageDAO;
-import es.jocasolo.competitiveeventsapi.dto.image.ImageDTO;
 import es.jocasolo.competitiveeventsapi.enums.ImageType;
 import es.jocasolo.competitiveeventsapi.exceptions.image.ImageNotFoundException;
+import es.jocasolo.competitiveeventsapi.exceptions.image.ImageUploadException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotValidException;
 import es.jocasolo.competitiveeventsapi.model.Image;
 import es.jocasolo.competitiveeventsapi.utils.security.AuthenticationFacade;
@@ -40,9 +40,6 @@ public class ImageServiceImpl implements ImageService {
 	@Autowired
 	private ImageDAO imageDao;
 
-	@Autowired
-	private CommonService commonService;
-	
 	@Autowired
 	private AuthenticationFacade authentication;
 
@@ -81,9 +78,7 @@ public class ImageServiceImpl implements ImageService {
 	}
 
 	@Override
-	public ImageDTO upload(MultipartFile multipart, ImageType type) {
-
-		ImageDTO imageDto = new ImageDTO();
+	public Image upload(MultipartFile multipart, ImageType type) throws ImageUploadException {
 
 		Optional<File> file = convertMultiPartToFile(multipart);
 		if (file.isPresent()) {
@@ -103,10 +98,10 @@ public class ImageServiceImpl implements ImageService {
 			image.setOwner(authentication.getUser());
 
 			// Save
-			return commonService.transform(imageDao.save(image), ImageDTO.class);
+			return imageDao.save(image);
 		}
 
-		return imageDto;
+		throw new ImageUploadException();
 	}
 
 	@Override

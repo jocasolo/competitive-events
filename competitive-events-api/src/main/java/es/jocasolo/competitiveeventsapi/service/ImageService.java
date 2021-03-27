@@ -2,9 +2,9 @@ package es.jocasolo.competitiveeventsapi.service;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import es.jocasolo.competitiveeventsapi.dto.image.ImageDTO;
 import es.jocasolo.competitiveeventsapi.enums.ImageType;
 import es.jocasolo.competitiveeventsapi.exceptions.image.ImageNotFoundException;
+import es.jocasolo.competitiveeventsapi.exceptions.image.ImageUploadException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotValidException;
 import es.jocasolo.competitiveeventsapi.model.Image;
 
@@ -23,8 +23,9 @@ public interface ImageService {
 	 * @param multipart Multipart file
 	 * @param type Image type
 	 * @return ImageDTO
+	 * @throws ImageUploadException 
 	 */
-	ImageDTO upload(MultipartFile multipart, ImageType type);
+	Image upload(MultipartFile multipart, ImageType type) throws ImageUploadException;
 	
 	/**
 	 * Deletes an image from storage system and bbdd table.
