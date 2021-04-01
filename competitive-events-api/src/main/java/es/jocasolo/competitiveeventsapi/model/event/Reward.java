@@ -12,11 +12,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import es.jocasolo.competitiveeventsapi.enums.event.EventSortScoreType;
+import es.jocasolo.competitiveeventsapi.model.Image;
 import es.jocasolo.competitiveeventsapi.model.user.User;
 
 @Entity
 public class Reward implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -39,6 +40,12 @@ public class Reward implements Serializable {
 
 	@Column(nullable = false)
 	private Integer requiredPosition;
+
+	@ManyToOne()
+	@JoinColumn(name = "image")
+	private Image image;
+
+	private String title;
 
 	// GETTERS AND SETTERS
 
@@ -89,10 +96,26 @@ public class Reward implements Serializable {
 	public void setSortScore(EventSortScoreType sortScore) {
 		this.sortScore = sortScore;
 	}
-	
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public Image getImage() {
+		return image;
+	}
+
+	public void setImage(Image image) {
+		this.image = image;
+	}
+
 	@Override
 	public String toString() {
-		return String.format("Reward [_id=%s]", id);
+		return String.format("Reward [id=%s]", id);
 	}
-	
+
 }

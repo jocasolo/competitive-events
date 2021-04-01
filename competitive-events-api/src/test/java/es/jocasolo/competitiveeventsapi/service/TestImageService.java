@@ -93,7 +93,7 @@ class TestImageService {
 	void testUpload() throws ImageUploadException {
 		Image image = imageService.upload(multipartFile, ImageType.EVENT);
 		assertNotNull(image);
-		assertEquals(IMAGE_ID, image.getId());
+		assertEquals(IMAGE_ID, image.getStorageId());
 		assertEquals("http://www.image.es", image.getUrl());
 
 	}
