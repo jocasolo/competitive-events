@@ -12,34 +12,41 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import es.jocasolo.competitiveeventsapi.enums.event.EventSortScoreType;
+import es.jocasolo.competitiveeventsapi.model.Image;
 import es.jocasolo.competitiveeventsapi.model.user.User;
 
 @Entity
 public class Punishment implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue
 	private Integer id;
-	
+
 	@Column(columnDefinition = "TEXT")
 	private String description;
-	
+
 	@ManyToOne()
-    @JoinColumn(name = "event_id")
-    private Event event;
-	
+	@JoinColumn(name = "event_id")
+	private Event event;
+
 	@ManyToOne()
-    private User looser;
-	
+	private User looser;
+
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private EventSortScoreType sortScore;
-	
+
 	@Column(nullable = false)
 	private Integer requiredPosition;
-	
+
+	@ManyToOne()
+	@JoinColumn(name = "image")
+	private Image image;
+
+	private String title;
+
 	// GETTERS AND SETTERS
 
 	public Integer getId() {
@@ -81,7 +88,31 @@ public class Punishment implements Serializable {
 	public void setRequiredPosition(Integer requiredPosition) {
 		this.requiredPosition = requiredPosition;
 	}
-	
+
+	public EventSortScoreType getSortScore() {
+		return sortScore;
+	}
+
+	public void setSortScore(EventSortScoreType sortScore) {
+		this.sortScore = sortScore;
+	}
+
+	public Image getImage() {
+		return image;
+	}
+
+	public void setImage(Image image) {
+		this.image = image;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
 	@Override
 	public String toString() {
 		return String.format("Punishment [id=%s]", id);
