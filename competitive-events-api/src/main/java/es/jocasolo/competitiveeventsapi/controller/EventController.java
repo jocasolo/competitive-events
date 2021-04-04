@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import es.jocasolo.competitiveeventsapi.dto.event.EventDTO;
 import es.jocasolo.competitiveeventsapi.dto.event.EventPageDTO;
@@ -30,6 +31,7 @@ import es.jocasolo.competitiveeventsapi.exceptions.event.EventInvalidStatusExcep
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventNotFoundException;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventUserRejectedException;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventWrongUpdateException;
+import es.jocasolo.competitiveeventsapi.exceptions.image.ImageUploadException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotFoundException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotValidException;
 import es.jocasolo.competitiveeventsapi.service.CommonService;
@@ -84,6 +86,15 @@ public class EventController {
 			@RequestBody EventPutDTO eventDTO) throws EventWrongUpdateException, EventInvalidStatusException {
 		log.debug("Updating event: {}", eventDTO);
 		eventService.update(id, eventDTO);
+	}
+	
+	@PutMapping(value = "/{id}/image", produces = "application/json;charset=utf8")
+	@ApiOperation(value = "Updates an event image.")
+	public EventDTO updateImage(
+			@PathVariable("id") String id, 
+			@RequestParam("file") MultipartFile file) throws ImageUploadException, EventNotFoundException, UserNotValidException {
+		log.debug("Updating event image with id: {}", id);
+		return commonService.transform(eventService.updateImage(id, file), EventDTO.class);
 	}
 
 	@DeleteMapping(value = "/{id}")

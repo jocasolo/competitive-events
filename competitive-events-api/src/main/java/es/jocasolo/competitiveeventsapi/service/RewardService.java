@@ -54,6 +54,6 @@ public interface RewardService {
 	 * @throws RewardNotFoundException 
 	 * @throws UserNotValidException 
 	 */
-	Object updateImage(Integer id, MultipartFile file) throws ImageUploadException, RewardNotFoundException, UserNotValidException;
+	RewardDTO updateImage(Integer id, MultipartFile file) throws ImageUploadException, RewardNotFoundException, UserNotValidException;
 	
 }

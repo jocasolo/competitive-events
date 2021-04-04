@@ -115,7 +115,7 @@ public class RewardServiceImpl implements RewardService {
 	}
 
 	@Override
-	public Object updateImage(Integer id, MultipartFile multipart) throws ImageUploadException, RewardNotFoundException, UserNotValidException {
+	public RewardDTO updateImage(Integer id, MultipartFile multipart) throws ImageUploadException, RewardNotFoundException, UserNotValidException {
 		
 		Reward reward = rewardDao.findOne(id);
 		if(reward == null)

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import es.jocasolo.competitiveeventsapi.dto.DTO;
+import es.jocasolo.competitiveeventsapi.dto.image.ImageDTO;
 import es.jocasolo.competitiveeventsapi.enums.event.EventInscriptionType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventVisibilityType;
@@ -33,6 +34,8 @@ public class EventDTO extends DTO implements Serializable {
 	private Date endDate;
 
 	private Integer maxPlaces;
+
+	private ImageDTO image;
 
 	public String getId() {
 		return id;
@@ -120,6 +123,14 @@ public class EventDTO extends DTO implements Serializable {
 
 	public void setMaxPlaces(Integer maxPlaces) {
 		this.maxPlaces = maxPlaces;
+	}
+
+	public ImageDTO getImage() {
+		return image;
+	}
+
+	public void setImage(ImageDTO image) {
+		this.image = image;
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package es.jocasolo.competitiveeventsapi.service;
 
 import org.springframework.data.domain.PageRequest;
+import org.springframework.web.multipart.MultipartFile;
 
 import es.jocasolo.competitiveeventsapi.dto.event.EventDTO;
 import es.jocasolo.competitiveeventsapi.dto.event.EventPageDTO;
@@ -16,6 +17,7 @@ import es.jocasolo.competitiveeventsapi.exceptions.event.EventInvalidStatusExcep
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventNotFoundException;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventUserRejectedException;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventWrongUpdateException;
+import es.jocasolo.competitiveeventsapi.exceptions.image.ImageUploadException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotFoundException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotValidException;
 import es.jocasolo.competitiveeventsapi.model.event.Event;
@@ -48,6 +50,16 @@ public interface EventService {
 	 * @throws EventInvalidStatusException
 	 */
 	void update(String id, EventPutDTO eventDto) throws EventWrongUpdateException, EventInvalidStatusException;
+	
+	/**
+	 * @param id
+	 * @param file
+	 * @return
+	 * @throws EventNotFoundException 
+	 * @throws UserNotValidException 
+	 * @throws ImageUploadException 
+	 */
+	EventDTO updateImage(String id, MultipartFile file) throws EventNotFoundException, UserNotValidException, ImageUploadException;
 
 	/**
 	 * Deletes a event by id
@@ -101,7 +113,5 @@ public interface EventService {
 	 * @throws EventWrongUpdateException 
 	 */
 	void updateUser(String id, EventUserPutDTO eventDTO) throws UserNotFoundException, EventWrongUpdateException;
-
-	
 
 }

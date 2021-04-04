@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import es.jocasolo.competitiveeventsapi.dao.EventDAO;
 import es.jocasolo.competitiveeventsapi.dao.EventUserDAO;
@@ -20,6 +21,7 @@ import es.jocasolo.competitiveeventsapi.dto.event.EventPutDTO;
 import es.jocasolo.competitiveeventsapi.dto.eventuser.EventUserDTO;
 import es.jocasolo.competitiveeventsapi.dto.eventuser.EventUserPostDTO;
 import es.jocasolo.competitiveeventsapi.dto.eventuser.EventUserPutDTO;
+import es.jocasolo.competitiveeventsapi.enums.ImageType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventInscriptionType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventStatusType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventType;
@@ -30,8 +32,10 @@ import es.jocasolo.competitiveeventsapi.exceptions.event.EventInvalidStatusExcep
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventNotFoundException;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventUserRejectedException;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventWrongUpdateException;
+import es.jocasolo.competitiveeventsapi.exceptions.image.ImageUploadException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotFoundException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotValidException;
+import es.jocasolo.competitiveeventsapi.model.Image;
 import es.jocasolo.competitiveeventsapi.model.event.Event;
 import es.jocasolo.competitiveeventsapi.model.event.EventUser;
 import es.jocasolo.competitiveeventsapi.model.keys.EventUserKey;
@@ -50,6 +54,9 @@ public class EventServiceImpl implements EventService {
 
 	@Autowired
 	private UserDAO userDao;
+	
+	@Autowired
+	private ImageService imageService;
 
 	@Autowired
 	private EventUserDAO eventUserDao;
@@ -115,7 +122,24 @@ public class EventServiceImpl implements EventService {
 		} else {
 			throw new EventWrongUpdateException();
 		}
-
+	}
+	
+	@Override
+	public EventDTO updateImage(String id, MultipartFile multipart) throws EventNotFoundException, UserNotValidException, ImageUploadException {
+		
+		Event event = eventDao.findOne(id);
+		if(event == null)
+			throw new EventNotFoundException();
+		
+		User user = authentication.getUser();
+		EventUser eventUser = eventUserDao.findOneByIds(event.getId(), user.getId());
+		if(!eventUser.isOwner() && !user.isSuperuser())
+			throw new UserNotValidException();
+		
+		Image image = imageService.upload(multipart, ImageType.REWARD);
+		event.setImage(image);
+		
+		return commonService.transform(eventDao.save(event), EventDTO.class);
 	}
 
 	@Override
