@@ -20,7 +20,7 @@ import es.jocasolo.competitiveeventsapi.exceptions.event.EventWrongUpdateExcepti
 import es.jocasolo.competitiveeventsapi.exceptions.image.ImageUploadException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotFoundException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotValidException;
-import es.jocasolo.competitiveeventsapi.model.event.Event;
+import es.jocasolo.competitiveeventsapi.model.Event;
 
 public interface EventService {
 

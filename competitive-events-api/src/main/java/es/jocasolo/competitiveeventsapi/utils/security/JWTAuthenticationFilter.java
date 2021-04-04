@@ -22,7 +22,7 @@ import com.google.gson.Gson;
 import es.jocasolo.competitiveeventsapi.constants.SecurityConstants;
 import es.jocasolo.competitiveeventsapi.dto.TokenDTO;
 import es.jocasolo.competitiveeventsapi.exceptions.CustomRuntimeException;
-import es.jocasolo.competitiveeventsapi.model.user.User;
+import es.jocasolo.competitiveeventsapi.model.User;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 

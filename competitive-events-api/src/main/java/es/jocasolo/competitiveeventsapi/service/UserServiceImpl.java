@@ -34,7 +34,7 @@ import es.jocasolo.competitiveeventsapi.exceptions.user.UserUsenameExistsExcepti
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserWrongPasswordException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserWrongUpdateException;
 import es.jocasolo.competitiveeventsapi.model.Image;
-import es.jocasolo.competitiveeventsapi.model.user.User;
+import es.jocasolo.competitiveeventsapi.model.User;
 import es.jocasolo.competitiveeventsapi.utils.EventUtils;
 import es.jocasolo.competitiveeventsapi.utils.security.AuthenticationFacade;
 

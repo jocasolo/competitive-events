@@ -16,7 +16,7 @@ import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotFoundException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotValidException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserWrongPasswordException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserWrongUpdateException;
-import es.jocasolo.competitiveeventsapi.model.user.User;
+import es.jocasolo.competitiveeventsapi.model.User;
 
 public interface UserService extends UserDetailsService {
 

@@ -1,4 +1,4 @@
-package es.jocasolo.competitiveeventsapi.model.event;
+package es.jocasolo.competitiveeventsapi.model;
 
 import java.io.Serializable;
 
@@ -12,8 +12,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import es.jocasolo.competitiveeventsapi.enums.event.EventSortScoreType;
-import es.jocasolo.competitiveeventsapi.model.Image;
-import es.jocasolo.competitiveeventsapi.model.user.User;
 
 @Entity
 public class Punishment implements Serializable {

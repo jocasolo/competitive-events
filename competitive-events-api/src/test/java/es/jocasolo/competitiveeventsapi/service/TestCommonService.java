@@ -17,7 +17,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import es.jocasolo.competitiveeventsapi.dto.event.EventDTO;
-import es.jocasolo.competitiveeventsapi.model.event.Event;
+import es.jocasolo.competitiveeventsapi.model.Event;
 
 @RunWith(MockitoJUnitRunner.class)
 class TestCommonService {

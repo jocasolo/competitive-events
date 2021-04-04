@@ -1,10 +1,12 @@
-package es.jocasolo.competitiveeventsapi.model.event;
+package es.jocasolo.competitiveeventsapi.model;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -23,8 +25,6 @@ import es.jocasolo.competitiveeventsapi.enums.event.EventInscriptionType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventStatusType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventVisibilityType;
-import es.jocasolo.competitiveeventsapi.model.Image;
-import es.jocasolo.competitiveeventsapi.model.user.User;
 
 @Entity
 public class Event implements Serializable {
@@ -71,6 +71,9 @@ public class Event implements Serializable {
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "image_id")
 	private Image image;
+	
+	@OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Score> scores;
 
 	@ManyToMany
 	@JoinTable(name = "image_event", 

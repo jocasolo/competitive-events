@@ -10,7 +10,7 @@ import es.jocasolo.competitiveeventsapi.exceptions.image.ImageUploadException;
 import es.jocasolo.competitiveeventsapi.exceptions.punishment.PunishmentNotFoundException;
 import es.jocasolo.competitiveeventsapi.exceptions.punishment.PunishmentWrongUpdateException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotValidException;
-import es.jocasolo.competitiveeventsapi.model.event.Punishment;
+import es.jocasolo.competitiveeventsapi.model.Punishment;
 
 public interface PunishmentService {
 

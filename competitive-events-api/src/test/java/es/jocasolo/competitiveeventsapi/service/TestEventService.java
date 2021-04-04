@@ -28,7 +28,7 @@ import es.jocasolo.competitiveeventsapi.exceptions.event.EventInvalidStatusExcep
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventNotFoundException;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventWrongUpdateException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotValidException;
-import es.jocasolo.competitiveeventsapi.model.event.Event;
+import es.jocasolo.competitiveeventsapi.model.Event;
 
 @RunWith(MockitoJUnitRunner.class)
 class TestEventService {

@@ -7,7 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import es.jocasolo.competitiveeventsapi.model.user.User;
+import es.jocasolo.competitiveeventsapi.model.User;
 
 @Repository
 public interface UserDAO extends CrudRepository<User, String> {

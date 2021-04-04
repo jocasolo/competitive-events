@@ -18,8 +18,6 @@ import javax.persistence.OneToOne;
 import org.dozer.Mapping;
 
 import es.jocasolo.competitiveeventsapi.enums.ImageType;
-import es.jocasolo.competitiveeventsapi.model.event.Event;
-import es.jocasolo.competitiveeventsapi.model.user.User;
 
 @Entity
 public class Image implements Serializable {

@@ -16,10 +16,10 @@ import es.jocasolo.competitiveeventsapi.exceptions.image.ImageUploadException;
 import es.jocasolo.competitiveeventsapi.exceptions.punishment.PunishmentNotFoundException;
 import es.jocasolo.competitiveeventsapi.exceptions.punishment.PunishmentWrongUpdateException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotValidException;
+import es.jocasolo.competitiveeventsapi.model.EventUser;
 import es.jocasolo.competitiveeventsapi.model.Image;
-import es.jocasolo.competitiveeventsapi.model.event.EventUser;
-import es.jocasolo.competitiveeventsapi.model.event.Punishment;
-import es.jocasolo.competitiveeventsapi.model.user.User;
+import es.jocasolo.competitiveeventsapi.model.Punishment;
+import es.jocasolo.competitiveeventsapi.model.User;
 import es.jocasolo.competitiveeventsapi.utils.EventUtils;
 import es.jocasolo.competitiveeventsapi.utils.security.AuthenticationFacade;
 

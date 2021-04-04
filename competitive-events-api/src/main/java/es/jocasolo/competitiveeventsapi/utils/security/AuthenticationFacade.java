@@ -6,7 +6,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import es.jocasolo.competitiveeventsapi.dao.UserDAO;
-import es.jocasolo.competitiveeventsapi.model.user.User;
+import es.jocasolo.competitiveeventsapi.model.User;
 
 @Component
 public class AuthenticationFacade implements AuthenticationFacadeImpl {

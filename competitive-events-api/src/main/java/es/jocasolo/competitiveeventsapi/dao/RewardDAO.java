@@ -5,7 +5,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import es.jocasolo.competitiveeventsapi.model.event.Reward;
+import es.jocasolo.competitiveeventsapi.model.Reward;
 
 @Repository
 public interface RewardDAO extends CrudRepository<Reward, String> {

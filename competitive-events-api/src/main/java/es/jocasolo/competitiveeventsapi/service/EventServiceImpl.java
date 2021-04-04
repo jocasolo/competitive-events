@@ -35,11 +35,11 @@ import es.jocasolo.competitiveeventsapi.exceptions.event.EventWrongUpdateExcepti
 import es.jocasolo.competitiveeventsapi.exceptions.image.ImageUploadException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotFoundException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotValidException;
+import es.jocasolo.competitiveeventsapi.model.Event;
+import es.jocasolo.competitiveeventsapi.model.EventUser;
 import es.jocasolo.competitiveeventsapi.model.Image;
-import es.jocasolo.competitiveeventsapi.model.event.Event;
-import es.jocasolo.competitiveeventsapi.model.event.EventUser;
+import es.jocasolo.competitiveeventsapi.model.User;
 import es.jocasolo.competitiveeventsapi.model.keys.EventUserKey;
-import es.jocasolo.competitiveeventsapi.model.user.User;
 import es.jocasolo.competitiveeventsapi.utils.EventUtils;
 import es.jocasolo.competitiveeventsapi.utils.security.AuthenticationFacade;
 

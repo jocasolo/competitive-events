@@ -10,8 +10,8 @@ import org.springframework.stereotype.Repository;
 import es.jocasolo.competitiveeventsapi.enums.event.EventInscriptionType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventStatusType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventType;
-import es.jocasolo.competitiveeventsapi.model.event.Event;
-import es.jocasolo.competitiveeventsapi.model.user.User;
+import es.jocasolo.competitiveeventsapi.model.Event;
+import es.jocasolo.competitiveeventsapi.model.User;
 
 @Repository
 public interface EventDAO extends CrudRepository<Event, String> {

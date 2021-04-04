@@ -16,10 +16,10 @@ import es.jocasolo.competitiveeventsapi.exceptions.image.ImageUploadException;
 import es.jocasolo.competitiveeventsapi.exceptions.reward.RewardNotFoundException;
 import es.jocasolo.competitiveeventsapi.exceptions.reward.RewardWrongUpdateException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotValidException;
+import es.jocasolo.competitiveeventsapi.model.EventUser;
 import es.jocasolo.competitiveeventsapi.model.Image;
-import es.jocasolo.competitiveeventsapi.model.event.EventUser;
-import es.jocasolo.competitiveeventsapi.model.event.Reward;
-import es.jocasolo.competitiveeventsapi.model.user.User;
+import es.jocasolo.competitiveeventsapi.model.Reward;
+import es.jocasolo.competitiveeventsapi.model.User;
 import es.jocasolo.competitiveeventsapi.utils.EventUtils;
 import es.jocasolo.competitiveeventsapi.utils.security.AuthenticationFacade;
 

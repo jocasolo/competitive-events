@@ -1,4 +1,4 @@
-package es.jocasolo.competitiveeventsapi.model.user;
+package es.jocasolo.competitiveeventsapi.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -30,8 +30,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import es.jocasolo.competitiveeventsapi.enums.user.UserStatusType;
 import es.jocasolo.competitiveeventsapi.enums.user.UserType;
-import es.jocasolo.competitiveeventsapi.model.Image;
-import es.jocasolo.competitiveeventsapi.model.event.Event;
 
 @Entity
 public class User implements UserDetails, Serializable {
@@ -73,6 +71,9 @@ public class User implements UserDetails, Serializable {
 	@ManyToOne()
 	@JoinColumn(name = "avatar")
 	private Image avatar;
+	
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Score> scores;
 
 	private String name;
 

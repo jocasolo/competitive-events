@@ -1,4 +1,4 @@
-package es.jocasolo.competitiveeventsapi.model.event;
+package es.jocasolo.competitiveeventsapi.model;
 
 import java.util.Date;
 
@@ -16,7 +16,6 @@ import javax.persistence.TemporalType;
 import es.jocasolo.competitiveeventsapi.enums.eventuser.EventUserPrivilegeType;
 import es.jocasolo.competitiveeventsapi.enums.eventuser.EventUserStatusType;
 import es.jocasolo.competitiveeventsapi.model.keys.EventUserKey;
-import es.jocasolo.competitiveeventsapi.model.user.User;
 
 @Entity
 @Table(name = "event_user")
