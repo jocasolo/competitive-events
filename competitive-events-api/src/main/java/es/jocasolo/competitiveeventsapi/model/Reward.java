@@ -11,7 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import es.jocasolo.competitiveeventsapi.enums.event.EventSortScoreType;
+import es.jocasolo.competitiveeventsapi.enums.score.ScoreSortType;
 
 @Entity
 public class Reward implements Serializable {
@@ -34,7 +34,7 @@ public class Reward implements Serializable {
 
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
-	private EventSortScoreType sortScore;
+	private ScoreSortType sortScore;
 
 	@Column(nullable = false)
 	private Integer requiredPosition;
@@ -87,11 +87,11 @@ public class Reward implements Serializable {
 		this.requiredPosition = requiredPosition;
 	}
 
-	public EventSortScoreType getSortScore() {
+	public ScoreSortType getSortScore() {
 		return sortScore;
 	}
 
-	public void setSortScore(EventSortScoreType sortScore) {
+	public void setSortScore(ScoreSortType sortScore) {
 		this.sortScore = sortScore;
 	}
 

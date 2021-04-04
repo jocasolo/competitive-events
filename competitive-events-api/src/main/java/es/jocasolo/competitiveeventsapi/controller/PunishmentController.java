@@ -24,7 +24,6 @@ import es.jocasolo.competitiveeventsapi.dto.punishment.PunishmentPutDTO;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventNotFoundException;
 import es.jocasolo.competitiveeventsapi.exceptions.image.ImageUploadException;
 import es.jocasolo.competitiveeventsapi.exceptions.punishment.PunishmentNotFoundException;
-import es.jocasolo.competitiveeventsapi.exceptions.punishment.PunishmentWrongUpdateException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotValidException;
 import es.jocasolo.competitiveeventsapi.service.CommonService;
 import es.jocasolo.competitiveeventsapi.service.PunishmentService;
@@ -70,7 +69,7 @@ public class PunishmentController {
 	@ApiOperation(value = "Updates an punishment by id.")
 	public void update(
 			@PathVariable("id") Integer id, 
-			@Valid @RequestBody PunishmentPutDTO punishmentDto) throws PunishmentNotFoundException, UserNotValidException, PunishmentWrongUpdateException {
+			@Valid @RequestBody PunishmentPutDTO punishmentDto) throws PunishmentNotFoundException, UserNotValidException {
 		log.debug("Updating punishment with id: {}", id);
 		punishmentService.update(id, punishmentDto);
 	}

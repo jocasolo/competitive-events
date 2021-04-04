@@ -5,13 +5,13 @@ import java.io.Serializable;
 import es.jocasolo.competitiveeventsapi.dto.DTO;
 import es.jocasolo.competitiveeventsapi.dto.image.ImageDTO;
 import es.jocasolo.competitiveeventsapi.dto.user.UserDTO;
-import es.jocasolo.competitiveeventsapi.enums.event.EventSortScoreType;
+import es.jocasolo.competitiveeventsapi.enums.score.ScoreSortType;
 
 public class RewardDTO extends DTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private String id;
+	private Integer id;
 
 	private String title;
 
@@ -19,17 +19,17 @@ public class RewardDTO extends DTO implements Serializable {
 
 	private UserDTO winner;
 
-	private EventSortScoreType sortScore;
+	private ScoreSortType sortScore;
 
 	private Integer requiredPosition;
 
 	private ImageDTO image;
 
-	public String getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -57,11 +57,11 @@ public class RewardDTO extends DTO implements Serializable {
 		this.winner = winner;
 	}
 
-	public EventSortScoreType getSortScore() {
+	public ScoreSortType getSortScore() {
 		return sortScore;
 	}
 
-	public void setSortScore(EventSortScoreType sortScore) {
+	public void setSortScore(ScoreSortType sortScore) {
 		this.sortScore = sortScore;
 	}
 

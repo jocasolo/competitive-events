@@ -24,7 +24,6 @@ import es.jocasolo.competitiveeventsapi.dto.reward.RewardPutDTO;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventNotFoundException;
 import es.jocasolo.competitiveeventsapi.exceptions.image.ImageUploadException;
 import es.jocasolo.competitiveeventsapi.exceptions.reward.RewardNotFoundException;
-import es.jocasolo.competitiveeventsapi.exceptions.reward.RewardWrongUpdateException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotValidException;
 import es.jocasolo.competitiveeventsapi.service.CommonService;
 import es.jocasolo.competitiveeventsapi.service.RewardService;
@@ -70,7 +69,7 @@ public class RewardController {
 	@ApiOperation(value = "Updates an reward by id.")
 	public void update(
 			@PathVariable("id") Integer id, 
-			@Valid @RequestBody RewardPutDTO rewardDto) throws RewardNotFoundException, UserNotValidException, RewardWrongUpdateException {
+			@Valid @RequestBody RewardPutDTO rewardDto) throws RewardNotFoundException, UserNotValidException {
 		log.debug("Updating reward with id: {}", id);
 		rewardService.update(id, rewardDto);
 	}

@@ -36,7 +36,7 @@ public interface RewardService {
 	 * @throws UserNotValidException 
 	 * @throws RewardWrongUpdateException 
 	 */
-	void update(Integer id, RewardPutDTO rewardDto) throws RewardNotFoundException, UserNotValidException, RewardWrongUpdateException;
+	void update(Integer id, RewardPutDTO rewardDto) throws RewardNotFoundException, UserNotValidException;
 
 	/**
 	 * @param id

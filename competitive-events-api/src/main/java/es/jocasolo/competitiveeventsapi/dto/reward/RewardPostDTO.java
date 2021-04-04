@@ -6,7 +6,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import es.jocasolo.competitiveeventsapi.dto.DTO;
-import es.jocasolo.competitiveeventsapi.enums.event.EventSortScoreType;
+import es.jocasolo.competitiveeventsapi.enums.score.ScoreSortType;
 
 public class RewardPostDTO extends DTO implements Serializable {
 
@@ -21,7 +21,7 @@ public class RewardPostDTO extends DTO implements Serializable {
 	private String eventId;
 	
 	@NotNull
-	private EventSortScoreType sortScore;
+	private ScoreSortType sortScore;
 	
 	@NotNull
 	private Integer requiredPosition;
@@ -50,11 +50,11 @@ public class RewardPostDTO extends DTO implements Serializable {
 		this.eventId = eventId;
 	}
 
-	public EventSortScoreType getSortScore() {
+	public ScoreSortType getSortScore() {
 		return sortScore;
 	}
 
-	public void setSortScore(EventSortScoreType sortScore) {
+	public void setSortScore(ScoreSortType sortScore) {
 		this.sortScore = sortScore;
 	}
 

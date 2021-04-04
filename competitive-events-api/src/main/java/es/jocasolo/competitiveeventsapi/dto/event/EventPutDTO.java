@@ -8,6 +8,7 @@ import es.jocasolo.competitiveeventsapi.enums.event.EventInscriptionType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventStatusType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventVisibilityType;
+import es.jocasolo.competitiveeventsapi.enums.score.ScoreValueType;
 
 public class EventPutDTO extends DTO implements Serializable {
 
@@ -36,6 +37,8 @@ public class EventPutDTO extends DTO implements Serializable {
 	private Boolean appovalNeeded;
 
 	private Integer maxPlaces;
+
+	private ScoreValueType scoreType;
 
 	public String getTitle() {
 		return title;
@@ -131,6 +134,14 @@ public class EventPutDTO extends DTO implements Serializable {
 
 	public void setMaxPlaces(Integer maxPlaces) {
 		this.maxPlaces = maxPlaces;
+	}
+
+	public ScoreValueType getScoreType() {
+		return scoreType;
+	}
+
+	public void setScoreType(ScoreValueType scoreType) {
+		this.scoreType = scoreType;
 	}
 
 	@Override

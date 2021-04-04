@@ -5,7 +5,7 @@ import java.io.Serializable;
 import es.jocasolo.competitiveeventsapi.dto.DTO;
 import es.jocasolo.competitiveeventsapi.dto.image.ImageDTO;
 import es.jocasolo.competitiveeventsapi.dto.user.UserDTO;
-import es.jocasolo.competitiveeventsapi.enums.event.EventSortScoreType;
+import es.jocasolo.competitiveeventsapi.enums.score.ScoreSortType;
 
 public class PunishmentDTO extends DTO implements Serializable {
 
@@ -19,7 +19,7 @@ public class PunishmentDTO extends DTO implements Serializable {
 
 	private UserDTO looser;
 
-	private EventSortScoreType sortScore;
+	private ScoreSortType sortScore;
 
 	private Integer requiredPosition;
 
@@ -57,11 +57,11 @@ public class PunishmentDTO extends DTO implements Serializable {
 		this.looser = looser;
 	}
 
-	public EventSortScoreType getSortScore() {
+	public ScoreSortType getSortScore() {
 		return sortScore;
 	}
 
-	public void setSortScore(EventSortScoreType sortScore) {
+	public void setSortScore(ScoreSortType sortScore) {
 		this.sortScore = sortScore;
 	}
 

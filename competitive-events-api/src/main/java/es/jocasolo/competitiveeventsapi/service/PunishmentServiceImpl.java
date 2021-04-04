@@ -10,11 +10,10 @@ import es.jocasolo.competitiveeventsapi.dto.punishment.PunishmentDTO;
 import es.jocasolo.competitiveeventsapi.dto.punishment.PunishmentPostDTO;
 import es.jocasolo.competitiveeventsapi.dto.punishment.PunishmentPutDTO;
 import es.jocasolo.competitiveeventsapi.enums.ImageType;
-import es.jocasolo.competitiveeventsapi.enums.event.EventSortScoreType;
+import es.jocasolo.competitiveeventsapi.enums.score.ScoreSortType;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventNotFoundException;
 import es.jocasolo.competitiveeventsapi.exceptions.image.ImageUploadException;
 import es.jocasolo.competitiveeventsapi.exceptions.punishment.PunishmentNotFoundException;
-import es.jocasolo.competitiveeventsapi.exceptions.punishment.PunishmentWrongUpdateException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotValidException;
 import es.jocasolo.competitiveeventsapi.model.EventUser;
 import es.jocasolo.competitiveeventsapi.model.Image;
@@ -75,10 +74,7 @@ public class PunishmentServiceImpl implements PunishmentService {
 	}
 
 	@Override
-	public void update(Integer id, PunishmentPutDTO punishmentDto) throws PunishmentNotFoundException, UserNotValidException, PunishmentWrongUpdateException {
-		
-		if(id.equals(punishmentDto.getId()))
-			throw new PunishmentWrongUpdateException();
+	public void update(Integer id, PunishmentPutDTO punishmentDto) throws PunishmentNotFoundException, UserNotValidException {
 		
 		User user = authentication.getUser();
 		Punishment punishment = punishmentDao.findOne(id);
@@ -91,7 +87,7 @@ public class PunishmentServiceImpl implements PunishmentService {
 		
 		punishment.setDescription(EventUtils.getValue(punishmentDto.getDescription(), punishment.getDescription()));
 		punishment.setTitle(EventUtils.getValue(punishmentDto.getTitle(), punishment.getTitle()));
-		punishment.setSortScore(EventSortScoreType.getValue(punishmentDto.getSortScore(), punishment.getSortScore()));
+		punishment.setSortScore(ScoreSortType.getValue(punishmentDto.getSortScore(), punishment.getSortScore()));
 		punishment.setRequiredPosition(EventUtils.getValue(punishmentDto.getRequiredPosition(), punishment.getRequiredPosition()));
 		
 		punishmentDao.save(punishment);

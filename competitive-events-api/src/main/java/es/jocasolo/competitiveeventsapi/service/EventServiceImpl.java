@@ -28,6 +28,7 @@ import es.jocasolo.competitiveeventsapi.enums.event.EventType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventVisibilityType;
 import es.jocasolo.competitiveeventsapi.enums.eventuser.EventUserPrivilegeType;
 import es.jocasolo.competitiveeventsapi.enums.eventuser.EventUserStatusType;
+import es.jocasolo.competitiveeventsapi.enums.score.ScoreValueType;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventInvalidStatusException;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventNotFoundException;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventUserRejectedException;
@@ -87,6 +88,7 @@ public class EventServiceImpl implements EventService {
 		event.setVisibility(EventVisibilityType.getValue(dto.getVisibility(), EventVisibilityType.PRIVATE));
 		event.setStatus(EventStatusType.ACTIVE);
 		event.setApprovalNeeded(EventUtils.getValue(dto.getApprovalNeeded(), true));
+		event.setScoreType(ScoreValueType.getValue(dto.getScoreType(), ScoreValueType.NUMERIC));
 		eventDao.save(event);
 
 		// Assign event to the actual user
@@ -101,9 +103,6 @@ public class EventServiceImpl implements EventService {
 	@Override
 	public void update(String id, EventPutDTO dto) throws EventWrongUpdateException, EventInvalidStatusException {
 
-		if (StringUtils.isNotEmpty(dto.getId()) && !dto.getId().equals(id))
-			throw new EventWrongUpdateException();
-
 		Event event = eventDao.findOne(id);
 		if (validUpdate(event)) {
 			event.setTitle(EventUtils.getValue(dto.getTitle(), event.getTitle()));
@@ -117,6 +116,7 @@ public class EventServiceImpl implements EventService {
 			event.setVisibility(EventVisibilityType.getValue(dto.getVisibility(), event.getVisibility()));
 			event.setStatus(EventStatusType.getValue(dto.getStatus(), event.getStatus()));
 			event.setMaxPlaces(EventUtils.getValue(dto.getMaxPlaces(), event.getMaxPlaces()));
+			event.setScoreType(ScoreValueType.getValue(dto.getScoreType(), event.getScoreType()));
 			eventDao.save(event);
 
 		} else {

@@ -25,6 +25,7 @@ import es.jocasolo.competitiveeventsapi.enums.event.EventInscriptionType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventStatusType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventVisibilityType;
+import es.jocasolo.competitiveeventsapi.enums.score.ScoreValueType;
 
 @Entity
 public class Event implements Serializable {
@@ -81,11 +82,13 @@ public class Event implements Serializable {
 			  inverseJoinColumns = @JoinColumn(name = "image_id"))
 	private Set<Image> images = new HashSet<>();
 
+	private ScoreValueType scoreType;
+	
 	private String title;
 
 	private String subtitle;
 
-	private Boolean approvalNeeded; // needs appoval to join
+	private Boolean approvalNeeded; // needs approval to join
 
 	private Integer maxPlaces;
 
@@ -233,6 +236,22 @@ public class Event implements Serializable {
 
 	public void setImages(Set<Image> images) {
 		this.images = images;
+	}
+
+	public List<Score> getScores() {
+		return scores;
+	}
+
+	public void setScores(List<Score> scores) {
+		this.scores = scores;
+	}
+
+	public ScoreValueType getScoreType() {
+		return scoreType;
+	}
+
+	public void setScoreType(ScoreValueType scoreType) {
+		this.scoreType = scoreType;
 	}
 
 	@Override

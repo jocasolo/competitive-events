@@ -36,7 +36,7 @@ public interface PunishmentService {
 	 * @throws UserNotValidException 
 	 * @throws PunishmentWrongUpdateException 
 	 */
-	void update(Integer id, PunishmentPutDTO punishmentDto) throws PunishmentNotFoundException, UserNotValidException, PunishmentWrongUpdateException;
+	void update(Integer id, PunishmentPutDTO punishmentDto) throws PunishmentNotFoundException, UserNotValidException;
 
 	/**
 	 * @param id

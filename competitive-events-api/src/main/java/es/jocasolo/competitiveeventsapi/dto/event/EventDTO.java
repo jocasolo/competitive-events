@@ -8,6 +8,7 @@ import es.jocasolo.competitiveeventsapi.dto.image.ImageDTO;
 import es.jocasolo.competitiveeventsapi.enums.event.EventInscriptionType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventVisibilityType;
+import es.jocasolo.competitiveeventsapi.enums.score.ScoreValueType;
 
 public class EventDTO extends DTO implements Serializable {
 
@@ -36,6 +37,8 @@ public class EventDTO extends DTO implements Serializable {
 	private Integer maxPlaces;
 
 	private ImageDTO image;
+
+	private ScoreValueType scoreType;
 
 	public String getId() {
 		return id;
@@ -131,6 +134,14 @@ public class EventDTO extends DTO implements Serializable {
 
 	public void setImage(ImageDTO image) {
 		this.image = image;
+	}
+
+	public ScoreValueType getScoreType() {
+		return scoreType;
+	}
+
+	public void setScoreType(ScoreValueType scoreType) {
+		this.scoreType = scoreType;
 	}
 
 	@Override

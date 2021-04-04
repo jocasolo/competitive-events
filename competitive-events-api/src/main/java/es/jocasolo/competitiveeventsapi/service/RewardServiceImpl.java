@@ -10,11 +10,10 @@ import es.jocasolo.competitiveeventsapi.dto.reward.RewardDTO;
 import es.jocasolo.competitiveeventsapi.dto.reward.RewardPostDTO;
 import es.jocasolo.competitiveeventsapi.dto.reward.RewardPutDTO;
 import es.jocasolo.competitiveeventsapi.enums.ImageType;
-import es.jocasolo.competitiveeventsapi.enums.event.EventSortScoreType;
+import es.jocasolo.competitiveeventsapi.enums.score.ScoreSortType;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventNotFoundException;
 import es.jocasolo.competitiveeventsapi.exceptions.image.ImageUploadException;
 import es.jocasolo.competitiveeventsapi.exceptions.reward.RewardNotFoundException;
-import es.jocasolo.competitiveeventsapi.exceptions.reward.RewardWrongUpdateException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotValidException;
 import es.jocasolo.competitiveeventsapi.model.EventUser;
 import es.jocasolo.competitiveeventsapi.model.Image;
@@ -75,10 +74,7 @@ public class RewardServiceImpl implements RewardService {
 	}
 
 	@Override
-	public void update(Integer id, RewardPutDTO rewardDto) throws RewardNotFoundException, UserNotValidException, RewardWrongUpdateException {
-		
-		if(id.equals(rewardDto.getId()))
-			throw new RewardWrongUpdateException();
+	public void update(Integer id, RewardPutDTO rewardDto) throws RewardNotFoundException, UserNotValidException {
 		
 		User user = authentication.getUser();
 		Reward reward = rewardDao.findOne(id);
@@ -91,7 +87,7 @@ public class RewardServiceImpl implements RewardService {
 		
 		reward.setDescription(EventUtils.getValue(rewardDto.getDescription(), reward.getDescription()));
 		reward.setTitle(EventUtils.getValue(rewardDto.getTitle(), reward.getTitle()));
-		reward.setSortScore(EventSortScoreType.getValue(rewardDto.getSortScore(), reward.getSortScore()));
+		reward.setSortScore(ScoreSortType.getValue(rewardDto.getSortScore(), reward.getSortScore()));
 		reward.setRequiredPosition(EventUtils.getValue(rewardDto.getRequiredPosition(), reward.getRequiredPosition()));
 		
 		rewardDao.save(reward);

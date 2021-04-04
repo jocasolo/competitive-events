@@ -2,33 +2,20 @@ package es.jocasolo.competitiveeventsapi.dto.reward;
 
 import java.io.Serializable;
 
-import javax.validation.constraints.NotBlank;
-
 import es.jocasolo.competitiveeventsapi.dto.DTO;
-import es.jocasolo.competitiveeventsapi.enums.event.EventSortScoreType;
+import es.jocasolo.competitiveeventsapi.enums.score.ScoreSortType;
 
 public class RewardPutDTO extends DTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@NotBlank
-	private Integer id;
-
 	private String title;
 
 	private String description;
 
-	private EventSortScoreType sortScore;
+	private ScoreSortType sortScore;
 
 	private Integer requiredPosition;
-
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
 
 	public String getTitle() {
 		return title;
@@ -46,11 +33,11 @@ public class RewardPutDTO extends DTO implements Serializable {
 		this.description = description;
 	}
 
-	public EventSortScoreType getSortScore() {
+	public ScoreSortType getSortScore() {
 		return sortScore;
 	}
 
-	public void setSortScore(EventSortScoreType sortScore) {
+	public void setSortScore(ScoreSortType sortScore) {
 		this.sortScore = sortScore;
 	}
 
