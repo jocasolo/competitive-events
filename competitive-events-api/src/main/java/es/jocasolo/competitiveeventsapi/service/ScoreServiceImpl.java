@@ -73,12 +73,15 @@ public class ScoreServiceImpl implements ScoreService {
 	}
 
 	@Override
-	public void update(Integer id, ScorePutDTO scoreDto) throws ScoreNotFoundException {
+	public void update(Integer id, ScorePutDTO scoreDto) throws ScoreNotFoundException, UserNotValidException {
 		
 		User user = authentication.getUser();
 		Score score = scoreDao.findOne(id);
 		if(score == null)
 			throw new ScoreNotFoundException();
+		
+		if(!score.getUser().equals(user) && !user.isSuperuser())
+			throw new UserNotValidException();
 		
 		EventUser eventUser = eventUserDao.findOneByIds(score.getEvent().getId(), user.getId());
 		if(eventUser.isAdmin() || eventUser.isOwner() || user.isSuperuser())

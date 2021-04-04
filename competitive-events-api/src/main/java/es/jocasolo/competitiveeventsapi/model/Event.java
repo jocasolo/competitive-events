@@ -72,18 +72,19 @@ public class Event implements Serializable {
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "image_id")
 	private Image image;
-	
+
 	@OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Score> scores;
+	private List<Score> scores;
+
+	@OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Comment> comments;
 
 	@ManyToMany
-	@JoinTable(name = "image_event", 
-			  joinColumns = @JoinColumn(name = "event_id"), 
-			  inverseJoinColumns = @JoinColumn(name = "image_id"))
+	@JoinTable(name = "image_event", joinColumns = @JoinColumn(name = "event_id"), inverseJoinColumns = @JoinColumn(name = "image_id"))
 	private Set<Image> images = new HashSet<>();
 
 	private ScoreValueType scoreType;
-	
+
 	private String title;
 
 	private String subtitle;
@@ -252,6 +253,14 @@ public class Event implements Serializable {
 
 	public void setScoreType(ScoreValueType scoreType) {
 		this.scoreType = scoreType;
+	}
+
+	public List<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
 	}
 
 	@Override
