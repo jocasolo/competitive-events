@@ -10,7 +10,6 @@ import es.jocasolo.competitiveeventsapi.dto.reward.RewardDTO;
 import es.jocasolo.competitiveeventsapi.dto.reward.RewardPostDTO;
 import es.jocasolo.competitiveeventsapi.dto.reward.RewardPutDTO;
 import es.jocasolo.competitiveeventsapi.enums.ImageType;
-import es.jocasolo.competitiveeventsapi.enums.score.ScoreSortType;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventNotFoundException;
 import es.jocasolo.competitiveeventsapi.exceptions.image.ImageUploadException;
 import es.jocasolo.competitiveeventsapi.exceptions.reward.RewardNotFoundException;
@@ -60,7 +59,7 @@ public class RewardServiceImpl implements RewardService {
 		if(eventUser == null)
 			throw new EventNotFoundException();
 		
-		if(!eventUser.isOwner() && !user.isSuperuser())
+		if(!eventUser.isOwner())
 			throw new UserNotValidException();
 		
 		Reward reward = new Reward();
@@ -68,7 +67,6 @@ public class RewardServiceImpl implements RewardService {
 		reward.setDescription(rewardDto.getDescription());
 		reward.setEvent(eventUser.getEvent());
 		reward.setRequiredPosition(rewardDto.getRequiredPosition());
-		reward.setSortScore(rewardDto.getSortScore());
 		
 		return commonService.transform(rewardDao.save(reward), RewardDTO.class);
 	}
@@ -82,12 +80,11 @@ public class RewardServiceImpl implements RewardService {
 			throw new RewardNotFoundException();
 		
 		EventUser eventUser = eventUserDao.findOneByIds(reward.getEvent().getId(), user.getId());
-		if(!eventUser.isOwner() && !user.isSuperuser())
+		if(!eventUser.isOwner())
 			throw new UserNotValidException();
 		
 		reward.setDescription(EventUtils.getValue(rewardDto.getDescription(), reward.getDescription()));
 		reward.setTitle(EventUtils.getValue(rewardDto.getTitle(), reward.getTitle()));
-		reward.setSortScore(ScoreSortType.getValue(rewardDto.getSortScore(), reward.getSortScore()));
 		reward.setRequiredPosition(EventUtils.getValue(rewardDto.getRequiredPosition(), reward.getRequiredPosition()));
 		
 		rewardDao.save(reward);
@@ -103,7 +100,7 @@ public class RewardServiceImpl implements RewardService {
 		
 		User user = authentication.getUser();
 		EventUser eventUser = eventUserDao.findOneByIds(reward.getEvent().getId(), user.getId());
-		if(!eventUser.isOwner() && !user.isSuperuser())
+		if(!eventUser.isOwner())
 			throw new UserNotValidException();
 		
 		rewardDao.delete(reward);
@@ -119,7 +116,7 @@ public class RewardServiceImpl implements RewardService {
 		
 		User user = authentication.getUser();
 		EventUser eventUser = eventUserDao.findOneByIds(reward.getEvent().getId(), user.getId());
-		if(!eventUser.isOwner() && !user.isSuperuser())
+		if(!eventUser.isOwner())
 			throw new UserNotValidException();
 		
 		Image image = imageService.upload(multipart, ImageType.REWARD);

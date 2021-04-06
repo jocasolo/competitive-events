@@ -4,14 +4,10 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-
-import es.jocasolo.competitiveeventsapi.enums.score.ScoreSortType;
 
 @Entity
 public class Punishment implements Serializable {
@@ -31,10 +27,6 @@ public class Punishment implements Serializable {
 
 	@ManyToOne()
 	private User looser;
-
-	@Enumerated(EnumType.STRING)
-	@Column(nullable = false)
-	private ScoreSortType sortScore;
 
 	@Column(nullable = false)
 	private Integer requiredPosition;
@@ -85,14 +77,6 @@ public class Punishment implements Serializable {
 
 	public void setRequiredPosition(Integer requiredPosition) {
 		this.requiredPosition = requiredPosition;
-	}
-
-	public ScoreSortType getSortScore() {
-		return sortScore;
-	}
-
-	public void setSortScore(ScoreSortType sortScore) {
-		this.sortScore = sortScore;
 	}
 
 	public Image getImage() {

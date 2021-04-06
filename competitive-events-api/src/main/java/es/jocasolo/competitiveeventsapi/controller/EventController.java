@@ -83,9 +83,25 @@ public class EventController {
 	@ApiOperation(value = "Updates an event by id.")
 	public void update(
 			@PathVariable("id") String id, 
-			@RequestBody EventPutDTO eventDTO) throws EventWrongUpdateException, EventInvalidStatusException {
+			@RequestBody EventPutDTO eventDTO) throws EventWrongUpdateException, EventInvalidStatusException, EventNotFoundException {
 		log.debug("Updating event: {}", eventDTO);
 		eventService.update(id, eventDTO);
+	}
+	
+	@PutMapping(value = "/{id}/finish")
+	@ApiOperation(value = "Updates an event by id.")
+	public void finish(
+			@PathVariable("id") String id) throws EventWrongUpdateException, EventInvalidStatusException, EventNotFoundException, UserNotValidException {
+		log.debug("Finishing event: {}", id);
+		eventService.finish(id);
+	}
+	
+	@PutMapping(value = "/{id}/init")
+	@ApiOperation(value = "Updates an event by id.")
+	public void init(
+			@PathVariable("id") String id) throws EventWrongUpdateException, EventInvalidStatusException, EventNotFoundException, UserNotValidException {
+		log.debug("Init event: {}", id);
+		eventService.init(id);
 	}
 	
 	@PutMapping(value = "/{id}/image", produces = "application/json;charset=utf8")
@@ -114,7 +130,8 @@ public class EventController {
 	@ApiOperation(value = "Adds user to an event.")
 	public EventUserDTO addUser(
 			@PathVariable("id") String id,
-			@RequestBody EventUserPostDTO event) throws EventWrongUpdateException, UserNotValidException, UserNotFoundException, EventUserRejectedException {
+			@RequestBody EventUserPostDTO event) 
+					throws EventWrongUpdateException, UserNotValidException, UserNotFoundException, EventUserRejectedException, EventNotFoundException, EventInvalidStatusException {
 		log.debug("Adding user to event: {} ", event);
 		return eventService.addUser(id, event);
 	}

@@ -1,10 +1,13 @@
 package es.jocasolo.competitiveeventsapi.service;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 import es.jocasolo.competitiveeventsapi.dto.score.ScoreDTO;
+import es.jocasolo.competitiveeventsapi.dto.score.ScorePageDTO;
 import es.jocasolo.competitiveeventsapi.dto.score.ScorePostDTO;
 import es.jocasolo.competitiveeventsapi.dto.score.ScorePutDTO;
+import es.jocasolo.competitiveeventsapi.exceptions.event.EventInvalidStatusException;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventNotFoundException;
 import es.jocasolo.competitiveeventsapi.exceptions.image.ImageUploadException;
 import es.jocasolo.competitiveeventsapi.exceptions.score.ScoreNotFoundException;
@@ -26,25 +29,29 @@ public interface ScoreService {
 	 * @return
 	 * @throws EventNotFoundException 
 	 * @throws UserNotValidException 
+	 * @throws EventInvalidStatusException 
 	 */
-	ScoreDTO create(ScorePostDTO scoreDto) throws EventNotFoundException, UserNotValidException;
+	ScoreDTO create(ScorePostDTO scoreDto) throws EventNotFoundException, UserNotValidException, EventInvalidStatusException;
 
 	/**
 	 * @param id
 	 * @param scoreDto
 	 * @throws ScoreNotFoundException 
 	 * @throws UserNotValidException 
+	 * @throws EventNotFoundException 
+	 * @throws EventInvalidStatusException 
 	 * @throws ScoreWrongUpdateException 
 	 */
-	void update(Integer id, ScorePutDTO scoreDto) throws ScoreNotFoundException, UserNotValidException;
+	void update(Integer id, ScorePutDTO scoreDto) throws ScoreNotFoundException, UserNotValidException, EventNotFoundException, EventInvalidStatusException;
 
 	/**
 	 * @param id
 	 * @throws EventNotFoundException 
 	 * @throws UserNotValidException 
 	 * @throws ScoreNotFoundException 
+	 * @throws EventInvalidStatusException 
 	 */
-	void delete(Integer id) throws EventNotFoundException, UserNotValidException, ScoreNotFoundException;
+	void delete(Integer id) throws EventNotFoundException, UserNotValidException, ScoreNotFoundException, EventInvalidStatusException;
 
 	/**
 	 * @param id
@@ -53,7 +60,16 @@ public interface ScoreService {
 	 * @throws ImageUploadException 
 	 * @throws ScoreNotFoundException 
 	 * @throws UserNotValidException 
+	 * @throws EventInvalidStatusException 
 	 */
-	ScoreDTO updateImage(Integer id, MultipartFile file) throws ImageUploadException, ScoreNotFoundException, UserNotValidException;
+	ScoreDTO updateImage(Integer id, MultipartFile file) throws ImageUploadException, ScoreNotFoundException, UserNotValidException, EventInvalidStatusException;
+
+	/**
+	 * @param eventId
+	 * @param of
+	 * @return
+	 * @throws EventNotFoundException 
+	 */
+	ScorePageDTO search(String eventId, PageRequest page) throws EventNotFoundException;
 	
 }

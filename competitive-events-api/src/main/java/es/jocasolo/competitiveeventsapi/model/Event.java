@@ -25,6 +25,7 @@ import es.jocasolo.competitiveeventsapi.enums.event.EventInscriptionType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventStatusType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventVisibilityType;
+import es.jocasolo.competitiveeventsapi.enums.score.ScoreSortType;
 import es.jocasolo.competitiveeventsapi.enums.score.ScoreValueType;
 
 @Entity
@@ -60,10 +61,10 @@ public class Event implements Serializable {
 	@Column(columnDefinition = "TEXT")
 	private String description;
 
-	@OneToMany(mappedBy = "event", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "event")
 	private Set<Reward> rewards = new HashSet<>();
 
-	@OneToMany(mappedBy = "event", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "event")
 	private Set<Punishment> punishments = new HashSet<>();
 
 	@ManyToMany(mappedBy = "events")
@@ -83,6 +84,12 @@ public class Event implements Serializable {
 	@JoinTable(name = "image_event", joinColumns = @JoinColumn(name = "event_id"), inverseJoinColumns = @JoinColumn(name = "image_id"))
 	private Set<Image> images = new HashSet<>();
 
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
+	private ScoreSortType sortScore;
+
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
 	private ScoreValueType scoreType;
 
 	private String title;
@@ -92,6 +99,29 @@ public class Event implements Serializable {
 	private Boolean approvalNeeded; // needs approval to join
 
 	private Integer maxPlaces;
+
+	/**
+	 * Check if the event is within the range of start and end dates
+	 * 
+	 * @return True if the current date is between the start and end of the event
+	 */
+	public boolean isInDateRange() {
+		Date now = new Date();
+
+		if (initDate == null && endDate == null)
+			return true;
+
+		if (initDate == null && now.before(endDate))
+			return true;
+
+		if (endDate == null && now.after(initDate))
+			return true;
+
+		if (now.after(initDate) && now.before(endDate))
+			return true;
+
+		return false;
+	}
 
 	// GETTERS AND SETTERS
 
@@ -261,6 +291,14 @@ public class Event implements Serializable {
 
 	public void setComments(List<Comment> comments) {
 		this.comments = comments;
+	}
+
+	public ScoreSortType getSortScore() {
+		return sortScore;
+	}
+
+	public void setSortScore(ScoreSortType sortScore) {
+		this.sortScore = sortScore;
 	}
 
 	@Override

@@ -51,9 +51,6 @@ public class CommentServiceImpl implements CommentService {
 		if(eventUser == null)
 			throw new EventNotFoundException();
 		
-		if(!eventUser.isOwner() && !user.isSuperuser())
-			throw new UserNotValidException();
-		
 		Comment comment = new Comment();
 		comment.setUser(user);
 		comment.setEvent(eventUser.getEvent());
@@ -72,7 +69,7 @@ public class CommentServiceImpl implements CommentService {
 		if(comment == null)
 			throw new CommentNotFoundException();
 		
-		if(!comment.getUser().equals(user) && !user.isSuperuser())
+		if(!comment.getUser().equals(user))
 			throw new UserNotValidException();
 		
 		comment.setText(commentDto.getText());
@@ -89,7 +86,7 @@ public class CommentServiceImpl implements CommentService {
 			throw new CommentNotFoundException();
 		
 		User user = authentication.getUser();
-		if(!comment.getUser().equals(user) && !user.isSuperuser())
+		if(!comment.getUser().equals(user))
 			throw new UserNotValidException();
 		
 		commentDao.delete(comment);

@@ -3,16 +3,20 @@ package es.jocasolo.competitiveeventsapi.service;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import es.jocasolo.competitiveeventsapi.dao.EventUserDAO;
 import es.jocasolo.competitiveeventsapi.dao.ScoreDAO;
 import es.jocasolo.competitiveeventsapi.dto.score.ScoreDTO;
+import es.jocasolo.competitiveeventsapi.dto.score.ScorePageDTO;
 import es.jocasolo.competitiveeventsapi.dto.score.ScorePostDTO;
 import es.jocasolo.competitiveeventsapi.dto.score.ScorePutDTO;
 import es.jocasolo.competitiveeventsapi.enums.ImageType;
 import es.jocasolo.competitiveeventsapi.enums.score.ScoreStatusType;
+import es.jocasolo.competitiveeventsapi.exceptions.event.EventInvalidStatusException;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventNotFoundException;
 import es.jocasolo.competitiveeventsapi.exceptions.image.ImageUploadException;
 import es.jocasolo.competitiveeventsapi.exceptions.score.ScoreNotFoundException;
@@ -49,9 +53,30 @@ public class ScoreServiceImpl implements ScoreService {
 		
 		return score;
 	}
+	
+	@Override
+	public ScorePageDTO search(String eventId, PageRequest page) throws EventNotFoundException {
+		
+		Page<Score> scores = null;
+		
+		EventUser eventUser = eventUserDao.findOneByIds(eventId, authentication.getUser().getId());
+		if(eventUser == null)
+			throw new EventNotFoundException();
+
+		scores = scoreDao.search(eventUser.getEvent(), page);
+				
+		ScorePageDTO dto = new ScorePageDTO();
+		dto.setScores(commonService.transform(scores.getContent(), ScoreDTO.class));
+		dto.setTotal(scores.getTotalElements());
+		dto.setHasNext(scores.hasNext());
+		dto.setHasPrevious(scores.hasPrevious());
+		dto.setPages(scores.getTotalPages());
+		
+		return dto;
+	}
 
 	@Override
-	public ScoreDTO create(ScorePostDTO scoreDto) throws EventNotFoundException, UserNotValidException {
+	public ScoreDTO create(ScorePostDTO scoreDto) throws EventNotFoundException, UserNotValidException, EventInvalidStatusException {
 		
 		User user = authentication.getUser();
 		
@@ -59,8 +84,8 @@ public class ScoreServiceImpl implements ScoreService {
 		if(eventUser == null)
 			throw new EventNotFoundException();
 		
-		if(!eventUser.isOwner() && !user.isSuperuser())
-			throw new UserNotValidException();
+		if(!eventUser.getEvent().isInDateRange())
+			throw new EventInvalidStatusException();
 		
 		Score score = new Score();
 		score.setUser(user);
@@ -73,18 +98,24 @@ public class ScoreServiceImpl implements ScoreService {
 	}
 
 	@Override
-	public void update(Integer id, ScorePutDTO scoreDto) throws ScoreNotFoundException, UserNotValidException {
+	public void update(Integer id, ScorePutDTO scoreDto) throws ScoreNotFoundException, UserNotValidException, EventNotFoundException, EventInvalidStatusException {
 		
-		User user = authentication.getUser();
 		Score score = scoreDao.findOne(id);
 		if(score == null)
 			throw new ScoreNotFoundException();
 		
-		if(!score.getUser().equals(user) && !user.isSuperuser())
+		User user = authentication.getUser();
+		if(!score.getUser().equals(user))
 			throw new UserNotValidException();
 		
 		EventUser eventUser = eventUserDao.findOneByIds(score.getEvent().getId(), user.getId());
-		if(eventUser.isAdmin() || eventUser.isOwner() || user.isSuperuser())
+		if(eventUser == null)
+			throw new EventNotFoundException();
+		
+		if(!eventUser.getEvent().isInDateRange())
+			throw new EventInvalidStatusException();
+		
+		if(eventUser.isOwner())
 			score.setStatus(scoreDto.getStatus());
 		
 		score.setValue(scoreDto.getValue());
@@ -94,14 +125,17 @@ public class ScoreServiceImpl implements ScoreService {
 	}
 
 	@Override
-	public void delete(Integer id) throws EventNotFoundException, UserNotValidException, ScoreNotFoundException {
+	public void delete(Integer id) throws EventNotFoundException, UserNotValidException, ScoreNotFoundException, EventInvalidStatusException {
 		
 		Score score = scoreDao.findOne(id);
 		if(score == null)
 			throw new ScoreNotFoundException();
 		
+		if(!score.getEvent().isInDateRange())
+			throw new EventInvalidStatusException();
+		
 		User user = authentication.getUser();
-		if(!score.getUser().equals(user) && !user.isSuperuser())
+		if(!score.getUser().equals(user))
 			throw new UserNotValidException();
 		
 		scoreDao.delete(score);
@@ -109,17 +143,20 @@ public class ScoreServiceImpl implements ScoreService {
 	}
 
 	@Override
-	public ScoreDTO updateImage(Integer id, MultipartFile multipart) throws ImageUploadException, ScoreNotFoundException, UserNotValidException {
+	public ScoreDTO updateImage(Integer id, MultipartFile multipart) throws ImageUploadException, ScoreNotFoundException, UserNotValidException, EventInvalidStatusException {
 		
 		Score score = scoreDao.findOne(id);
 		if(score == null)
 			throw new ScoreNotFoundException();
 		
+		if(!score.getEvent().isInDateRange())
+			throw new EventInvalidStatusException();
+		
 		User user = authentication.getUser();
-		if(!score.getUser().equals(user) && !user.isSuperuser())
+		if(!score.getUser().equals(user))
 			throw new UserNotValidException();
 		
-		Image image = imageService.upload(multipart, ImageType.REWARD);
+		Image image = imageService.upload(multipart, ImageType.SCORE);
 		score.setImage(image);
 		
 		return commonService.transform(scoreDao.save(score), ScoreDTO.class);

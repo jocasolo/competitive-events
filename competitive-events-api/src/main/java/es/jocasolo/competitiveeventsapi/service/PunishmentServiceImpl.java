@@ -10,7 +10,6 @@ import es.jocasolo.competitiveeventsapi.dto.punishment.PunishmentDTO;
 import es.jocasolo.competitiveeventsapi.dto.punishment.PunishmentPostDTO;
 import es.jocasolo.competitiveeventsapi.dto.punishment.PunishmentPutDTO;
 import es.jocasolo.competitiveeventsapi.enums.ImageType;
-import es.jocasolo.competitiveeventsapi.enums.score.ScoreSortType;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventNotFoundException;
 import es.jocasolo.competitiveeventsapi.exceptions.image.ImageUploadException;
 import es.jocasolo.competitiveeventsapi.exceptions.punishment.PunishmentNotFoundException;
@@ -60,7 +59,7 @@ public class PunishmentServiceImpl implements PunishmentService {
 		if(eventUser == null)
 			throw new EventNotFoundException();
 		
-		if(!eventUser.isOwner() && !user.isSuperuser())
+		if(!eventUser.isOwner())
 			throw new UserNotValidException();
 		
 		Punishment punishment = new Punishment();
@@ -68,7 +67,6 @@ public class PunishmentServiceImpl implements PunishmentService {
 		punishment.setDescription(punishmentDto.getDescription());
 		punishment.setEvent(eventUser.getEvent());
 		punishment.setRequiredPosition(punishmentDto.getRequiredPosition());
-		punishment.setSortScore(punishmentDto.getSortScore());
 		
 		return commonService.transform(punishmentDao.save(punishment), PunishmentDTO.class);
 	}
@@ -82,12 +80,11 @@ public class PunishmentServiceImpl implements PunishmentService {
 			throw new PunishmentNotFoundException();
 		
 		EventUser eventUser = eventUserDao.findOneByIds(punishment.getEvent().getId(), user.getId());
-		if(!eventUser.isOwner() && !user.isSuperuser())
+		if(!eventUser.isOwner())
 			throw new UserNotValidException();
 		
 		punishment.setDescription(EventUtils.getValue(punishmentDto.getDescription(), punishment.getDescription()));
 		punishment.setTitle(EventUtils.getValue(punishmentDto.getTitle(), punishment.getTitle()));
-		punishment.setSortScore(ScoreSortType.getValue(punishmentDto.getSortScore(), punishment.getSortScore()));
 		punishment.setRequiredPosition(EventUtils.getValue(punishmentDto.getRequiredPosition(), punishment.getRequiredPosition()));
 		
 		punishmentDao.save(punishment);
@@ -103,7 +100,7 @@ public class PunishmentServiceImpl implements PunishmentService {
 		
 		User user = authentication.getUser();
 		EventUser eventUser = eventUserDao.findOneByIds(punishment.getEvent().getId(), user.getId());
-		if(!eventUser.isOwner() && !user.isSuperuser())
+		if(!eventUser.isOwner())
 			throw new UserNotValidException();
 		
 		punishmentDao.delete(punishment);
@@ -119,7 +116,7 @@ public class PunishmentServiceImpl implements PunishmentService {
 		
 		User user = authentication.getUser();
 		EventUser eventUser = eventUserDao.findOneByIds(punishment.getEvent().getId(), user.getId());
-		if(!eventUser.isOwner() && !user.isSuperuser())
+		if(!eventUser.isOwner())
 			throw new UserNotValidException();
 		
 		Image image = imageService.upload(multipart, ImageType.REWARD);

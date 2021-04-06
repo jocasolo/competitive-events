@@ -5,6 +5,7 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,8 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import es.jocasolo.competitiveeventsapi.dto.score.ScoreDTO;
+import es.jocasolo.competitiveeventsapi.dto.score.ScorePageDTO;
 import es.jocasolo.competitiveeventsapi.dto.score.ScorePostDTO;
 import es.jocasolo.competitiveeventsapi.dto.score.ScorePutDTO;
+import es.jocasolo.competitiveeventsapi.exceptions.event.EventInvalidStatusException;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventNotFoundException;
 import es.jocasolo.competitiveeventsapi.exceptions.image.ImageUploadException;
 import es.jocasolo.competitiveeventsapi.exceptions.score.ScoreNotFoundException;
@@ -48,10 +51,20 @@ public class ScoreController {
 		return commonService.transform(scoreService.findOne(id), ScoreDTO.class);
 	}
 	
+	@GetMapping(produces = "application/json;charset=utf8")
+	@ApiOperation(value = "Find all scores that match your search parameters.")
+	public ScorePageDTO search(
+			@RequestParam(value = "eventId", required = false) String eventId,
+			@RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
+			@RequestParam(value = "size", required = false, defaultValue = "10") Integer size) throws UserNotValidException, EventNotFoundException {
+		log.debug("Looking for events");
+		return scoreService.search(eventId, PageRequest.of(page, size));
+	}
+	
 	@PostMapping(produces = "application/json;charset=utf8")
 	@ResponseStatus(HttpStatus.CREATED)
 	@ApiOperation(value = "Creates a new score.")
-	public ScoreDTO create(@Valid @RequestBody ScorePostDTO scoreDto) throws EventNotFoundException, UserNotValidException {
+	public ScoreDTO create(@Valid @RequestBody ScorePostDTO scoreDto) throws EventNotFoundException, UserNotValidException, EventInvalidStatusException {
 		log.debug("Creating the score: {} ", scoreDto);
 		return scoreService.create(scoreDto);
 	}
@@ -60,7 +73,7 @@ public class ScoreController {
 	@ApiOperation(value = "Updates an score image.")
 	public ScoreDTO updateImage(
 			@PathVariable("id") Integer id, 
-			@RequestParam("file") MultipartFile file) throws ImageUploadException, ScoreNotFoundException, UserNotValidException {
+			@RequestParam("file") MultipartFile file) throws ImageUploadException, ScoreNotFoundException, UserNotValidException, EventInvalidStatusException {
 		log.debug("Updating score image with id: {}", id);
 		return commonService.transform(scoreService.updateImage(id, file), ScoreDTO.class);
 	}
@@ -69,7 +82,7 @@ public class ScoreController {
 	@ApiOperation(value = "Updates an score by id.")
 	public void update(
 			@PathVariable("id") Integer id, 
-			@Valid @RequestBody ScorePutDTO scoreDto) throws ScoreNotFoundException, UserNotValidException {
+			@Valid @RequestBody ScorePutDTO scoreDto) throws ScoreNotFoundException, UserNotValidException, EventNotFoundException, EventInvalidStatusException {
 		log.debug("Updating score with id: {}", id);
 		scoreService.update(id, scoreDto);
 	}
@@ -77,7 +90,7 @@ public class ScoreController {
 	@DeleteMapping(value = "/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@ApiOperation(value = "Delete an score by id.")
-	public void delete(@PathVariable("id") Integer id) throws EventNotFoundException, UserNotValidException, ScoreNotFoundException {
+	public void delete(@PathVariable("id") Integer id) throws EventNotFoundException, UserNotValidException, ScoreNotFoundException, EventInvalidStatusException {
 		log.debug("Deleting score with id: {} ", id);
 		scoreService.delete(id);
 	}

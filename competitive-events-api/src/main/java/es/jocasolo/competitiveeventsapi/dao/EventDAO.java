@@ -1,5 +1,8 @@
 package es.jocasolo.competitiveeventsapi.dao;
 
+import java.util.List;
+import java.util.Set;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
@@ -43,5 +46,11 @@ public interface EventDAO extends CrudRepository<Event, String> {
 		)
 	public Page<Event> searchByUser(@Param("title") String title, @Param("type") EventType type, @Param("status") EventStatusType status, 
 			@Param("inscription") EventInscriptionType inscription, @Param("user") User user, Pageable pageRequest);
+	
+	@Query(value = "SELECT e FROM Event AS e WHERE status = 'NOT_ACTIVE' AND init_date < CURRENT_DATE")
+	public List<Event> getPendingActive();
+
+	@Query(value = "SELECT e FROM Event AS e LEFT JOIN FETCH e.rewards LEFT JOIN FETCH e.punishments WHERE e.status = 'ACTIVE' AND e.endDate < CURRENT_DATE")
+	public Set<Event> getPendingFinish();
 	
 }

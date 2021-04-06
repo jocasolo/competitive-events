@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -39,6 +41,7 @@ public class Score implements Serializable {
 	@JoinColumn(name = "image")
 	private Image image;
 
+	@Enumerated(EnumType.STRING)
 	private ScoreStatusType status;
 
 	public Integer getId() {
@@ -99,7 +102,7 @@ public class Score implements Serializable {
 
 	@Override
 	public String toString() {
-		return String.format("Score [id=%s]", id);
+		return String.format("Score [id=%s, value=%s]", id, value);
 	}
 
 }

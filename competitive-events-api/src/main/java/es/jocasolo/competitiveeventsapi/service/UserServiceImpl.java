@@ -186,7 +186,7 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	private boolean validUpdateDelete(String username) {
-		return authentication.getUser().isSuperuser() || authentication.getUser().getId().equals(username);
+		return authentication.getUser().getId().equals(username);
 	}
 
 	@Override

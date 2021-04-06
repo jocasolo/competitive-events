@@ -1,7 +1,10 @@
 package es.jocasolo.competitiveeventsapi.service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +16,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import es.jocasolo.competitiveeventsapi.dao.EventDAO;
 import es.jocasolo.competitiveeventsapi.dao.EventUserDAO;
+import es.jocasolo.competitiveeventsapi.dao.PunishmentDAO;
+import es.jocasolo.competitiveeventsapi.dao.RewardDAO;
+import es.jocasolo.competitiveeventsapi.dao.ScoreDAO;
 import es.jocasolo.competitiveeventsapi.dao.UserDAO;
 import es.jocasolo.competitiveeventsapi.dto.event.EventDTO;
 import es.jocasolo.competitiveeventsapi.dto.event.EventPageDTO;
@@ -28,6 +34,7 @@ import es.jocasolo.competitiveeventsapi.enums.event.EventType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventVisibilityType;
 import es.jocasolo.competitiveeventsapi.enums.eventuser.EventUserPrivilegeType;
 import es.jocasolo.competitiveeventsapi.enums.eventuser.EventUserStatusType;
+import es.jocasolo.competitiveeventsapi.enums.score.ScoreSortType;
 import es.jocasolo.competitiveeventsapi.enums.score.ScoreValueType;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventInvalidStatusException;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventNotFoundException;
@@ -39,6 +46,9 @@ import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotValidException;
 import es.jocasolo.competitiveeventsapi.model.Event;
 import es.jocasolo.competitiveeventsapi.model.EventUser;
 import es.jocasolo.competitiveeventsapi.model.Image;
+import es.jocasolo.competitiveeventsapi.model.Punishment;
+import es.jocasolo.competitiveeventsapi.model.Reward;
+import es.jocasolo.competitiveeventsapi.model.Score;
 import es.jocasolo.competitiveeventsapi.model.User;
 import es.jocasolo.competitiveeventsapi.model.keys.EventUserKey;
 import es.jocasolo.competitiveeventsapi.utils.EventUtils;
@@ -57,10 +67,19 @@ public class EventServiceImpl implements EventService {
 	private UserDAO userDao;
 	
 	@Autowired
+	private RewardDAO rewardDao;
+	
+	@Autowired
+	private PunishmentDAO punishmentDao;
+	
+	@Autowired
 	private ImageService imageService;
 
 	@Autowired
 	private EventUserDAO eventUserDao;
+	
+	@Autowired
+	private ScoreDAO scoreDao;
 
 	@Autowired
 	private CommonService commonService;
@@ -86,9 +105,13 @@ public class EventServiceImpl implements EventService {
 		event.setType(EventType.getValue(dto.getType(), EventType.OTHER));
 		event.setInscription(EventInscriptionType.getValue(dto.getInscription(), EventInscriptionType.PRIVATE));
 		event.setVisibility(EventVisibilityType.getValue(dto.getVisibility(), EventVisibilityType.PRIVATE));
-		event.setStatus(EventStatusType.ACTIVE);
 		event.setApprovalNeeded(EventUtils.getValue(dto.getApprovalNeeded(), true));
 		event.setScoreType(ScoreValueType.getValue(dto.getScoreType(), ScoreValueType.NUMERIC));
+		event.setSortScore(ScoreSortType.getValue(dto.getSortScore(), ScoreSortType.ASC));
+		event.setInitDate(EventUtils.getValue(dto.getInitDate(), null));
+		event.setEndDate(EventUtils.getValue(dto.getEndDate(), null));
+		
+		event.setStatus(event.isInDateRange() ? EventStatusType.ACTIVE : EventStatusType.NOT_ACTIVE); // ACTIVE when is in date range
 		eventDao.save(event);
 
 		// Assign event to the actual user
@@ -101,22 +124,31 @@ public class EventServiceImpl implements EventService {
 	}
 
 	@Override
-	public void update(String id, EventPutDTO dto) throws EventWrongUpdateException, EventInvalidStatusException {
+	public void update(String id, EventPutDTO dto) throws EventWrongUpdateException, EventInvalidStatusException, EventNotFoundException {
 
 		Event event = eventDao.findOne(id);
-		if (validUpdate(event)) {
+		if(event == null)
+			throw new EventNotFoundException();
+		
+		if(!event.isInDateRange())
+			throw new EventInvalidStatusException();
+		
+		EventUser eventUser = eventUserDao.findOne(event, authentication.getUser());
+		if (eventUser != null && eventUser.isOwner()) {
 			event.setTitle(EventUtils.getValue(dto.getTitle(), event.getTitle()));
 			event.setSubtitle(EventUtils.getValue(dto.getSubtitle(), event.getSubtitle()));
 			event.setDescription(EventUtils.getValue(dto.getDescription(), event.getDescription()));
 			event.setApprovalNeeded(EventUtils.getValue(dto.getAppovalNeeded(), event.getApprovalNeeded()));
 			event.setInitDate(EventUtils.getValue(dto.getInitDate(), event.getInitDate()));
 			event.setEndDate(EventUtils.getValue(dto.getEndDate(), event.getEndDate()));
+			event.setStatus(event.isInDateRange() ? EventStatusType.ACTIVE : EventStatusType.NOT_ACTIVE); // ACTIVE when is in date range
 			event.setType(EventType.getValue(dto.getType(), event.getType()));
 			event.setInscription(EventInscriptionType.getValue(dto.getInscription(), event.getInscription()));
 			event.setVisibility(EventVisibilityType.getValue(dto.getVisibility(), event.getVisibility()));
 			event.setStatus(EventStatusType.getValue(dto.getStatus(), event.getStatus()));
 			event.setMaxPlaces(EventUtils.getValue(dto.getMaxPlaces(), event.getMaxPlaces()));
 			event.setScoreType(ScoreValueType.getValue(dto.getScoreType(), event.getScoreType()));
+			event.setSortScore(ScoreSortType.getValue(dto.getSortScore(), event.getSortScore()));
 			eventDao.save(event);
 
 		} else {
@@ -133,7 +165,7 @@ public class EventServiceImpl implements EventService {
 		
 		User user = authentication.getUser();
 		EventUser eventUser = eventUserDao.findOneByIds(event.getId(), user.getId());
-		if(!eventUser.isOwner() && !user.isSuperuser())
+		if(eventUser == null || !eventUser.isOwner())
 			throw new UserNotValidException();
 		
 		Image image = imageService.upload(multipart, ImageType.REWARD);
@@ -146,10 +178,13 @@ public class EventServiceImpl implements EventService {
 	public void delete(String id) throws EventNotFoundException, UserNotValidException {
 
 		Event event = eventDao.findOne(id);
-		if (validRemove(event)) {
+		if(event == null)
+			throw new EventNotFoundException();
+		
+		EventUser eventUser = eventUserDao.findOne(event, authentication.getUser());
+		if (eventUser != null && eventUser.isOwner()) {
 			event.setStatus(EventStatusType.DELETED);
 			eventDao.save(event);
-
 		} else {
 			throw new UserNotValidException();
 		}
@@ -183,26 +218,89 @@ public class EventServiceImpl implements EventService {
 		dto.setPages(events.getTotalPages());
 		return dto;
 	}
-
-	private boolean validRemove(Event event) {
-		final User user = authentication.getUser();
-		if (user.getEvents().contains(event) || user.isSuperuser()) {
-			final EventUser eventUser = eventUserDao.findOne(event, user);
-			return user.isSuperuser() || eventUser.isOwner();
-		}
-
-		return false;
+	
+	@Override
+	public void init(String id) throws EventNotFoundException, UserNotValidException, EventInvalidStatusException {
+		
+		EventUser eventUser = eventUserDao.findOneByIds(id, authentication.getUser().getId());
+		if(eventUser == null)
+			throw new EventNotFoundException();
+		
+		if(!eventUser.isOwner())
+			throw new UserNotValidException();
+		
+		Event event = eventUser.getEvent();
+		if(!event.getStatus().equals(EventStatusType.NOT_ACTIVE))
+			throw new EventInvalidStatusException();
+		
+		initEvent(eventUser.getEvent());
+		
 	}
-
-	private boolean validUpdate(Event event) {
-
-		final User user = authentication.getUser();
-		if (user.getEvents().contains(event) || user.isSuperuser()) {
-			final EventUser eventUser = eventUserDao.findOne(event, user);
-			return user.isSuperuser() || eventUser.isOwner() || eventUser.isAdmin();
+	
+	@Override
+	public void initEvent(Event event) {
+		event.setStatus(EventStatusType.ACTIVE);
+		eventDao.save(event);
+	}
+	
+	@Override
+	public void finish(String id) throws EventNotFoundException, UserNotValidException, EventInvalidStatusException {
+		
+		EventUser eventUser = eventUserDao.findOneByIds(id, authentication.getUser().getId());
+		if(eventUser == null)
+			throw new EventNotFoundException();
+		
+		if(!eventUser.isOwner())
+			throw new UserNotValidException();
+		
+		Event event = eventUser.getEvent();
+		if(!event.getStatus().equals(EventStatusType.ACTIVE) && !event.getStatus().equals(EventStatusType.NOT_ACTIVE))
+			throw new EventInvalidStatusException();
+		
+		finishEvent(eventUser.getEvent());
+	}
+	
+	@Override
+	public void finishEvent(Event event) {
+		
+		event.setStatus(EventStatusType.FINISHED);
+		
+		// Assign rewards to users
+		if(CollectionUtils.isNotEmpty(event.getRewards())) {
+			
+			List<Score> scores = new ArrayList<>();
+			if(event.getSortScore().equals(ScoreSortType.ASC))
+				scores = scoreDao.findAllSortedAsc(event);
+			else
+				scores = scoreDao.findAllSortedAsc(event);
+			
+			for(Reward reward : event.getRewards()) {
+				if(reward.getWinner() == null && reward.getRequiredPosition() < scores.size()) {
+					final User winner = scores.get(reward.getRequiredPosition()).getUser();
+					reward.setWinner(winner);
+					rewardDao.save(reward);
+				}
+			}
 		}
-
-		return false;
+		
+		// Assign punishments to users
+		if(CollectionUtils.isNotEmpty(event.getPunishments())) {
+			List<Score> scores = new ArrayList<>();
+			if(event.getSortScore().equals(ScoreSortType.ASC))
+				scores = scoreDao.findAllSortedDesc(event);
+			else
+				scores = scoreDao.findAllSortedAsc(event);
+			
+			for(Punishment punishment : event.getPunishments()) {
+				if(punishment.getLooser() == null && punishment.getRequiredPosition() < scores.size()) {
+					final User looser = scores.get(punishment.getRequiredPosition()).getUser();
+					punishment.setLooser(looser);
+					punishmentDao.save(punishment);
+				}
+			}
+		}
+		
+		eventDao.save(event);
 	}
 
 	// ************************************
@@ -210,18 +308,21 @@ public class EventServiceImpl implements EventService {
 	// ************************************
 
 	@Override
-	public EventUserDTO addUser(String eventId, EventUserPostDTO eventUserDto) throws EventWrongUpdateException, UserNotValidException, UserNotFoundException, EventUserRejectedException {
+	public EventUserDTO addUser(String eventId, EventUserPostDTO eventUserDto) 
+			throws EventWrongUpdateException, UserNotValidException, UserNotFoundException, EventUserRejectedException, EventNotFoundException, EventInvalidStatusException {
 
 		EventUserStatusType status = null;
 
-		Event event = eventDao.findOne(eventId);
 		User targetUser = userDao.findOne(eventUserDto.getUsername());
-		
 		if (targetUser == null)
 			throw new UserNotFoundException();
 		
+		Event event = eventDao.findOne(eventId);
 		if(event == null)
-			throw new EventWrongUpdateException();
+			throw new EventNotFoundException();
+		
+		if(!event.isInDateRange())
+			throw new EventInvalidStatusException();
 
 		User authenticatedUser = authentication.getUser();
 		EventUser newEventUser = createEventUser(event, targetUser);
@@ -263,6 +364,9 @@ public class EventServiceImpl implements EventService {
 	private EventUserStatusType addUserToEvent(Event event, User targetUser, User authenticatedUser, EventUser newEventUser) 
 			throws EventWrongUpdateException, EventUserRejectedException {
 		
+		// TODO approval needed?????
+		
+		
 		EventUserStatusType status = null;
 		
 		// if the type of registration is private
@@ -277,17 +381,17 @@ public class EventServiceImpl implements EventService {
 			if(targetEventUser != null && targetEventUser.getStatus().equals(EventUserStatusType.REJECTED))
 				throw new EventUserRejectedException();
 
-			// If the logged-in user is an owner/admin of the event, sets the user waiting
+			// If the logged-in user is an owner of the event, sets the user waiting
 			// to join. If the logged-in user is waiting for join, it status change to
 			// accepted
 			if (authenticatedEventUser != null && targetEventUser == null 
-					&& (authenticatedEventUser.isOwner() || authenticatedEventUser.isAdmin())) {
+					&& (authenticatedEventUser.isOwner())) {
 				
 				status = EventUserStatusType.INVITED;
 				newEventUser.setIncorporationDate(null);
 
 			} else if (authenticatedEventUser != null && (targetEventUser != null && targetEventUser.getStatus().equals(EventUserStatusType.WAITING_APPROVAL)) 
-					&& (authenticatedEventUser.isOwner() || authenticatedEventUser.isAdmin())) {
+					&& (authenticatedEventUser.isOwner())) {
 				
 				// Owner accepts an user waiting for approval
 				status = EventUserStatusType.ACCEPTED;
@@ -329,10 +433,7 @@ public class EventServiceImpl implements EventService {
 				|| targetEventUser.getStatus().equals(EventUserStatusType.DELETED) || targetEventUser.getStatus().equals(EventUserStatusType.REJECTED)))
 			throw new EventWrongUpdateException();
 		
-		if(targetUser.equals(authenticatedUser) || (targetEventUser != null && (authenticatedEventUser.isOwner()
-				|| authenticatedEventUser.isAdmin()
-				|| authenticatedUser.isSuperuser()))) {
-				
+		if(targetUser.equals(authenticatedUser) || (targetEventUser != null && (authenticatedEventUser.isOwner()))) {
 			status = EventUserStatusType.REJECTED;
 		}
 		
@@ -362,7 +463,7 @@ public class EventServiceImpl implements EventService {
 			targetEventUser.setPrivilege(eventUserDto.getPrivilege());
 		}
 		
-		if(authenticatedUser.isSuperuser() && eventUserDto.getStatus() != null) {
+		if(eventUserDto.getStatus() != null) {
 			targetEventUser.setStatus(eventUserDto.getStatus());
 			targetEventUser.setLastStatusDate(new Date());
 		}
@@ -394,7 +495,7 @@ public class EventServiceImpl implements EventService {
 			eventUser.setStatus(EventUserStatusType.DELETED);
 		} else {
 			final EventUser eventAuthenticated = eventUserDao.findOne(event, authenticatedUser);
-			if(eventAuthenticated.isOwner() || eventAuthenticated.isAdmin() || authenticatedUser.isSuperuser())
+			if(eventAuthenticated.isOwner())
 				eventUser.setStatus(EventUserStatusType.DELETED);
 			else
 				throw new EventWrongUpdateException();

@@ -48,8 +48,9 @@ public interface EventService {
 	 * @param event
 	 * @throws EventWrongUpdateException
 	 * @throws EventInvalidStatusException
+	 * @throws EventNotFoundException 
 	 */
-	void update(String id, EventPutDTO eventDto) throws EventWrongUpdateException, EventInvalidStatusException;
+	void update(String id, EventPutDTO eventDto) throws EventWrongUpdateException, EventInvalidStatusException, EventNotFoundException;
 	
 	/**
 	 * @param id
@@ -83,6 +84,31 @@ public interface EventService {
 	 */
 	EventPageDTO search(String title, EventType type, EventStatusType status, EventInscriptionType inscription, String username, PageRequest pageRequest) throws UserNotValidException;
 	
+	/**
+	 * Finish an event, called via rest
+	 * @param e Valid event object
+	 * @throws EventNotFoundException 
+	 * @throws UserNotValidException 
+	 * @throws EventInvalidStatusException 
+	 */
+	void finish(String id) throws EventNotFoundException, UserNotValidException, EventInvalidStatusException;
+	
+	/**
+	 * Finish an event, called via scheduler
+	 * @param e Valid event object
+	 */
+	void finishEvent(Event event);
+	
+	/**
+	 * @param id
+	 */
+	void init(String id) throws EventNotFoundException, UserNotValidException, EventInvalidStatusException;
+	
+	/**
+	 * @param event
+	 */
+	void initEvent(Event event);
+	
 	// EVENT USER
 	/**
 	 * @param eventId
@@ -92,8 +118,11 @@ public interface EventService {
 	 * @throws UserNotValidException 
 	 * @throws UserNotFoundException 
 	 * @throws EventUserRejectedException 
+	 * @throws EventNotFoundException 
+	 * @throws EventInvalidStatusException 
 	 */
-	EventUserDTO addUser(String eventId, EventUserPostDTO eventUserDto) throws EventWrongUpdateException, UserNotValidException, UserNotFoundException, EventUserRejectedException;
+	EventUserDTO addUser(String eventId, EventUserPostDTO eventUserDto) 
+			throws EventWrongUpdateException, UserNotValidException, UserNotFoundException, EventUserRejectedException, EventNotFoundException, EventInvalidStatusException;
 
 	/**
 	 * Removes an user from an event

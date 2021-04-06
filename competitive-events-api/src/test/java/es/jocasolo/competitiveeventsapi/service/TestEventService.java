@@ -86,7 +86,7 @@ class TestEventService {
 	}
 	
 	@Test
-	void testUpdate() throws EventWrongUpdateException, EventInvalidStatusException {
+	void testUpdate() throws EventWrongUpdateException, EventInvalidStatusException, EventNotFoundException {
 		
 		EventPutDTO dto = new EventPutDTO();
 		dto.setId(ID);

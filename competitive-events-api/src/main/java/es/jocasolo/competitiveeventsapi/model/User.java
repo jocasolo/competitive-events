@@ -253,8 +253,4 @@ public class User implements UserDetails, Serializable {
 		return status.equals(UserStatusType.ACTIVE);
 	}
 
-	public boolean isSuperuser() {
-		return type.equals(UserType.SUPERUSER);
-	}
-
 }

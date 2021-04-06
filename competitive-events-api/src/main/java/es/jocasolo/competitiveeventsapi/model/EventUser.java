@@ -108,15 +108,9 @@ public class EventUser {
 		return this.privilege.equals(EventUserPrivilegeType.OWNER);
 	}
 	
-	public boolean isAdmin() {
-		return this.privilege.equals(EventUserPrivilegeType.ADMIN);
-	}
-	
 	public boolean isUser() {
 		return this.privilege.equals(EventUserPrivilegeType.USER);
 	}
-	
-	
 	
 	@Override
 	public String toString() {
