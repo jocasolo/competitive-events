@@ -39,8 +39,6 @@ public class RewardServiceImpl implements RewardService {
 	@Autowired
 	private AuthenticationFacade authentication;
 	
-	// TODO winner
-
 	@Override
 	public Reward findOne(Integer id) throws RewardNotFoundException {
 		final Reward reward = rewardDao.findOne(id);

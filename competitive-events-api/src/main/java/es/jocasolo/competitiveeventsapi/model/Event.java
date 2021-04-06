@@ -117,10 +117,8 @@ public class Event implements Serializable {
 		if (endDate == null && now.after(initDate))
 			return true;
 
-		if (now.after(initDate) && now.before(endDate))
-			return true;
-
-		return false;
+		return now.after(initDate) && now.before(endDate);
+		
 	}
 
 	// GETTERS AND SETTERS

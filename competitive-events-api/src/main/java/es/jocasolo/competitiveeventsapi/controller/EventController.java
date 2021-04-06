@@ -29,6 +29,7 @@ import es.jocasolo.competitiveeventsapi.enums.event.EventStatusType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventType;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventInvalidStatusException;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventNotFoundException;
+import es.jocasolo.competitiveeventsapi.exceptions.event.EventUserAcceptedException;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventUserRejectedException;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventWrongUpdateException;
 import es.jocasolo.competitiveeventsapi.exceptions.image.ImageUploadException;
@@ -91,7 +92,7 @@ public class EventController {
 	@PutMapping(value = "/{id}/finish")
 	@ApiOperation(value = "Updates an event by id.")
 	public void finish(
-			@PathVariable("id") String id) throws EventWrongUpdateException, EventInvalidStatusException, EventNotFoundException, UserNotValidException {
+			@PathVariable("id") String id) throws EventInvalidStatusException, EventNotFoundException, UserNotValidException {
 		log.debug("Finishing event: {}", id);
 		eventService.finish(id);
 	}
@@ -99,7 +100,7 @@ public class EventController {
 	@PutMapping(value = "/{id}/init")
 	@ApiOperation(value = "Updates an event by id.")
 	public void init(
-			@PathVariable("id") String id) throws EventWrongUpdateException, EventInvalidStatusException, EventNotFoundException, UserNotValidException {
+			@PathVariable("id") String id) throws EventInvalidStatusException, EventNotFoundException, UserNotValidException {
 		log.debug("Init event: {}", id);
 		eventService.init(id);
 	}
@@ -131,7 +132,8 @@ public class EventController {
 	public EventUserDTO addUser(
 			@PathVariable("id") String id,
 			@RequestBody EventUserPostDTO event) 
-					throws EventWrongUpdateException, UserNotValidException, UserNotFoundException, EventUserRejectedException, EventNotFoundException, EventInvalidStatusException {
+					throws EventWrongUpdateException, UserNotValidException, UserNotFoundException, EventUserRejectedException, 
+					EventNotFoundException, EventInvalidStatusException, EventUserAcceptedException {
 		log.debug("Adding user to event: {} ", event);
 		return eventService.addUser(id, event);
 	}

@@ -56,7 +56,7 @@ public class ScoreController {
 	public ScorePageDTO search(
 			@RequestParam(value = "eventId", required = false) String eventId,
 			@RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
-			@RequestParam(value = "size", required = false, defaultValue = "10") Integer size) throws UserNotValidException, EventNotFoundException {
+			@RequestParam(value = "size", required = false, defaultValue = "10") Integer size) throws EventNotFoundException {
 		log.debug("Looking for events");
 		return scoreService.search(eventId, PageRequest.of(page, size));
 	}

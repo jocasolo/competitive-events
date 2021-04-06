@@ -15,6 +15,7 @@ import es.jocasolo.competitiveeventsapi.enums.event.EventStatusType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventType;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventInvalidStatusException;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventNotFoundException;
+import es.jocasolo.competitiveeventsapi.exceptions.event.EventUserAcceptedException;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventUserRejectedException;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventWrongUpdateException;
 import es.jocasolo.competitiveeventsapi.exceptions.image.ImageUploadException;
@@ -120,9 +121,10 @@ public interface EventService {
 	 * @throws EventUserRejectedException 
 	 * @throws EventNotFoundException 
 	 * @throws EventInvalidStatusException 
+	 * @throws EventUserAcceptedException 
 	 */
 	EventUserDTO addUser(String eventId, EventUserPostDTO eventUserDto) 
-			throws EventWrongUpdateException, UserNotValidException, UserNotFoundException, EventUserRejectedException, EventNotFoundException, EventInvalidStatusException;
+			throws EventWrongUpdateException, UserNotValidException, UserNotFoundException, EventUserRejectedException, EventNotFoundException, EventInvalidStatusException, EventUserAcceptedException;
 
 	/**
 	 * Removes an user from an event

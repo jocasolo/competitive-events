@@ -1,6 +1,5 @@
 package es.jocasolo.competitiveeventsapi.service;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -38,6 +37,7 @@ import es.jocasolo.competitiveeventsapi.enums.score.ScoreSortType;
 import es.jocasolo.competitiveeventsapi.enums.score.ScoreValueType;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventInvalidStatusException;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventNotFoundException;
+import es.jocasolo.competitiveeventsapi.exceptions.event.EventUserAcceptedException;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventUserRejectedException;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventWrongUpdateException;
 import es.jocasolo.competitiveeventsapi.exceptions.image.ImageUploadException;
@@ -266,13 +266,22 @@ public class EventServiceImpl implements EventService {
 		event.setStatus(EventStatusType.FINISHED);
 		
 		// Assign rewards to users
+		asignRewards(event);
+		
+		// Assign punishments to users
+		assingPunishments(event);
+		
+		eventDao.save(event);
+	}
+
+	private void asignRewards(Event event) {
 		if(CollectionUtils.isNotEmpty(event.getRewards())) {
 			
-			List<Score> scores = new ArrayList<>();
+			List<Score> scores = null;
 			if(event.getSortScore().equals(ScoreSortType.ASC))
 				scores = scoreDao.findAllSortedAsc(event);
 			else
-				scores = scoreDao.findAllSortedAsc(event);
+				scores = scoreDao.findAllSortedDesc(event);
 			
 			for(Reward reward : event.getRewards()) {
 				if(reward.getWinner() == null && reward.getRequiredPosition() < scores.size()) {
@@ -282,10 +291,11 @@ public class EventServiceImpl implements EventService {
 				}
 			}
 		}
-		
-		// Assign punishments to users
+	}
+	
+	private void assingPunishments(Event event) {
 		if(CollectionUtils.isNotEmpty(event.getPunishments())) {
-			List<Score> scores = new ArrayList<>();
+			List<Score> scores = null;
 			if(event.getSortScore().equals(ScoreSortType.ASC))
 				scores = scoreDao.findAllSortedDesc(event);
 			else
@@ -299,8 +309,6 @@ public class EventServiceImpl implements EventService {
 				}
 			}
 		}
-		
-		eventDao.save(event);
 	}
 
 	// ************************************
@@ -309,7 +317,7 @@ public class EventServiceImpl implements EventService {
 
 	@Override
 	public EventUserDTO addUser(String eventId, EventUserPostDTO eventUserDto) 
-			throws EventWrongUpdateException, UserNotValidException, UserNotFoundException, EventUserRejectedException, EventNotFoundException, EventInvalidStatusException {
+			throws EventWrongUpdateException, UserNotValidException, UserNotFoundException, EventUserRejectedException, EventNotFoundException, EventInvalidStatusException, EventUserAcceptedException {
 
 		EventUserStatusType status = null;
 
@@ -360,64 +368,91 @@ public class EventServiceImpl implements EventService {
 	 * @return
 	 * @throws EventWrongUpdateException
 	 * @throws EventUserRejectedException
+	 * @throws EventUserAcceptedException 
 	 */
 	private EventUserStatusType addUserToEvent(Event event, User targetUser, User authenticatedUser, EventUser newEventUser) 
-			throws EventWrongUpdateException, EventUserRejectedException {
+			throws EventWrongUpdateException, EventUserRejectedException, EventUserAcceptedException {
 		
-		// TODO approval needed?????
-		
+		// TODO test private and public
 		
 		EventUserStatusType status = null;
+		EventUser authenticatedEventUser = eventUserDao.findOneAllStatus(event, authenticatedUser);
+		EventUser targetEventUser = eventUserDao.findOneAllStatus(event, targetUser);
 		
 		// if the type of registration is private
 		if (event.getInscription().equals(EventInscriptionType.PRIVATE)) {
-			EventUser authenticatedEventUser = eventUserDao.findOne(event, authenticatedUser);
-			EventUser targetEventUser = eventUserDao.findOne(event, targetUser);
 			
-			if(targetEventUser != null && (targetEventUser.getStatus().equals(EventUserStatusType.ACCEPTED) 
-					|| targetEventUser.getStatus().equals(EventUserStatusType.DELETED)))
-				throw new EventWrongUpdateException();
-			
-			if(targetEventUser != null && targetEventUser.getStatus().equals(EventUserStatusType.REJECTED))
-				throw new EventUserRejectedException();
-
-			// If the logged-in user is an owner of the event, sets the user waiting
-			// to join. If the logged-in user is waiting for join, it status change to
-			// accepted
-			if (authenticatedEventUser != null && targetEventUser == null 
-					&& (authenticatedEventUser.isOwner())) {
-				
-				status = EventUserStatusType.INVITED;
-				newEventUser.setIncorporationDate(null);
-
-			} else if (authenticatedEventUser != null && (targetEventUser != null && targetEventUser.getStatus().equals(EventUserStatusType.WAITING_APPROVAL)) 
-					&& (authenticatedEventUser.isOwner())) {
-				
-				// Owner accepts an user waiting for approval
-				status = EventUserStatusType.ACCEPTED;
-
-			} else if (targetEventUser != null && targetEventUser.getStatus().equals(EventUserStatusType.INVITED) && targetUser.equals(authenticatedUser)) {
-				
-				// User accept an invitation to join
-				status = EventUserStatusType.ACCEPTED;
-				
-			} else if (targetUser.equals(authenticatedUser)){
-				
-				// User request approval to join
-				status = EventUserStatusType.WAITING_APPROVAL;
-				newEventUser.setIncorporationDate(null);
-			}
+			// Private event
+			status = addUserToPrivateEvent(targetUser, authenticatedUser, newEventUser, status, authenticatedEventUser, targetEventUser);
 
 		} else {
+			
 			// Public inscription
-			if(targetUser.equals(authenticatedUser))
-				status = EventUserStatusType.ACCEPTED;
-			else {
-				status = EventUserStatusType.INVITED;
-				newEventUser.setIncorporationDate(null);
-			}
+			status = addUserToPublicEvent(targetUser, authenticatedUser, authenticatedEventUser, targetEventUser);
 		}
 		
+		return status;
+	}
+
+	private EventUserStatusType addUserToPublicEvent(User targetUser, User authenticatedUser, EventUser authenticatedEventUser, EventUser targetEventUser) {
+		EventUserStatusType status;
+		if(targetUser.equals(authenticatedUser) && Boolean.TRUE.equals(targetEventUser.getEvent().getApprovalNeeded())) {
+			
+			// User request approval to join in a public event with approval needed
+			status = EventUserStatusType.WAITING_APPROVAL;
+			
+		} else if((targetUser.equals(authenticatedUser) && !Boolean.TRUE.equals(targetEventUser.getEvent().getApprovalNeeded())) 
+				|| authenticatedEventUser.isOwner() && targetEventUser.isWaiting()) {
+			
+			// User joins event without approval needed
+			status = EventUserStatusType.ACCEPTED;
+			
+		} else {
+			
+			// Owner invited one user
+			status = EventUserStatusType.INVITED;
+		}
+		return status;
+	}
+
+	private EventUserStatusType addUserToPrivateEvent(User targetUser, User authenticatedUser, EventUser newEventUser, EventUserStatusType status, EventUser authenticatedEventUser,
+			EventUser targetEventUser) throws EventWrongUpdateException, EventUserAcceptedException, EventUserRejectedException {
+		
+		if(targetEventUser == null || authenticatedEventUser == null)
+			throw new EventWrongUpdateException();
+		
+		// If is already accepted
+		if(targetEventUser.isAccepted())
+			throw new EventUserAcceptedException();
+		
+		// If is rejected or deleted
+		if(targetEventUser.isRejected() || targetEventUser.isDeleted())
+			throw new EventUserRejectedException();
+
+		// If the logged-in user is an owner of the event, sets the user waiting
+		// to join. If the logged-in user is waiting for join, it status change to
+		// accepted
+		if (authenticatedEventUser.isOwner()) {
+			
+			status = EventUserStatusType.INVITED;
+			newEventUser.setIncorporationDate(null);
+
+		} else if (authenticatedEventUser.isOwner() && targetEventUser.isWaiting()) {
+			
+			// Owner accepts an user waiting for approval
+			status = EventUserStatusType.ACCEPTED;
+
+		} else if (targetEventUser.isInvited() && targetUser.equals(authenticatedUser)) {
+			
+			// User accept an invitation to join
+			status = EventUserStatusType.ACCEPTED;
+			
+		} else if (targetUser.equals(authenticatedUser)){
+			
+			// User request approval to join
+			status = EventUserStatusType.WAITING_APPROVAL;
+			newEventUser.setIncorporationDate(null);
+		}
 		return status;
 	}
 	
@@ -463,7 +498,7 @@ public class EventServiceImpl implements EventService {
 			targetEventUser.setPrivilege(eventUserDto.getPrivilege());
 		}
 		
-		if(eventUserDto.getStatus() != null) {
+		if(eventUserDto.getStatus() != null && authenticatedEventUser.isOwner()) {
 			targetEventUser.setStatus(eventUserDto.getStatus());
 			targetEventUser.setLastStatusDate(new Date());
 		}

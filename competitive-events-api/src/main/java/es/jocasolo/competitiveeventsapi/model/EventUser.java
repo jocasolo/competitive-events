@@ -112,6 +112,26 @@ public class EventUser {
 		return this.privilege.equals(EventUserPrivilegeType.USER);
 	}
 	
+	public boolean isWaiting() {
+		return status.equals(EventUserStatusType.WAITING_APPROVAL);
+	}
+	
+	public boolean isAccepted() {
+		return status.equals(EventUserStatusType.ACCEPTED);
+	}
+	
+	public boolean isRejected() {
+		return status.equals(EventUserStatusType.REJECTED);
+	}
+	
+	public boolean isDeleted() {
+		return status.equals(EventUserStatusType.DELETED);
+	}
+	
+	public boolean isInvited() {
+		return status.equals(EventUserStatusType.INVITED);
+	}
+	
 	@Override
 	public String toString() {
 		return String.format("EventUser [%s, %s]", event, user);

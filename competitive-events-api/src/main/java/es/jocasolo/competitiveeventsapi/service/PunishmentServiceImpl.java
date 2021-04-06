@@ -38,8 +38,6 @@ public class PunishmentServiceImpl implements PunishmentService {
 	
 	@Autowired
 	private AuthenticationFacade authentication;
-	
-	// TODO winner
 
 	@Override
 	public Punishment findOne(Integer id) throws PunishmentNotFoundException {
