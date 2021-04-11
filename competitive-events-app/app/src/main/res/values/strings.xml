@@ -1,10 +1,14 @@
 <resources>
     <string name="app_name">Competitive Events</string>
 
-    <string name="username">Username</string>
-    <string name="password">Password</string>
+    <string name="username">Identificador de usuario</string>
+    <string name="email">Email</string>
+    <string name="password">Contraseña</string>
+    <string name="password_confirm">Confirmar contraseña</string>
     <string name="login">Login</string>
-    <string name="register">Register</string>
+    <string name="register">Registro</string>
+    <string name="register_title">Registro de usuario</string>
+    <string name="register_intro">Regístrate en la aplicación y compite con tus amigos en un sin fín de actividades</string>
 
     <string name="icon">icon</string>
     <string name="image">image</string>
