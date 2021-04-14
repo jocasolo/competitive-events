@@ -2,6 +2,8 @@ package es.jocasolo.competitiveeventsapi.dao;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -25,7 +27,7 @@ public interface UserDAO extends CrudRepository<User, String> {
 	 * @param email User email
 	 * @return User corresponding to the email searched.
 	 */
-	@Query(value = "SELECT u FROM User AS u WHERE email = :email AND status = 'ACTIVE'")
+	@Query(value = "SELECT u FROM User AS u WHERE email = :email")
 	public User findOneByEmail(@Param("email") String email);
 	
 	/**
@@ -34,5 +36,10 @@ public interface UserDAO extends CrudRepository<User, String> {
 	 * @return The user with the key
 	 */
 	public List<User> findByConfirmKey(String confirmKey);
+
+	@Query(value = "SELECT u from User as u WHERE "
+			+ "(u.id LIKE %:id% OR :id IS NULL) "
+		)
+	public Page<User> search(String id, PageRequest pageRequest);
 	
 }

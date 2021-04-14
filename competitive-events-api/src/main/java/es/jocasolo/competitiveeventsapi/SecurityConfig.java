@@ -48,7 +48,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/confirmation.html").permitAll()
 			.antMatchers(HttpMethod.POST, "/login").permitAll()
 			.antMatchers(HttpMethod.GET, "/users/confirm/**").permitAll()
-			.antMatchers(HttpMethod.POST, "/users").permitAll()
+			.antMatchers(HttpMethod.HEAD, "/users/**").permitAll()
+			.antMatchers(HttpMethod.POST, "/users/**").permitAll()
 			.anyRequest().authenticated().and()
 			.addFilter(new JWTAuthenticationFilter(authenticationManager()))
 			.addFilter(new JWTAuthorizationFilter(authenticationManager()));

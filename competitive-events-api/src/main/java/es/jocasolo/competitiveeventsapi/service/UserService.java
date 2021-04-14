@@ -1,9 +1,11 @@
 package es.jocasolo.competitiveeventsapi.service;
 
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.multipart.MultipartFile;
 
 import es.jocasolo.competitiveeventsapi.dto.user.UserDTO;
+import es.jocasolo.competitiveeventsapi.dto.user.UserPageDTO;
 import es.jocasolo.competitiveeventsapi.dto.user.UserPasswordDTO;
 import es.jocasolo.competitiveeventsapi.dto.user.UserPostDTO;
 import es.jocasolo.competitiveeventsapi.dto.user.UserPutDTO;
@@ -28,6 +30,14 @@ public interface UserService extends UserDetailsService {
 	 * @throws UserNotFoundException
 	 */
 	User findOne(String id) throws UserNotFoundException;
+	
+	/**
+	 * @param username
+	 * @param email
+	 * @param of
+	 * @return
+	 */
+	UserPageDTO search(String username, PageRequest of);
 
 	/**
 	 * Creates a new user.

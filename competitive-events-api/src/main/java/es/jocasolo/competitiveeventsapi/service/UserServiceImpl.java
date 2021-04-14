@@ -8,6 +8,8 @@ import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import es.jocasolo.competitiveeventsapi.constants.CommonConstants;
 import es.jocasolo.competitiveeventsapi.dao.UserDAO;
 import es.jocasolo.competitiveeventsapi.dto.user.UserDTO;
+import es.jocasolo.competitiveeventsapi.dto.user.UserPageDTO;
 import es.jocasolo.competitiveeventsapi.dto.user.UserPasswordDTO;
 import es.jocasolo.competitiveeventsapi.dto.user.UserPostDTO;
 import es.jocasolo.competitiveeventsapi.dto.user.UserPutDTO;
@@ -68,7 +71,24 @@ public class UserServiceImpl implements UserService {
 		
 		return user;
 	}
-
+	
+	@Override
+	public UserPageDTO search(String username, PageRequest pageRequest) {
+		
+		Page<User> users = null;
+		
+		users = userDao.search(username, pageRequest);
+		
+		UserPageDTO dto = new UserPageDTO();
+		dto.setUsers(commonService.transform(users.getContent(), UserDTO.class));
+		dto.setTotal(users.getTotalElements());
+		dto.setHasNext(users.hasNext());
+		dto.setHasPrevious(users.hasPrevious());
+		dto.setPages(users.getTotalPages());
+		
+		return dto;
+	}
+	
 	@Override
 	public UserDTO create(UserPostDTO userDto) throws UserEmailExistsException, UserUsenameExistsException {
 		User user = commonService.transform(userDto, User.class);

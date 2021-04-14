@@ -5,7 +5,9 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,12 +15,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import es.jocasolo.competitiveeventsapi.dto.user.UserDTO;
+import es.jocasolo.competitiveeventsapi.dto.user.UserPageDTO;
 import es.jocasolo.competitiveeventsapi.dto.user.UserPasswordDTO;
 import es.jocasolo.competitiveeventsapi.dto.user.UserPostDTO;
 import es.jocasolo.competitiveeventsapi.dto.user.UserPutDTO;
@@ -31,6 +35,7 @@ import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotValidException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserUsenameExistsException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserWrongPasswordException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserWrongUpdateException;
+import es.jocasolo.competitiveeventsapi.model.User;
 import es.jocasolo.competitiveeventsapi.service.CommonService;
 import es.jocasolo.competitiveeventsapi.service.UserService;
 import io.swagger.annotations.ApiOperation;
@@ -52,6 +57,27 @@ public class UserController {
 	public UserDTO findOne(@PathVariable("id") String id) throws UserNotFoundException {
 		log.debug("Looking for the user with id: {}", id);
 		return commonService.transform(userService.findOne(id), UserDTO.class);
+	}
+	
+	@RequestMapping(method = RequestMethod.HEAD, value = "/{id}", produces = "application/json;charset=utf8")
+	@ApiOperation(value = "Search for an user based on its id.")
+	public ResponseEntity<String> exists(@PathVariable("id") String id) throws UserNotFoundException {
+		log.debug("Looking for the user with id: {}", id);
+		final User user = userService.findOne(id);
+		if(user != null)		
+			return new ResponseEntity<>(HttpStatus.OK);
+		else
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	}
+	
+	@GetMapping(produces = "application/json;charset=utf8")
+	@ApiOperation(value = "Find all users that match your search parameters.")
+	public UserPageDTO search(
+			@RequestParam(value = "username", required = false) String username,
+			@RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
+			@RequestParam(value = "size", required = false, defaultValue = "10") Integer size) throws UserNotValidException {
+		log.debug("Looking for events");
+		return userService.search(username, PageRequest.of(page, size));
 	}
 	
 	@GetMapping(value = "/confirm/{key}", produces = "application/json;charset=utf8")
