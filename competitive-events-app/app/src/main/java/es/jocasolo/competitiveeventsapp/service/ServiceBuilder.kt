@@ -1,4 +1,4 @@
-package es.jocasolo.competitiveeventsapp.services
+package es.jocasolo.competitiveeventsapp.service
 
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -8,7 +8,7 @@ object ServiceBuilder {
     private val client = OkHttpClient.Builder().build()
 
     private val retrofit = Retrofit.Builder()
-        .baseUrl("http://22b71328f3ff.ngrok.io") // change this IP for testing by your actual machine IP
+        .baseUrl("http://604cd505825b.ngrok.io") // change this IP for testing by your actual machine IP
         .addConverterFactory(GsonConverterFactory.create())
         .client(client)
         .build()
