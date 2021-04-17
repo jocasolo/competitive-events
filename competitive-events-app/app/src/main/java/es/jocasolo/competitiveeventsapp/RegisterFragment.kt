@@ -1,12 +1,14 @@
 package es.jocasolo.competitiveeventsapp
 
-import android.content.Intent
 import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.fragment.findNavController
 import com.google.gson.Gson
 import es.jocasolo.competitiveeventsapp.dto.ErrorDTO
 import es.jocasolo.competitiveeventsapp.dto.user.UserDTO
@@ -22,7 +24,10 @@ import retrofit2.Response
 import java.net.HttpURLConnection
 import java.util.regex.Pattern
 
-class RegisterActivity : AppCompatActivity() {
+/**
+ * A simple [Fragment] subclass as the second destination in the navigation.
+ */
+class RegisterFragment : Fragment() {
 
     private val passwordPattern = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}$")
     private val usernamePattern = Pattern.compile("^(?=.*[a-z])(?=\\S+$).{4,16}$")
@@ -35,25 +40,32 @@ class RegisterActivity : AppCompatActivity() {
     private var txtPasswordConfirm : TextView? = null
     private var spinner : ProgressBar? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_register)
-
-        // Init input fields
-        txtUsername = findViewById(R.id.txt_username)
-        txtEmail = findViewById(R.id.txt_email)
-        txtPassword = findViewById(R.id.txt_password)
-        txtPasswordConfirm = findViewById(R.id.txt_password_confirm)
-        spinner = findViewById(R.id.spn_register)
-
-        // Events
-        findViewById<Button>(R.id.btn_register).setOnClickListener { register() }
-        findViewById<Button>(R.id.btn_back).setOnClickListener { finish() }
-        findViewById<TextView>(R.id.txt_username).setOnFocusChangeListener { _, _ -> validateUsernameExistsAndCommit(false) }
+    override fun onCreateView(
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_register, container, false)
     }
 
-    private fun register() {
-        MyUtils.closeKeyboard(baseContext, this.findViewById(android.R.id.content))
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Init input fields
+        txtUsername = view.findViewById(R.id.txt_username)
+        txtEmail = view.findViewById(R.id.txt_email)
+        txtPassword = view.findViewById(R.id.txt_password)
+        txtPasswordConfirm = view.findViewById(R.id.txt_password_confirm)
+        spinner = view.findViewById(R.id.spn_register)
+
+        // Events
+        view.findViewById<Button>(R.id.btn_register).setOnClickListener { register(view) }
+        view.findViewById<Button>(R.id.btn_back).setOnClickListener { findNavController().navigate(R.id.action_Register_to_Login) }
+        view.findViewById<TextView>(R.id.txt_username).setOnFocusChangeListener { _, _ -> validateUsernameExistsAndCommit(false) }
+    }
+
+    private fun register(view : View) {
+        MyUtils.closeKeyboard(this.requireContext(), view)
         if(validate()) {
             spinner?.visibility = View.VISIBLE
             validateUsernameExistsAndCommit(true)
@@ -107,7 +119,9 @@ class RegisterActivity : AppCompatActivity() {
     }
 
     private fun showSuccessDialog() {
-        MyDialog.confirmActivity(this, getString(R.string.user_created_title), getString(R.string.user_created), LoginActivity::class.java)
+        MyDialog.confirmNavigate(this, getString(R.string.user_created_title), getString(R.string.user_created),
+            R.id.action_Register_to_Login
+        )
     }
 
     private fun showErrorDialog(message : String) {
@@ -178,6 +192,9 @@ class RegisterActivity : AppCompatActivity() {
         }
         if(txtPasswordConfirm?.text?.isEmpty()!!){
             txtPasswordConfirm?.error = getString(R.string.error_required)
+            result = false
+        } else if(!txtPassword?.text?.toString().equals(txtPasswordConfirm?.text?.toString())!!){
+            txtPasswordConfirm?.error = getString(R.string.error_password_distinct)
             result = false
         }
 

@@ -1,44 +1,46 @@
 package es.jocasolo.competitiveeventsapp.utils
 
-import android.app.Activity
 import android.content.Intent
 import android.content.res.Resources
 import androidx.appcompat.app.AlertDialog
-import es.jocasolo.competitiveeventsapp.LoginActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.navigation.fragment.findNavController
 import es.jocasolo.competitiveeventsapp.R
-import kotlin.coroutines.coroutineContext
 
 object MyDialog {
-    fun<T> confirmActivity(activity : Activity, title : String, message : String, clazz: Class<T>){
+    fun confirmNavigate(fragment : Fragment, title : String, message : String, navigateToId: Int){
+        val activity = fragment.requireActivity()
         val builder: AlertDialog = activity.let {
             AlertDialog.Builder(it)
                     .setMessage(R.string.user_created)
                     .setTitle(R.string.user_created_title)
                     .setPositiveButton(activity.resources.getString(R.string.confirm)) { _, _ ->
-                        activity.startActivity(Intent(activity.baseContext, clazz))
+                        fragment.findNavController().navigate(navigateToId)
                     }
                     .create()
         }
         builder.show()
     }
 
-    fun<T> confirmCancelActivity(activity : Activity, title : String, message : String, clazz: Class<T>){
+    fun confirmCancelNavigate(fragment : Fragment, title : String, message : String, navigateToId: Int){
+        val activity = fragment.requireActivity()
         val builder: AlertDialog = activity.let {
             AlertDialog.Builder(it)
-                    .setMessage(message)
-                    .setTitle(title)
-                    .setPositiveButton(activity.resources.getString(R.string.confirm)) { _, _ ->
-                        activity.startActivity(Intent(activity.baseContext, clazz))
-                    }
-                    .setNegativeButton(Resources.getSystem().getString(R.string.cancel)) { _, _ ->
-
-                    }
-                    .create()
+                .setMessage(R.string.user_created)
+                .setTitle(R.string.user_created_title)
+                .setPositiveButton(activity.resources.getString(R.string.confirm)) { _, _ ->
+                    fragment.findNavController().navigate(navigateToId)
+                }
+                .setNegativeButton(Resources.getSystem().getString(R.string.cancel)) { _, _ ->
+                }
+                .create()
         }
         builder.show()
     }
 
-    fun message (activity : Activity, title : String, message : String){
+    fun message (fragment : Fragment, title : String, message : String){
+        val activity = fragment.requireActivity()
         val builder: AlertDialog = activity.let {
             AlertDialog.Builder(it)
                     .setMessage(message)
