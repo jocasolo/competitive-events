@@ -3,28 +3,36 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/LoginFragment">
+    app:startDestination="@id/splashScreenFragment">
 
     <fragment
-        android:id="@+id/LoginFragment"
+        android:id="@+id/splashScreenFragment"
+        android:name="es.jocasolo.competitiveeventsapp.SplashScreenFragment"
+        android:label="@string/splash_screen_fragment_label">
+        <action
+            android:id="@+id/action_Splash_to_Login"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
         android:name="es.jocasolo.competitiveeventsapp.LoginFragment"
         android:label="@string/login_fragment_label"
         tools:layout="@layout/fragment_login">
 
         <action
             android:id="@+id/action_Login_to_Register"
-            app:destination="@id/RegisterFragment"
+            app:destination="@id/registerFragment"
             app:enterAnim="@android:anim/slide_in_left"
             app:exitAnim="@android:anim/slide_out_right" />
     </fragment>
     <fragment
-        android:id="@+id/RegisterFragment"
+        android:id="@+id/registerFragment"
         android:name="es.jocasolo.competitiveeventsapp.RegisterFragment"
         android:label="@string/register_fragment_label"
         tools:layout="@layout/fragment_register">
 
         <action
             android:id="@+id/action_Register_to_Login"
-            app:destination="@id/LoginFragment" />
+            app:destination="@id/loginFragment" />
     </fragment>
 </navigation>

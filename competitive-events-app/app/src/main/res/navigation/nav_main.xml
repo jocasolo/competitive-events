@@ -3,28 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/LoginFragment">
-
+    app:startDestination="@id/eventsFragment">
     <fragment
-        android:id="@+id/LoginFragment"
-        android:name="es.jocasolo.competitiveeventsapp.LoginFragment"
-        android:label="@string/login_fragment_label"
-        tools:layout="@layout/fragment_login">
-
-        <action
-            android:id="@+id/action_Login_to_Register"
-            app:destination="@id/RegisterFragment"
-            app:enterAnim="@android:anim/slide_in_left"
-            app:exitAnim="@android:anim/slide_out_right" />
-    </fragment>
-    <fragment
-        android:id="@+id/RegisterFragment"
-        android:name="es.jocasolo.competitiveeventsapp.RegisterFragment"
-        android:label="@string/register_fragment_label"
-        tools:layout="@layout/fragment_register">
-
-        <action
-            android:id="@+id/action_Register_to_Login"
-            app:destination="@id/LoginFragment" />
-    </fragment>
+        android:id="@+id/eventsFragment"
+        android:name="es.jocasolo.competitiveeventsapp.EventsFragment"
+        android:label="fragment_events_list"
+        tools:layout="@layout/fragment_events_list" />
 </navigation>
