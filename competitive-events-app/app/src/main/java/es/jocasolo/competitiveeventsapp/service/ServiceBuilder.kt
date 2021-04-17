@@ -8,7 +8,7 @@ object ServiceBuilder {
     private val client = OkHttpClient.Builder().build()
 
     private val retrofit = Retrofit.Builder()
-        .baseUrl("http://604cd505825b.ngrok.io") // change this IP for testing by your actual machine IP
+        .baseUrl("http://e9c3a86a6697.ngrok.io") // change this IP for testing by your actual machine IP
         .addConverterFactory(GsonConverterFactory.create())
         .client(client)
         .build()
