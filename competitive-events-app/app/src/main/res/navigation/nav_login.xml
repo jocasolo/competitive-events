@@ -8,7 +8,8 @@
     <fragment
         android:id="@+id/splashScreenFragment"
         android:name="es.jocasolo.competitiveeventsapp.SplashScreenFragment"
-        android:label="@string/splash_screen_fragment_label">
+        android:label="@string/splash_screen_fragment_label"
+        tools:layout="@layout/fragment_splash_screen">
         <action
             android:id="@+id/action_Splash_to_Login"
             app:destination="@id/loginFragment" />
