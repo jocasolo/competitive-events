@@ -11,6 +11,16 @@
     <string name="previous">Atrás</string>
     <string name="check_user">Comprobando credenciales...</string>
 
+    <!-- Action bar -->
+    <string name="logout">Cerrar sesión</string>
+    <string name="search">Buscar</string>
+    <string name="exit">Salir</string>
+    <string name="home">Inicio</string>
+    <string name="events">Eventos</string>
+    <string name="your_events">Tus eventos</string>
+    <string name="create_event">Nuevo evento</string>
+    <string name="profile">Perfil</string>
+
     <!-- Register -->
     <string name="user_created">El usuario ha sido creado con éxito. Se ha enviado un correo a tu dirección de correo electrónico. Por favor, confirma la creación de usuario.</string>
     <string name="user_created_title">Usuario creado</string>
@@ -39,5 +49,7 @@
     <string name="login_fragment_label">Login Fragment</string>
     <string name="register_fragment_label">Register Fragment</string>
     <string name="splash_screen_fragment_label">Splash Screen Fragment</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
