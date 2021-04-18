@@ -26,9 +26,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.net.HttpURLConnection
 
-/**
- * A simple [Fragment] subclass as the default destination in the navigation.
- */
 class LoginFragment : Fragment() {
 
     private val userService = ServiceBuilder.buildService(UserService::class.java)
