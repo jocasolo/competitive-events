@@ -13,8 +13,8 @@ object MyDialog {
         val activity = fragment.requireActivity()
         val builder: AlertDialog = activity.let {
             AlertDialog.Builder(it)
-                    .setMessage(R.string.user_created)
-                    .setTitle(R.string.user_created_title)
+                    .setMessage(message)
+                    .setTitle(title)
                     .setPositiveButton(activity.resources.getString(R.string.confirm)) { _, _ ->
                         fragment.findNavController().navigate(navigateToId)
                     }
@@ -27,8 +27,8 @@ object MyDialog {
         val activity = fragment.requireActivity()
         val builder: AlertDialog = activity.let {
             AlertDialog.Builder(it)
-                .setMessage(R.string.user_created)
-                .setTitle(R.string.user_created_title)
+                .setMessage(message)
+                .setTitle(title)
                 .setPositiveButton(activity.resources.getString(R.string.confirm)) { _, _ ->
                     fragment.findNavController().navigate(navigateToId)
                 }

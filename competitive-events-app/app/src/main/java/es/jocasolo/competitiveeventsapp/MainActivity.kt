@@ -23,7 +23,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val accManager: AccountManager = AccountManager.get(this)
         setContentView(R.layout.activity_main)
     }
 

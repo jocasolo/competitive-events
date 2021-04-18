@@ -193,7 +193,7 @@ class RegisterFragment : Fragment() {
         if(txtPasswordConfirm?.text?.isEmpty()!!){
             txtPasswordConfirm?.error = getString(R.string.error_required)
             result = false
-        } else if(!txtPassword?.text?.toString().equals(txtPasswordConfirm?.text?.toString())!!){
+        } else if(!txtPassword?.text?.toString().equals(txtPasswordConfirm?.text?.toString())){
             txtPasswordConfirm?.error = getString(R.string.error_password_distinct)
             result = false
         }
