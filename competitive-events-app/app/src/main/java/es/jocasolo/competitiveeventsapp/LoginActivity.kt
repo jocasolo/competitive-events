@@ -1,8 +1,7 @@
 package es.jocasolo.competitiveeventsapp
 
-import android.accounts.AccountManager
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 
 class LoginActivity : AppCompatActivity() {
 

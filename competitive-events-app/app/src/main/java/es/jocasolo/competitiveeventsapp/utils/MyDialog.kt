@@ -1,10 +1,8 @@
 package es.jocasolo.competitiveeventsapp.utils
 
-import android.content.Intent
 import android.content.res.Resources
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.navigation.fragment.findNavController
 import es.jocasolo.competitiveeventsapp.R
 
