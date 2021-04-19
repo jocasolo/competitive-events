@@ -13,5 +13,7 @@
         android:icon="@drawable/logout"
         android:iconTint="@color/primary_dark"
         android:title="@string/logout" />
-    <item android:title="@string/exit" />
+    <item
+        android:id="@+id/item_exit"
+        android:title="@string/exit" />
 </menu>

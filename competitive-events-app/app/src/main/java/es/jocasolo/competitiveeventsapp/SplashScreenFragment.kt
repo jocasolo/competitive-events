@@ -35,13 +35,18 @@ class SplashScreenFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        var hasAccount = false
         // User authorization
         val accManager = AccountManager.get(context)
         for(account in accManager.accounts){
             if(account.type.equals(Constants.ACCOUNT_TYPE)){
+                hasAccount = true
                 login(account, accManager)
             }
         }
+
+        if(!hasAccount)
+            findNavController().navigate(R.id.action_Splash_to_Login)
     }
 
     private fun login(account : Account, accManager : AccountManager) {
@@ -51,7 +56,6 @@ class SplashScreenFragment : Fragment() {
                 if(response.code() == HttpURLConnection.HTTP_OK) {
                     val token = response.body()
                     token?.let {
-                        println("Logged")
                         accManager.setAuthToken(account, token.tokenType, token.accessToken)
                         accManager.setUserData(account, Constants.REFRESH_TOKEN, token.refreshToken)
                         accManager.setUserData(account, Constants.EXPIRES_IN, token.expiresIn)

@@ -2,6 +2,7 @@ package es.jocasolo.competitiveeventsapp
 
 import android.accounts.Account
 import android.accounts.AccountManager
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -74,6 +75,8 @@ class LoginFragment : Fragment() {
                             accManager.setAuthToken(account, token.tokenType, token.accessToken)
                             accManager.setUserData(account, Constants.REFRESH_TOKEN, token.refreshToken)
                             accManager.setUserData(account, Constants.EXPIRES_IN, token.expiresIn)
+                            startActivity(Intent(requireActivity(), MainActivity::class.java))
+                            requireActivity().finish()
                         }
                     } else {
                         try {

@@ -13,8 +13,8 @@
         android:theme="@style/Theme.CompetitiveEventsApp"
         android:usesCleartextTraffic="true">
 
-        <!--<activity android:name=".MainActivity"/>-->
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"/>
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
