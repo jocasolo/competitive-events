@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import es.jocasolo.competitiveeventsapi.dto.user.UserCompleteDTO;
 import es.jocasolo.competitiveeventsapi.dto.user.UserDTO;
 import es.jocasolo.competitiveeventsapi.dto.user.UserPageDTO;
 import es.jocasolo.competitiveeventsapi.dto.user.UserPasswordDTO;
@@ -54,9 +55,9 @@ public class UserController {
 	
 	@GetMapping(value = "/{id}", produces = "application/json;charset=utf8")
 	@ApiOperation(value = "Search for an user based on its id.")
-	public UserDTO findOne(@PathVariable("id") String id) throws UserNotFoundException {
+	public UserCompleteDTO findOne(@PathVariable("id") String id) throws UserNotFoundException {
 		log.debug("Looking for the user with id: {}", id);
-		return commonService.transform(userService.findOne(id), UserDTO.class);
+		return commonService.transform(userService.findOne(id), UserCompleteDTO.class);
 	}
 	
 	@RequestMapping(method = RequestMethod.HEAD, value = "/{id}", produces = "application/json;charset=utf8")
@@ -100,8 +101,8 @@ public class UserController {
 	public void update(
 			@PathVariable("id") String id, 
 			@Valid @RequestBody UserPutDTO userDTO)
-			throws UserWrongUpdateException, UserInvalidStatusException, UserEmailExistsException, UserUsenameExistsException, UserWrongPasswordException,
-			UserNotFoundException {
+			throws UserInvalidStatusException, UserEmailExistsException, UserUsenameExistsException, UserWrongPasswordException,
+			UserNotFoundException, UserNotValidException {
 		log.debug("Updating user with id: {}", id);
 		userService.update(id, userDTO);
 	}
