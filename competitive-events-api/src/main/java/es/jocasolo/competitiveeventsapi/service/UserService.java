@@ -55,9 +55,10 @@ public interface UserService extends UserDetailsService {
 	 * @throws UserWrongUpdateException
 	 * @throws UserInvalidStatusException
 	 * @throws UserNotFoundException
+	 * @throws UserNotValidException 
 	 */
 	void update(String id, UserPutDTO userDto)
-			throws UserInvalidStatusException, UserEmailExistsException, UserUsenameExistsException, UserWrongPasswordException, UserWrongUpdateException, UserNotFoundException;
+			throws UserInvalidStatusException, UserEmailExistsException, UserUsenameExistsException, UserWrongPasswordException, UserNotFoundException, UserNotValidException;
 
 	/**
 	 * Deletes a user by id

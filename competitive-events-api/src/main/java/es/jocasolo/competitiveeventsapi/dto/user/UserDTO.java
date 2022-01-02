@@ -1,6 +1,7 @@
 package es.jocasolo.competitiveeventsapi.dto.user;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import es.jocasolo.competitiveeventsapi.dto.DTO;
 import es.jocasolo.competitiveeventsapi.dto.image.ImageDTO;
@@ -18,6 +19,10 @@ public class UserDTO extends DTO implements Serializable {
 	private String description;
 
 	private ImageDTO avatar;
+
+	private Date registerDate;
+
+	private Date birthDate;
 
 	public String getId() {
 		return id;
@@ -57,6 +62,22 @@ public class UserDTO extends DTO implements Serializable {
 
 	public void setAvatar(ImageDTO avatar) {
 		this.avatar = avatar;
+	}
+
+	public Date getRegisterDate() {
+		return registerDate;
+	}
+
+	public void setRegisterDate(Date registerDate) {
+		this.registerDate = registerDate;
+	}
+
+	public Date getBirthDate() {
+		return birthDate;
+	}
+
+	public void setBirthDate(Date birthDate) {
+		this.birthDate = birthDate;
 	}
 
 	@Override

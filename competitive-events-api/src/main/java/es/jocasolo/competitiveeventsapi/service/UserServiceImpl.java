@@ -69,6 +69,10 @@ public class UserServiceImpl implements UserService {
 		if (user == null)
 			throw new UserNotFoundException();
 		
+		if(!user.equals(authentication.getUser())) {
+			user.setEmail(null);
+		}
+		
 		return user;
 	}
 	
@@ -118,21 +122,18 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void update(String id, UserPutDTO dto) throws UserWrongUpdateException, UserInvalidStatusException, UserEmailExistsException, UserUsenameExistsException,
-			UserWrongPasswordException, UserNotFoundException {
-
-		if (StringUtils.isNotEmpty(dto.getId()) && !dto.getId().equals(id))
-			throw new UserWrongUpdateException();
-
+	public void update(String id, UserPutDTO dto) throws UserInvalidStatusException, UserEmailExistsException, UserUsenameExistsException,
+			UserWrongPasswordException, UserNotFoundException, UserNotValidException {
+		
 		User user = userDao.findOne(id);
 		if (user == null)
 			throw new UserNotFoundException();
+		
+		if(!authentication.getUser().equals(user))
+			throw new UserNotValidException();
 
 		if (StringUtils.isNotEmpty(dto.getEmail()) && emailExist(dto.getEmail()))
 			throw new UserEmailExistsException();
-
-		if (!validPassword(user.getPassword(), dto.getPassword()))
-			throw new UserWrongPasswordException();
 
 		user.setBirthDate(EventUtils.getValue(dto.getBirthDate(), user.getBirthDate()));
 		user.setDescription(EventUtils.getValue(dto.getDescription(), user.getDescription()));
