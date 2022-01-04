@@ -16,6 +16,10 @@ class UserInfo private constructor(context: Context) {
         return userDto
     }
 
+    fun getId() : String {
+        return userDto?.id!!
+    }
+
     fun getAvatar() : ImageDTO? {
         return userDto?.avatar
     }

@@ -3,6 +3,7 @@ package es.jocasolo.competitiveeventsapp.service
 import es.jocasolo.competitiveeventsapp.dto.login.LoginDTO
 import es.jocasolo.competitiveeventsapp.dto.login.TokenDTO
 import es.jocasolo.competitiveeventsapp.dto.user.UserDTO
+import es.jocasolo.competitiveeventsapp.dto.user.UserPutDTO
 import es.jocasolo.competitiveeventsapp.dto.user.UserPostDTO
 import retrofit2.Call
 import retrofit2.http.*
@@ -22,4 +23,8 @@ interface UserService {
     @Headers("Content-Type: application/json")
     @POST("/users")
     fun create(@Body body: UserPostDTO) : Call<UserDTO>
+
+    @Headers("Content-Type: application/json")
+    @PUT("/users/{id}")
+    fun update(@Path (value="id") id: String, @Body body: UserPutDTO, @Header(value="Authorization") authorization : String) : Call<Void>
 }

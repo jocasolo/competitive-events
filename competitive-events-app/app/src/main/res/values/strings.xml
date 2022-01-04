@@ -17,6 +17,7 @@
     <string name="register_date">Fecha registro</string>
     <string name="birth_date">Fecha nacimiento</string>
     <string name="sdf_date">dd-MM-yyyy</string>
+    <string name="sdf_api_date">yyyy-MM-dd\'T\'HH:mm:ss</string>
     <string name="modify">Modificar</string>
     <string name="save">Guardar</string>
 
@@ -44,6 +45,7 @@
 
     <!-- Update user -->
     <string name="update_avatar">Cambiar avatar…</string>
+    <string name="success_updated_user">Usuario actualizado con éxito.</string>
 
     <!-- Errors -->
     <string name="error_title">Error</string>
@@ -56,6 +58,10 @@
     <string name="error_password_not_valid">Contraseña no válida. Debe contener al menos una mayúscula, un número y 8 caracteres</string>
     <string name="error_password_distinct">Las contraseñas no coinciden</string>
     <string name="title_activity_main2">MainActivity</string>
+
+    <!-- Messages -->
+    <string name="success_action_title">Acción realizada</string>
+
 
     <!-- Strings used for fragments for navigation -->
     <string name="login_fragment_label">Login Fragment</string>
