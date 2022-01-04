@@ -1,35 +1,31 @@
 package es.jocasolo.competitiveeventsapp
 
-import android.accounts.Account
-import android.accounts.AccountManager
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ProgressBar
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.google.gson.Gson
-import es.jocasolo.competitiveeventsapp.constants.Constants
-import es.jocasolo.competitiveeventsapp.dto.ErrorDTO
-import es.jocasolo.competitiveeventsapp.dto.login.LoginDTO
-import es.jocasolo.competitiveeventsapp.dto.login.TokenDTO
-import es.jocasolo.competitiveeventsapp.service.ServiceBuilder
-import es.jocasolo.competitiveeventsapp.service.UserService
-import es.jocasolo.competitiveeventsapp.utils.Message
-import es.jocasolo.competitiveeventsapp.utils.MyDialog
-import es.jocasolo.competitiveeventsapp.utils.MyUtils
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.net.HttpURLConnection
+import com.squareup.picasso.Picasso
+import es.jocasolo.competitiveeventsapp.dto.user.UserDTO
+import es.jocasolo.competitiveeventsapp.singleton.UserInfo
+import java.text.SimpleDateFormat
+
 
 class ProfileFragment : Fragment() {
 
-    private val userService = ServiceBuilder.buildService(UserService::class.java)
+    private var txtUsername : TextView? = null
+    private var txtEmail : TextView? = null
+    private var txtName : TextView? = null
+    private var txtSurname : TextView? = null
+    private var txtBirthDate : TextView? = null
+    private var txtRegisterDate : TextView? = null
+    private var txtDescription : TextView? = null
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -40,7 +36,72 @@ class ProfileFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        txtName = view.findViewById(R.id.txt_profile_name)
+        txtSurname = view.findViewById(R.id.txt_profile_surname)
+        txtEmail = view.findViewById(R.id.txt_profile_email)
+        txtUsername = view.findViewById(R.id.txt_profile_username)
+        txtBirthDate = view.findViewById(R.id.txt_profile_birthDate)
+        txtRegisterDate = view.findViewById(R.id.txt_profile_registerDate)
+        txtDescription = view.findViewById(R.id.txt_profile_description)
+        view.findViewById<Button>(R.id.btn_profile_modify).setOnClickListener {
+            findNavController().navigate(R.id.action_profile_to_update_profile)
+        }
+
+        // Load user info
+        initFields(UserInfo.getInstance(requireContext()).getUserDTO())
+
         super.onViewCreated(view, savedInstanceState)
+    }
+
+    private fun initFields(user: UserDTO?) {
+        val sdf : SimpleDateFormat = SimpleDateFormat(getString(R.string.sdf_date))
+        txtUsername?.text = user?.id
+        txtEmail?.text = user?.email
+        user?.avatar?.let {
+            Picasso.get().load(user.avatar!!.url).into(view?.findViewById<ImageView>(R.id.img_profile_avatar))
+        }
+        user?.name?.let {
+            txtName?.text = user.name
+            txtName?.visibility = View.VISIBLE
+        }
+        user?.surname?.let {
+            txtSurname?.text = user.surname
+            txtSurname?.visibility = View.VISIBLE
+        }
+        user?.registerDate?.let {
+            txtRegisterDate?.text = sdf.format(user.registerDate!!)
+            txtRegisterDate?.visibility = View.VISIBLE
+        }
+        user?.birthDate?.let {
+            txtBirthDate?.text = sdf.format(user.birthDate!!)
+            txtBirthDate?.visibility = View.VISIBLE
+        }
+        user?.description?.let {
+            txtDescription?.text = user.description
+            txtDescription?.visibility = View.VISIBLE
+        }
+    }
+
+    private fun imageChooser() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, 200)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode == -1) {
+            if (requestCode == 200) {
+                val selectedImageUri: Uri? = data?.data
+                if (null != selectedImageUri) {
+                    var imageView = view?.findViewById<ImageView>(R.id.img_profile_avatar)
+                    imageView?.visibility = View.VISIBLE
+                    Picasso.get().load(selectedImageUri).into(imageView)
+                }
+            }
+        }
     }
 
 }

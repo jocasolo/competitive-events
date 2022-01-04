@@ -12,6 +12,10 @@ interface UserService {
     @POST("/login")
     fun login(@Body body: LoginDTO) : Call<TokenDTO>
 
+    @Headers("Content-Type: application/json")
+    @GET("/users/{id}")
+    fun findUser(@Path (value="id") id: String, @Header(value="Authorization") authorization : String) : Call<UserDTO>
+
     @HEAD("/users/{id}")
     fun exists(@Path (value="id") id: String) : Call<Void>
 

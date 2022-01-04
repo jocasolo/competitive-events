@@ -1,5 +1,6 @@
 package es.jocasolo.competitiveeventsapp.utils
 
+import android.app.Activity
 import android.content.res.Resources
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
@@ -46,6 +47,18 @@ object MyDialog {
                     .setPositiveButton(activity.resources.getString(R.string.confirm)) { _, _ ->
                     }
                     .create()
+        }
+        builder.show()
+    }
+
+    fun message (activity : Activity, title : String, message : String){
+        val builder: AlertDialog = activity.let {
+            AlertDialog.Builder(it)
+                .setMessage(message)
+                .setTitle(title)
+                .setPositiveButton(activity.resources.getString(R.string.confirm)) { _, _ ->
+                }
+                .create()
         }
         builder.show()
     }

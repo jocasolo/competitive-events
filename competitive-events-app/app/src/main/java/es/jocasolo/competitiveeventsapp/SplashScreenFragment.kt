@@ -56,7 +56,7 @@ class SplashScreenFragment : Fragment() {
                 if(response.code() == HttpURLConnection.HTTP_OK) {
                     val token = response.body()
                     token?.let {
-                        accManager.setAuthToken(account, token.tokenType, token.accessToken)
+                        accManager.setUserData(account, Constants.ACCESS_TOKEN, token.accessToken)
                         accManager.setUserData(account, Constants.REFRESH_TOKEN, token.refreshToken)
                         accManager.setUserData(account, Constants.EXPIRES_IN, token.expiresIn)
                         startActivity(Intent(requireActivity(), MainActivity::class.java))

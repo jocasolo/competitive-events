@@ -9,11 +9,29 @@
         android:name="es.jocasolo.competitiveeventsapp.HomeFragment"
         android:label="HomeFragment"
         tools:layout="@layout/fragment_home"
-        />
+        >
+        <action
+            android:id="@+id/action_home_to_profile"
+            app:destination="@id/profileFragment" />
+    </fragment>
     <fragment
         android:id="@+id/profileFragment"
         android:name="es.jocasolo.competitiveeventsapp.ProfileFragment"
         android:label="ProfileFragment"
         tools:layout="@layout/fragment_profile"
-        />
+        >
+        <action
+            android:id="@+id/action_profile_to_update_profile"
+            app:destination="@id/profileUpdateFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/profileUpdateFragment"
+        android:name="es.jocasolo.competitiveeventsapp.ProfileUpdateFragment"
+        android:label="ProfileUpdateFragment"
+        tools:layout="@layout/fragment_profile_update"
+        >
+        <action
+            android:id="@+id/action_update_profile_to_profile"
+            app:destination="@id/profileFragment" />
+    </fragment>
 </navigation>

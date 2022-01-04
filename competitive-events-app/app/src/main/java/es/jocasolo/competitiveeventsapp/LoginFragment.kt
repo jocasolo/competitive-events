@@ -72,7 +72,7 @@ class LoginFragment : Fragment() {
                             val accManager: AccountManager = AccountManager.get(context)
                             val account = Account(txtUsername?.text.toString(), "competitiveevents.com")
                             accManager.addAccountExplicitly(account, txtPassword?.text.toString(), null)
-                            accManager.setAuthToken(account, token.tokenType, token.accessToken)
+                            accManager.setUserData(account, Constants.ACCESS_TOKEN, token.accessToken)
                             accManager.setUserData(account, Constants.REFRESH_TOKEN, token.refreshToken)
                             accManager.setUserData(account, Constants.EXPIRES_IN, token.expiresIn)
                             startActivity(Intent(requireActivity(), MainActivity::class.java))

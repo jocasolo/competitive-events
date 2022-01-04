@@ -9,7 +9,16 @@
     <string name="back">Volver</string>
     <string name="next">Siguiente</string>
     <string name="previous">Atrás</string>
-    <string name="check_user">Comprobando credenciales...</string>
+    <string name="loading">Cargando…</string>
+    <string name="check_user">Comprobando credenciales…</string>
+    <string name="name">Nombre</string>
+    <string name="surname">Apellidos</string>
+    <string name="description">Descripción</string>
+    <string name="register_date">Fecha registro</string>
+    <string name="birth_date">Fecha nacimiento</string>
+    <string name="sdf_date">dd-MM-yyyy</string>
+    <string name="modify">Modificar</string>
+    <string name="save">Guardar</string>
 
     <!-- Action bar -->
     <string name="logout">Cerrar sesión</string>
@@ -32,6 +41,9 @@
     <string name="register">Registro</string>
     <string name="register_title">Registro de usuario</string>
     <string name="register_intro">Regístrate en la aplicación y compite con tus amigos en un sin fín de actividades</string>
+
+    <!-- Update user -->
+    <string name="update_avatar">Cambiar avatar…</string>
 
     <!-- Errors -->
     <string name="error_title">Error</string>
