@@ -3,40 +3,24 @@ package es.jocasolo.competitiveeventsapi.dto.image;
 import java.io.Serializable;
 
 import es.jocasolo.competitiveeventsapi.dto.DTO;
+import lombok.Getter;
+import lombok.Setter;
 
 public class ImageDTO extends DTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	@Getter
+	@Setter
 	private String id;
 
+	@Getter
+	@Setter
 	private String name;
 
+	@Getter
+	@Setter
 	private String url;
-
-	public String getUrl() {
-		return url;
-	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
 
 	@Override
 	public String toString() {

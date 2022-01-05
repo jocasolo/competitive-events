@@ -5,80 +5,40 @@ import java.util.Date;
 
 import es.jocasolo.competitiveeventsapi.dto.DTO;
 import es.jocasolo.competitiveeventsapi.dto.image.ImageDTO;
+import lombok.Getter;
+import lombok.Setter;
 
 public class UserDTO extends DTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	@Getter
+	@Setter
 	private String id;
 
+	@Getter
+	@Setter
 	private String name;
 
+	@Getter
+	@Setter
 	private String surname;
 
+	@Getter
+	@Setter
 	private String description;
 
+	@Getter
+	@Setter
 	private ImageDTO avatar;
 
+	@Getter
+	@Setter
 	private Date registerDate;
 
+	@Getter
+	@Setter
 	private Date birthDate;
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getSurname() {
-		return surname;
-	}
-
-	public void setSurname(String surname) {
-		this.surname = surname;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public ImageDTO getAvatar() {
-		return avatar;
-	}
-
-	public void setAvatar(ImageDTO avatar) {
-		this.avatar = avatar;
-	}
-
-	public Date getRegisterDate() {
-		return registerDate;
-	}
-
-	public void setRegisterDate(Date registerDate) {
-		this.registerDate = registerDate;
-	}
-
-	public Date getBirthDate() {
-		return birthDate;
-	}
-
-	public void setBirthDate(Date birthDate) {
-		this.birthDate = birthDate;
-	}
 
 	@Override
 	public String toString() {

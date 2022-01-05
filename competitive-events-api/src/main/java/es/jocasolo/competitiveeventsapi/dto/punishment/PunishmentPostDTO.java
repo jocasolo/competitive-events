@@ -7,64 +7,36 @@ import javax.validation.constraints.NotNull;
 
 import es.jocasolo.competitiveeventsapi.dto.DTO;
 import es.jocasolo.competitiveeventsapi.enums.score.ScoreSortType;
+import lombok.Getter;
+import lombok.Setter;
 
 public class PunishmentPostDTO extends DTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	@Getter
+	@Setter
 	@NotBlank
 	private String title;
 	
+	@Getter
+	@Setter
 	private String description;
 	
+	@Getter
+	@Setter
 	@NotBlank
 	private String eventId;
 	
+	@Getter
+	@Setter
 	@NotNull
 	private ScoreSortType sortScore;
 	
+	@Getter
+	@Setter
 	@NotNull
 	private Integer requiredPosition;
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public String getEventId() {
-		return eventId;
-	}
-
-	public void setEventId(String eventId) {
-		this.eventId = eventId;
-	}
-
-	public ScoreSortType getSortScore() {
-		return sortScore;
-	}
-
-	public void setSortScore(ScoreSortType sortScore) {
-		this.sortScore = sortScore;
-	}
-
-	public Integer getRequiredPosition() {
-		return requiredPosition;
-	}
-
-	public void setRequiredPosition(Integer requiredPosition) {
-		this.requiredPosition = requiredPosition;
-	}
 
 	@Override
 	public String toString() {

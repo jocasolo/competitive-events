@@ -4,50 +4,28 @@ import java.io.Serializable;
 
 import es.jocasolo.competitiveeventsapi.dto.DTO;
 import es.jocasolo.competitiveeventsapi.enums.score.ScoreSortType;
+import lombok.Getter;
+import lombok.Setter;
 
 public class PunishmentPutDTO extends DTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	@Getter
+	@Setter
 	private String title;
 
+	@Getter
+	@Setter
 	private String description;
 
+	@Getter
+	@Setter
 	private ScoreSortType sortScore;
 
+	@Getter
+	@Setter
 	private Integer requiredPosition;
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public ScoreSortType getSortScore() {
-		return sortScore;
-	}
-
-	public void setSortScore(ScoreSortType sortScore) {
-		this.sortScore = sortScore;
-	}
-
-	public Integer getRequiredPosition() {
-		return requiredPosition;
-	}
-
-	public void setRequiredPosition(Integer requiredPosition) {
-		this.requiredPosition = requiredPosition;
-	}
 
 	@Override
 	public String toString() {

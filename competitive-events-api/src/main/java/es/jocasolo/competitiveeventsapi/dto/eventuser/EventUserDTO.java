@@ -6,70 +6,36 @@ import java.util.Date;
 import es.jocasolo.competitiveeventsapi.dto.DTO;
 import es.jocasolo.competitiveeventsapi.enums.eventuser.EventUserPrivilegeType;
 import es.jocasolo.competitiveeventsapi.enums.eventuser.EventUserStatusType;
+import lombok.Getter;
+import lombok.Setter;
 
 public class EventUserDTO extends DTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	@Getter
+	@Setter
 	private String userId;
 
+	@Getter
+	@Setter
 	private String eventId;
 
+	@Getter
+	@Setter
 	private Date incorporationDate;
 
+	@Getter
+	@Setter
 	private Date lastStatusDate;
 
+	@Getter
+	@Setter
 	private EventUserPrivilegeType privilege;
 
+	@Getter
+	@Setter
 	private EventUserStatusType status;
-
-	public String getUserId() {
-		return userId;
-	}
-
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
-
-	public String getEventId() {
-		return eventId;
-	}
-
-	public void setEventId(String eventId) {
-		this.eventId = eventId;
-	}
-
-	public Date getIncorporationDate() {
-		return incorporationDate;
-	}
-
-	public void setIncorporationDate(Date incorporationDate) {
-		this.incorporationDate = incorporationDate;
-	}
-
-	public Date getLastStatusDate() {
-		return lastStatusDate;
-	}
-
-	public void setLastStatusDate(Date lastStatusDate) {
-		this.lastStatusDate = lastStatusDate;
-	}
-
-	public EventUserPrivilegeType getPrivilege() {
-		return privilege;
-	}
-
-	public void setPrivilege(EventUserPrivilegeType privilege) {
-		this.privilege = privilege;
-	}
-
-	public EventUserStatusType getStatus() {
-		return status;
-	}
-
-	public void setStatus(EventUserStatusType status) {
-		this.status = status;
-	}
 
 	@Override
 	public String toString() {

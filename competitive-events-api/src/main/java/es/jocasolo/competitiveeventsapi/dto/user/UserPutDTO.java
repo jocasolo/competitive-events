@@ -6,61 +6,33 @@ import java.util.Date;
 import javax.validation.constraints.Email;
 
 import es.jocasolo.competitiveeventsapi.dto.DTO;
+import lombok.Getter;
+import lombok.Setter;
 
 public class UserPutDTO extends DTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	@Getter
+	@Setter
 	@Email
 	private String email;
 
+	@Getter
+	@Setter
 	private String name;
 
+	@Getter
+	@Setter
 	private String surname;
 
+	@Getter
+	@Setter
 	private String description;
 
+	@Getter
+	@Setter
 	private Date birthDate;
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getSurname() {
-		return surname;
-	}
-
-	public void setSurname(String surname) {
-		this.surname = surname;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public Date getBirthDate() {
-		return birthDate;
-	}
-
-	public void setBirthDate(Date birthDate) {
-		this.birthDate = birthDate;
-	}
 
 	@Override
 	public String toString() {

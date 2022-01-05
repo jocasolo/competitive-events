@@ -5,31 +5,21 @@ import java.io.Serializable;
 import javax.validation.constraints.NotBlank;
 
 import es.jocasolo.competitiveeventsapi.dto.DTO;
+import lombok.Getter;
+import lombok.Setter;
 
 public class CommentPostDTO extends DTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	@Getter
+	@Setter
 	private String text;
 
+	@Getter
+	@Setter
 	@NotBlank
 	private String eventId;
-
-	public String getEventId() {
-		return eventId;
-	}
-
-	public void setEventId(String eventId) {
-		this.eventId = eventId;
-	}
-
-	public String getText() {
-		return text;
-	}
-
-	public void setText(String text) {
-		this.text = text;
-	}
 
 	@Override
 	public String toString() {

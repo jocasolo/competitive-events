@@ -9,140 +9,64 @@ import es.jocasolo.competitiveeventsapi.enums.event.EventInscriptionType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventVisibilityType;
 import es.jocasolo.competitiveeventsapi.enums.score.ScoreValueType;
+import lombok.Getter;
+import lombok.Setter;
 
 public class EventDTO extends DTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	@Getter
+	@Setter
 	private String id;
 
+	@Getter
+	@Setter
 	private String title;
 
+	@Getter
+	@Setter
 	private String subtitle;
 
+	@Getter
+	@Setter
 	private String description;
 
+	@Getter
+	@Setter
 	private EventType type;
 
+	@Getter
+	@Setter
 	private EventInscriptionType inscription;
 
+	@Getter
+	@Setter
 	private EventVisibilityType visibility;
 
+	@Getter
+	@Setter
 	private Boolean approvalNeeded;
 
+	@Getter
+	@Setter
 	private Date initDate;
 
+	@Getter
+	@Setter
 	private Date endDate;
 
+	@Getter
+	@Setter
 	private Integer maxPlaces;
 
+	@Getter
+	@Setter
 	private ImageDTO image;
 
+	@Getter
+	@Setter
 	private ScoreValueType scoreType;
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public String getSubtitle() {
-		return subtitle;
-	}
-
-	public void setSubtitle(String subtitle) {
-		this.subtitle = subtitle;
-	}
-
-	public EventType getType() {
-		return type;
-	}
-
-	public void setType(EventType type) {
-		this.type = type;
-	}
-
-	public EventInscriptionType getInscription() {
-		return inscription;
-	}
-
-	public void setInscription(EventInscriptionType inscription) {
-		this.inscription = inscription;
-	}
-
-	public EventVisibilityType getVisibility() {
-		return visibility;
-	}
-
-	public void setVisibility(EventVisibilityType visibility) {
-		this.visibility = visibility;
-	}
-
-	public Boolean getApprovalNeeded() {
-		return approvalNeeded;
-	}
-
-	public void setApprovalNeeded(Boolean approvalNeeded) {
-		this.approvalNeeded = approvalNeeded;
-	}
-
-	public Date getInitDate() {
-		return initDate;
-	}
-
-	public void setInitDate(Date initDate) {
-		this.initDate = initDate;
-	}
-
-	public Date getEndDate() {
-		return endDate;
-	}
-
-	public void setEndDate(Date endDate) {
-		this.endDate = endDate;
-	}
-
-	public Integer getMaxPlaces() {
-		return maxPlaces;
-	}
-
-	public void setMaxPlaces(Integer maxPlaces) {
-		this.maxPlaces = maxPlaces;
-	}
-
-	public ImageDTO getImage() {
-		return image;
-	}
-
-	public void setImage(ImageDTO image) {
-		this.image = image;
-	}
-
-	public ScoreValueType getScoreType() {
-		return scoreType;
-	}
-
-	public void setScoreType(ScoreValueType scoreType) {
-		this.scoreType = scoreType;
-	}
 
 	@Override
 	public String toString() {

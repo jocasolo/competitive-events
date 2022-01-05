@@ -4,40 +4,24 @@ import java.io.Serializable;
 
 import es.jocasolo.competitiveeventsapi.dto.DTO;
 import es.jocasolo.competitiveeventsapi.enums.score.ScoreStatusType;
+import lombok.Getter;
+import lombok.Setter;
 
 public class ScorePutDTO extends DTO implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	@Getter
+	@Setter
 	private String value;
 
+	@Getter
+	@Setter
 	private ScoreStatusType status;
 
+	@Getter
+	@Setter
 	private String eventId;
-
-	public String getValue() {
-		return value;
-	}
-
-	public void setValue(String value) {
-		this.value = value;
-	}
-
-	public ScoreStatusType getStatus() {
-		return status;
-	}
-
-	public void setStatus(ScoreStatusType status) {
-		this.status = status;
-	}
-
-	public String getEventId() {
-		return eventId;
-	}
-
-	public void setEventId(String eventId) {
-		this.eventId = eventId;
-	}
 
 	@Override
 	public String toString() {
