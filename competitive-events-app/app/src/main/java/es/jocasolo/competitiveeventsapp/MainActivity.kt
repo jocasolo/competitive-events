@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(setOf(
-                R.id.homeFragment, R.id.profileFragment))
+                R.id.homeFragment, R.id.profileFragment, R.id.profileUpdateFragment))
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
@@ -70,6 +70,11 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.item_logout -> {
                 logout()
+                true
+            }
+            android.R.id.home -> {
+                // Actionbar back button
+                this.supportFragmentManager.popBackStack()
                 true
             }
             else -> super.onOptionsItemSelected(item)

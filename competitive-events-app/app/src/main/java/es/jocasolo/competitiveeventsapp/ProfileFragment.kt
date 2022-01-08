@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.squareup.picasso.Picasso
@@ -31,6 +32,12 @@ class ProfileFragment : Fragment() {
             inflater: LayoutInflater, container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
+
+        // Action bar title
+        val actionBar = (activity as AppCompatActivity?)!!.supportActionBar!!
+        actionBar.title = getString(R.string.profile)
+        actionBar.setHomeButtonEnabled(false)
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_profile, container, false)
     }

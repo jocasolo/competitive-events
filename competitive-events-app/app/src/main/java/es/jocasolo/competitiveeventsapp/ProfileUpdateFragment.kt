@@ -3,12 +3,14 @@
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.gson.Gson
 import com.squareup.picasso.Picasso
@@ -41,6 +43,11 @@ import java.util.*
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        // Action bar title
+        val actionBar = (activity as AppCompatActivity?)!!.supportActionBar!!
+        actionBar.title = getString(R.string.update_profile)
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_profile_update, container, false)
     }

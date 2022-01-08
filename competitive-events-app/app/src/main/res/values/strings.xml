@@ -30,6 +30,7 @@
     <string name="your_events">Tus eventos</string>
     <string name="create_event">Nuevo evento</string>
     <string name="profile">Perfil</string>
+    <string name="update_profile">Actualizar Perfil</string>
 
     <!-- Register -->
     <string name="user_created">El usuario ha sido creado con éxito. Se ha enviado un correo a tu dirección de correo electrónico. Por favor, confirma la creación de usuario.</string>
