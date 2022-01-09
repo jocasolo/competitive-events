@@ -1,9 +1,12 @@
  package es.jocasolo.competitiveeventsapp
 
 import android.app.DatePickerDialog
+import android.content.Intent
+import android.database.Cursor
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
@@ -15,16 +18,22 @@ import androidx.fragment.app.Fragment
 import com.google.gson.Gson
 import com.squareup.picasso.Picasso
 import es.jocasolo.competitiveeventsapp.dto.ErrorDTO
+import es.jocasolo.competitiveeventsapp.dto.image.ImageDTO
 import es.jocasolo.competitiveeventsapp.dto.user.UserDTO
 import es.jocasolo.competitiveeventsapp.dto.user.UserPutDTO
+import es.jocasolo.competitiveeventsapp.service.ImageService
 import es.jocasolo.competitiveeventsapp.service.ServiceBuilder
 import es.jocasolo.competitiveeventsapp.service.UserService
 import es.jocasolo.competitiveeventsapp.singleton.UserAccount
 import es.jocasolo.competitiveeventsapp.singleton.UserInfo
 import es.jocasolo.competitiveeventsapp.utils.*
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
 import java.net.HttpURLConnection
 import java.text.SimpleDateFormat
 import java.util.*
@@ -32,6 +41,7 @@ import java.util.*
  class ProfileUpdateFragment : Fragment() {
 
     private val userService = ServiceBuilder.buildService(UserService::class.java)
+
     private var sdf : SimpleDateFormat? = null
     private var txtName : TextView? = null
     private var txtSurname : TextView? = null
@@ -40,13 +50,14 @@ import java.util.*
     private var spinner : ProgressBar? = null
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
 
         // Action bar title
         val actionBar = (activity as AppCompatActivity?)!!.supportActionBar!!
         actionBar.title = getString(R.string.update_profile)
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_profile_update, container, false)
@@ -60,6 +71,9 @@ import java.util.*
         txtBirthDate?.setOnClickListener(View.OnClickListener { showDatePicker() })
         txtDescription = view.findViewById(R.id.txt_update_description)
         spinner = view.findViewById(R.id.spn_update_user)
+
+        // Avatar button
+        view.findViewById<Button>(R.id.btn_profile_update_avatar).setOnClickListener(View.OnClickListener { imageChooser() })
 
         // Load user info
         initFields(UserInfo.getInstance(requireContext()).getUserDTO())
@@ -77,11 +91,11 @@ import java.util.*
         }
 
         val listener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth -> updateBirthDayDate(
-            year,
-            month,
-            dayOfMonth
+                year,
+                month,
+                dayOfMonth
         ) }
-        val dialog = DatePickerDialog(requireContext(), listener, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH)+1, calendar.get(Calendar.DAY_OF_MONTH))
+        val dialog = DatePickerDialog(requireContext(), listener, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH))
         dialog.show()
     }
 
@@ -129,17 +143,17 @@ import java.util.*
 
             val actualUserDto = UserInfo.getInstance(requireContext()).getUserDTO();
             val updatedUserDto = UserPutDTO(
-                null,
-                txtName?.text.toString(),
-                txtSurname?.text.toString(),
-                txtDescription?.text.toString(),
-                sdfApi.format(birthDate!!)
+                    null,
+                    txtName?.text.toString(),
+                    txtSurname?.text.toString(),
+                    txtDescription?.text.toString(),
+                    sdfApi.format(birthDate!!)
             )
 
             userService.update(
-                actualUserDto?.id.toString(), updatedUserDto, UserAccount.getInstance(
+                    actualUserDto?.id.toString(), updatedUserDto, UserAccount.getInstance(
                     requireContext()
-                ).getToken()
+            ).getToken()
             ).enqueue(object : Callback<Void> {
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {
                     if (response.code() == HttpURLConnection.HTTP_OK) {
@@ -149,8 +163,8 @@ import java.util.*
                     } else {
                         try {
                             val errorDto = Gson().fromJson(
-                                response.errorBody()?.string(),
-                                ErrorDTO::class.java
+                                    response.errorBody()?.string(),
+                                    ErrorDTO::class.java
                             ) as ErrorDTO
                             showErrorDialog(getString(Message.forCode(errorDto.message)))
                         } catch (e: Exception) {
@@ -185,7 +199,78 @@ import java.util.*
         return result
     }
 
-    private fun showSuccessDialog(message: String) {
+     private fun imageChooser() {
+         val intent = Intent(Intent.ACTION_PICK)
+         intent.type = "image/*"
+         startActivityForResult(intent, 200)
+     }
+
+     // Update avatar
+     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+
+         super.onActivityResult(requestCode, resultCode, data)
+
+         if (resultCode == -1) {
+             if (requestCode == 200) {
+                 val selectedImageUri: Uri? = data?.data
+                 if (null != selectedImageUri) {
+
+                     spinner?.visibility = View.VISIBLE
+
+                     val imageView = view?.findViewById<ImageView>(R.id.img_update_avatar)
+                     imageView?.visibility = View.VISIBLE
+                     Picasso.get().load(selectedImageUri).into(imageView)
+
+                     // Upload image to storage service
+                     val filePath: String = getImagePath(selectedImageUri)
+                     val file = File(filePath)
+                     val filePart = MultipartBody.Part.createFormData("file", file.name, RequestBody.create(MediaType.parse("image/*"), file));
+
+                     userService.updateAvatar(filePart, UserAccount.getInstance(requireContext()).getName(), UserAccount.getInstance(requireContext()).getToken()).enqueue(object : Callback<UserDTO> {
+
+                         override fun onResponse(call: Call<UserDTO>, response: Response<UserDTO>) {
+                             if (response.code() == HttpURLConnection.HTTP_OK) {
+                                 UserInfo.getInstance(requireContext()).getUserDTO()?.avatar = response.body()?.avatar;
+                                 showSuccessDialog(getString(R.string.success_updated_avatar))
+                             } else {
+                                 try {
+                                     val errorDto = Gson().fromJson(
+                                             response.errorBody()?.string(),
+                                             ErrorDTO::class.java
+                                     ) as ErrorDTO
+                                     showErrorDialog(getString(Message.forCode(errorDto.message)))
+                                 } catch (e: Exception) {
+                                     showErrorDialog(getString(R.string.error_api_undefined))
+                                 }
+                             }
+                             spinner?.visibility = View.INVISIBLE
+                         }
+
+                         override fun onFailure(call: Call<UserDTO>, t: Throwable) {
+                             showErrorDialog(getString(R.string.error_api_undefined))
+                             spinner?.visibility = View.INVISIBLE
+                         }
+
+                     })
+                 }
+             }
+         }
+     }
+
+     private fun getImagePath(selectedImageUri: Uri): String {
+         val filePath: String
+         if ("content" == selectedImageUri.scheme) {
+             val cursor = requireContext().contentResolver.query(selectedImageUri, arrayOf(MediaStore.Images.ImageColumns.DATA), null, null)
+             cursor?.moveToFirst()
+             filePath = cursor!!.getString(0)
+             cursor.close()
+         } else {
+             filePath = selectedImageUri.path.toString()
+         }
+         return filePath
+     }
+
+     private fun showSuccessDialog(message: String) {
         MyDialog.message(this, getString(R.string.success_action_title), message)
     }
 

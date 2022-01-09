@@ -74,7 +74,7 @@ class MainActivity : AppCompatActivity() {
             }
             android.R.id.home -> {
                 // Actionbar back button
-                this.supportFragmentManager.popBackStack()
+                onBackPressed()
                 true
             }
             else -> super.onOptionsItemSelected(item)

@@ -37,6 +37,7 @@ class ProfileFragment : Fragment() {
         val actionBar = (activity as AppCompatActivity?)!!.supportActionBar!!
         actionBar.title = getString(R.string.profile)
         actionBar.setHomeButtonEnabled(false)
+        actionBar.setDisplayHomeAsUpEnabled(false);
 
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_profile, container, false)
@@ -51,6 +52,8 @@ class ProfileFragment : Fragment() {
         txtBirthDate = view.findViewById(R.id.txt_profile_birthDate)
         txtRegisterDate = view.findViewById(R.id.txt_profile_registerDate)
         txtDescription = view.findViewById(R.id.txt_profile_description)
+
+        // Navigate to profile update
         view.findViewById<Button>(R.id.btn_profile_modify).setOnClickListener {
             findNavController().navigate(R.id.action_profile_to_update_profile)
         }
@@ -87,27 +90,6 @@ class ProfileFragment : Fragment() {
         user?.description?.let {
             txtDescription?.text = user.description
             txtDescription?.visibility = View.VISIBLE
-        }
-    }
-
-    private fun imageChooser() {
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
-        startActivityForResult(intent, 200)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (resultCode == -1) {
-            if (requestCode == 200) {
-                val selectedImageUri: Uri? = data?.data
-                if (null != selectedImageUri) {
-                    var imageView = view?.findViewById<ImageView>(R.id.img_profile_avatar)
-                    imageView?.visibility = View.VISIBLE
-                    Picasso.get().load(selectedImageUri).into(imageView)
-                }
-            }
         }
     }
 

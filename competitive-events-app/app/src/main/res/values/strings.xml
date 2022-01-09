@@ -47,6 +47,7 @@
     <!-- Update user -->
     <string name="update_avatar">Cambiar avatar…</string>
     <string name="success_updated_user">Usuario actualizado con éxito.</string>
+    <string name="success_updated_avatar">Avatar actualizado con éxito.</string>
 
     <!-- Errors -->
     <string name="error_title">Error</string>
