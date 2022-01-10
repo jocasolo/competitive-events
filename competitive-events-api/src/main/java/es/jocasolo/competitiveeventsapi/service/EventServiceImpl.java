@@ -198,16 +198,14 @@ public class EventServiceImpl implements EventService {
 		Page<Event> events = null;
 		User user = authentication.getUser();
 		
-		if(StringUtils.isEmpty(username)) {
+		if(user == null) {
 			// Public events
 			events = eventDao.search(title, EventType.getEnumOrNull(type), EventStatusType.getEnumOrNull(status), 
 				EventInscriptionType.getEnumOrNull(inscription), pageRequest);
-		} else if(username.equals(user.getUsername())) {
+		} else {
 			// User events
 			events = eventDao.searchByUser(title, EventType.getEnumOrNull(type), EventStatusType.getEnumOrNull(status), 
 					EventInscriptionType.getEnumOrNull(inscription), user, pageRequest);
-		} else {
-			throw new UserNotValidException();
 		}
 		
 		EventPageDTO dto = new EventPageDTO();

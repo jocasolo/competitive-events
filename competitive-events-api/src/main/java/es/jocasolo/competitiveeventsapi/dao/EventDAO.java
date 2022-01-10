@@ -42,7 +42,7 @@ public interface EventDAO extends CrudRepository<Event, String> {
 			+ "AND (e.title LIKE %:title% OR :title IS NULL) "
 			+ "AND (e.type LIKE :type OR :type IS NULL) "
 			+ "AND (e.status LIKE :status OR :status IS NULL) "
-			+ "AND (e.inscription LIKE :inscription OR :inscription IS NULL) AND status <> 'DELETED'"
+			+ "AND (e.inscription LIKE :inscription OR :inscription IS NULL) AND e.status <> 'DELETED'"
 		)
 	public Page<Event> searchByUser(@Param("title") String title, @Param("type") EventType type, @Param("status") EventStatusType status, 
 			@Param("inscription") EventInscriptionType inscription, @Param("user") User user, Pageable pageRequest);
