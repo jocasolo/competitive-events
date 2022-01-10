@@ -15,7 +15,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.gson.Gson
 import es.jocasolo.competitiveeventsapp.constants.Constants
 import es.jocasolo.competitiveeventsapp.dto.ErrorDTO
+import es.jocasolo.competitiveeventsapp.dto.event.EventDTO
+import es.jocasolo.competitiveeventsapp.dto.event.EventPageDTO
 import es.jocasolo.competitiveeventsapp.dto.user.UserDTO
+import es.jocasolo.competitiveeventsapp.service.EventService
 import es.jocasolo.competitiveeventsapp.service.ServiceBuilder
 import es.jocasolo.competitiveeventsapp.service.UserService
 import es.jocasolo.competitiveeventsapp.singleton.UserAccount
@@ -30,6 +33,7 @@ import java.net.HttpURLConnection
 class MainActivity : AppCompatActivity() {
 
     private val userService = ServiceBuilder.buildService(UserService::class.java)
+    private val eventService = ServiceBuilder.buildService(EventService::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -141,5 +145,51 @@ class MainActivity : AppCompatActivity() {
             }
         })
     }
+
+    /*private fun loadEvents() {
+        eventService.search(null, null, null, null, null, 0, 10, UserAccount.getInstance(applicationContext).getToken()).enqueue(object : Callback<EventPageDTO> {
+            override fun onResponse(call: Call<EventPageDTO>, response: Response<EventPageDTO>) {
+                when (response.code()) {
+                    HttpURLConnection.HTTP_OK -> {
+                        var page = response.body()
+                        System.out.println(page?.events?.get(0)?.title);
+                    }
+                    HttpURLConnection.HTTP_FORBIDDEN -> {
+                        startActivity(Intent(applicationContext, LoginActivity::class.java))
+                        finish()
+                    }
+                    else -> {
+                        try {
+                            val errorDto = Gson().fromJson(
+                                    response.errorBody()?.string(),
+                                    ErrorDTO::class.java
+                            ) as ErrorDTO
+                            MyDialog.message(
+                                    this@MainActivity, getString(R.string.error_title), getString(
+                                    Message.forCode(
+                                            errorDto.message
+                                    )
+                            )
+                            )
+                        } catch (e: Exception) {
+                            MyDialog.message(
+                                    this@MainActivity, getString(R.string.error_title), getString(
+                                    R.string.error_api_undefined
+                            )
+                            )
+                        }
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<EventPageDTO>, t: Throwable) {
+                MyDialog.message(
+                        this@MainActivity, getString(R.string.error_title), getString(
+                        R.string.error_api_undefined
+                )
+                )
+            }
+        })
+    }*/
 
 }
