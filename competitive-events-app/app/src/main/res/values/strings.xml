@@ -20,6 +20,11 @@
     <string name="sdf_api_date">yyyy-MM-dd\'T\'HH:mm:ss</string>
     <string name="modify">Modificar</string>
     <string name="save">Guardar</string>
+    <string name="empty" />
+    <string name="dots">…</string>
+    <string name="title">Title</string>
+    <string name="subtitle">Subtitle</string>
+    <string name="zero">0</string>
 
     <!-- Action bar -->
     <string name="logout">Cerrar sesión</string>
@@ -27,7 +32,7 @@
     <string name="exit">Salir</string>
     <string name="home">Inicio</string>
     <string name="events">Eventos</string>
-    <string name="your_events">Tus eventos</string>
+    <string name="your_events">Mis eventos</string>
     <string name="create_event">Nuevo evento</string>
     <string name="profile">Perfil</string>
     <string name="update_profile">Actualizar Perfil</string>
@@ -48,6 +53,9 @@
     <string name="update_avatar">Cambiar avatar…</string>
     <string name="success_updated_user">Usuario actualizado con éxito.</string>
     <string name="success_updated_avatar">Avatar actualizado con éxito.</string>
+
+    <!-- Events List -->
+    <string name="events_list">Listado de eventos</string>
 
     <!-- Errors -->
     <string name="error_title">Error</string>

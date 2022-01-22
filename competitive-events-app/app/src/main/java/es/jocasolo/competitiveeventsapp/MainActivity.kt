@@ -11,8 +11,11 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.gson.Gson
+import es.jocasolo.competitiveeventsapp.adapter.CustomAdapter
 import es.jocasolo.competitiveeventsapp.constants.Constants
 import es.jocasolo.competitiveeventsapp.dto.ErrorDTO
 import es.jocasolo.competitiveeventsapp.dto.event.EventDTO
@@ -145,51 +148,5 @@ class MainActivity : AppCompatActivity() {
             }
         })
     }
-
-    /*private fun loadEvents() {
-        eventService.search(null, null, null, null, null, 0, 10, UserAccount.getInstance(applicationContext).getToken()).enqueue(object : Callback<EventPageDTO> {
-            override fun onResponse(call: Call<EventPageDTO>, response: Response<EventPageDTO>) {
-                when (response.code()) {
-                    HttpURLConnection.HTTP_OK -> {
-                        var page = response.body()
-                        System.out.println(page?.events?.get(0)?.title);
-                    }
-                    HttpURLConnection.HTTP_FORBIDDEN -> {
-                        startActivity(Intent(applicationContext, LoginActivity::class.java))
-                        finish()
-                    }
-                    else -> {
-                        try {
-                            val errorDto = Gson().fromJson(
-                                    response.errorBody()?.string(),
-                                    ErrorDTO::class.java
-                            ) as ErrorDTO
-                            MyDialog.message(
-                                    this@MainActivity, getString(R.string.error_title), getString(
-                                    Message.forCode(
-                                            errorDto.message
-                                    )
-                            )
-                            )
-                        } catch (e: Exception) {
-                            MyDialog.message(
-                                    this@MainActivity, getString(R.string.error_title), getString(
-                                    R.string.error_api_undefined
-                            )
-                            )
-                        }
-                    }
-                }
-            }
-
-            override fun onFailure(call: Call<EventPageDTO>, t: Throwable) {
-                MyDialog.message(
-                        this@MainActivity, getString(R.string.error_title), getString(
-                        R.string.error_api_undefined
-                )
-                )
-            }
-        })
-    }*/
 
 }

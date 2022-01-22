@@ -271,11 +271,10 @@ import java.util.*
      }
 
      private fun showSuccessDialog(message: String) {
-        MyDialog.message(this, getString(R.string.success_action_title), message)
-    }
+         MyDialog.message(this, getString(R.string.success_action_title), message)
+     }
 
-    private fun showErrorDialog(message: String) {
-        MyDialog.message(this, getString(R.string.error_title), message)
-    }
-
+     private fun showErrorDialog(message: String) {
+         MyDialog.message(this, getString(R.string.error_title), message)
+     }
 }
