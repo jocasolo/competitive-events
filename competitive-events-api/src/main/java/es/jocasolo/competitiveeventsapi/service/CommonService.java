@@ -1,6 +1,7 @@
 package es.jocasolo.competitiveeventsapi.service;
 
 import java.util.List;
+import java.util.Set;
 
 public interface CommonService {
 
@@ -20,5 +21,14 @@ public interface CommonService {
 	 * @return
 	 */
 	<T, S> List<T> transform(List<S> sources, Class<T> destinationClass);
+	
+	/**
+	 * Transforma un set de objetos de un tipo, en otra lista de objetos del
+	 * tipo indicado por parámetro.
+	 * @param sources
+	 * @param destinationClass
+	 * @return
+	 */
+	<T, S> Set<T> transform(Set<S> sources, Class<T> destinationClass);
 
 }

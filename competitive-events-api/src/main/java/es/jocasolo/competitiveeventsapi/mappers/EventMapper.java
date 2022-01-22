@@ -1,10 +1,14 @@
 package es.jocasolo.competitiveeventsapi.mappers;
 
-import es.jocasolo.competitiveeventsapi.dto.event.EventDetailDTO;
+import java.util.List;
+
+import es.jocasolo.competitiveeventsapi.dto.event.EventDTO;
 import es.jocasolo.competitiveeventsapi.model.Event;
 
 public interface EventMapper {
 	
-	EventDetailDTO map(Event event);
+	EventDTO map(Event event);
+	
+	List<EventDTO> map(List<Event> events);
 
 }

@@ -1,23 +1,27 @@
 package es.jocasolo.competitiveeventsapi.mappers;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.ArrayList;
+import java.util.List;
 
-import es.jocasolo.competitiveeventsapi.dto.event.EventDetailDTO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import es.jocasolo.competitiveeventsapi.dto.event.EventDTO;
 import es.jocasolo.competitiveeventsapi.dto.image.ImageDTO;
 import es.jocasolo.competitiveeventsapi.model.Event;
 import es.jocasolo.competitiveeventsapi.service.CommonService;
 
+@Service
 public class EventMapperImpl implements EventMapper {
 	
 	@Autowired
 	private CommonService commonService;
 	
-	public EventDetailDTO map(Event event) {
+	public EventDTO map(Event event) {
 		
-		EventDetailDTO detail = new EventDetailDTO();
+		EventDTO detail = new EventDTO();
 		
 		detail.setApprovalNeeded(event.getApprovalNeeded());
-		detail.setDescription(event.getDescription());
 		detail.setEndDate(event.getEndDate());
 		detail.setId(event.getId());
 		detail.setImage(commonService.transform(event.getImage(), ImageDTO.class));
@@ -28,9 +32,22 @@ public class EventMapperImpl implements EventMapper {
 		detail.setSubtitle(event.getSubtitle());
 		detail.setTitle(event.getTitle());
 		detail.setType(event.getType());
-		detail.setUsers(null);
+		detail.setNumParticipants(event.getUsers().size());
+		detail.setVisibility(event.getVisibility());
 		
 		return detail;
+	}
+	
+	public List<EventDTO> map(List<Event> events) {
+		
+		List<EventDTO> result = new ArrayList<>();
+		
+		for(Event event : events) {
+			final EventDTO detail = map(event);
+			result.add(detail);
+		}
+		
+		return result;
 		
 	}
 

@@ -18,6 +18,10 @@ public class EventDetailDTO extends EventDTO implements Serializable {
 
 	@Getter
 	@Setter
+	private String description;
+	
+	@Getter
+	@Setter
 	private Set<UserLiteDTO> users;
 	
 	@Getter

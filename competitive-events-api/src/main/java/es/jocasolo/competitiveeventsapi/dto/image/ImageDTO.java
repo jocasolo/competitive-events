@@ -12,7 +12,11 @@ public class ImageDTO extends DTO implements Serializable {
 
 	@Getter
 	@Setter
-	private String id;
+	private Integer id;
+	
+	@Getter
+	@Setter
+	private String storageId;
 
 	@Getter
 	@Setter

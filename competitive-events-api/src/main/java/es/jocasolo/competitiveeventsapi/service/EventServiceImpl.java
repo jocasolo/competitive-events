@@ -42,6 +42,7 @@ import es.jocasolo.competitiveeventsapi.exceptions.event.EventWrongUpdateExcepti
 import es.jocasolo.competitiveeventsapi.exceptions.image.ImageUploadException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotFoundException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotValidException;
+import es.jocasolo.competitiveeventsapi.mappers.EventMapper;
 import es.jocasolo.competitiveeventsapi.model.Event;
 import es.jocasolo.competitiveeventsapi.model.EventUser;
 import es.jocasolo.competitiveeventsapi.model.Image;
@@ -82,6 +83,9 @@ public class EventServiceImpl implements EventService {
 
 	@Autowired
 	private CommonService commonService;
+	
+	@Autowired
+	private EventMapper eventMapper;
 
 	@Override
 	@Transactional(readOnly = true)
@@ -208,11 +212,12 @@ public class EventServiceImpl implements EventService {
 		}
 		
 		EventPageDTO dto = new EventPageDTO();
-		dto.setEvents(commonService.transform(events.getContent(), EventDTO.class));
+		dto.setEvents(eventMapper.map(events.getContent()));
 		dto.setTotal(events.getTotalElements());
 		dto.setHasNext(events.hasNext());
 		dto.setHasPrevious(events.hasPrevious());
 		dto.setPages(events.getTotalPages());
+		
 		return dto;
 	}
 	

@@ -30,10 +30,6 @@ public class EventDTO extends DTO implements Serializable {
 
 	@Getter
 	@Setter
-	private String description;
-
-	@Getter
-	@Setter
 	private EventType type;
 
 	@Getter
@@ -59,6 +55,10 @@ public class EventDTO extends DTO implements Serializable {
 	@Getter
 	@Setter
 	private Integer maxPlaces;
+	
+	@Getter
+	@Setter
+	private Integer numParticipants;
 
 	@Getter
 	@Setter
