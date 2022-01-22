@@ -1,0 +1,1265 @@
+{
+	"info": {
+		"_postman_id": "2e71c7e3-32bd-441b-a0b3-ad25776489d1",
+		"name": "API TFG",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "User Search One",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NDExNDE1MDMsImlzcyI6ImNvbXBldGl0aXZlZXZlbnRzIiwic3ViIjoidGVzdDEiLCJleHAiOjE2NDE0MDA3MDN9.WSkfatDfdB_Y6VxPc7Kyn_0G6vzJWx7fSMUYCSpkDPo8NCnfdX4NtTpnts3n3KiVMwQr2S44jmBA75odVSZRog",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/users/test3",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"test3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Exists",
+					"request": {
+						"method": "HEAD",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/users/test1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"test1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"test3\",\r\n    \"name\": \"Name\",\r\n    \"surname\": \"Surname\",\r\n    \"description\": \"Description\",\r\n    \"email\": \"competitive.events01@yopmail.com\",\r\n    \"password\": \"Test123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/users",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NDEzOTk3MzQsImlzcyI6ImNvbXBldGl0aXZlZXZlbnRzIiwic3ViIjoidGVzdDMiLCJleHAiOjE2NDE2NTg5MzR9.vsHXQBSerMjXXMVTCQH32R20dasfRHOw9QDQhe89jGG3i-y2jlRG7lFve4nlNp9UEck0WyzwmU4yxDHH3dyKZw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Test\",\r\n    \"surname\": \"Tercero\",\r\n    \"description\": \"Descripción\",\r\n\r\n    \"birthDate\": \"1988-01-28T00:00:00Z\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/users/test3",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"test3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Avatar",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2MTY4NTI5MjQsImlzcyI6InRlc3QiLCJzdWIiOiJ0ZXN0MiIsImV4cCI6MTYxOTQ0NDkyNH0.Oafpe3V7gOGt1sPO7G18omvHZ8h88HPCsKtxHuc1NTYiucMFPRMGFsdlk5gdvA3rULuTbz_CaIfcXxeYWBdGgQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/carlo/OneDrive/Imágenes/Saved Pictures/mc_beicon.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8080/users/test2/avatar",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"test2",
+								"avatar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Password Update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"identifier\": \"test\",\r\n    \"password\": \"Pruebas123\",\r\n    \"newPassword\": \"NewPassword1235235623\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/user/test/password",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"user",
+								"test",
+								"password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/users/caindream2",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"caindream2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Delete Avatar",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2MTY4NTI5MjQsImlzcyI6InRlc3QiLCJzdWIiOiJ0ZXN0MiIsImV4cCI6MTYxOTQ0NDkyNH0.Oafpe3V7gOGt1sPO7G18omvHZ8h88HPCsKtxHuc1NTYiucMFPRMGFsdlk5gdvA3rULuTbz_CaIfcXxeYWBdGgQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/users/test2/avatar",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"test2",
+								"avatar"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Event",
+			"item": [
+				{
+					"name": "Event Search",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2MTU4MDE3MjUsImlzcyI6InRlc3QiLCJzdWIiOiJ0ZXN0MSIsImV4cCI6MTYxODM5MzcyNX0.zsIXQZpz7nQvdztbqiGf-rM4As09eSwPov42IW8HVjA2wNlmLjqro8Hb0OGQYQgpNoHYPpKudOZtLxi3VoZCVQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/events?page=0&size=3",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"events"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Event Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NDE4MzgwNjksImlzcyI6ImNvbXBldGl0aXZlZXZlbnRzIiwic3ViIjoidGVzdDMiLCJleHAiOjE2NDIwOTcyNjl9.QSh-zbxI5B06R8XX7Dei6R9qT1-Za662gry0IADFSycOWEybEXamy_5r-KZ-y1WuTvqaNQ_MqTm01rixNtcd7g",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Otro\",\r\n    \"subtitle\": \"test subtitle\",\r\n    \"description\": \"Descripción\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/events",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"events"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Event Update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"code\": \"sFq3I3wv\",\r\n    \"title\": \"Test update\",\r\n    \"subtitle\": \"test subtitle\",\r\n    \"description\": \"Descripción update\",\r\n    \"initDate\": \"2021-01-16T22:45:30\",\r\n    \"endDate\": \"2021-01-18T22:45:30\",\r\n    \"appovalNeeded\": true,\r\n    \"type\": \"SPORTS\",\r\n    \"inscription\": \"PUBLIC\",\r\n    \"visibility\": \"PUBLIC\",\r\n    \"status\": \"ACTIVE\",\r\n    \"maxPlaces\": 15\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/events/sFq3I3wv",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"events",
+								"sFq3I3wv"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Event Image",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2MTcyNzcwNTcsImlzcyI6InRlc3QiLCJzdWIiOiJ0ZXN0MSIsImV4cCI6MTYxOTg2OTA1N30.PcBaed35dfJ2kkg01QoIpKqGJi8LHt5ASuW4AxU_s-AQbvfjUI6tOash9cg86HCmiPgMFtC7rt7hz-TAPmNFTQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/carlo/OneDrive/Imágenes/Saved Pictures/wallpaper.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8080/events/j8cuKcFa/image",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"events",
+								"j8cuKcFa",
+								"image"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Event Search One",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NDE4MzgwNjksImlzcyI6ImNvbXBldGl0aXZlZXZlbnRzIiwic3ViIjoidGVzdDMiLCJleHAiOjE2NDIwOTcyNjl9.QSh-zbxI5B06R8XX7Dei6R9qT1-Za662gry0IADFSycOWEybEXamy_5r-KZ-y1WuTvqaNQ_MqTm01rixNtcd7g",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/events/SU0AH3Si",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"events",
+								"SU0AH3Si"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Event Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2MTU4MDI3MjQsImlzcyI6InRlc3QiLCJzdWIiOiJ0ZXN0NSIsImV4cCI6MTYxODM5NDcyNH0.anht56kvi_PK4Qu3Q7583Qf3FOLYdYhTiY857gt3sh5E0Su7wffvKr1Aa8OnB2EKNjfxg7-0RwiAL-JNmE7YJw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/events/dDN2B1as",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"events",
+								"dDN2B1as"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Event Invite/Join",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2MTU4MDE3MjUsImlzcyI6InRlc3QiLCJzdWIiOiJ0ZXN0MSIsImV4cCI6MTYxODM5MzcyNX0.zsIXQZpz7nQvdztbqiGf-rM4As09eSwPov42IW8HVjA2wNlmLjqro8Hb0OGQYQgpNoHYPpKudOZtLxi3VoZCVQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\": \"test2\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/events/SCQejvWL/users",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"events",
+								"SCQejvWL",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Event User Reject",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2MTU4MDE3MjUsImlzcyI6InRlc3QiLCJzdWIiOiJ0ZXN0MSIsImV4cCI6MTYxODM5MzcyNX0.zsIXQZpz7nQvdztbqiGf-rM4As09eSwPov42IW8HVjA2wNlmLjqro8Hb0OGQYQgpNoHYPpKudOZtLxi3VoZCVQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\": \"test2\",\r\n    \"reject\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/events/SCQejvWL/users",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"events",
+								"SCQejvWL",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Event User Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2MTU4MDE3MjUsImlzcyI6InRlc3QiLCJzdWIiOiJ0ZXN0MSIsImV4cCI6MTYxODM5MzcyNX0.zsIXQZpz7nQvdztbqiGf-rM4As09eSwPov42IW8HVjA2wNlmLjqro8Hb0OGQYQgpNoHYPpKudOZtLxi3VoZCVQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\": \"test2\",\r\n    \"reject\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/events/SCQejvWL/users",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"events",
+								"SCQejvWL",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Event Init",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NDE4MzgwNjksImlzcyI6ImNvbXBldGl0aXZlZXZlbnRzIiwic3ViIjoidGVzdDMiLCJleHAiOjE2NDIwOTcyNjl9.QSh-zbxI5B06R8XX7Dei6R9qT1-Za662gry0IADFSycOWEybEXamy_5r-KZ-y1WuTvqaNQ_MqTm01rixNtcd7g",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/events/SU0AH3Si/init",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"events",
+								"SU0AH3Si",
+								"init"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Event Finish",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2MTc2OTY5NzUsImlzcyI6InRlc3QiLCJzdWIiOiJ0ZXN0MSIsImV4cCI6MTYyMDI4ODk3NX0.9k71riHhroSORbSPaQGwvR0cfiVCnDvi5tXhtnnrWP8b60OwxkWur412s0g0kRUY8Ji_haAGosrtV5JjGs1g8A",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/events/GELs2DCC/finish",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"events",
+								"GELs2DCC",
+								"finish"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Image",
+			"item": [
+				{
+					"name": "Image Upload",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2MTYzMzMxMTYsImlzcyI6InRlc3QiLCJzdWIiOiJ0ZXN0MSIsImV4cCI6MTYxODkyNTExNn0.89zKY--j3k_VFohwV_Pg3fcIfHKW84wApTi2jvJa-7Tu5IIJiX64lFEBPTTriKssfudk7Usfit5zdCJHAueK9A",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/carlo/OneDrive/Imágenes/Saved Pictures/wallpaper.jpg"
+								},
+								{
+									"key": "type",
+									"value": "AVATAR",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8080/images",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"images"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Reward",
+			"item": [
+				{
+					"name": "Reward Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2MTcyNzcwNTcsImlzcyI6InRlc3QiLCJzdWIiOiJ0ZXN0MSIsImV4cCI6MTYxOTg2OTA1N30.PcBaed35dfJ2kkg01QoIpKqGJi8LHt5ASuW4AxU_s-AQbvfjUI6tOash9cg86HCmiPgMFtC7rt7hz-TAPmNFTQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Recompensa 1\",\r\n    \"description\": \"Descripción\",\r\n    \"eventId\": \"j8cuKcFa\",\r\n    \"sortScore\": \"ASC\",\r\n    \"requiredPosition\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/rewards",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"rewards"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reward Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2MTcyNzcwNTcsImlzcyI6InRlc3QiLCJzdWIiOiJ0ZXN0MSIsImV4cCI6MTYxOTg2OTA1N30.PcBaed35dfJ2kkg01QoIpKqGJi8LHt5ASuW4AxU_s-AQbvfjUI6tOash9cg86HCmiPgMFtC7rt7hz-TAPmNFTQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Recompensa 2\",\r\n    \"description\": \"Descripción 2\",\r\n    \"eventId\": \"j8cuKcFa\",\r\n    \"requiredPosition\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/rewards/4",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"rewards",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reward Image",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2MTcyNzcwNTcsImlzcyI6InRlc3QiLCJzdWIiOiJ0ZXN0MSIsImV4cCI6MTYxOTg2OTA1N30.PcBaed35dfJ2kkg01QoIpKqGJi8LHt5ASuW4AxU_s-AQbvfjUI6tOash9cg86HCmiPgMFtC7rt7hz-TAPmNFTQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/carlo/OneDrive/Imágenes/Saved Pictures/mc_beicon.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8080/rewards/4/image",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"rewards",
+								"4",
+								"image"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reward Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2MTcyNzcwNTcsImlzcyI6InRlc3QiLCJzdWIiOiJ0ZXN0MSIsImV4cCI6MTYxOTg2OTA1N30.PcBaed35dfJ2kkg01QoIpKqGJi8LHt5ASuW4AxU_s-AQbvfjUI6tOash9cg86HCmiPgMFtC7rt7hz-TAPmNFTQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/rewards/7",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"rewards",
+								"7"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Punishment",
+			"item": [
+				{
+					"name": "Punishment Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NDI4NDcxODgsImlzcyI6ImNvbXBldGl0aXZlZXZlbnRzIiwic3ViIjoidGVzdDMiLCJleHAiOjE2NDMxMDYzODh9.smbkawTM5RUrW8gZV41uYuYY5GY1bCU1gZ54dusFBuZOCuVwhRiycUEI6a3nldtYpITa5PA439VCWf_0k9R0BQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Castigo 2\",\r\n    \"description\": \"Descripción\",\r\n    \"eventId\": \"SU0AH3Si\",\r\n    \"sortScore\": \"DESC\",\r\n    \"requiredPosition\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/punishments",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"punishments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Punishment Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2MTcyNzcwNTcsImlzcyI6InRlc3QiLCJzdWIiOiJ0ZXN0MSIsImV4cCI6MTYxOTg2OTA1N30.PcBaed35dfJ2kkg01QoIpKqGJi8LHt5ASuW4AxU_s-AQbvfjUI6tOash9cg86HCmiPgMFtC7rt7hz-TAPmNFTQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Recompensa 2\",\r\n    \"description\": \"Descripción 2\",\r\n    \"eventId\": \"j8cuKcFa\",\r\n    \"requiredPosition\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/punishments/4",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"punishments",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Punishment Image",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2MTcyNzcwNTcsImlzcyI6InRlc3QiLCJzdWIiOiJ0ZXN0MSIsImV4cCI6MTYxOTg2OTA1N30.PcBaed35dfJ2kkg01QoIpKqGJi8LHt5ASuW4AxU_s-AQbvfjUI6tOash9cg86HCmiPgMFtC7rt7hz-TAPmNFTQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/carlo/OneDrive/Imágenes/Saved Pictures/mc_beicon.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8080/punishments/4/image",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"punishments",
+								"4",
+								"image"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Punishment Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2MTcyNzcwNTcsImlzcyI6InRlc3QiLCJzdWIiOiJ0ZXN0MSIsImV4cCI6MTYxOTg2OTA1N30.PcBaed35dfJ2kkg01QoIpKqGJi8LHt5ASuW4AxU_s-AQbvfjUI6tOash9cg86HCmiPgMFtC7rt7hz-TAPmNFTQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/punishments/7",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"punishments",
+								"7"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Score",
+			"item": [
+				{
+					"name": "Score Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2MTcyNzcwNTcsImlzcyI6InRlc3QiLCJzdWIiOiJ0ZXN0MSIsImV4cCI6MTYxOTg2OTA1N30.PcBaed35dfJ2kkg01QoIpKqGJi8LHt5ASuW4AxU_s-AQbvfjUI6tOash9cg86HCmiPgMFtC7rt7hz-TAPmNFTQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"value\": \"1.5\",\r\n    \"eventId\": \"j8cuKcFa\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/scores",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"scores"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Score Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2MTcyNzcwNTcsImlzcyI6InRlc3QiLCJzdWIiOiJ0ZXN0MSIsImV4cCI6MTYxOTg2OTA1N30.PcBaed35dfJ2kkg01QoIpKqGJi8LHt5ASuW4AxU_s-AQbvfjUI6tOash9cg86HCmiPgMFtC7rt7hz-TAPmNFTQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 13,\r\n    \"value\": \"1.6\",\r\n    \"status\": \"NOT_VALID\",\r\n    \"eventId\": \"j8cuKcFa\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/scores/13",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"scores",
+								"13"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Score Image",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2MTcyNzcwNTcsImlzcyI6InRlc3QiLCJzdWIiOiJ0ZXN0MSIsImV4cCI6MTYxOTg2OTA1N30.PcBaed35dfJ2kkg01QoIpKqGJi8LHt5ASuW4AxU_s-AQbvfjUI6tOash9cg86HCmiPgMFtC7rt7hz-TAPmNFTQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/carlo/OneDrive/Imágenes/Saved Pictures/bombilla.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8080/scores/13/image",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"scores",
+								"13",
+								"image"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Score Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2MTcyNzcwNTcsImlzcyI6InRlc3QiLCJzdWIiOiJ0ZXN0MSIsImV4cCI6MTYxOTg2OTA1N30.PcBaed35dfJ2kkg01QoIpKqGJi8LHt5ASuW4AxU_s-AQbvfjUI6tOash9cg86HCmiPgMFtC7rt7hz-TAPmNFTQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/scores/13",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"scores",
+								"13"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Comment",
+			"item": [
+				{
+					"name": "Comment Create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2MTcyNzcwNTcsImlzcyI6InRlc3QiLCJzdWIiOiJ0ZXN0MSIsImV4cCI6MTYxOTg2OTA1N30.PcBaed35dfJ2kkg01QoIpKqGJi8LHt5ASuW4AxU_s-AQbvfjUI6tOash9cg86HCmiPgMFtC7rt7hz-TAPmNFTQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"text\": \"Esto es un comentario de prueba.\",\r\n    \"eventId\": \"j8cuKcFa\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/comments",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Comment Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2MTcyNzcwNTcsImlzcyI6InRlc3QiLCJzdWIiOiJ0ZXN0MSIsImV4cCI6MTYxOTg2OTA1N30.PcBaed35dfJ2kkg01QoIpKqGJi8LHt5ASuW4AxU_s-AQbvfjUI6tOash9cg86HCmiPgMFtC7rt7hz-TAPmNFTQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"text\": \"modificado\",\r\n    \"eventId\": \"j8cuKcFa\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/comments/15",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"comments",
+								"15"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Comment Delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2MTcyNzcwNTcsImlzcyI6InRlc3QiLCJzdWIiOiJ0ZXN0MSIsImV4cCI6MTYxOTg2OTA1N30.PcBaed35dfJ2kkg01QoIpKqGJi8LHt5ASuW4AxU_s-AQbvfjUI6tOash9cg86HCmiPgMFtC7rt7hz-TAPmNFTQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/comments/15",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"comments",
+								"15"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"test3\",\r\n    \"password\": \"Test123456\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/login",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
