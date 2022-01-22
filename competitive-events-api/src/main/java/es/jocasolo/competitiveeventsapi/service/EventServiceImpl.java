@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -168,7 +167,7 @@ public class EventServiceImpl implements EventService {
 		if(eventUser == null || !eventUser.isOwner())
 			throw new UserNotValidException();
 		
-		Image image = imageService.upload(multipart, ImageType.REWARD);
+		Image image = imageService.upload(multipart, ImageType.EVENT);
 		event.setImage(image);
 		
 		return commonService.transform(eventDao.save(event), EventDTO.class);

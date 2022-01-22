@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import es.jocasolo.competitiveeventsapi.dto.DTO;
 import es.jocasolo.competitiveeventsapi.dto.image.ImageDTO;
+import es.jocasolo.competitiveeventsapi.dto.user.UserLiteDTO;
 import es.jocasolo.competitiveeventsapi.enums.score.ScoreStatusType;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,6 +32,10 @@ public class ScoreDTO extends DTO implements Serializable {
 	@Getter
 	@Setter
 	private ImageDTO image;
+	
+	@Getter
+	@Setter
+	private UserLiteDTO user;
 
 	@Override
 	public String toString() {

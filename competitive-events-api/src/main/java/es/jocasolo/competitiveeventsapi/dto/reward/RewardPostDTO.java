@@ -6,6 +6,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import es.jocasolo.competitiveeventsapi.dto.DTO;
+import es.jocasolo.competitiveeventsapi.enums.score.ScoreSortType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -31,6 +32,10 @@ public class RewardPostDTO extends DTO implements Serializable {
 	@Setter
 	@NotNull
 	private Integer requiredPosition;
+	
+	@Getter
+	@Setter
+	private ScoreSortType sortScore;
 
 	@Override
 	public String toString() {

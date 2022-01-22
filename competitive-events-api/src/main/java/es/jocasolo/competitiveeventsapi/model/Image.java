@@ -15,8 +15,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
-import org.dozer.Mapping;
-
 import es.jocasolo.competitiveeventsapi.enums.ImageType;
 
 @Entity
@@ -29,7 +27,6 @@ public class Image implements Serializable {
 	private Integer id;
 
 	@Column(nullable = false)
-	@Mapping("id")
 	private String storageId;
 
 	@Enumerated(EnumType.STRING)

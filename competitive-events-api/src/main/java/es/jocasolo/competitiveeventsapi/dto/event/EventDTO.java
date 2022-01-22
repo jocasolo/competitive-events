@@ -66,7 +66,7 @@ public class EventDTO extends DTO implements Serializable {
 
 	@Getter
 	@Setter
-	private ScoreValueType scoreType;
+	private ScoreValueType scoreType;	
 
 	@Override
 	public String toString() {

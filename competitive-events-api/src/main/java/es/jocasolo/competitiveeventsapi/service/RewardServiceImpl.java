@@ -10,6 +10,7 @@ import es.jocasolo.competitiveeventsapi.dto.reward.RewardDTO;
 import es.jocasolo.competitiveeventsapi.dto.reward.RewardPostDTO;
 import es.jocasolo.competitiveeventsapi.dto.reward.RewardPutDTO;
 import es.jocasolo.competitiveeventsapi.enums.ImageType;
+import es.jocasolo.competitiveeventsapi.enums.score.ScoreSortType;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventNotFoundException;
 import es.jocasolo.competitiveeventsapi.exceptions.image.ImageUploadException;
 import es.jocasolo.competitiveeventsapi.exceptions.reward.RewardNotFoundException;
@@ -65,6 +66,7 @@ public class RewardServiceImpl implements RewardService {
 		reward.setDescription(rewardDto.getDescription());
 		reward.setEvent(eventUser.getEvent());
 		reward.setRequiredPosition(rewardDto.getRequiredPosition());
+		reward.setSortScore(ScoreSortType.getValue(rewardDto.getSortScore(), ScoreSortType.ASC));
 		
 		return commonService.transform(rewardDao.save(reward), RewardDTO.class);
 	}
@@ -84,6 +86,7 @@ public class RewardServiceImpl implements RewardService {
 		reward.setDescription(EventUtils.getValue(rewardDto.getDescription(), reward.getDescription()));
 		reward.setTitle(EventUtils.getValue(rewardDto.getTitle(), reward.getTitle()));
 		reward.setRequiredPosition(EventUtils.getValue(rewardDto.getRequiredPosition(), reward.getRequiredPosition()));
+		reward.setSortScore(ScoreSortType.getValue(rewardDto.getSortScore(), reward.getSortScore()));
 		
 		rewardDao.save(reward);
 		

@@ -3,6 +3,7 @@ package es.jocasolo.competitiveeventsapi.dto.comment;
 import java.io.Serializable;
 
 import es.jocasolo.competitiveeventsapi.dto.DTO;
+import es.jocasolo.competitiveeventsapi.dto.user.UserLiteDTO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,6 +22,10 @@ public class CommentDTO extends DTO implements Serializable {
 	@Getter
 	@Setter
 	private String date;
+	
+	@Getter
+	@Setter
+	private UserLiteDTO user;
 
 	@Override
 	public String toString() {

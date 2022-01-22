@@ -10,6 +10,7 @@ import es.jocasolo.competitiveeventsapi.dto.punishment.PunishmentDTO;
 import es.jocasolo.competitiveeventsapi.dto.punishment.PunishmentPostDTO;
 import es.jocasolo.competitiveeventsapi.dto.punishment.PunishmentPutDTO;
 import es.jocasolo.competitiveeventsapi.enums.ImageType;
+import es.jocasolo.competitiveeventsapi.enums.score.ScoreSortType;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventNotFoundException;
 import es.jocasolo.competitiveeventsapi.exceptions.image.ImageUploadException;
 import es.jocasolo.competitiveeventsapi.exceptions.punishment.PunishmentNotFoundException;
@@ -65,6 +66,7 @@ public class PunishmentServiceImpl implements PunishmentService {
 		punishment.setDescription(punishmentDto.getDescription());
 		punishment.setEvent(eventUser.getEvent());
 		punishment.setRequiredPosition(punishmentDto.getRequiredPosition());
+		punishment.setSortScore(ScoreSortType.getValue(punishmentDto.getSortScore(), ScoreSortType.DESC));
 		
 		return commonService.transform(punishmentDao.save(punishment), PunishmentDTO.class);
 	}
@@ -84,6 +86,7 @@ public class PunishmentServiceImpl implements PunishmentService {
 		punishment.setDescription(EventUtils.getValue(punishmentDto.getDescription(), punishment.getDescription()));
 		punishment.setTitle(EventUtils.getValue(punishmentDto.getTitle(), punishment.getTitle()));
 		punishment.setRequiredPosition(EventUtils.getValue(punishmentDto.getRequiredPosition(), punishment.getRequiredPosition()));
+		punishment.setSortScore(ScoreSortType.getValue(punishmentDto.getSortScore(), punishment.getSortScore()));
 		
 		punishmentDao.save(punishment);
 		

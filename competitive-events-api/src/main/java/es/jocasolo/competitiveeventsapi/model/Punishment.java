@@ -4,10 +4,14 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
+import es.jocasolo.competitiveeventsapi.enums.score.ScoreSortType;
 
 @Entity
 public class Punishment implements Serializable {
@@ -36,6 +40,10 @@ public class Punishment implements Serializable {
 	private Image image;
 
 	private String title;
+	
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
+	private ScoreSortType sortScore;
 
 	// GETTERS AND SETTERS
 
@@ -93,6 +101,14 @@ public class Punishment implements Serializable {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+	
+	public ScoreSortType getSortScore() {
+		return sortScore;
+	}
+
+	public void setSortScore(ScoreSortType sortScore) {
+		this.sortScore = sortScore;
 	}
 
 	@Override

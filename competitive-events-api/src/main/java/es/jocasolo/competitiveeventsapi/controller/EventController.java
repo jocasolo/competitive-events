@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import es.jocasolo.competitiveeventsapi.dto.event.EventDTO;
+import es.jocasolo.competitiveeventsapi.dto.event.EventDetailDTO;
 import es.jocasolo.competitiveeventsapi.dto.event.EventPageDTO;
 import es.jocasolo.competitiveeventsapi.dto.event.EventPostDTO;
 import es.jocasolo.competitiveeventsapi.dto.event.EventPutDTO;
@@ -53,9 +54,9 @@ public class EventController {
 	
 	@GetMapping(value = "/{id}", produces = "application/json;charset=utf8")
 	@ApiOperation(value = "Search for an event based on its id.")
-	public EventDTO findOne(@PathVariable("id") String id) throws EventNotFoundException {
+	public EventDetailDTO findOne(@PathVariable("id") String id) throws EventNotFoundException {
 		log.debug("Looking for the event with id: {}", id);
-		return commonService.transform(eventService.findOne(id), EventDTO.class);
+		return commonService.transform(eventService.findOne(id), EventDetailDTO.class);
 	}
 	
 	@GetMapping(produces = "application/json;charset=utf8")
