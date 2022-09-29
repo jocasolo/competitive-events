@@ -32,7 +32,7 @@ import es.jocasolo.competitiveeventsapi.model.Image;
 class TestImageService {
 
 	@InjectMocks
-	private ImageService imageService = new ImageServiceImpl();
+	private ImageService imageService = new ImageServiceAmazonImpl();
 
 	@Mock
 	private CommonService commonService = new CommonServiceImpl();

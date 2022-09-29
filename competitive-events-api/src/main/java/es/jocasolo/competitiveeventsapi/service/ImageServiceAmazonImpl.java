@@ -13,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
@@ -32,10 +31,10 @@ import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotValidException;
 import es.jocasolo.competitiveeventsapi.model.Image;
 import es.jocasolo.competitiveeventsapi.utils.security.AuthenticationFacade;
 
-@Service
-public class ImageServiceImpl implements ImageService {
+//@Service
+public class ImageServiceAmazonImpl implements ImageService {
 
-	private static final Logger log = LoggerFactory.getLogger(ImageServiceImpl.class);
+	private static final Logger log = LoggerFactory.getLogger(ImageServiceAmazonImpl.class);
 
 	@Autowired
 	private ImageDAO imageDao;
@@ -90,7 +89,7 @@ public class ImageServiceImpl implements ImageService {
 			uploadFileToS3bucket(id, file.get());
 
 			final Image image = new Image();
-			image.setUrl(url + id);
+			image.setUrl(id);
 			image.setType(type);
 			image.setFolder(folder);
 			image.setName(fileName);
