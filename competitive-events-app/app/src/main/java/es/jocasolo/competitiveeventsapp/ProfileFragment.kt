@@ -69,7 +69,7 @@ class ProfileFragment : Fragment() {
         txtUsername?.text = user?.id
         txtEmail?.text = user?.email
         user?.avatar?.let {
-            Picasso.get().load(user.avatar!!.url).into(view?.findViewById<ImageView>(R.id.img_profile_avatar))
+            Picasso.get().load(user.avatar!!.link()).into(view?.findViewById<ImageView>(R.id.img_profile_avatar))
         }
         user?.name?.let {
             txtName?.text = user.name

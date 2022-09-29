@@ -240,6 +240,7 @@ import java.util.*
                                      ) as ErrorDTO
                                      showErrorDialog(getString(Message.forCode(errorDto.message)))
                                  } catch (e: Exception) {
+                                     System.out.println("aqui1")
                                      showErrorDialog(getString(R.string.error_api_undefined))
                                  }
                              }
@@ -247,6 +248,7 @@ import java.util.*
                          }
 
                          override fun onFailure(call: Call<UserDTO>, t: Throwable) {
+                             System.out.println(t)
                              showErrorDialog(getString(R.string.error_api_undefined))
                              spinner?.visibility = View.INVISIBLE
                          }

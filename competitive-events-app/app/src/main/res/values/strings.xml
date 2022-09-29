@@ -25,6 +25,10 @@
     <string name="title">Title</string>
     <string name="subtitle">Subtitle</string>
     <string name="zero">0</string>
+    <string name="seconds">segundos</string>
+    <string name="minutes">minutos</string>
+    <string name="hours">horas</string>
+    <string name="days">días</string>
 
     <!-- Action bar -->
     <string name="logout">Cerrar sesión</string>

@@ -2,6 +2,7 @@ package es.jocasolo.competitiveeventsapp.dto.event
 
 import com.google.gson.annotations.SerializedName
 import es.jocasolo.competitiveeventsapp.dto.user.ImageDTO
+import es.jocasolo.competitiveeventsapp.dto.user.UserDTO
 import es.jocasolo.competitiveeventsapp.enums.event.EventInscriptionType
 import es.jocasolo.competitiveeventsapp.enums.event.EventType
 import es.jocasolo.competitiveeventsapp.enums.event.EventVisibilityType
@@ -21,6 +22,7 @@ class EventDTO(
         @SerializedName("endDate") var endDate: Date?,
         @SerializedName("maxPlaces") var maxPlaces: Int?,
         @SerializedName("image") var image: ImageDTO?,
-        @SerializedName("scoreType") var scoreType: ScoreValueType?
+        @SerializedName("scoreType") var scoreType: ScoreValueType?,
+        @SerializedName("numParticipants") var numParticipants: Int?
 ) {
 }

@@ -18,10 +18,9 @@
 
         <TextView
             android:id="@+id/txt_event_item_title"
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginStart="8dp"
             android:text="@string/title"
             android:textStyle="bold"
             app:layout_constraintStart_toEndOf="@+id/cardViewImage"
@@ -29,10 +28,9 @@
 
         <TextView
             android:id="@+id/txt_event_item_subtitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="4dp"
+            android:layout_width="200dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="8dp"
             android:text="@string/subtitle"
             app:layout_constraintStart_toEndOf="@+id/cardViewImage"
             app:layout_constraintTop_toBottomOf="@+id/txt_event_item_title" />
@@ -63,8 +61,9 @@
             android:id="@+id/txt_item_event_participants"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="2dp"
             android:text="@string/zero"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/imageView9"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
@@ -72,12 +71,31 @@
             android:layout_width="16dp"
             android:layout_height="16dp"
             android:layout_marginTop="2dp"
-            android:layout_marginEnd="2dp"
             android:contentDescription="@string/image"
-            app:layout_constraintEnd_toStartOf="@+id/txt_item_event_participants"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/account"
             app:tint="@color/primary_dark" />
+
+        <ImageView
+            android:id="@+id/img_item_event_clock"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginTop="3dp"
+            android:contentDescription="@string/image"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView9"
+            app:srcCompat="@drawable/clock"
+            app:tint="@color/primary_dark" />
+
+        <TextView
+            android:id="@+id/txt_item_event_clock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="2dp"
+            android:text="@string/zero"
+            app:layout_constraintEnd_toStartOf="@+id/img_item_event_clock"
+            app:layout_constraintTop_toBottomOf="@+id/txt_item_event_participants" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>
