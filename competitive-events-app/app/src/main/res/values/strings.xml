@@ -77,6 +77,13 @@
     <string name="events_creation_main_image">Imagen principal</string>
     <string name="events_creation_event_type">Tipo de evento</string>
 
+    <!-- Event Types -->
+    <string name="events_sports">Deportes</string>
+    <string name="events_videogames">Videojuegos </string>
+    <string name="events_family">Familia</string>
+    <string name="events_academic">Estudios</string>
+    <string name="events_other">Otros</string>
+
     <!-- Errors -->
     <string name="error_title">Error</string>
     <string name="error_api_undefined">Ha ocurrido un error en la llamada al servicio</string>
