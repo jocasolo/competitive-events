@@ -9,7 +9,7 @@ object ServiceBuilder {
     private val client = OkHttpClient.Builder().build()
 
     private val retrofit = Retrofit.Builder()
-        .baseUrl(BuildConfig.API_URL) // change this IP for testing by your actual machine IP
+        .baseUrl(BuildConfig.API_URL) // change in build.gradle
         .addConverterFactory(GsonConverterFactory.create())
         .client(client)
         .build()
