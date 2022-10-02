@@ -7,7 +7,7 @@
         android:title="@string/events"
         />
     <item
-        android:id="@+id/item_create_event"
+        android:id="@+id/eventNewFragment"
         android:icon="@drawable/add"
         android:title="@string/create_event" />
     <item

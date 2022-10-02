@@ -22,8 +22,8 @@
     <string name="save">Guardar</string>
     <string name="empty" />
     <string name="dots">…</string>
-    <string name="title">Title</string>
-    <string name="subtitle">Subtitle</string>
+    <string name="title">Título</string>
+    <string name="subtitle">Subtítulo</string>
     <string name="zero">0</string>
     <string name="seconds">segundos</string>
     <string name="minutes">minutos</string>
@@ -62,6 +62,7 @@
     <string name="events_list">Listado de eventos</string>
 
     <!-- Events creation -->
+    <string name="events_new">Nuevo evento</string>
     <string name="events_find_new">Encuentra nuevos Eventos</string>
     <string name="events_find_or_create">Crea tu propio evento, busca o únete a tus favoritos</string>
     <string name="events_create_new">Crear un nuevo evento</string>
@@ -71,7 +72,10 @@
     <string name="events_invitations">Invitaciones</string>
     <string name="events_invitations_no_pending">Ahora mismo no tienes invitaciones pendientes</string>
     <string name="events_invitations_pending">Tienes %s invitaciones pendientes</string>
-
+    <string name="events_creation_title">Crea un nuevo evento a tu gusto e invita a tus amigos a participar</string>
+    <string name="events_creation_basic_data">Datos básicos</string>
+    <string name="events_creation_main_image">Imagen principal</string>
+    <string name="events_creation_event_type">Tipo de evento</string>
 
     <!-- Errors -->
     <string name="error_title">Error</string>

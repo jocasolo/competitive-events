@@ -75,7 +75,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/card_create_event"
         android:layout_width="0dp"
-        android:layout_height="200dp"
+        android:layout_height="150dp"
         android:layout_gravity="center"
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
@@ -93,17 +93,16 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
+                android:layout_height="60dp"
                 android:background="@color/white"
                 android:orientation="horizontal">
 
                 <ImageView
                     android:id="@+id/imageView12"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
                     android:contentDescription="@string/image"
-                    android:padding="15dp"
+                    android:padding="10dp"
                     android:src="@drawable/add_box"
                     app:tint="@color/primary_dark" />
 
@@ -125,10 +124,10 @@
                 android:id="@+id/textView15"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="25dp"
+                android:padding="15dp"
                 android:text="@string/events_create_new_description"
                 android:textColor="@color/white"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textStyle="bold" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
@@ -139,7 +138,7 @@
         android:layout_height="250dp"
         android:layout_gravity="center"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:backgroundTint="@color/primary_light"
         app:cardCornerRadius="15dp"
@@ -158,7 +157,7 @@
                 android:layout_height="75dp"
                 android:background="@color/white"
                 android:contentDescription="@string/image"
-                android:paddingTop="15dp"
+                android:paddingTop="10dp"
                 android:src="@drawable/ic_search_black_24dp"
                 app:tint="@color/primary_dark" />
 
@@ -193,7 +192,7 @@
         android:layout_height="250dp"
         android:layout_gravity="center"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
         android:alpha="0.65"
         android:backgroundTint="@color/primary_light"
@@ -213,7 +212,7 @@
                 android:layout_height="75dp"
                 android:background="@color/white"
                 android:contentDescription="@string/image"
-                android:paddingTop="15dp"
+                android:paddingTop="10dp"
                 android:src="@drawable/pending_actions"
                 app:tint="@color/primary_dark" />
 

@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_home_to_profile"
             app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_home_to_event_new"
+            app:destination="@id/eventNewFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -34,4 +37,19 @@
             android:id="@+id/action_update_profile_to_profile"
             app:destination="@id/profileFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/eventNewFragment"
+        android:name="es.jocasolo.competitiveeventsapp.EventNewFragment"
+        android:label="EventNewFragment"
+        tools:layout="@layout/fragment_events_new"
+        >
+        <action
+            android:id="@+id/action_event_new_to_event_creation"
+            app:destination="@id/eventCreationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/eventCreationFragment"
+        android:name="es.jocasolo.competitiveeventsapp.EventCreationFragment"
+        android:label="EventCreationFragment"
+        tools:layout="@layout/fragment_events_creation"/>
 </navigation>
