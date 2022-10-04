@@ -2,7 +2,6 @@
 
 import android.app.DatePickerDialog
 import android.content.Intent
-import android.database.Cursor
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -18,15 +17,15 @@ import androidx.fragment.app.Fragment
 import com.google.gson.Gson
 import com.squareup.picasso.Picasso
 import es.jocasolo.competitiveeventsapp.dto.ErrorDTO
-import es.jocasolo.competitiveeventsapp.dto.image.ImageDTO
 import es.jocasolo.competitiveeventsapp.dto.user.UserDTO
 import es.jocasolo.competitiveeventsapp.dto.user.UserPutDTO
-import es.jocasolo.competitiveeventsapp.service.ImageService
 import es.jocasolo.competitiveeventsapp.service.ServiceBuilder
 import es.jocasolo.competitiveeventsapp.service.UserService
 import es.jocasolo.competitiveeventsapp.singleton.UserAccount
 import es.jocasolo.competitiveeventsapp.singleton.UserInfo
-import es.jocasolo.competitiveeventsapp.utils.*
+import es.jocasolo.competitiveeventsapp.utils.Message
+import es.jocasolo.competitiveeventsapp.utils.MyDialog
+import es.jocasolo.competitiveeventsapp.utils.MyUtils
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -73,7 +72,7 @@ import java.util.*
         spinner = view.findViewById(R.id.spn_update_user)
 
         // Avatar button
-        view.findViewById<Button>(R.id.btn_profile_update_avatar).setOnClickListener(View.OnClickListener { imageChooser() })
+        view.findViewById<Button>(R.id.btn_profile_update_avatar).setOnClickListener { imageChooser() }
 
         // Load user info
         initFields(UserInfo.getInstance(requireContext()).getUserDTO())
@@ -108,7 +107,7 @@ import java.util.*
         sdf = SimpleDateFormat(getString(R.string.sdf_date))
 
         user?.avatar?.let {
-            Picasso.get().load(user.avatar!!.url).into(view?.findViewById<ImageView>(R.id.img_update_avatar))
+            Picasso.get().load(user.avatar!!.link()).into(view?.findViewById<ImageView>(R.id.img_update_avatar))
         }
         user?.name?.let {
             txtName?.text = user.name
@@ -152,8 +151,7 @@ import java.util.*
 
             userService.update(
                     actualUserDto?.id.toString(), updatedUserDto, UserAccount.getInstance(
-                    requireContext()
-            ).getToken()
+                    requireContext()).getToken()
             ).enqueue(object : Callback<Void> {
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {
                     if (response.code() == HttpURLConnection.HTTP_OK) {
@@ -240,7 +238,6 @@ import java.util.*
                                      ) as ErrorDTO
                                      showErrorDialog(getString(Message.forCode(errorDto.message)))
                                  } catch (e: Exception) {
-                                     System.out.println("aqui1")
                                      showErrorDialog(getString(R.string.error_api_undefined))
                                  }
                              }

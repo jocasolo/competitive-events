@@ -46,7 +46,7 @@ class CustomAdapter(var eventsPage: EventPageDTO): RecyclerView.Adapter<CustomAd
             holder.itemSubtitle.text = event.subtitle.toString()
             holder.itemParticipants.text = event.numParticipants.toString()
             Picasso.get()
-                .load(event.image?.url)
+                .load(event.image?.link())
                 .resize(65, 65)
                 .centerCrop()
                 .error(R.drawable.rugby)

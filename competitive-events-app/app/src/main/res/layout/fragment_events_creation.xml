@@ -145,30 +145,32 @@
                 android:paddingTop="10dp"
                 android:orientation="horizontal">
 
+                <Space
+                    android:layout_width="32dp"
+                    android:layout_height="wrap_content" />
+
                 <ImageView
-                    android:id="@+id/img_event_image_upload"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="0dp"
+                    android:id="@+id/img_event_upload_image"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
                     android:contentDescription="@string/image"
-                    android:paddingStart="38dp"
-                    android:paddingTop="8dp"
-                    android:paddingEnd="8dp"
+                    android:paddingStart="20dp"
+                    android:paddingEnd="0dp"
+                    android:paddingBottom="5dp"
                     android:src="@drawable/add_a_photo"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/txt_event_description"
-                    app:tint="@color/primary_dark" />
+                    app:layout_constraintTop_toBottomOf="@+id/txt_event_description" />
 
                 <Button
-                    android:id="@+id/btn_profile_update_avatar"
+                    android:id="@+id/btn_event_upload_image"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="9dp"
+                    android:layout_marginStart="14dp"
+                    android:layout_marginTop="26dp"
                     android:text="@string/events_creation_main_image"
                     app:icon="@drawable/upload"
-                    app:layout_constraintStart_toEndOf="@+id/img_event_image_upload"
+                    app:layout_constraintStart_toEndOf="@+id/img_event_upload_image"
                     app:layout_constraintTop_toBottomOf="@+id/txt_event_description" />
 
             </LinearLayout>
@@ -178,13 +180,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="32dp"
-                android:background="?android:attr/listDivider"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btn_profile_update_avatar2" />
+                android:background="?android:attr/listDivider" />
 
             <TextView
                 android:id="@+id/textView21"

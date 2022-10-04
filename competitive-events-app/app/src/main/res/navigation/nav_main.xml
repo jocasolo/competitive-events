@@ -51,5 +51,9 @@
         android:id="@+id/eventCreationFragment"
         android:name="es.jocasolo.competitiveeventsapp.EventCreationFragment"
         android:label="EventCreationFragment"
-        tools:layout="@layout/fragment_events_creation"/>
+        tools:layout="@layout/fragment_events_creation">
+        <action
+            android:id="@+id/action_event_creation_to_home"
+            app:destination="@id/homeFragment" />
+    </fragment>
 </navigation>
