@@ -24,7 +24,9 @@ public class EventMapperImpl implements EventMapper {
 		detail.setApprovalNeeded(event.getApprovalNeeded());
 		detail.setEndDate(event.getEndDate());
 		detail.setId(event.getId());
-		detail.setImage(commonService.transform(event.getImage(), ImageDTO.class));
+		if(event.getImage() != null) {
+			detail.setImage(commonService.transform(event.getImage(), ImageDTO.class));
+		}
 		detail.setInitDate(event.getInitDate());
 		detail.setInscription(event.getInscription());
 		detail.setMaxPlaces(event.getMaxPlaces());
