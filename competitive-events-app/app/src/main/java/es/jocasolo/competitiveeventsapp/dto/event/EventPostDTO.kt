@@ -20,8 +20,8 @@ class EventPostDTO(
         @SerializedName("approvalNeeded") var approvalNeeded: Boolean? = null,
         @SerializedName("subtitle") var subtitle: String? = null,
         @SerializedName("description") var description: String? = null,
-        @SerializedName("initDate") var initDate: Date? = null,
-        @SerializedName("endDate") var endDate: Date? = null,
+        @SerializedName("initDate") var initDate: String? = null,
+        @SerializedName("endDate") var endDate: String? = null,
         @SerializedName("maxPlaces") var maxPlaces: Int? = null
 ) {
 

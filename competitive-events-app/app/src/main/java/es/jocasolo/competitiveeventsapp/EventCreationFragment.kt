@@ -1,8 +1,8 @@
 package es.jocasolo.competitiveeventsapp
 
+import android.app.DatePickerDialog
 import android.content.Intent
 import android.graphics.PorterDuff
-import android.graphics.PorterDuffColorFilter
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
@@ -17,13 +17,16 @@ import com.squareup.picasso.Picasso
 import es.jocasolo.competitiveeventsapp.dto.ErrorDTO
 import es.jocasolo.competitiveeventsapp.dto.event.EventDTO
 import es.jocasolo.competitiveeventsapp.dto.event.EventPostDTO
-import es.jocasolo.competitiveeventsapp.dto.event.SpinnerEventType
+import es.jocasolo.competitiveeventsapp.ui.SpinnerEventType
 import es.jocasolo.competitiveeventsapp.enums.event.EventInscriptionType
 import es.jocasolo.competitiveeventsapp.enums.event.EventType
 import es.jocasolo.competitiveeventsapp.enums.event.EventVisibilityType
+import es.jocasolo.competitiveeventsapp.enums.score.ScoreSortType
+import es.jocasolo.competitiveeventsapp.enums.score.ScoreValueType
 import es.jocasolo.competitiveeventsapp.service.EventService
 import es.jocasolo.competitiveeventsapp.service.ServiceBuilder
 import es.jocasolo.competitiveeventsapp.singleton.UserAccount
+import es.jocasolo.competitiveeventsapp.ui.SpinnerScoreType
 import es.jocasolo.competitiveeventsapp.utils.Message
 import es.jocasolo.competitiveeventsapp.utils.MyDialog
 import es.jocasolo.competitiveeventsapp.utils.MyUtils
@@ -35,6 +38,8 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
 import java.net.HttpURLConnection
+import java.text.SimpleDateFormat
+import java.util.*
 import kotlin.collections.ArrayList
 
 /**
@@ -44,12 +49,22 @@ class EventCreationFragment : Fragment() {
 
     private val eventService = ServiceBuilder.buildService(EventService::class.java)
 
+    private var sdf : SimpleDateFormat? = null
+
     private var txtTitle : TextView? = null
     private var txtSubtitle : TextView? = null
     private var txtDescription : TextView? = null
     private var progressBar : ProgressBar? = null
     private var cmbEventType : Spinner? = null
+    private var cmbScoreType : Spinner? = null
     private var imgEventImage : ImageView? = null
+    private var txtInitDate : TextView? = null
+    private var txtEndDate : TextView? = null
+    private var swtInscription : Switch? = null
+    private var swtVisibility : Switch? = null
+    private var swtApproval : Switch? = null
+    private var swtSort: Switch? = null
+    private var txtMaxPlaces : TextView? = null
 
     private var filePart : MultipartBody.Part? = null
 
@@ -64,19 +79,32 @@ class EventCreationFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        sdf = SimpleDateFormat(getString(R.string.sdf_date))
+
         // Init input fields
         txtTitle = view.findViewById(R.id.txt_event_title)
         txtSubtitle = view.findViewById(R.id.txt_event_subtitle)
         txtDescription = view.findViewById(R.id.txt_event_description)
         progressBar = view.findViewById(R.id.spn_event_creation)
         cmbEventType = view.findViewById(R.id.combo_events_type)
-        imgEventImage = view.findViewById<ImageView>(R.id.img_event_upload_image)
-        imgEventImage?.setColorFilter(ContextCompat.getColor(requireContext(), R.color.primary_dark), android.graphics.PorterDuff.Mode.SRC_IN)
+        cmbScoreType = view.findViewById(R.id.combo_score_type)
+        imgEventImage = view.findViewById(R.id.img_event_upload_image)
+        txtInitDate = view.findViewById(R.id.txt_event_init_date)
+        txtInitDate?.setOnClickListener { showDatePicker(txtInitDate) }
+        txtEndDate = view.findViewById(R.id.txt_event_end_date)
+        txtEndDate?.setOnClickListener { showDatePicker(txtEndDate) }
+        swtApproval = view.findViewById(R.id.switch_event_approval)
+        swtInscription = view.findViewById(R.id.switch_event_inscription)
+        swtSort = view.findViewById(R.id.switch_event_sort_type)
+        swtVisibility = view.findViewById(R.id.switch_event_visibility)
+        txtMaxPlaces = view.findViewById(R.id.txt_event_max_places)
+        imgEventImage?.setColorFilter(ContextCompat.getColor(requireContext(), R.color.primary_dark), PorterDuff.Mode.SRC_IN)
 
         // Image button
         view.findViewById<Button>(R.id.btn_event_upload_image).setOnClickListener { imageChooser() }
         view.findViewById<ImageView>(R.id.img_event_upload_image).setOnClickListener { imageChooser() }
 
+        // Combo box event types
         val eventTypes: MutableList<SpinnerEventType> = ArrayList()
         eventTypes.add(SpinnerEventType(EventType.SPORTS, getString(R.string.events_sports)))
         eventTypes.add(SpinnerEventType(EventType.OTHER, getString(R.string.events_other)))
@@ -84,7 +112,7 @@ class EventCreationFragment : Fragment() {
         eventTypes.add(SpinnerEventType(EventType.FAMILY, getString(R.string.events_family)))
         eventTypes.add(SpinnerEventType(EventType.VIDEOGAMES, getString(R.string.events_videogames)))
 
-        var arrayEventTypes = ArrayAdapter(
+        ArrayAdapter(
                 requireContext(),
                 android.R.layout.simple_spinner_dropdown_item,
                 eventTypes
@@ -92,6 +120,21 @@ class EventCreationFragment : Fragment() {
             cmbEventType?.adapter = adapter
         }
         cmbEventType?.setSelection(0)
+
+        // Combo box score types
+        val scoreTypes: MutableList<SpinnerScoreType> = ArrayList()
+        scoreTypes.add(SpinnerScoreType(ScoreValueType.NUMERIC, getString(R.string.events_sports)))
+        scoreTypes.add(SpinnerScoreType(ScoreValueType.DECIMAL, getString(R.string.events_other)))
+        scoreTypes.add(SpinnerScoreType(ScoreValueType.TIME, getString(R.string.events_academic)))
+
+        ArrayAdapter(
+                requireContext(),
+                android.R.layout.simple_spinner_dropdown_item,
+                scoreTypes
+        ).also {  adapter ->
+            cmbScoreType?.adapter = adapter
+        }
+        cmbScoreType?.setSelection(0)
 
         view.findViewById<Button>(R.id.btn_event_creation).setOnClickListener { create(view) }
 
@@ -107,6 +150,16 @@ class EventCreationFragment : Fragment() {
 
     private fun commit() {
 
+        val sdfApi : SimpleDateFormat = SimpleDateFormat(getString(R.string.sdf_api_date))
+
+        var endDate : Date? = null
+        if(txtEndDate?.text?.isNotEmpty() == true)
+            endDate = sdf?.parse(txtEndDate?.text.toString())
+
+        var initDate : Date? = null
+        if(txtInitDate?.text?.isNotEmpty() == true)
+            initDate = sdf?.parse(txtInitDate?.text.toString())
+
         // Build request
         val eventDTO = EventPostDTO(txtTitle?.text.toString())
         eventDTO.subtitle = txtSubtitle?.text.toString()
@@ -114,11 +167,38 @@ class EventCreationFragment : Fragment() {
         eventDTO.approvalNeeded = false
         eventDTO.inscription = EventInscriptionType.PUBLIC
         eventDTO.visibility = EventVisibilityType.PRIVATE
-        //eventDTO.initDate = Date()
-        //eventDTO.endDate = Date()
-        eventDTO.maxPlaces = 100
-        val type = cmbEventType?.selectedItem as SpinnerEventType
-        eventDTO.type = type.key
+
+        endDate?.let { eventDTO.endDate = sdfApi.format(endDate) }
+        initDate?.let { eventDTO.initDate = sdfApi.format(initDate) }
+
+        if(txtMaxPlaces?.text != null && txtMaxPlaces?.text!!.isNotEmpty()) {
+            eventDTO.maxPlaces = Integer.valueOf(txtMaxPlaces?.text.toString())
+        }
+
+        val eventType = cmbEventType?.selectedItem as SpinnerEventType
+        eventDTO.type = eventType.key
+        val scoreType = cmbScoreType?.selectedItem as SpinnerScoreType
+        eventDTO.scoreType = scoreType.key
+
+        eventDTO.approvalNeeded = swtApproval?.isChecked
+
+        if(swtInscription?.isChecked == true){
+            eventDTO.inscription = EventInscriptionType.PUBLIC
+        } else {
+            eventDTO.inscription = EventInscriptionType.PRIVATE
+        }
+
+        if(swtSort?.isChecked == true){
+            eventDTO.sortScore = ScoreSortType.ASC
+        } else {
+            eventDTO.sortScore = ScoreSortType.DESC
+        }
+
+        if(swtVisibility?.isChecked == true){
+            eventDTO.visibility = EventVisibilityType.PRIVATE
+        } else {
+            eventDTO.visibility = EventVisibilityType.PUBLIC
+        }
 
         progressBar?.visibility = View.VISIBLE
         eventService.create(eventDTO, UserAccount.getInstance(requireContext()).getToken()).enqueue(object : Callback<EventDTO> {
@@ -162,27 +242,51 @@ class EventCreationFragment : Fragment() {
      * @return True if all fields are correct and false if not
      */
     private fun validate() : Boolean {
-        val validUsername = validateUsername()
-        return validUsername
+        val validTitle = validateTitle()
+        val validDates = validateDates()
+        return validTitle && validDates
     }
 
     /**
      * Check that the username has a value and with valid characters.
      * @return True if the username is valid and false if not
      */
-    private fun validateUsername() : Boolean {
+    private fun validateTitle() : Boolean {
         var result = true
 
-        /*if(txtUsername?.text?.isEmpty()!!){
-            txtUsername?.error = getString(R.string.error_required)
+        if(txtTitle?.text?.isEmpty()!!){
+            txtTitle?.error = getString(R.string.error_required)
             result = false
-
-        } else if(!usernamePattern.matcher(txtUsername?.text.toString()).matches()) {
-            txtUsername?.error = getString(R.string.error_username_not_valid)
-            result = false
-        }*/
+            val scrollView : ScrollView? = view?.findViewById(R.id.scrollview_events_creation)
+            scrollView?.scrollTo(0, 0)
+        }
 
         return result
+    }
+
+    private fun validateDates(): Boolean {
+
+        var endDate : Date? = null
+        if(txtEndDate?.text?.isNotEmpty() == true)
+            endDate = sdf?.parse(txtEndDate?.text.toString())
+
+        var initDate : Date? = null
+        if(txtInitDate?.text?.isNotEmpty() == true)
+            initDate = sdf?.parse(txtInitDate?.text.toString())
+
+        if(initDate == null && endDate == null)
+            return true
+
+        if(initDate != null && endDate != null){
+            return if(initDate.before(endDate))
+                true
+            else {
+                txtInitDate?.error = getString(R.string.error_date_before)
+                false
+            }
+        }
+
+        return true
     }
 
     private fun uploadImage(id : String) {
@@ -236,6 +340,29 @@ class EventCreationFragment : Fragment() {
             filePath = selectedImageUri.path.toString()
         }
         return filePath
+    }
+
+    private fun showDatePicker(txt: TextView?){
+
+        val calendar = Calendar.getInstance()
+        if (txt?.text != null && txt?.text!!.isNotEmpty()){
+            calendar.time = sdf?.parse(txt?.text.toString())
+        } else {
+            calendar.time = Date()
+        }
+
+        val listener = DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth -> updateDate(
+                txt,
+                year,
+                month,
+                dayOfMonth
+        ) }
+        val dialog = DatePickerDialog(requireContext(), listener, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH))
+        dialog.show()
+    }
+
+    private fun updateDate(txt: TextView?, year: Int, month: Int, dayOfMonth: Int) {
+        txt?.text = "$dayOfMonth-$month-$year"
     }
 
 }

@@ -29,6 +29,10 @@
     <string name="minutes">minutos</string>
     <string name="hours">horas</string>
     <string name="days">días</string>
+    <string name="init_date">Fecha de inicio</string>
+    <string name="end_date">Fecha de fin</string>
+    <string name="max_places">Plazas máximas</string>
+    <string name="score">Puntuación</string>
 
     <!-- Action bar -->
     <string name="logout">Cerrar sesión</string>
@@ -76,6 +80,8 @@
     <string name="events_creation_basic_data">Datos básicos</string>
     <string name="events_creation_main_image">Imagen principal</string>
     <string name="events_creation_event_type">Tipo de evento</string>
+    <string name="events_creation_event_properties">Propiedades del evento</string>
+    <string name="events_creation_event_score_type">Tipo de puntuación</string>
 
     <!-- Event Types -->
     <string name="events_sports">Deportes</string>
@@ -94,6 +100,7 @@
     <string name="error_email_exists">Este email ya existe</string>
     <string name="error_password_not_valid">Contraseña no válida. Debe contener al menos una mayúscula, un número y 8 caracteres</string>
     <string name="error_password_distinct">Las contraseñas no coinciden</string>
+    <string name="error_date_before">La fecha inicial debe ser anterior a la final</string>
     <string name="title_activity_main2">MainActivity</string>
 
     <!-- Messages -->

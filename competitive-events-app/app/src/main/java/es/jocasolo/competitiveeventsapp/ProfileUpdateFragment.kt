@@ -64,6 +64,8 @@ import java.util.*
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+        sdf = SimpleDateFormat(getString(R.string.sdf_date))
+
         txtName = view.findViewById(R.id.txt_update_name)
         txtSurname = view.findViewById(R.id.txt_update_surname)
         txtBirthDate = view.findViewById(R.id.txt_update_birthdate)

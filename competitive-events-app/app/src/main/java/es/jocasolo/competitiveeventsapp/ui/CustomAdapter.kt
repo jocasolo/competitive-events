@@ -1,7 +1,5 @@
-package es.jocasolo.competitiveeventsapp.adapter
+package es.jocasolo.competitiveeventsapp.ui
 
-import android.content.res.Resources
-import android.opengl.Visibility
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,26 +38,27 @@ class CustomAdapter(var eventsPage: EventPageDTO): RecyclerView.Adapter<CustomAd
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val event = eventsPage.events?.get(position)
-        event?.let {
-            holder.itemTitle.text = event.title.toString()
-            holder.itemSubtitle.text = event.subtitle.toString()
-            holder.itemParticipants.text = event.numParticipants.toString()
-            Picasso.get()
-                .load(event.image?.link())
-                .resize(65, 65)
-                .centerCrop()
-                .error(R.drawable.rugby)
-                .into(holder.itemImage)
-            val time = getTimeToFinish(event.endDate)
-            if(time.isNotEmpty()){
-                holder.itemClock.text = time
-            } else {
-                holder.itemClock.visibility = View.INVISIBLE
-                holder.imgClock.visibility = View.INVISIBLE
+        if(eventsPage.events != null && eventsPage.events!!.size > position) {
+            val event = eventsPage.events?.get(position)
+            event?.let {
+                holder.itemTitle.text = event.title.toString()
+                holder.itemSubtitle.text = event.subtitle.toString()
+                holder.itemParticipants.text = event.numParticipants.toString()
+                Picasso.get()
+                        .load(event.image?.link())
+                        .resize(65, 65)
+                        .centerCrop()
+                        .error(R.drawable.rugby)
+                        .into(holder.itemImage)
+                val time = getTimeToFinish(event.endDate)
+                if (time.isNotEmpty()) {
+                    holder.itemClock.text = time
+                } else {
+                    holder.itemClock.visibility = View.INVISIBLE
+                    holder.imgClock.visibility = View.INVISIBLE
+                }
             }
         }
-
     }
 
     private fun getTimeToFinish(date: Date?): CharSequence {

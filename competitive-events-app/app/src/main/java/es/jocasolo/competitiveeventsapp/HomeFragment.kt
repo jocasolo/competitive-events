@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
-import es.jocasolo.competitiveeventsapp.adapter.CustomAdapter
+import es.jocasolo.competitiveeventsapp.ui.CustomAdapter
 import es.jocasolo.competitiveeventsapp.dto.ErrorDTO
 import es.jocasolo.competitiveeventsapp.dto.event.EventPageDTO
 import es.jocasolo.competitiveeventsapp.service.EventService

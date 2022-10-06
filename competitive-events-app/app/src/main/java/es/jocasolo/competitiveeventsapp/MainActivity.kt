@@ -11,15 +11,10 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.gson.Gson
-import es.jocasolo.competitiveeventsapp.adapter.CustomAdapter
 import es.jocasolo.competitiveeventsapp.constants.Constants
 import es.jocasolo.competitiveeventsapp.dto.ErrorDTO
-import es.jocasolo.competitiveeventsapp.dto.event.EventDTO
-import es.jocasolo.competitiveeventsapp.dto.event.EventPageDTO
 import es.jocasolo.competitiveeventsapp.dto.user.UserDTO
 import es.jocasolo.competitiveeventsapp.service.EventService
 import es.jocasolo.competitiveeventsapp.service.ServiceBuilder

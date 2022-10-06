@@ -1,4 +1,4 @@
-package es.jocasolo.competitiveeventsapp.dto.event
+package es.jocasolo.competitiveeventsapp.ui
 
 import es.jocasolo.competitiveeventsapp.enums.event.EventType
 
