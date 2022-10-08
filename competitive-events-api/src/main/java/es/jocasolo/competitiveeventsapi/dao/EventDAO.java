@@ -28,8 +28,8 @@ public interface EventDAO extends CrudRepository<Event, String> {
 	@Query(value = "SELECT e FROM Event AS e WHERE id = :id AND status <> 'DELETED'")
 	public Event findOne(@Param("id") String id);
 	
-	@Query(value = "SELECT e from Event as e WHERE "
-			+ "(e.title LIKE %:title% OR :title IS NULL) "
+	@Query(nativeQuery=true, value = "SELECT * from Event as e WHERE "
+			+ "(fuzzy_search(e.title, :title, 2) OR :title IS NULL) "
 			+ "AND (e.type LIKE :type OR :type IS NULL) "
 			+ "AND (e.status LIKE :status OR :status IS NULL) "
 			+ "AND (e.inscription LIKE :inscription OR :inscription IS NULL) AND e.visibility = 'PUBLIC' AND status <> 'DELETED'"
@@ -37,9 +37,9 @@ public interface EventDAO extends CrudRepository<Event, String> {
 	public Page<Event> search(@Param("title") String title, @Param("type") EventType type, @Param("status") EventStatusType status, 
 			@Param("inscription") EventInscriptionType inscription, Pageable pageRequest);
 	
-	@Query(value = "SELECT e from Event as e INNER JOIN EventUser as eu ON e.id = eu.event WHERE "
+	@Query(nativeQuery=true, value = "SELECT * from Event as e INNER JOIN EventUser as eu ON e.id = eu.event WHERE "
 			+ "(eu.user = :user) "
-			+ "AND (e.title LIKE %:title% OR :title IS NULL) "
+			+ "AND (fuzzy_search(e.title, :title, 2) OR :title IS NULL) "
 			+ "AND (e.type LIKE :type OR :type IS NULL) "
 			+ "AND (e.status LIKE :status OR :status IS NULL) "
 			+ "AND (e.inscription LIKE :inscription OR :inscription IS NULL) AND e.status <> 'DELETED'"

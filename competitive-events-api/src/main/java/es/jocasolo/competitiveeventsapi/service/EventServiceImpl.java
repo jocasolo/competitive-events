@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -201,9 +202,9 @@ public class EventServiceImpl implements EventService {
 		Page<Event> events = null;
 		User user = authentication.getUser();
 		
-		if(user == null) {
+		if(StringUtils.isEmpty(username)) {
 			// Public events
-			events = eventDao.search(title, EventType.getEnumOrNull(type), EventStatusType.getEnumOrNull(status), 
+			events = eventDao.search(StringUtils.lowerCase(title), EventType.getEnumOrNull(type), EventStatusType.getEnumOrNull(status), 
 				EventInscriptionType.getEnumOrNull(inscription), pageRequest);
 		} else {
 			// User events
