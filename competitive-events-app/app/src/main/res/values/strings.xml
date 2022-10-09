@@ -33,6 +33,7 @@
     <string name="end_date">Fecha de fin</string>
     <string name="max_places">Plazas máximas</string>
     <string name="score">Puntuación</string>
+    <string name="create">Crear</string>
 
     <!-- Action bar -->
     <string name="logout">Cerrar sesión</string>

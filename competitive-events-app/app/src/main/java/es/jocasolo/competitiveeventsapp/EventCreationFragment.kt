@@ -164,9 +164,6 @@ class EventCreationFragment : Fragment() {
         val eventDTO = EventPostDTO(txtTitle?.text.toString())
         eventDTO.subtitle = txtSubtitle?.text.toString()
         eventDTO.description = txtDescription?.text.toString()
-        eventDTO.approvalNeeded = false
-        eventDTO.inscription = EventInscriptionType.PUBLIC
-        eventDTO.visibility = EventVisibilityType.PRIVATE
 
         endDate?.let { eventDTO.endDate = sdfApi.format(endDate) }
         initDate?.let { eventDTO.initDate = sdfApi.format(initDate) }
@@ -182,7 +179,7 @@ class EventCreationFragment : Fragment() {
 
         eventDTO.approvalNeeded = swtApproval?.isChecked
 
-        if(swtInscription?.isChecked == true){
+        if(swtInscription?.isChecked == false){
             eventDTO.inscription = EventInscriptionType.PUBLIC
         } else {
             eventDTO.inscription = EventInscriptionType.PRIVATE

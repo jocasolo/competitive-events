@@ -48,9 +48,14 @@ class EventNewFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        // Navigate to profile update
+        // Navigate to event creation
         view.findViewById<CardView>(R.id.card_create_event).setOnClickListener {
             findNavController().navigate(R.id.action_event_new_to_event_creation)
+        }
+
+        // Navigate to event search
+        view.findViewById<CardView>(R.id.card_search_event).setOnClickListener {
+            findNavController().navigate(R.id.action_new_to_search)
         }
 
         super.onViewCreated(view, savedInstanceState)

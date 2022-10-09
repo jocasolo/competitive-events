@@ -53,7 +53,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun loadUserEvents() {
-        eventService.search(null, null, null, null, null, 0, 10, UserAccount.getInstance(requireContext()).getToken()).enqueue(object : Callback<EventPageDTO> {
+        eventService.search(null, null, null, null, UserAccount.getInstance(requireContext()).getName(), 0, 10, UserAccount.getInstance(requireContext()).getToken()).enqueue(object : Callback<EventPageDTO> {
             override fun onResponse(call: Call<EventPageDTO>, response: Response<EventPageDTO>) {
                 if (response.code() == HttpURLConnection.HTTP_OK) {
                     recyclerView?.adapter = CustomAdapter(response.body()!!)

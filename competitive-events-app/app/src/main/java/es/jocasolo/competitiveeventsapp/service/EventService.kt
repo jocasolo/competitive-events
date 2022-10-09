@@ -22,7 +22,7 @@ interface EventService {
     fun search(
             @Query (value="title") title: String?,
             @Query (value="type") type: String?,
-            @Query (value="title") status: String?,
+            @Query (value="status") status: String?,
             @Query (value="inscription") inscription: String?,
             @Query (value="username") username: String?,
             @Query (value="page") page: Int?,
