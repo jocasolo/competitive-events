@@ -202,14 +202,16 @@ public class EventServiceImpl implements EventService {
 		Page<Event> events = null;
 		User user = authentication.getUser();
 		
+		final String typeName = type != null ? EventType.getEnumOrNull(type).name() : null;
+		final String statusName = status != null ? EventStatusType.getEnumOrNull(status).name() : null;
+		final String inscriptionName = inscription != null ? EventInscriptionType.getEnumOrNull(inscription).name() : null;
+		
 		if(StringUtils.isEmpty(username)) {
 			// Public events
-			events = eventDao.search(StringUtils.lowerCase(title), EventType.getEnumOrNull(type), EventStatusType.getEnumOrNull(status), 
-				EventInscriptionType.getEnumOrNull(inscription), pageRequest);
+			events = eventDao.search(StringUtils.lowerCase(title), typeName, statusName, inscriptionName, pageRequest);
 		} else {
 			// User events
-			events = eventDao.searchByUser(title, EventType.getEnumOrNull(type), EventStatusType.getEnumOrNull(status), 
-					EventInscriptionType.getEnumOrNull(inscription), user, pageRequest);
+			events = eventDao.searchByUser(title, typeName, statusName, inscriptionName, user, pageRequest);
 		}
 		
 		EventPageDTO dto = new EventPageDTO();
