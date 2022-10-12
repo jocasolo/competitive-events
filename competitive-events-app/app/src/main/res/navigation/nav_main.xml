@@ -64,5 +64,14 @@
         android:name="es.jocasolo.competitiveeventsapp.EventSearchFragment"
         android:label="EventSearchFragment"
         tools:layout="@layout/fragment_events_search">
+        <action
+            android:id="@+id/action_event_search_to_event_detail"
+            app:destination="@id/eventDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/eventDetailFragment"
+        android:name="es.jocasolo.competitiveeventsapp.EventDetailFragment"
+        android:label="EventDetailFragment"
+        tools:layout="@layout/fragment_events_detail">
     </fragment>
 </navigation>

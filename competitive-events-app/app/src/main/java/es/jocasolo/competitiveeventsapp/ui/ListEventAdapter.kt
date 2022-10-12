@@ -1,13 +1,20 @@
 package es.jocasolo.competitiveeventsapp.ui
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentTransaction
+import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
+import es.jocasolo.competitiveeventsapp.EventDetailFragment
 import es.jocasolo.competitiveeventsapp.R
+import es.jocasolo.competitiveeventsapp.dto.event.EventDTO
 import es.jocasolo.competitiveeventsapp.dto.event.EventPageDTO
 import java.time.Instant
 import java.time.LocalDateTime
@@ -15,7 +22,7 @@ import java.time.ZoneId
 import java.time.temporal.ChronoUnit
 import java.util.*
 
-class CustomAdapter(var eventsPage: EventPageDTO): RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
+open class ListEventAdapter(var navController : NavController, var eventsPage: EventPageDTO, val listType : ListEventType): RecyclerView.Adapter<ListEventAdapter.ViewHolder>() {
 
     private var seconds: String? = null
     private var minutes: String? = null
@@ -41,6 +48,7 @@ class CustomAdapter(var eventsPage: EventPageDTO): RecyclerView.Adapter<CustomAd
         if(eventsPage.events != null && eventsPage.events!!.size > position) {
             val event = eventsPage.events?.get(position)
             event?.let {
+                holder.card.setOnClickListener { openDetail(event) }
                 holder.itemTitle.text = event.title.toString()
                 holder.itemSubtitle.text = event.subtitle.toString()
                 holder.itemParticipants.text = event.numParticipants.toString()
@@ -59,6 +67,14 @@ class CustomAdapter(var eventsPage: EventPageDTO): RecyclerView.Adapter<CustomAd
                 }
             }
         }
+    }
+
+    private fun openDetail(event: EventDTO) {
+
+        val data : Bundle = Bundle()
+        data.putSerializable("event", event)
+
+        navController.navigate(R.id.action_event_search_to_event_detail, data)
     }
 
     private fun getTimeToFinish(date: Date?): CharSequence {
@@ -97,6 +113,7 @@ class CustomAdapter(var eventsPage: EventPageDTO): RecyclerView.Adapter<CustomAd
         var itemParticipants: TextView = itemView.findViewById(R.id.txt_item_event_participants)
         var itemClock: TextView = itemView.findViewById(R.id.txt_item_event_clock)
         var imgClock: ImageView = itemView.findViewById(R.id.img_item_event_clock)
+        var card: CardView = itemView.findViewById(R.id.card_event)
 
     }
 
