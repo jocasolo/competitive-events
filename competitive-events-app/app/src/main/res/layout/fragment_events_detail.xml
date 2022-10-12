@@ -20,7 +20,7 @@
 
             <ImageView
                 android:id="@+id/img_event_detail_main"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:scaleType="centerCrop"
                 app:srcCompat="@drawable/steampunk_room" />
@@ -33,6 +33,7 @@
                 android:paddingTop="16dp"
                 android:paddingEnd="32dp"
                 android:text="TextView"
+                android:textColor="@color/primary_dark"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -52,14 +53,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingStart="32dp"
-                android:paddingEnd="32dp"
-                app:trimExpandedText="Ver más"
-                app:trimCollapsedText="Ver menos"
-                app:trimMode="trimModeLine"
-                app:trimLength="4"
-                app:colorClickableText="@color/primary"
                 android:paddingTop="8dp"
-                android:text="Lorem ipsum muy largo Lorem ipsum muy largo Lorem ipsum muy largo Lorem ipsum muy largo Lorem ipsum muy largo Lorem ipsum muy largo Lorem ipsum muy largo Lorem ipsum muy largo Lorem ipsum muy largo Lorem ipsum muy largo Lorem ipsum muy largo Lorem ipsum muy largo Lorem ipsum muy largo "/>
+                android:paddingEnd="32dp"
+                android:text="Lorem ipsum muy largo Lorem ipsum muy largo Lorem ipsum muy largo Lorem ipsum muy largo Lorem ipsum muy largo Lorem ipsum muy largo Lorem ipsum muy largo Lorem ipsum muy largo Lorem ipsum muy largo Lorem ipsum muy largo Lorem ipsum muy largo Lorem ipsum muy largo Lorem ipsum muy largo "
+                app:colorClickableText="@color/primary"
+                app:trimCollapsedText="Ver menos"
+                app:trimExpandedText="Ver más"
+                app:trimLength="200"
+                app:trimMode="trimModeLength" />
 
             <View
                 android:id="@+id/divider9"
@@ -73,6 +74,93 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/txt_event_detail_init_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="32dp"
+                    android:text="@string/events_init" />
+
+                <TextView
+                    android:id="@+id/txt_event_detail_end_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="32dp"
+                    android:gravity="end"
+                    android:text="@string/events_end" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/txt_event_detail_num_participants"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="32dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="32dp"
+                android:text="@string/events_num_participants" />
+
+            <TextView
+                android:id="@+id/txt_event_detail_available_places"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:paddingStart="32dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="32dp"
+                android:text="@string/events_available_places" />
+
+            <View
+                android:id="@+id/divider8"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="32dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+            <TextView
+                android:id="@+id/textView23"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="32dp"
+                android:paddingEnd="32dp"
+                android:paddingTop="16dp"
+                android:text="Premios"
+                android:textAllCaps="true"
+                android:textColor="@color/primary_dark"
+                android:textStyle="bold" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_reward_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingStart="24dp"
+                android:paddingEnd="24dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <TextView
+                android:id="@+id/textView22"
+                android:layout_width="wrap_content"
+                android:layout_height="1200dp"
+                android:text="TextView" />
+
 
         </LinearLayout>
     </ScrollView>

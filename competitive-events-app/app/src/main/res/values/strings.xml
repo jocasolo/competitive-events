@@ -65,6 +65,10 @@
 
     <!-- Events List -->
     <string name="events_list">Listado de eventos</string>
+    <string name="events_init">Inicio: %1$s</string>
+    <string name="events_end">Fin: %1$s (%2$s)</string>
+    <string name="events_num_participants">Num. participantes: %1$d</string>
+    <string name="events_available_places">Plazas disponibles: %1$d</string>
 
     <!-- Events creation -->
     <string name="events_new">Nuevo evento</string>
@@ -90,6 +94,15 @@
     <string name="events_family">Familia</string>
     <string name="events_academic">Estudios</string>
     <string name="events_other">Otros</string>
+
+    <!-- Score -->
+    <string name="score_numeric">Numérica</string>
+    <string name="score_decimal">Decimal</string>
+    <string name="score_time">Tiempo</string>
+
+    <!-- Rewards -->
+    <string name="reward_required_position">Posición requerida: %1$d</string>
+    <string name="reward_winner">Ganador: %1$s</string>
 
     <!-- Errors -->
     <string name="error_title">Error</string>

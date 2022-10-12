@@ -123,9 +123,9 @@ class EventCreationFragment : Fragment() {
 
         // Combo box score types
         val scoreTypes: MutableList<SpinnerScoreType> = ArrayList()
-        scoreTypes.add(SpinnerScoreType(ScoreValueType.NUMERIC, getString(R.string.events_sports)))
-        scoreTypes.add(SpinnerScoreType(ScoreValueType.DECIMAL, getString(R.string.events_other)))
-        scoreTypes.add(SpinnerScoreType(ScoreValueType.TIME, getString(R.string.events_academic)))
+        scoreTypes.add(SpinnerScoreType(ScoreValueType.NUMERIC, getString(R.string.score_numeric)))
+        scoreTypes.add(SpinnerScoreType(ScoreValueType.DECIMAL, getString(R.string.score_decimal)))
+        scoreTypes.add(SpinnerScoreType(ScoreValueType.TIME, getString(R.string.score_time)))
 
         ArrayAdapter(
                 requireContext(),
@@ -192,9 +192,9 @@ class EventCreationFragment : Fragment() {
         }
 
         if(swtVisibility?.isChecked == true){
-            eventDTO.visibility = EventVisibilityType.PRIVATE
-        } else {
             eventDTO.visibility = EventVisibilityType.PUBLIC
+        } else {
+            eventDTO.visibility = EventVisibilityType.PRIVATE
         }
 
         progressBar?.visibility = View.VISIBLE
@@ -287,6 +287,7 @@ class EventCreationFragment : Fragment() {
     }
 
     private fun uploadImage(id : String) {
+
         filePart?.let {
             eventService.updateImage(it, id, UserAccount.getInstance(requireContext()).getToken()).enqueue(object : Callback<EventDTO> {
                 override fun onResponse(call: Call<EventDTO>, response: Response<EventDTO>) {

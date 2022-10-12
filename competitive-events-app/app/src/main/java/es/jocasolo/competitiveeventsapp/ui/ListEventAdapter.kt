@@ -7,20 +7,13 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
-import es.jocasolo.competitiveeventsapp.EventDetailFragment
 import es.jocasolo.competitiveeventsapp.R
 import es.jocasolo.competitiveeventsapp.dto.event.EventDTO
 import es.jocasolo.competitiveeventsapp.dto.event.EventPageDTO
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.ZoneId
-import java.time.temporal.ChronoUnit
-import java.util.*
+import es.jocasolo.competitiveeventsapp.utils.MyUtils
 
 open class ListEventAdapter(var navController : NavController, var eventsPage: EventPageDTO, val listType : ListEventType): RecyclerView.Adapter<ListEventAdapter.ViewHolder>() {
 
@@ -28,6 +21,7 @@ open class ListEventAdapter(var navController : NavController, var eventsPage: E
     private var minutes: String? = null
     private var hours: String? = null
     private var days: String? = null
+    private var parent : ViewGroup? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(
@@ -36,10 +30,7 @@ open class ListEventAdapter(var navController : NavController, var eventsPage: E
             false
         )
 
-        seconds = parent.context.getString(R.string.seconds)
-        minutes = parent.context.getString(R.string.minutes)
-        hours = parent.context.getString(R.string.hours)
-        days = parent.context.getString(R.string.days)
+        this.parent = parent
 
         return ViewHolder(v)
     }
@@ -58,7 +49,7 @@ open class ListEventAdapter(var navController : NavController, var eventsPage: E
                         .centerCrop()
                         .error(R.drawable.rugby)
                         .into(holder.itemImage)
-                val time = getTimeToFinish(event.endDate)
+                val time = MyUtils.getTimeToFinish(parent!!.context, event.endDate)
                 if (time.isNotEmpty()) {
                     holder.itemClock.text = time
                 } else {
@@ -72,31 +63,10 @@ open class ListEventAdapter(var navController : NavController, var eventsPage: E
     private fun openDetail(event: EventDTO) {
 
         val data : Bundle = Bundle()
-        data.putSerializable("event", event)
+        data.putString("eventId", event.id)
 
         navController.navigate(R.id.action_event_search_to_event_detail, data)
     }
-
-    private fun getTimeToFinish(date: Date?): CharSequence {
-        var result = ""
-        date?.let {
-            val end = Instant.ofEpochMilli(date.time)
-                .atZone(ZoneId.systemDefault())
-                .toLocalDateTime();
-            val now = LocalDateTime.now()
-            val diff: Long = ChronoUnit.SECONDS.between(now, end)
-            result = when {
-                diff in 0..59 -> ChronoUnit.SECONDS.between(now, end).toString() + " " + seconds
-                diff in 60..3599 -> ChronoUnit.MINUTES.between(now, end).toString() + " " + minutes
-                diff in 3600..863999 -> ChronoUnit.HOURS.between(now, end).toString() + " " + hours
-                diff > 864000 -> ChronoUnit.DAYS.between(now, end).toString() + " " + days
-                else -> ""
-            }
-        }
-
-        return result;
-    }
-
 
     override fun getItemCount(): Int {
         eventsPage.total?.let {
