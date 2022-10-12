@@ -8,6 +8,7 @@ import es.jocasolo.competitiveeventsapp.enums.event.EventType
 import es.jocasolo.competitiveeventsapp.enums.event.EventVisibilityType
 import es.jocasolo.competitiveeventsapp.enums.score.ScoreSortType
 import es.jocasolo.competitiveeventsapp.enums.score.ScoreValueType
+import java.io.Serializable
 import java.util.*
 
 class EventDTO(
@@ -26,5 +27,5 @@ class EventDTO(
         @SerializedName("scoreType") var scoreType: ScoreValueType?,
         @SerializedName("sortScore") var sortScore: ScoreSortType?,
         @SerializedName("numParticipants") var numParticipants: Int?
-) {
+) : Serializable {
 }

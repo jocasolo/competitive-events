@@ -73,8 +73,6 @@ class EventDetailFragment : Fragment() {
         } else {
             txtSubtitle?.visibility = View.GONE
         }
-        System.out.println(event.description)
-        System.out.println(txtDescription?.text)
         if(StringUtils.isNotEmpty(event.description)){
             txtDescription?.text = event.description
         } else {

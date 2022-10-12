@@ -56,7 +56,7 @@ dependencies {
     // StringUtils
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.12.0'
 
-    // Terceros
+    // Third party
     implementation 'com.borjabravo:readmoretextview:2.1.0'
 
     testImplementation 'junit:junit:4.+'
