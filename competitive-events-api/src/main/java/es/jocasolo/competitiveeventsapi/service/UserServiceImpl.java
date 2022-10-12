@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import es.jocasolo.competitiveeventsapi.constants.CommonConstants;
 import es.jocasolo.competitiveeventsapi.dao.UserDAO;
+import es.jocasolo.competitiveeventsapi.dto.user.UserCompleteDTO;
 import es.jocasolo.competitiveeventsapi.dto.user.UserDTO;
 import es.jocasolo.competitiveeventsapi.dto.user.UserPageDTO;
 import es.jocasolo.competitiveeventsapi.dto.user.UserPasswordDTO;
@@ -36,6 +37,7 @@ import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotValidException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserUsenameExistsException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserWrongPasswordException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserWrongUpdateException;
+import es.jocasolo.competitiveeventsapi.mappers.UserMapper;
 import es.jocasolo.competitiveeventsapi.model.Image;
 import es.jocasolo.competitiveeventsapi.model.User;
 import es.jocasolo.competitiveeventsapi.utils.EventUtils;
@@ -60,11 +62,14 @@ public class UserServiceImpl implements UserService {
 	private ImageService imageService;
 	
 	@Autowired
+	private UserMapper userMapper;
+	
+	@Autowired
 	private AuthenticationFacade authentication;
 
 	@Override
 	@Transactional(readOnly = true)
-	public User findOne(String id) throws UserNotFoundException {
+	public UserCompleteDTO findOne(String id) throws UserNotFoundException {
 		final User user = userDao.findOne(id);
 		if (user == null)
 			throw new UserNotFoundException();
@@ -73,7 +78,7 @@ public class UserServiceImpl implements UserService {
 			user.setEmail(null);
 		}
 		
-		return user;
+		return userMapper.map(user);
 	}
 	
 	@Override

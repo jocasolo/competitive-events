@@ -4,6 +4,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.multipart.MultipartFile;
 
+import es.jocasolo.competitiveeventsapi.dto.user.UserCompleteDTO;
 import es.jocasolo.competitiveeventsapi.dto.user.UserDTO;
 import es.jocasolo.competitiveeventsapi.dto.user.UserPageDTO;
 import es.jocasolo.competitiveeventsapi.dto.user.UserPasswordDTO;
@@ -12,13 +13,12 @@ import es.jocasolo.competitiveeventsapi.dto.user.UserPutDTO;
 import es.jocasolo.competitiveeventsapi.exceptions.image.ImageNotFoundException;
 import es.jocasolo.competitiveeventsapi.exceptions.image.ImageUploadException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserEmailExistsException;
-import es.jocasolo.competitiveeventsapi.exceptions.user.UserUsenameExistsException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserInvalidStatusException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotFoundException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotValidException;
+import es.jocasolo.competitiveeventsapi.exceptions.user.UserUsenameExistsException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserWrongPasswordException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserWrongUpdateException;
-import es.jocasolo.competitiveeventsapi.model.User;
 
 public interface UserService extends UserDetailsService {
 
@@ -29,7 +29,7 @@ public interface UserService extends UserDetailsService {
 	 * @return User corresponding to the id searched.
 	 * @throws UserNotFoundException
 	 */
-	User findOne(String id) throws UserNotFoundException;
+	UserCompleteDTO findOne(String id) throws UserNotFoundException;
 	
 	/**
 	 * @param username

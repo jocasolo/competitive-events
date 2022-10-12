@@ -36,7 +36,6 @@ import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotValidException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserUsenameExistsException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserWrongPasswordException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserWrongUpdateException;
-import es.jocasolo.competitiveeventsapi.model.User;
 import es.jocasolo.competitiveeventsapi.service.CommonService;
 import es.jocasolo.competitiveeventsapi.service.UserService;
 import io.swagger.annotations.ApiOperation;
@@ -64,7 +63,7 @@ public class UserController {
 	@ApiOperation(value = "Search for an user based on its id.")
 	public ResponseEntity<String> exists(@PathVariable("id") String id) throws UserNotFoundException {
 		log.debug("Looking for the user with id: {}", id);
-		final User user = userService.findOne(id);
+		final UserCompleteDTO user = userService.findOne(id);
 		if(user != null)		
 			return new ResponseEntity<>(HttpStatus.OK);
 		else
