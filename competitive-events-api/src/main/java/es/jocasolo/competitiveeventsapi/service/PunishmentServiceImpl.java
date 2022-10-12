@@ -120,7 +120,7 @@ public class PunishmentServiceImpl implements PunishmentService {
 		if(!eventUser.isOwner())
 			throw new UserNotValidException();
 		
-		Image image = imageService.upload(multipart, ImageType.REWARD);
+		Image image = imageService.upload(multipart, ImageType.PUNISHMENT);
 		punishment.setImage(image);
 		
 		return commonService.transform(punishmentDao.save(punishment), PunishmentDTO.class);

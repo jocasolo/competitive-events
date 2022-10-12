@@ -15,7 +15,7 @@ public class PunishmentDTO extends DTO implements Serializable {
 
 	@Getter
 	@Setter
-	private String id;
+	private Integer id;
 
 	@Getter
 	@Setter
