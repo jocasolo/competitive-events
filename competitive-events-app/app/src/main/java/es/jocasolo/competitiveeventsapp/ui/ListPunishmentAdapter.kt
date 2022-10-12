@@ -11,13 +11,18 @@ import com.squareup.picasso.Picasso
 import es.jocasolo.competitiveeventsapp.R
 import es.jocasolo.competitiveeventsapp.dto.reward.RewardDTO
 
+class ListPunishmentAdapter (var context : Context, var punishments: List<PunishmentDTO>): RecyclerView.Adapter<ListRewardAdapter.ViewHolder>() {
+}
+
+
+
 open class ListRewardAdapter(var context : Context, var rewards: List<RewardDTO>): RecyclerView.Adapter<ListRewardAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(
-            R.layout.card_layout_reward,
-            parent,
-            false
+                R.layout.card_layout_reward,
+                parent,
+                false
         )
 
         return ViewHolder(v)

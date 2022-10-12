@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.borjabravo.readmoretextview.ReadMoreTextView
@@ -159,7 +158,7 @@ class EventDetailFragment : Fragment() {
         // Rewards
         if(event.rewards != null) {
             val rewards = getSortedRewards(event.rewards!!)
-            rewardsRecyclerView?.adapter = ListRewardAdapter(findNavController(), requireContext(), rewards)
+            rewardsRecyclerView?.adapter = ListRewardAdapter(requireContext(), rewards)
         } else {
             rewardsRecyclerView?.visibility = View.GONE
         }
