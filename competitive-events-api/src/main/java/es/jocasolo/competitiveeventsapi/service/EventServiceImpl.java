@@ -20,6 +20,7 @@ import es.jocasolo.competitiveeventsapi.dao.RewardDAO;
 import es.jocasolo.competitiveeventsapi.dao.ScoreDAO;
 import es.jocasolo.competitiveeventsapi.dao.UserDAO;
 import es.jocasolo.competitiveeventsapi.dto.event.EventDTO;
+import es.jocasolo.competitiveeventsapi.dto.event.EventDetailDTO;
 import es.jocasolo.competitiveeventsapi.dto.event.EventPageDTO;
 import es.jocasolo.competitiveeventsapi.dto.event.EventPostDTO;
 import es.jocasolo.competitiveeventsapi.dto.event.EventPutDTO;
@@ -90,12 +91,12 @@ public class EventServiceImpl implements EventService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public Event findOne(String id) throws EventNotFoundException {
+	public EventDetailDTO findOne(String id) throws EventNotFoundException {
 		final Event event = eventDao.findOne(id);
 		if (event == null)
 			throw new EventNotFoundException();
 
-		return event;
+		return eventMapper.mapDetail(event);
 	}
 
 	@Override

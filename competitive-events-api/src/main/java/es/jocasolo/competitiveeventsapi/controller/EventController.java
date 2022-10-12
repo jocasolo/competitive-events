@@ -56,7 +56,7 @@ public class EventController {
 	@ApiOperation(value = "Search for an event based on its id.")
 	public EventDetailDTO findOne(@PathVariable("id") String id) throws EventNotFoundException {
 		log.debug("Looking for the event with id: {}", id);
-		return commonService.transform(eventService.findOne(id), EventDetailDTO.class);
+		return eventService.findOne(id);
 	}
 	
 	@GetMapping(produces = "application/json;charset=utf8")

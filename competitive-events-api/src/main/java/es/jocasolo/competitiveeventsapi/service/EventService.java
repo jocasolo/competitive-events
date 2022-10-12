@@ -4,6 +4,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.web.multipart.MultipartFile;
 
 import es.jocasolo.competitiveeventsapi.dto.event.EventDTO;
+import es.jocasolo.competitiveeventsapi.dto.event.EventDetailDTO;
 import es.jocasolo.competitiveeventsapi.dto.event.EventPageDTO;
 import es.jocasolo.competitiveeventsapi.dto.event.EventPostDTO;
 import es.jocasolo.competitiveeventsapi.dto.event.EventPutDTO;
@@ -32,7 +33,7 @@ public interface EventService {
 	 * @return Event corresponding to the id searched.
 	 * @throws EventNotFoundException
 	 */
-	Event findOne(String id) throws EventNotFoundException;
+	EventDetailDTO findOne(String id) throws EventNotFoundException;
 
 	/**
 	 * Creates a new event.

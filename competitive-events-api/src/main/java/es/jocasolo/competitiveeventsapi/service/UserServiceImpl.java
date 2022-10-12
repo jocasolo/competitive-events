@@ -37,7 +37,6 @@ import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotValidException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserUsenameExistsException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserWrongPasswordException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserWrongUpdateException;
-import es.jocasolo.competitiveeventsapi.mappers.UserMapper;
 import es.jocasolo.competitiveeventsapi.model.Image;
 import es.jocasolo.competitiveeventsapi.model.User;
 import es.jocasolo.competitiveeventsapi.utils.EventUtils;
@@ -62,9 +61,6 @@ public class UserServiceImpl implements UserService {
 	private ImageService imageService;
 	
 	@Autowired
-	private UserMapper userMapper;
-	
-	@Autowired
 	private AuthenticationFacade authentication;
 
 	@Override
@@ -78,7 +74,7 @@ public class UserServiceImpl implements UserService {
 			user.setEmail(null);
 		}
 		
-		return userMapper.map(user);
+		return commonService.transform(user, UserCompleteDTO.class);
 	}
 	
 	@Override

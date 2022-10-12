@@ -56,7 +56,7 @@ public class UserController {
 	@ApiOperation(value = "Search for an user based on its id.")
 	public UserCompleteDTO findOne(@PathVariable("id") String id) throws UserNotFoundException {
 		log.debug("Looking for the user with id: {}", id);
-		return commonService.transform(userService.findOne(id), UserCompleteDTO.class);
+		return userService.findOne(id);
 	}
 	
 	@RequestMapping(method = RequestMethod.HEAD, value = "/{id}", produces = "application/json;charset=utf8")

@@ -18,6 +18,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import es.jocasolo.competitiveeventsapi.dao.EventDAO;
 import es.jocasolo.competitiveeventsapi.dto.event.EventDTO;
+import es.jocasolo.competitiveeventsapi.dto.event.EventDetailDTO;
 import es.jocasolo.competitiveeventsapi.dto.event.EventPostDTO;
 import es.jocasolo.competitiveeventsapi.dto.event.EventPutDTO;
 import es.jocasolo.competitiveeventsapi.enums.event.EventInscriptionType;
@@ -76,7 +77,7 @@ class TestEventService {
 	
 	@Test
 	void testFindOne() throws EventNotFoundException {
-		Event e = eventService.findOne(ID);
+		EventDetailDTO e = eventService.findOne(ID);
 		assertNotNull(e);
 		assertEquals(ID, e.getId());
 		
