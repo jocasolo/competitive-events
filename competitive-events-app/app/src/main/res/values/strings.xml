@@ -34,6 +34,10 @@
     <string name="max_places">Plazas máximas</string>
     <string name="score">Puntuación</string>
     <string name="create">Crear</string>
+    <string name="show_more">Leer más</string>
+    <string name="show_less"> Leer menos</string>
+    <string name="rewards">Premios</string>
+    <string name="punishments">Castigos</string>
 
     <!-- Action bar -->
     <string name="logout">Cerrar sesión</string>

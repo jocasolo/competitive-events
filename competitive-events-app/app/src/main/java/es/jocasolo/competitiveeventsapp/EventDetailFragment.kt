@@ -14,10 +14,12 @@ import com.google.gson.Gson
 import com.squareup.picasso.Picasso
 import es.jocasolo.competitiveeventsapp.dto.ErrorDTO
 import es.jocasolo.competitiveeventsapp.dto.event.EventDTO
+import es.jocasolo.competitiveeventsapp.dto.punishment.PunishmentDTO
 import es.jocasolo.competitiveeventsapp.dto.reward.RewardDTO
 import es.jocasolo.competitiveeventsapp.service.EventService
 import es.jocasolo.competitiveeventsapp.service.ServiceBuilder
 import es.jocasolo.competitiveeventsapp.singleton.UserAccount
+import es.jocasolo.competitiveeventsapp.ui.ListPunishmentAdapter
 import es.jocasolo.competitiveeventsapp.ui.ListRewardAdapter
 import es.jocasolo.competitiveeventsapp.utils.Message
 import es.jocasolo.competitiveeventsapp.utils.MyDialog
@@ -38,6 +40,7 @@ class EventDetailFragment : Fragment() {
     private val eventService = ServiceBuilder.buildService(EventService::class.java)
 
     private var rewardsRecyclerView: RecyclerView? = null
+    private var punishmentsRecyclerView: RecyclerView? = null
 
     private var txtTitle : TextView? = null
     private var txtSubtitle : TextView? = null
@@ -61,6 +64,8 @@ class EventDetailFragment : Fragment() {
 
         rewardsRecyclerView = view.findViewById<RecyclerView>(R.id.recycler_reward_list)
         rewardsRecyclerView?.layoutManager = LinearLayoutManager(requireContext())
+        punishmentsRecyclerView = view.findViewById<RecyclerView>(R.id.recycler_punishment_list)
+        punishmentsRecyclerView?.layoutManager = LinearLayoutManager(requireContext())
 
         // Init input fields
         txtTitle = view.findViewById(R.id.txt_event_detail_title)
@@ -162,10 +167,21 @@ class EventDetailFragment : Fragment() {
         } else {
             rewardsRecyclerView?.visibility = View.GONE
         }
+        // Punishments
+        if(event.punishments != null) {
+            val punishments = getSortedPunishments(event.punishments!!)
+            punishmentsRecyclerView?.adapter = ListPunishmentAdapter(requireContext(), punishments)
+        } else {
+            punishmentsRecyclerView?.visibility = View.GONE
+        }
     }
 
     private fun getSortedRewards(rewards: List<RewardDTO>): List<RewardDTO> {
         return rewards.sortedBy { r -> r.requiredPosition }
+    }
+
+    private fun getSortedPunishments(punishments: List<PunishmentDTO>): List<PunishmentDTO> {
+        return punishments.sortedBy { r -> r.requiredPosition }
     }
 
     private fun showErrorDialog(message: String) {

@@ -1,6 +1,7 @@
 package es.jocasolo.competitiveeventsapp.dto.event
 
 import com.google.gson.annotations.SerializedName
+import es.jocasolo.competitiveeventsapp.dto.punishment.PunishmentDTO
 import es.jocasolo.competitiveeventsapp.dto.reward.RewardDTO
 import es.jocasolo.competitiveeventsapp.dto.user.ImageDTO
 import es.jocasolo.competitiveeventsapp.dto.user.UserDTO
@@ -29,5 +30,6 @@ class EventDTO(
         @SerializedName("sortScore") var sortScore: ScoreSortType?,
         @SerializedName("numParticipants") var numParticipants: Int?,
         @SerializedName("rewards") var rewards: List<RewardDTO>?,
+        @SerializedName("punishments") var punishments: List<PunishmentDTO>?
 ) {
 }

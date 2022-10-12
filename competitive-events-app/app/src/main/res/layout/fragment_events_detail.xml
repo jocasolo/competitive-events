@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -32,7 +31,7 @@
                 android:paddingStart="32dp"
                 android:paddingTop="16dp"
                 android:paddingEnd="32dp"
-                android:text="TextView"
+                android:text="@string/title"
                 android:textColor="@color/primary_dark"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -44,7 +43,7 @@
                 android:paddingStart="32dp"
                 android:paddingTop="8dp"
                 android:paddingEnd="32dp"
-                android:text="TextView"
+                android:text="@string/subtitle"
                 android:textSize="16sp"
                 android:textStyle="italic" />
 
@@ -55,10 +54,10 @@
                 android:paddingStart="32dp"
                 android:paddingTop="8dp"
                 android:paddingEnd="32dp"
-                android:text="Lorem ipsum muy largo Lorem ipsum muy largo Lorem ipsum muy largo Lorem ipsum muy largo Lorem ipsum muy largo Lorem ipsum muy largo Lorem ipsum muy largo Lorem ipsum muy largo Lorem ipsum muy largo Lorem ipsum muy largo Lorem ipsum muy largo Lorem ipsum muy largo Lorem ipsum muy largo "
+                android:text="@string/description"
                 app:colorClickableText="@color/primary"
-                app:trimCollapsedText="Ver menos"
-                app:trimExpandedText="Ver más"
+                app:trimCollapsedText="@string/show_more"
+                app:trimExpandedText="@string/show_less"
                 app:trimLength="200"
                 app:trimMode="trimModeLength" />
 
@@ -136,15 +135,54 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingStart="32dp"
-                android:paddingEnd="32dp"
                 android:paddingTop="16dp"
-                android:text="Premios"
+                android:paddingEnd="32dp"
+                android:text="@string/rewards"
                 android:textAllCaps="true"
                 android:textColor="@color/primary_dark"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_reward_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingStart="24dp"
+                android:paddingEnd="24dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent">
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <View
+                android:id="@+id/divider10"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="32dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+            <TextView
+                android:id="@+id/textView26"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="32dp"
+                android:paddingTop="16dp"
+                android:paddingEnd="32dp"
+                android:text="@string/punishments"
+                android:textAllCaps="true"
+                android:textColor="@color/primary_dark"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler_punishment_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:paddingStart="24dp"

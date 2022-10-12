@@ -9,18 +9,13 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import es.jocasolo.competitiveeventsapp.R
-import es.jocasolo.competitiveeventsapp.dto.reward.RewardDTO
+import es.jocasolo.competitiveeventsapp.dto.punishment.PunishmentDTO
 
-class ListPunishmentAdapter (var context : Context, var punishments: List<PunishmentDTO>): RecyclerView.Adapter<ListRewardAdapter.ViewHolder>() {
-}
-
-
-
-open class ListRewardAdapter(var context : Context, var rewards: List<RewardDTO>): RecyclerView.Adapter<ListRewardAdapter.ViewHolder>() {
+class ListPunishmentAdapter (var context : Context, var punishments: List<PunishmentDTO>): RecyclerView.Adapter<ListPunishmentAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(
-                R.layout.card_layout_reward,
+                R.layout.card_layout_punishment,
                 parent,
                 false
         )
@@ -29,20 +24,20 @@ open class ListRewardAdapter(var context : Context, var rewards: List<RewardDTO>
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if(rewards.size > position) {
-            val reward = rewards[position]
-            reward.let {
-                holder.itemTitle.text = reward.title
-                holder.itemDescription.text = reward.description.toString()
-                reward.winner?.let {
-                    holder.itemWinner.visibility = View.VISIBLE
-                    holder.itemWinner.text = context.getString(R.string.reward_winner, reward.winner!!.id)
+        if(punishments.size > position) {
+            val punishment = punishments[position]
+            punishment.let {
+                holder.itemTitle.text = punishment.title
+                holder.itemDescription.text = punishment.description.toString()
+                punishment.looser?.let {
+                    holder.itemLooser.visibility = View.VISIBLE
+                    holder.itemLooser.text = context.getString(R.string.reward_winner, punishment.looser!!.id)
                 }
-                holder.itemRequiredPosition.text = context.getString(R.string.reward_required_position, reward.requiredPosition)
-                if(reward.image != null) {
+                holder.itemRequiredPosition.text = context.getString(R.string.reward_required_position, punishment.requiredPosition)
+                if(punishment.image != null) {
                     holder.itemImage.imageTintMode = null
                     Picasso.get()
-                            .load(reward.image?.link())
+                            .load(punishment.image?.link())
                             .resize(100, 100)
                             .centerCrop()
                             .error(R.drawable.military_tech)
@@ -53,18 +48,18 @@ open class ListRewardAdapter(var context : Context, var rewards: List<RewardDTO>
     }
 
     override fun getItemCount(): Int {
-        rewards.let {
-            return rewards.size
+        punishments.let {
+            return punishments.size
         }
     }
 
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
 
-        var itemImage: ImageView = itemView.findViewById(R.id.img_reward_item_image)
-        var itemTitle: TextView = itemView.findViewById(R.id.txt_reward_item_title)
-        var itemDescription: TextView = itemView.findViewById(R.id.txt_reward_item_description)
-        var itemWinner: TextView = itemView.findViewById(R.id.txt_reward_item_winner)
-        var itemRequiredPosition: TextView = itemView.findViewById(R.id.txt_reward_item_required_position)
+        var itemImage: ImageView = itemView.findViewById(R.id.img_punishment_item_image)
+        var itemTitle: TextView = itemView.findViewById(R.id.txt_punishment_item_title)
+        var itemDescription: TextView = itemView.findViewById(R.id.txt_punishment_item_description)
+        var itemLooser: TextView = itemView.findViewById(R.id.txt_punishment_item_looser)
+        var itemRequiredPosition: TextView = itemView.findViewById(R.id.txt_punishment_item_required_position)
 
     }
 
