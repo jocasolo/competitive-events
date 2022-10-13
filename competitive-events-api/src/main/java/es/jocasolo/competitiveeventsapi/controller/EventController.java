@@ -127,6 +127,13 @@ public class EventController {
 	// EVENT USER
 	// *************************************
 	
+	@GetMapping(value = "/{eventId}/users/{userId}", produces = "application/json;charset=utf8")
+	@ApiOperation(value = "Search for an event based on its id.")
+	public EventUserDTO findOne(@PathVariable("eventId") String eventId, @PathVariable("userId") String userId) throws EventNotFoundException, UserNotFoundException {
+		log.debug("Looking for the event with id: {} and user with id: {}", eventId, userId);
+		return eventService.findEventAndUser(eventId, userId);
+	}
+	
 	@PostMapping(value = "/{id}/users", produces = "application/json;charset=utf8")
 	@ResponseStatus(HttpStatus.CREATED)
 	@ApiOperation(value = "Adds user to an event.")

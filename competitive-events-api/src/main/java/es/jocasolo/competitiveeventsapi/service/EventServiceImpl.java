@@ -320,6 +320,28 @@ public class EventServiceImpl implements EventService {
 	// ************************************
 	// EVENT USER
 	// ************************************
+	
+	@Override
+	public EventUserDTO findEventAndUser(String eventId, String userId) throws UserNotFoundException, EventNotFoundException {
+		
+		User user = userDao.findOne(userId);
+		if (user == null)
+			throw new UserNotFoundException();
+		
+		Event event = eventDao.findOne(eventId);
+		if(event == null)
+			throw new EventNotFoundException();
+		
+		EventUser eventUser = eventUserDao.findOneAllStatus(event, user);
+		if(eventUser == null)
+			throw new EventNotFoundException();
+		
+		EventUserDTO dto = commonService.transform(eventUser, EventUserDTO.class);
+		dto.setEventId(eventId);
+		dto.setUserId(userId);
+		
+		return dto;
+	}
 
 	@Override
 	public EventUserDTO addUser(String eventId, EventUserPostDTO eventUserDto) 
@@ -384,6 +406,14 @@ public class EventServiceImpl implements EventService {
 		EventUserStatusType status = null;
 		EventUser authenticatedEventUser = eventUserDao.findOneAllStatus(event, authenticatedUser);
 		EventUser targetEventUser = eventUserDao.findOneAllStatus(event, targetUser);
+		
+		if(authenticatedEventUser == null) {
+			authenticatedEventUser = newEventUser;
+		}
+		
+		if(targetEventUser == null) {
+			targetEventUser = newEventUser;
+		}
 		
 		// if the type of registration is private
 		if (event.getInscription().equals(EventInscriptionType.PRIVATE)) {
@@ -560,7 +590,7 @@ public class EventServiceImpl implements EventService {
 		eventUser.setIncorporationDate(date);
 		eventUser.setLastStatusDate(date);
 		eventUser.setPrivilege(EventUserPrivilegeType.USER);
-		eventUser.setStatus(EventUserStatusType.ACCEPTED);
+		eventUser.setStatus(EventUserStatusType.INVITED);
 
 		return eventUser;
 	}

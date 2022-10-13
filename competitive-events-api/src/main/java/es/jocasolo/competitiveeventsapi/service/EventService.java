@@ -146,4 +146,14 @@ public interface EventService {
 	 */
 	void updateUser(String id, EventUserPutDTO eventDTO) throws UserNotFoundException, EventWrongUpdateException;
 
+	/**
+	 * Search for a event and user
+	 * @param eventId Event id
+	 * @param userId User id
+	 * @return The associated event and user or not found
+	 * @throws UserNotFoundException 
+	 * @throws EventNotFoundException 
+	 */
+	EventUserDTO findEventAndUser(String eventId, String userId) throws UserNotFoundException, EventNotFoundException;
+
 }
