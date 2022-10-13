@@ -137,8 +137,11 @@ class EventCreationFragment : Fragment() {
         }
         cmbScoreType?.setSelection(0)
 
+        // Create button
         view.findViewById<Button>(R.id.btn_event_creation).setOnClickListener { create(view) }
 
+        swtInscription?.setOnCheckedChangeListener { _, isChecked -> if(isChecked) swtVisibility?.isChecked = false }
+        swtVisibility?.setOnCheckedChangeListener { _, isChecked -> if(isChecked) swtInscription?.isChecked = false }
     }
 
     private fun create(view: View) {

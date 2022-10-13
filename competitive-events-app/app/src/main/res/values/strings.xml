@@ -67,14 +67,12 @@
     <string name="success_updated_user">Usuario actualizado con éxito.</string>
     <string name="success_updated_avatar">Avatar actualizado con éxito.</string>
 
-    <!-- Events List -->
+    <!-- Events -->
     <string name="events_list">Listado de eventos</string>
     <string name="events_init">Inicio: %1$s</string>
     <string name="events_end">Fin: %1$s (%2$s)</string>
-    <string name="events_num_participants">Num. participantes: %1$d</string>
+    <string name="events_num_participants">Núm. participantes: %1$d</string>
     <string name="events_available_places">Plazas disponibles: %1$d</string>
-
-    <!-- Events creation -->
     <string name="events_new">Nuevo evento</string>
     <string name="events_find_new">Encuentra nuevos Eventos</string>
     <string name="events_find_or_create">Crea tu propio evento, busca o únete a tus favoritos</string>
@@ -91,13 +89,26 @@
     <string name="events_creation_event_type">Tipo de evento</string>
     <string name="events_creation_event_properties">Propiedades del evento</string>
     <string name="events_creation_event_score_type">Tipo de puntuación</string>
+    <string name="events_join">Unirse</string>
+    <string name="events_request_join">Solictar unirse</string>
+    <string name="events_joined">Ya te has unido a este evento</string>
+    <string name="events_accept_invitation">Aceptar invitación</string>
+    <string name="events_waiting_approval">Esperando aprobación para unirse</string>
+    <string name="events_request_rejected">Solicitud denegada</string>
+    <string name="events_user_deleted">Has sido eliminado del evento</string>
+    <string name="events_user_join_success">Te has unido con éxito al evento</string>
+    <string name="events_user_request_join">Has solicitado unirte al evento. Esperando a que un administrador del evento acepte la invitación</string>
+    <string name="events_identifier">Identificador: %1$s</string>
+    <string name="events_private">Este evento es privado</string>
 
     <!-- Event Types -->
+    <string name="events_all">Cualquiera</string>
     <string name="events_sports">Deportes</string>
     <string name="events_videogames">Videojuegos </string>
     <string name="events_family">Familia</string>
     <string name="events_academic">Estudios</string>
     <string name="events_other">Otros</string>
+    <string name="event_type">Tipo de evento: %1$s</string>
 
     <!-- Score -->
     <string name="score_numeric">Numérica</string>
@@ -105,8 +116,10 @@
     <string name="score_time">Tiempo</string>
 
     <!-- Rewards -->
-    <string name="reward_required_position">Posición requerida: %1$d</string>
+    <string name="reward_required_position">Posición requerida: %1$d (%2$s)</string>
     <string name="reward_winner">Ganador: %1$s</string>
+    <string name="higher">más alta</string>
+    <string name="lower">más baja</string>
 
     <!-- Errors -->
     <string name="error_title">Error</string>

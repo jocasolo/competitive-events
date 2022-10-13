@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import es.jocasolo.competitiveeventsapp.R
 import es.jocasolo.competitiveeventsapp.dto.reward.RewardDTO
+import es.jocasolo.competitiveeventsapp.enums.score.ScoreSortType
 
 open class ListRewardAdapter(var context : Context, var rewards: List<RewardDTO>): RecyclerView.Adapter<ListRewardAdapter.ViewHolder>() {
 
@@ -29,11 +30,12 @@ open class ListRewardAdapter(var context : Context, var rewards: List<RewardDTO>
             reward.let {
                 holder.itemTitle.text = reward.title
                 holder.itemDescription.text = reward.description.toString()
+                val sort = context.getString(getSortRequiredPosition(reward))
+                holder.itemRequiredPosition.text = context.getString(R.string.reward_required_position, reward.requiredPosition, sort)
                 reward.winner?.let {
                     holder.itemWinner.visibility = View.VISIBLE
                     holder.itemWinner.text = context.getString(R.string.reward_winner, reward.winner!!.id)
                 }
-                holder.itemRequiredPosition.text = context.getString(R.string.reward_required_position, reward.requiredPosition)
                 if(reward.image != null) {
                     holder.itemImage.imageTintMode = null
                     Picasso.get()
@@ -51,6 +53,14 @@ open class ListRewardAdapter(var context : Context, var rewards: List<RewardDTO>
         rewards.let {
             return rewards.size
         }
+    }
+
+    private fun getSortRequiredPosition(reward: RewardDTO): Int {
+        reward.sortScore?.let {
+            if(it == ScoreSortType.ASC)
+                return R.string.higher
+        }
+        return R.string.lower
     }
 
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){

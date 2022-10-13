@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import es.jocasolo.competitiveeventsapp.R
+import es.jocasolo.competitiveeventsapp.dto.user.UserDTO
 import java.io.IOException
 import java.io.InputStream
 import java.time.Instant
@@ -46,5 +47,13 @@ object MyUtils {
         }
 
         return result;
+    }
+
+    fun searchUser(users : List<UserDTO>?, username : String) : UserDTO? {
+        users?.forEach {
+            if(it.id == username)
+                return it
+        }
+        return null;
     }
 }

@@ -3,6 +3,8 @@ package es.jocasolo.competitiveeventsapp.service
 import es.jocasolo.competitiveeventsapp.dto.event.EventDTO
 import es.jocasolo.competitiveeventsapp.dto.event.EventPageDTO
 import es.jocasolo.competitiveeventsapp.dto.event.EventPostDTO
+import es.jocasolo.competitiveeventsapp.dto.eventuser.EventUserDTO
+import es.jocasolo.competitiveeventsapp.dto.eventuser.EventUserPostDTO
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -32,4 +34,15 @@ interface EventService {
     @Multipart
     @PUT("/events/{id}/image")
     fun updateImage(@Part file : MultipartBody.Part, @Path (value="id") id: String, @Header(value="Authorization") authorization : String) : Call<EventDTO>
+
+    // USER EVENT
+
+    @Headers("Content-Type: application/json")
+    @GET("/events/{eventId}/users/{userId}")
+    fun findEventAndUser(@Path (value="eventId") eventId: String, @Path (value="userId") userId: String, @Header(value="Authorization") authorization : String) : Call<EventUserDTO>
+
+    @Headers("Content-Type: application/json")
+    @POST("/events/{id}/users")
+    fun addUser(@Path (value="id") id: String, @Body body: EventUserPostDTO, @Header(value="Authorization") authorization : String) : Call<EventUserDTO>
+
 }

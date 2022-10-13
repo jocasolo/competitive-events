@@ -30,6 +30,7 @@ class EventDTO(
         @SerializedName("sortScore") var sortScore: ScoreSortType?,
         @SerializedName("numParticipants") var numParticipants: Int?,
         @SerializedName("rewards") var rewards: List<RewardDTO>?,
-        @SerializedName("punishments") var punishments: List<PunishmentDTO>?
+        @SerializedName("punishments") var punishments: List<PunishmentDTO>?,
+        @SerializedName("users") var users: List<UserDTO>?,
 ) {
 }

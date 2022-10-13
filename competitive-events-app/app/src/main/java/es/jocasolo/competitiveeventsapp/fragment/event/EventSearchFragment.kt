@@ -12,7 +12,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import es.jocasolo.competitiveeventsapp.R
 import es.jocasolo.competitiveeventsapp.dto.ErrorDTO
+import es.jocasolo.competitiveeventsapp.dto.event.EventDTO
 import es.jocasolo.competitiveeventsapp.dto.event.EventPageDTO
+import es.jocasolo.competitiveeventsapp.enums.event.EventInscriptionType
 import es.jocasolo.competitiveeventsapp.enums.event.EventStatusType
 import es.jocasolo.competitiveeventsapp.enums.event.EventType
 import es.jocasolo.competitiveeventsapp.service.EventService
@@ -22,10 +24,12 @@ import es.jocasolo.competitiveeventsapp.ui.adapters.ListEventAdapter
 import es.jocasolo.competitiveeventsapp.ui.spinners.SpinnerEventType
 import es.jocasolo.competitiveeventsapp.utils.Message
 import es.jocasolo.competitiveeventsapp.utils.MyDialog
+import es.jocasolo.competitiveeventsapp.utils.MyUtils
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.net.HttpURLConnection
+import java.util.stream.Collectors
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
@@ -60,6 +64,7 @@ class EventSearchFragment : Fragment() {
 
         // Combo box event types
         val eventTypes: MutableList<SpinnerEventType> = ArrayList()
+        eventTypes.add(SpinnerEventType(EventType.ALL, getString(R.string.events_all)))
         eventTypes.add(SpinnerEventType(EventType.SPORTS, getString(R.string.events_sports)))
         eventTypes.add(SpinnerEventType(EventType.OTHER, getString(R.string.events_other)))
         eventTypes.add(SpinnerEventType(EventType.ACADEMIC, getString(R.string.events_academic)))
@@ -83,15 +88,18 @@ class EventSearchFragment : Fragment() {
 
         val eventType = cmbEventType?.selectedItem as SpinnerEventType
         var title : String? = txtTitle?.text.toString()
-        if(title != null && title?.isEmpty()){
+        if(title != null && title.isEmpty()){
             title = null;
         }
-        val type = eventType.key.name
+        var type : String? = eventType.key.name
+        if(eventType.key == EventType.ALL){
+            type = null
+        }
 
         progressBar?.visibility = View.VISIBLE
 
-        eventService.search(title, type, EventStatusType.ACTIVE.name, null,
-                null, 0, 10, UserAccount.getInstance(requireContext()).getToken()).enqueue(object : Callback<EventPageDTO> {
+        eventService.search(title, type, EventStatusType.ACTIVE.name, EventInscriptionType.PUBLIC.name,
+                null,  0, 10, UserAccount.getInstance(requireContext()).getToken()).enqueue(object : Callback<EventPageDTO> {
             override fun onResponse(call: Call<EventPageDTO>, response: Response<EventPageDTO>) {
                 if (response.code() == HttpURLConnection.HTTP_OK) {
                     recyclerView?.adapter = ListEventAdapter(findNavController(), response.body()!!, ListEventAdapter.ListEventType.SEARCH)
@@ -114,6 +122,10 @@ class EventSearchFragment : Fragment() {
             }
         })
 
+    }
+
+    private fun excludeMyEvents(events: List<EventDTO>?, username: String): List<EventDTO>? {
+        return events?.stream()?.filter { e -> MyUtils.searchUser(e.users, username ) == null }?.collect(Collectors.toList())
     }
 
     private fun showSuccessDialog() {
