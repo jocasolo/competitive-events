@@ -1,4 +1,4 @@
-package es.jocasolo.competitiveeventsapp.ui
+package es.jocasolo.competitiveeventsapp.ui.adapters
 
 import android.content.Context
 import android.view.LayoutInflater

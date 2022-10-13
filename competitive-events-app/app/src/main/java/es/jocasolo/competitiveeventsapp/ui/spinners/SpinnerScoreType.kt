@@ -1,4 +1,4 @@
-package es.jocasolo.competitiveeventsapp.ui
+package es.jocasolo.competitiveeventsapp.ui.spinners
 
 import es.jocasolo.competitiveeventsapp.enums.score.ScoreValueType
 

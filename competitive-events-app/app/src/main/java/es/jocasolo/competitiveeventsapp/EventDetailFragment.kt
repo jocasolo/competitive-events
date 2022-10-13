@@ -19,8 +19,8 @@ import es.jocasolo.competitiveeventsapp.dto.reward.RewardDTO
 import es.jocasolo.competitiveeventsapp.service.EventService
 import es.jocasolo.competitiveeventsapp.service.ServiceBuilder
 import es.jocasolo.competitiveeventsapp.singleton.UserAccount
-import es.jocasolo.competitiveeventsapp.ui.ListPunishmentAdapter
-import es.jocasolo.competitiveeventsapp.ui.ListRewardAdapter
+import es.jocasolo.competitiveeventsapp.ui.adapters.ListPunishmentAdapter
+import es.jocasolo.competitiveeventsapp.ui.adapters.ListRewardAdapter
 import es.jocasolo.competitiveeventsapp.utils.Message
 import es.jocasolo.competitiveeventsapp.utils.MyDialog
 import es.jocasolo.competitiveeventsapp.utils.MyUtils

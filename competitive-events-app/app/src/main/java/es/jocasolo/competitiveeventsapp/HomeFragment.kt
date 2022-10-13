@@ -10,14 +10,13 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
-import es.jocasolo.competitiveeventsapp.ui.ListEventAdapter
+import es.jocasolo.competitiveeventsapp.ui.adapters.ListEventAdapter
 import es.jocasolo.competitiveeventsapp.dto.ErrorDTO
 import es.jocasolo.competitiveeventsapp.dto.event.EventPageDTO
 import es.jocasolo.competitiveeventsapp.service.EventService
 import es.jocasolo.competitiveeventsapp.service.ServiceBuilder
 import es.jocasolo.competitiveeventsapp.service.UserService
 import es.jocasolo.competitiveeventsapp.singleton.UserAccount
-import es.jocasolo.competitiveeventsapp.ui.ListEventType
 import es.jocasolo.competitiveeventsapp.utils.Message
 import es.jocasolo.competitiveeventsapp.utils.MyDialog
 import retrofit2.Call
@@ -58,7 +57,7 @@ class HomeFragment : Fragment() {
         eventService.search(null, null, null, null, UserAccount.getInstance(requireContext()).getName(), 0, 10, UserAccount.getInstance(requireContext()).getToken()).enqueue(object : Callback<EventPageDTO> {
             override fun onResponse(call: Call<EventPageDTO>, response: Response<EventPageDTO>) {
                 if (response.code() == HttpURLConnection.HTTP_OK) {
-                    recyclerView?.adapter = ListEventAdapter(findNavController(), response.body()!!, ListEventType.HOME)
+                    recyclerView?.adapter = ListEventAdapter(findNavController(), response.body()!!, ListEventAdapter.ListEventType.HOME)
                 } else {
                     try {
                         val errorDto = Gson().fromJson(

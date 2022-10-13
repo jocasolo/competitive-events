@@ -1,4 +1,4 @@
-package es.jocasolo.competitiveeventsapp.ui
+package es.jocasolo.competitiveeventsapp.ui.adapters
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,7 +15,11 @@ import es.jocasolo.competitiveeventsapp.dto.event.EventDTO
 import es.jocasolo.competitiveeventsapp.dto.event.EventPageDTO
 import es.jocasolo.competitiveeventsapp.utils.MyUtils
 
-open class ListEventAdapter(var navController : NavController, var eventsPage: EventPageDTO, val listType : ListEventType): RecyclerView.Adapter<ListEventAdapter.ViewHolder>() {
+open class ListEventAdapter(var navController: NavController, var eventsPage: EventPageDTO, val listType: ListEventType): RecyclerView.Adapter<ListEventAdapter.ViewHolder>() {
+
+    enum class ListEventType {
+        HOME, SEARCH
+    }
 
     private var seconds: String? = null
     private var minutes: String? = null
@@ -25,9 +29,9 @@ open class ListEventAdapter(var navController : NavController, var eventsPage: E
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(
-            R.layout.card_layout_event,
-            parent,
-            false
+                R.layout.card_layout_event,
+                parent,
+                false
         )
 
         this.parent = parent

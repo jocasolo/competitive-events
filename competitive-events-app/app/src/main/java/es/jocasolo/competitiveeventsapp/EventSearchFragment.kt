@@ -17,9 +17,8 @@ import es.jocasolo.competitiveeventsapp.enums.event.EventType
 import es.jocasolo.competitiveeventsapp.service.EventService
 import es.jocasolo.competitiveeventsapp.service.ServiceBuilder
 import es.jocasolo.competitiveeventsapp.singleton.UserAccount
-import es.jocasolo.competitiveeventsapp.ui.ListEventAdapter
-import es.jocasolo.competitiveeventsapp.ui.ListEventType
-import es.jocasolo.competitiveeventsapp.ui.SpinnerEventType
+import es.jocasolo.competitiveeventsapp.ui.adapters.ListEventAdapter
+import es.jocasolo.competitiveeventsapp.ui.spinners.SpinnerEventType
 import es.jocasolo.competitiveeventsapp.utils.Message
 import es.jocasolo.competitiveeventsapp.utils.MyDialog
 import retrofit2.Call
@@ -94,7 +93,7 @@ class EventSearchFragment : Fragment() {
                 null, 0, 10, UserAccount.getInstance(requireContext()).getToken()).enqueue(object : Callback<EventPageDTO> {
             override fun onResponse(call: Call<EventPageDTO>, response: Response<EventPageDTO>) {
                 if (response.code() == HttpURLConnection.HTTP_OK) {
-                    recyclerView?.adapter = ListEventAdapter(findNavController(), response.body()!!, ListEventType.SEARCH)
+                    recyclerView?.adapter = ListEventAdapter(findNavController(), response.body()!!, ListEventAdapter.ListEventType.SEARCH)
                 } else {
                     try {
                         val errorDto = Gson().fromJson(
