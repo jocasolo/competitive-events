@@ -1,29 +1,14 @@
-package es.jocasolo.competitiveeventsapp
+package es.jocasolo.competitiveeventsapp.fragment.event
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.navigation.fragment.findNavController
-import com.google.gson.Gson
-import es.jocasolo.competitiveeventsapp.dto.ErrorDTO
-import es.jocasolo.competitiveeventsapp.dto.user.UserDTO
-import es.jocasolo.competitiveeventsapp.dto.user.UserPostDTO
-import es.jocasolo.competitiveeventsapp.service.EventService
-import es.jocasolo.competitiveeventsapp.service.ServiceBuilder
-import es.jocasolo.competitiveeventsapp.service.UserService
-import es.jocasolo.competitiveeventsapp.utils.Message
-import es.jocasolo.competitiveeventsapp.utils.MyDialog
-import es.jocasolo.competitiveeventsapp.utils.MyUtils
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import java.net.HttpURLConnection
-import java.util.regex.Pattern
+import es.jocasolo.competitiveeventsapp.R
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.

@@ -1,4 +1,4 @@
-package es.jocasolo.competitiveeventsapp
+package es.jocasolo.competitiveeventsapp.fragment.event
 
 import android.app.DatePickerDialog
 import android.content.Intent
@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.google.gson.Gson
 import com.squareup.picasso.Picasso
+import es.jocasolo.competitiveeventsapp.R
 import es.jocasolo.competitiveeventsapp.dto.ErrorDTO
 import es.jocasolo.competitiveeventsapp.dto.event.EventDTO
 import es.jocasolo.competitiveeventsapp.dto.event.EventPostDTO

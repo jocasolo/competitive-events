@@ -1,4 +1,4 @@
-package es.jocasolo.competitiveeventsapp
+package es.jocasolo.competitiveeventsapp.fragment
 
 import android.accounts.Account
 import android.accounts.AccountManager
@@ -9,6 +9,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
+import es.jocasolo.competitiveeventsapp.MainActivity
+import es.jocasolo.competitiveeventsapp.R
 import es.jocasolo.competitiveeventsapp.constants.Constants
 import es.jocasolo.competitiveeventsapp.dto.login.LoginDTO
 import es.jocasolo.competitiveeventsapp.dto.login.TokenDTO

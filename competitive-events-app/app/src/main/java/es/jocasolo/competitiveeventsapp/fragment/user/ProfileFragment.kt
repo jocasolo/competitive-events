@@ -1,7 +1,5 @@
-package es.jocasolo.competitiveeventsapp
+package es.jocasolo.competitiveeventsapp.fragment.user
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.squareup.picasso.Picasso
+import es.jocasolo.competitiveeventsapp.R
 import es.jocasolo.competitiveeventsapp.dto.user.UserDTO
 import es.jocasolo.competitiveeventsapp.singleton.UserInfo
 import java.text.SimpleDateFormat

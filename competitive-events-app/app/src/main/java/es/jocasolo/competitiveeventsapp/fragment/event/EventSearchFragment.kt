@@ -1,4 +1,4 @@
-package es.jocasolo.competitiveeventsapp
+package es.jocasolo.competitiveeventsapp.fragment.event
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
+import es.jocasolo.competitiveeventsapp.R
 import es.jocasolo.competitiveeventsapp.dto.ErrorDTO
 import es.jocasolo.competitiveeventsapp.dto.event.EventPageDTO
 import es.jocasolo.competitiveeventsapp.enums.event.EventStatusType

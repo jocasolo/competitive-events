@@ -1,4 +1,4 @@
-package es.jocasolo.competitiveeventsapp
+package es.jocasolo.competitiveeventsapp.fragment.login
 
 import android.accounts.Account
 import android.accounts.AccountManager
@@ -13,6 +13,8 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.navigation.fragment.findNavController
 import com.google.gson.Gson
+import es.jocasolo.competitiveeventsapp.MainActivity
+import es.jocasolo.competitiveeventsapp.R
 import es.jocasolo.competitiveeventsapp.constants.Constants
 import es.jocasolo.competitiveeventsapp.dto.ErrorDTO
 import es.jocasolo.competitiveeventsapp.dto.login.LoginDTO

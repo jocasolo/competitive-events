@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/splashScreenFragment"
-        android:name="es.jocasolo.competitiveeventsapp.SplashScreenFragment"
+        android:name="es.jocasolo.competitiveeventsapp.fragment.SplashScreenFragment"
         android:label="@string/splash_screen_fragment_label"
         tools:layout="@layout/fragment_splash_screen">
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
-        android:name="es.jocasolo.competitiveeventsapp.LoginFragment"
+        android:name="es.jocasolo.competitiveeventsapp.fragment.login.LoginFragment"
         android:label="@string/login_fragment_label"
         tools:layout="@layout/fragment_login">
 
@@ -28,7 +28,7 @@
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
-        android:name="es.jocasolo.competitiveeventsapp.RegisterFragment"
+        android:name="es.jocasolo.competitiveeventsapp.fragment.user.RegisterFragment"
         android:label="@string/register_fragment_label"
         tools:layout="@layout/fragment_register">
 

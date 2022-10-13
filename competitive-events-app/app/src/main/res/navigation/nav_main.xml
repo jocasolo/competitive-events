@@ -6,7 +6,7 @@
     app:startDestination="@id/homeFragment">
     <fragment
         android:id="@+id/homeFragment"
-        android:name="es.jocasolo.competitiveeventsapp.HomeFragment"
+        android:name="es.jocasolo.competitiveeventsapp.fragment.HomeFragment"
         android:label="HomeFragment"
         tools:layout="@layout/fragment_home"
         >
@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
-        android:name="es.jocasolo.competitiveeventsapp.ProfileFragment"
+        android:name="es.jocasolo.competitiveeventsapp.fragment.user.ProfileFragment"
         android:label="ProfileFragment"
         tools:layout="@layout/fragment_profile"
         >
@@ -29,7 +29,7 @@
     </fragment>
     <fragment
         android:id="@+id/profileUpdateFragment"
-        android:name="es.jocasolo.competitiveeventsapp.ProfileUpdateFragment"
+        android:name="es.jocasolo.competitiveeventsapp.fragment.user.ProfileUpdateFragment"
         android:label="ProfileUpdateFragment"
         tools:layout="@layout/fragment_profile_update"
         >
@@ -39,7 +39,7 @@
     </fragment>
     <fragment
         android:id="@+id/eventNewFragment"
-        android:name="es.jocasolo.competitiveeventsapp.EventNewFragment"
+        android:name="es.jocasolo.competitiveeventsapp.fragment.event.EventNewFragment"
         android:label="EventNewFragment"
         tools:layout="@layout/fragment_events_new"
         >
@@ -52,7 +52,7 @@
     </fragment>
     <fragment
         android:id="@+id/eventCreationFragment"
-        android:name="es.jocasolo.competitiveeventsapp.EventCreationFragment"
+        android:name="es.jocasolo.competitiveeventsapp.fragment.event.EventCreationFragment"
         android:label="EventCreationFragment"
         tools:layout="@layout/fragment_events_creation">
         <action
@@ -61,7 +61,7 @@
     </fragment>
     <fragment
         android:id="@+id/eventSearchFragment"
-        android:name="es.jocasolo.competitiveeventsapp.EventSearchFragment"
+        android:name="es.jocasolo.competitiveeventsapp.fragment.event.EventSearchFragment"
         android:label="EventSearchFragment"
         tools:layout="@layout/fragment_events_search">
         <action
@@ -70,7 +70,7 @@
     </fragment>
     <fragment
         android:id="@+id/eventDetailFragment"
-        android:name="es.jocasolo.competitiveeventsapp.EventDetailFragment"
+        android:name="es.jocasolo.competitiveeventsapp.fragment.event.EventDetailFragment"
         android:label="EventDetailFragment"
         tools:layout="@layout/fragment_events_detail">
     </fragment>

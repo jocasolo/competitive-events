@@ -1,4 +1,4 @@
-package es.jocasolo.competitiveeventsapp
+package es.jocasolo.competitiveeventsapp.fragment.user
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,6 +10,7 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.navigation.fragment.findNavController
 import com.google.gson.Gson
+import es.jocasolo.competitiveeventsapp.R
 import es.jocasolo.competitiveeventsapp.dto.ErrorDTO
 import es.jocasolo.competitiveeventsapp.dto.user.UserDTO
 import es.jocasolo.competitiveeventsapp.dto.user.UserPostDTO
@@ -120,7 +121,7 @@ class RegisterFragment : Fragment() {
 
     private fun showSuccessDialog() {
         MyDialog.confirmNavigate(this, getString(R.string.user_created_title), getString(R.string.user_created),
-            R.id.action_Register_to_Login
+                R.id.action_Register_to_Login
         )
     }
 
