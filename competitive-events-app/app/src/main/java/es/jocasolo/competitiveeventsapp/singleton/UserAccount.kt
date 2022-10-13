@@ -4,6 +4,7 @@ import android.accounts.Account
 import android.accounts.AccountManager
 import android.content.Context
 import es.jocasolo.competitiveeventsapp.constants.Constants
+import org.apache.commons.lang3.StringUtils
 
 class UserAccount private constructor(context: Context) {
 
@@ -19,17 +20,20 @@ class UserAccount private constructor(context: Context) {
         }
     }
 
-    fun getAccount() : Account {
-        return account
+    fun setAccount(newAccount : Account){
+        account = newAccount
     }
 
     fun getToken() : String {
-        return "Bearer " + accManager.getUserData(account, Constants.ACCESS_TOKEN)
+        val token = accManager.getUserData(account, Constants.ACCESS_TOKEN)
+        token?.let { return "Bearer $token" }
+        return StringUtils.EMPTY
     }
 
     fun getName() : String {
         return account.name
     }
+
 
     companion object : SingletonHolder<UserAccount, Context>(::UserAccount)
 

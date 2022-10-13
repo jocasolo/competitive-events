@@ -21,6 +21,7 @@ import es.jocasolo.competitiveeventsapp.dto.login.LoginDTO
 import es.jocasolo.competitiveeventsapp.dto.login.TokenDTO
 import es.jocasolo.competitiveeventsapp.service.ServiceBuilder
 import es.jocasolo.competitiveeventsapp.service.UserService
+import es.jocasolo.competitiveeventsapp.singleton.UserAccount
 import es.jocasolo.competitiveeventsapp.utils.Message
 import es.jocasolo.competitiveeventsapp.utils.MyDialog
 import es.jocasolo.competitiveeventsapp.utils.MyUtils
@@ -71,12 +72,13 @@ class LoginFragment : Fragment() {
                     if(response.code() == HttpURLConnection.HTTP_OK) {
                         val token = response.body()
                         token?.let {
-                            val accManager: AccountManager = AccountManager.get(context)
+                            val accManager: AccountManager = AccountManager.get(requireContext())
                             val account = Account(txtUsername?.text.toString(), "competitiveevents.com")
                             accManager.addAccountExplicitly(account, txtPassword?.text.toString(), null)
                             accManager.setUserData(account, Constants.ACCESS_TOKEN, token.accessToken)
                             accManager.setUserData(account, Constants.REFRESH_TOKEN, token.refreshToken)
                             accManager.setUserData(account, Constants.EXPIRES_IN, token.expiresIn)
+                            UserAccount.getInstance(requireContext()).setAccount(account)
                             startActivity(Intent(requireActivity(), MainActivity::class.java))
                             requireActivity().finish()
                         }
