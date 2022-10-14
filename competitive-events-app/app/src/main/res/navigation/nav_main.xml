@@ -58,6 +58,12 @@
         <action
             android:id="@+id/action_event_creation_to_home"
             app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_event_creation_to_reward_creation"
+            app:destination="@id/rewardCreationFragment" />
+        <action
+            android:id="@+id/action_event_creation_to_punishment_creation"
+            app:destination="@id/punishmentCreationFragment" />
     </fragment>
     <fragment
         android:id="@+id/eventSearchFragment"
@@ -73,5 +79,23 @@
         android:name="es.jocasolo.competitiveeventsapp.fragment.event.EventDetailFragment"
         android:label="EventDetailFragment"
         tools:layout="@layout/fragment_events_detail">
+    </fragment>
+    <fragment
+        android:id="@+id/rewardCreationFragment"
+        android:name="es.jocasolo.competitiveeventsapp.fragment.reward.RewardCreationFragment"
+        android:label="RewardCreationFragment"
+        tools:layout="@layout/fragment_rewards_creation">
+        <action
+            android:id="@+id/action_reward_creation_to_event_creation"
+            app:destination="@id/eventCreationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/punishmentCreationFragment"
+        android:name="es.jocasolo.competitiveeventsapp.fragment.punishment.PunishmentCreationFragment"
+        android:label="PunishmentCreationFragment"
+        tools:layout="@layout/fragment_punishments_creation">
+        <action
+            android:id="@+id/action_punishment_creation_to_event_creation"
+            app:destination="@id/eventCreationFragment" />
     </fragment>
 </navigation>

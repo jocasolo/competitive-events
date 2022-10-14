@@ -12,13 +12,16 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import com.squareup.picasso.Picasso
 import es.jocasolo.competitiveeventsapp.R
 import es.jocasolo.competitiveeventsapp.dto.ErrorDTO
+import es.jocasolo.competitiveeventsapp.dto.RewardPunishmentDataDTO
 import es.jocasolo.competitiveeventsapp.dto.event.EventDTO
 import es.jocasolo.competitiveeventsapp.dto.event.EventPostDTO
-import es.jocasolo.competitiveeventsapp.ui.spinners.SpinnerEventType
 import es.jocasolo.competitiveeventsapp.enums.event.EventInscriptionType
 import es.jocasolo.competitiveeventsapp.enums.event.EventType
 import es.jocasolo.competitiveeventsapp.enums.event.EventVisibilityType
@@ -27,6 +30,9 @@ import es.jocasolo.competitiveeventsapp.enums.score.ScoreValueType
 import es.jocasolo.competitiveeventsapp.service.EventService
 import es.jocasolo.competitiveeventsapp.service.ServiceBuilder
 import es.jocasolo.competitiveeventsapp.singleton.UserAccount
+import es.jocasolo.competitiveeventsapp.ui.adapters.ListPunishmentLiteAdapter
+import es.jocasolo.competitiveeventsapp.ui.adapters.ListRewardLiteAdapter
+import es.jocasolo.competitiveeventsapp.ui.spinners.SpinnerEventType
 import es.jocasolo.competitiveeventsapp.ui.spinners.SpinnerScoreType
 import es.jocasolo.competitiveeventsapp.utils.Message
 import es.jocasolo.competitiveeventsapp.utils.MyDialog
@@ -67,6 +73,11 @@ class EventCreationFragment : Fragment() {
     private var swtSort: Switch? = null
     private var txtMaxPlaces : TextView? = null
 
+    private var rewardsRecyclerView: RecyclerView? = null
+    private var punishmentsRecyclerView: RecyclerView? = null
+    private var rewardAdapter : ListRewardLiteAdapter? = null
+    private var punishmentAdapter : ListPunishmentLiteAdapter? = null
+
     private var filePart : MultipartBody.Part? = null
 
     override fun onCreateView(
@@ -89,7 +100,6 @@ class EventCreationFragment : Fragment() {
         progressBar = view.findViewById(R.id.spn_event_creation)
         cmbEventType = view.findViewById(R.id.combo_events_type)
         cmbScoreType = view.findViewById(R.id.combo_score_type)
-        imgEventImage = view.findViewById(R.id.img_event_upload_image)
         txtInitDate = view.findViewById(R.id.txt_event_init_date)
         txtInitDate?.setOnClickListener { showDatePicker(txtInitDate) }
         txtEndDate = view.findViewById(R.id.txt_event_end_date)
@@ -99,12 +109,81 @@ class EventCreationFragment : Fragment() {
         swtSort = view.findViewById(R.id.switch_event_sort_type)
         swtVisibility = view.findViewById(R.id.switch_event_visibility)
         txtMaxPlaces = view.findViewById(R.id.txt_event_max_places)
+
+        imgEventImage = view.findViewById(R.id.img_event_upload_image)
         imgEventImage?.setColorFilter(ContextCompat.getColor(requireContext(), R.color.primary_dark), PorterDuff.Mode.SRC_IN)
 
-        // Image button
+        // Image upload button
         view.findViewById<Button>(R.id.btn_event_upload_image).setOnClickListener { imageChooser() }
-        view.findViewById<ImageView>(R.id.img_event_upload_image).setOnClickListener { imageChooser() }
+        imgEventImage?.setOnClickListener { imageChooser() }
 
+        // EventTypes
+        initEventTypesComboBox()
+
+        // ScoreTypes
+        initScoreTypesComboBox()
+
+        // Create button
+        view.findViewById<Button>(R.id.btn_event_creation).setOnClickListener { create(view) }
+
+        // Switchs
+        swtInscription?.setOnCheckedChangeListener { _, isChecked -> if(isChecked) swtVisibility?.isChecked = false }
+        swtVisibility?.setOnCheckedChangeListener { _, isChecked -> if(isChecked) swtInscription?.isChecked = false }
+
+        // Recycler views
+        initRecyclerViews();
+
+        // Add reward/punishment button
+        view.findViewById<TextView>(R.id.btn_event_creation_add_reward).setOnClickListener { findNavController().navigate(R.id.action_event_creation_to_reward_creation) }
+        view.findViewById<TextView>(R.id.btn_event_creation_add_punishment).setOnClickListener { findNavController().navigate(R.id.action_event_creation_to_punishment_creation) }
+
+        // Observer reward added
+        findNavController().currentBackStackEntry
+            ?.savedStateHandle
+            ?.getLiveData<RewardPunishmentDataDTO>("reward")
+            ?.observe(viewLifecycleOwner, {
+                addReward(it)
+                findNavController().currentBackStackEntry
+                    ?.savedStateHandle
+                    ?.remove<RewardPunishmentDataDTO>("reward")
+            })
+
+        // Observer punishment added
+        findNavController().currentBackStackEntry
+            ?.savedStateHandle
+            ?.getLiveData<RewardPunishmentDataDTO>("punishment")
+            ?.observe(viewLifecycleOwner, {
+                addPunishment(it)
+                findNavController().currentBackStackEntry
+                    ?.savedStateHandle
+                    ?.remove<RewardPunishmentDataDTO>("punishment")
+            })
+    }
+
+    private fun initRecyclerViews() {
+
+        // Reward list
+        if(rewardAdapter == null){
+            rewardAdapter = ListRewardLiteAdapter(requireContext(), null)
+        }
+        rewardsRecyclerView = requireView().findViewById(R.id.recycler_event_creation_reward_list)
+        rewardsRecyclerView?.layoutManager = LinearLayoutManager(requireContext())
+        rewardsRecyclerView?.adapter = rewardAdapter
+
+        // Punishment list
+        if(punishmentAdapter == null){
+            punishmentAdapter = ListPunishmentLiteAdapter(requireContext(), null)
+        }
+        punishmentsRecyclerView = requireView().findViewById(R.id.recycler_event_creation_punishment_list)
+        punishmentsRecyclerView?.layoutManager = LinearLayoutManager(requireContext())
+        punishmentsRecyclerView?.adapter = punishmentAdapter
+
+    }
+
+    /**
+     * Initilize the event types combo box
+     */
+    private fun initEventTypesComboBox() {
         // Combo box event types
         val eventTypes: MutableList<SpinnerEventType> = ArrayList()
         eventTypes.add(SpinnerEventType(EventType.SPORTS, getString(R.string.events_sports)))
@@ -114,14 +193,19 @@ class EventCreationFragment : Fragment() {
         eventTypes.add(SpinnerEventType(EventType.VIDEOGAMES, getString(R.string.events_videogames)))
 
         ArrayAdapter(
-                requireContext(),
-                android.R.layout.simple_spinner_dropdown_item,
-                eventTypes
+            requireContext(),
+            android.R.layout.simple_spinner_dropdown_item,
+            eventTypes
         ).also {  adapter ->
             cmbEventType?.adapter = adapter
         }
         cmbEventType?.setSelection(0)
+    }
 
+    /**
+     * Initilize the score types combo box
+     */
+    private fun initScoreTypesComboBox() {
         // Combo box score types
         val scoreTypes: MutableList<SpinnerScoreType> = ArrayList()
         scoreTypes.add(SpinnerScoreType(ScoreValueType.NUMERIC, getString(R.string.score_numeric)))
@@ -129,21 +213,18 @@ class EventCreationFragment : Fragment() {
         scoreTypes.add(SpinnerScoreType(ScoreValueType.TIME, getString(R.string.score_time)))
 
         ArrayAdapter(
-                requireContext(),
-                android.R.layout.simple_spinner_dropdown_item,
-                scoreTypes
+            requireContext(),
+            android.R.layout.simple_spinner_dropdown_item,
+            scoreTypes
         ).also {  adapter ->
             cmbScoreType?.adapter = adapter
         }
         cmbScoreType?.setSelection(0)
-
-        // Create button
-        view.findViewById<Button>(R.id.btn_event_creation).setOnClickListener { create(view) }
-
-        swtInscription?.setOnCheckedChangeListener { _, isChecked -> if(isChecked) swtVisibility?.isChecked = false }
-        swtVisibility?.setOnCheckedChangeListener { _, isChecked -> if(isChecked) swtInscription?.isChecked = false }
     }
 
+    /**
+     * Validates the fields and call to the commit function to create the event
+     */
     private fun create(view: View) {
         MyUtils.closeKeyboard(this.requireContext(), view)
         if(validate()) {
@@ -152,8 +233,12 @@ class EventCreationFragment : Fragment() {
         }
     }
 
+    /**
+     * Build the EventDTO to call the service of events creation
+     */
     private fun commit() {
 
+        // Dates
         val sdfApi : SimpleDateFormat = SimpleDateFormat(getString(R.string.sdf_api_date))
 
         var endDate : Date? = null
@@ -226,6 +311,16 @@ class EventCreationFragment : Fragment() {
             }
         })
 
+    }
+
+    private fun addReward(it: RewardPunishmentDataDTO?) {
+        rewardAdapter?.addReward(it)
+        rewardAdapter?.notifyDataSetChanged()
+    }
+
+    private fun addPunishment(it: RewardPunishmentDataDTO?) {
+        punishmentAdapter?.addPunishment(it)
+        punishmentAdapter?.notifyDataSetChanged()
     }
 
     private fun showSuccessDialog() {
@@ -324,7 +419,7 @@ class EventCreationFragment : Fragment() {
                     // Upload image to storage service
                     val filePath: String = getImagePath(selectedImageUri)
                     val file = File(filePath)
-                    filePart = MultipartBody.Part.createFormData("file", file.name, RequestBody.create(MediaType.parse("image/*"), file));
+                    filePart = MultipartBody.Part.createFormData("file", file.name, RequestBody.create(MediaType.parse("image/*"), file))
 
                 }
             }
@@ -347,8 +442,8 @@ class EventCreationFragment : Fragment() {
     private fun showDatePicker(txt: TextView?){
 
         val calendar = Calendar.getInstance()
-        if (txt?.text != null && txt?.text!!.isNotEmpty()){
-            calendar.time = sdf?.parse(txt?.text.toString())
+        if (txt?.text != null && txt.text!!.isNotEmpty()){
+            calendar.time = sdf?.parse(txt.text.toString())
         } else {
             calendar.time = Date()
         }

@@ -8,16 +8,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import es.jocasolo.competitiveeventsapp.R
 import es.jocasolo.competitiveeventsapp.dto.event.EventDTO
-import es.jocasolo.competitiveeventsapp.dto.event.EventPageDTO
 import es.jocasolo.competitiveeventsapp.utils.MyUtils
 
-open class ListEventAdapter(var fragment : Fragment, var events: MutableList<EventDTO>?, val listType: ListEventType): RecyclerView.Adapter<ListEventAdapter.ViewHolder>() {
+open class ListEventAdapter(var fragment: Fragment, var events: MutableList<EventDTO>?): RecyclerView.Adapter<ListEventAdapter.ViewHolder>() {
 
     enum class ListEventType {
         HOME, SEARCH
@@ -30,6 +28,7 @@ open class ListEventAdapter(var fragment : Fragment, var events: MutableList<Eve
     private var parent : ViewGroup? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+
         val v = LayoutInflater.from(parent.context).inflate(
                 R.layout.card_layout_event,
                 parent,

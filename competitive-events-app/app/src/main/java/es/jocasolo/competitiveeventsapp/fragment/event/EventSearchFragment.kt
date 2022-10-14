@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
@@ -86,7 +85,7 @@ class EventSearchFragment : Fragment() {
     private fun initEventListRecyclerView() {
         // Event list
         if(eventAdapter == null){
-            eventAdapter = ListEventAdapter(this, null, ListEventAdapter.ListEventType.SEARCH)
+            eventAdapter = ListEventAdapter(this, null)
         }
         recyclerView = requireView().findViewById(R.id.recycler_event_search)
         recyclerView?.layoutManager = LinearLayoutManager(requireContext())
