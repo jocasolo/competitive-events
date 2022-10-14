@@ -7,7 +7,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import es.jocasolo.competitiveeventsapp.R
@@ -15,7 +17,7 @@ import es.jocasolo.competitiveeventsapp.dto.event.EventDTO
 import es.jocasolo.competitiveeventsapp.dto.event.EventPageDTO
 import es.jocasolo.competitiveeventsapp.utils.MyUtils
 
-open class ListEventAdapter(var navController: NavController, var eventsPage: EventPageDTO, val listType: ListEventType): RecyclerView.Adapter<ListEventAdapter.ViewHolder>() {
+open class ListEventAdapter(var fragment : Fragment, var events: MutableList<EventDTO>?, val listType: ListEventType): RecyclerView.Adapter<ListEventAdapter.ViewHolder>() {
 
     enum class ListEventType {
         HOME, SEARCH
@@ -40,8 +42,8 @@ open class ListEventAdapter(var navController: NavController, var eventsPage: Ev
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        if(eventsPage.events != null && eventsPage.events!!.size > position) {
-            val event = eventsPage.events?.get(position)
+        if(events != null && events!!.size > position) {
+            val event = events?.get(position)
             event?.let {
                 holder.card.setOnClickListener { openDetail(event) }
                 holder.itemTitle.text = event.title.toString()
@@ -65,18 +67,23 @@ open class ListEventAdapter(var navController: NavController, var eventsPage: Ev
     }
 
     private fun openDetail(event: EventDTO) {
-
         val data : Bundle = Bundle()
         data.putString("eventId", event.id)
-
-        navController.navigate(R.id.action_event_search_to_event_detail, data)
+        fragment.findNavController().navigate(R.id.action_event_search_to_event_detail, data)
     }
 
     override fun getItemCount(): Int {
-        eventsPage.total?.let {
-            return eventsPage.total!!.toInt()
+        if(!events.isNullOrEmpty()){
+            return events!!.size
         }
         return 0;
+    }
+
+    fun addEvents(newEvents : List<EventDTO>){
+        if(events == null) {
+            events = mutableListOf()
+        }
+        events?.addAll(newEvents)
     }
 
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
