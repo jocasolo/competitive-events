@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -31,7 +30,6 @@ import es.jocasolo.competitiveeventsapp.utils.Message
 import es.jocasolo.competitiveeventsapp.utils.MyDialog
 import es.jocasolo.competitiveeventsapp.utils.MyUtils
 import org.apache.commons.lang3.StringUtils
-import org.w3c.dom.Text
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -61,6 +59,8 @@ class EventDetailFragment(var eventId: String? = null) : Fragment() {
     private var txtIdentifier : TextView? = null
     private var imgMain : ImageView? = null
     private var btnJoin : Button? = null
+    private var progressBar : ProgressBar? = null
+    private var scrollView : ScrollView? = null
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -93,6 +93,8 @@ class EventDetailFragment(var eventId: String? = null) : Fragment() {
         txtIdentifier = view.findViewById(R.id.txt_event_detail_id)
         imgMain = view.findViewById(R.id.img_event_detail_main)
         btnJoin = view.findViewById(R.id.btn_event_detail_join)
+        progressBar = view.findViewById(R.id.spn_event_detail)
+        scrollView = view.findViewById(R.id.scrollview_events_detail)
 
         // Show event detail
         var id = arguments?.getString("eventId")
@@ -132,8 +134,8 @@ class EventDetailFragment(var eventId: String? = null) : Fragment() {
         val sdf : SimpleDateFormat = SimpleDateFormat("dd-MM-yyyy")
 
         // Action bar title
-        val actionBar = (activity as AppCompatActivity?)!!.supportActionBar!!
-        actionBar.title = event.title
+        val actionBar = requireActivity().actionBar
+        actionBar?.title = event.title
 
         // Title
         txtTitle?.text = event.title
@@ -216,6 +218,9 @@ class EventDetailFragment(var eventId: String? = null) : Fragment() {
         // Button
         btnJoin?.setOnClickListener { joinToEvent(event) }
         setButtonText(event, null)
+
+        progressBar?.visibility = View.GONE
+        scrollView?.visibility = View.VISIBLE
 
     }
 

@@ -5,12 +5,11 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import es.jocasolo.competitiveeventsapp.fragment.event.EventDetailFragment
 import es.jocasolo.competitiveeventsapp.fragment.event.EventMainFragment
-import es.jocasolo.competitiveeventsapp.fragment.event.EventTabsFragment
 
 class ViewPagerAdapter(
     fm: FragmentManager,
     private val totalTabs: Int,
-    private val eventId : String) : FragmentPagerAdapter(fm, FragmentPagerAdapter.BEHAVIOR_SET_USER_VISIBLE_HINT) {
+    private val eventId : String) : FragmentPagerAdapter(fm, FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     // this is for fragment tabs
     override fun getItem(position: Int): Fragment {

@@ -17,6 +17,10 @@
         android:requestLegacyExternalStorage="true">
 
         <activity android:name=".MainActivity"/>
+        <activity android:name=".EventActivity">
+            <meta-data android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity"/>
+        </activity>
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

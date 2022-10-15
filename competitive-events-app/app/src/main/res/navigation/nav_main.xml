@@ -16,9 +16,6 @@
         <action
             android:id="@+id/action_home_to_event_new"
             app:destination="@id/eventNewFragment" />
-        <action
-            android:id="@+id/action_home_to_event_tabs"
-            app:destination="@id/eventTabsFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -100,11 +97,5 @@
         <action
             android:id="@+id/action_punishment_creation_to_event_creation"
             app:destination="@id/eventCreationFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/eventTabsFragment"
-        android:name="es.jocasolo.competitiveeventsapp.fragment.event.EventTabsFragment"
-        android:label="EventTabsFragment"
-        tools:layout="@layout/fragment_events_tabs">
     </fragment>
 </navigation>

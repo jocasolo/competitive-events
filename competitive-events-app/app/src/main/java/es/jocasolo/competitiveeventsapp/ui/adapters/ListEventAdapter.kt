@@ -1,5 +1,6 @@
 package es.jocasolo.competitiveeventsapp.ui.adapters
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,15 +12,17 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
+import es.jocasolo.competitiveeventsapp.EventActivity
 import es.jocasolo.competitiveeventsapp.R
 import es.jocasolo.competitiveeventsapp.dto.event.EventDTO
 import es.jocasolo.competitiveeventsapp.utils.MyUtils
+
 
 open class ListEventAdapter(
     var fragment: Fragment,
     var events: MutableList<EventDTO>?,
     var type: ListEventType
-    ): RecyclerView.Adapter<ListEventAdapter.ViewHolder>() {
+): RecyclerView.Adapter<ListEventAdapter.ViewHolder>() {
 
     enum class ListEventType {
         HOME, SEARCH
@@ -34,9 +37,9 @@ open class ListEventAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
         val v = LayoutInflater.from(parent.context).inflate(
-                R.layout.card_layout_event,
-                parent,
-                false
+            R.layout.card_layout_event,
+            parent,
+            false
         )
 
         this.parent = parent
@@ -70,13 +73,21 @@ open class ListEventAdapter(
     }
 
     private fun openDetail(event: EventDTO) {
-        val data : Bundle = Bundle()
-        data.putString("eventId", event.id)
-        val destination = when(type) {
-            ListEventType.HOME -> R.id.action_home_to_event_tabs
-            ListEventType.SEARCH -> R.id.action_event_search_to_event_detail
+
+
+        when(type) {
+            ListEventType.HOME -> {
+                val myIntent = Intent(fragment.requireActivity(), EventActivity::class.java)
+                myIntent.putExtra("eventId", event.id) //Optional parameters
+                fragment.requireActivity().startActivity(myIntent)
+            }
+            ListEventType.SEARCH -> {
+                val data : Bundle = Bundle()
+                data.putString("eventId", event.id)
+                fragment.findNavController().navigate(R.id.action_event_search_to_event_detail, data)
+            }
         }
-        fragment.findNavController().navigate(destination, data)
+
     }
 
     override fun getItemCount(): Int {
@@ -86,7 +97,7 @@ open class ListEventAdapter(
         return 0;
     }
 
-    fun addEvents(newEvents : List<EventDTO>){
+    fun addEvents(newEvents: List<EventDTO>){
         if(events == null) {
             events = mutableListOf()
         }
