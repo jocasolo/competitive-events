@@ -45,11 +45,12 @@ class HomeFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
         super.onViewCreated(view, savedInstanceState)
 
         // Events list view
         if(eventAdapter == null){
-            eventAdapter = ListEventAdapter(this, null)
+            eventAdapter = ListEventAdapter(this, null, ListEventAdapter.ListEventType.HOME)
         }
         recyclerView = view.findViewById<RecyclerView>(R.id.recycler_event_list)
         recyclerView?.layoutManager = LinearLayoutManager(requireContext())
@@ -98,10 +99,6 @@ class HomeFragment : Fragment() {
                 showErrorDialog(getString(R.string.error_api_undefined))
             }
         })
-    }
-
-    private fun showSuccessDialog(message: String) {
-        MyDialog.message(this, getString(R.string.success_action_title), message)
     }
 
     private fun showErrorDialog(message: String) {

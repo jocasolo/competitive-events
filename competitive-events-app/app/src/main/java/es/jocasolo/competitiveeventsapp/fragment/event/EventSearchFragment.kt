@@ -85,7 +85,7 @@ class EventSearchFragment : Fragment() {
     private fun initEventListRecyclerView() {
         // Event list
         if(eventAdapter == null){
-            eventAdapter = ListEventAdapter(this, null)
+            eventAdapter = ListEventAdapter(this, null, ListEventAdapter.ListEventType.SEARCH)
         }
         recyclerView = requireView().findViewById(R.id.recycler_event_search)
         recyclerView?.layoutManager = LinearLayoutManager(requireContext())

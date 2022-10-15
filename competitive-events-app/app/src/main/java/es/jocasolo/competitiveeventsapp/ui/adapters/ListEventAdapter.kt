@@ -15,7 +15,11 @@ import es.jocasolo.competitiveeventsapp.R
 import es.jocasolo.competitiveeventsapp.dto.event.EventDTO
 import es.jocasolo.competitiveeventsapp.utils.MyUtils
 
-open class ListEventAdapter(var fragment: Fragment, var events: MutableList<EventDTO>?): RecyclerView.Adapter<ListEventAdapter.ViewHolder>() {
+open class ListEventAdapter(
+    var fragment: Fragment,
+    var events: MutableList<EventDTO>?,
+    var type: ListEventType
+    ): RecyclerView.Adapter<ListEventAdapter.ViewHolder>() {
 
     enum class ListEventType {
         HOME, SEARCH
@@ -68,7 +72,11 @@ open class ListEventAdapter(var fragment: Fragment, var events: MutableList<Even
     private fun openDetail(event: EventDTO) {
         val data : Bundle = Bundle()
         data.putString("eventId", event.id)
-        fragment.findNavController().navigate(R.id.action_event_search_to_event_detail, data)
+        val destination = when(type) {
+            ListEventType.HOME -> R.id.action_home_to_event_tabs
+            ListEventType.SEARCH -> R.id.action_event_search_to_event_detail
+        }
+        fragment.findNavController().navigate(destination, data)
     }
 
     override fun getItemCount(): Int {

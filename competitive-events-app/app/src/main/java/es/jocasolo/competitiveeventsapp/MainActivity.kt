@@ -35,11 +35,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //supportActionBar?.setDisplayShowHomeEnabled(true);
-        //supportActionBar?.setLogo(R.drawable.basketball);
-        //supportActionBar?.setDisplayUseLogoEnabled(true);
-        //supportActionBar?.setDisplayShowTitleEnabled(false)
-        //supportActionBar?.title = " " + getString(R.string.your_events)
         setContentView(R.layout.activity_main)
 
         val navView: BottomNavigationView = findViewById(R.id.nav_view)

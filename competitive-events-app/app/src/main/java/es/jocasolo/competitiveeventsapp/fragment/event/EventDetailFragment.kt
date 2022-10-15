@@ -42,7 +42,7 @@ import java.text.SimpleDateFormat
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
-class EventDetailFragment : Fragment() {
+class EventDetailFragment(var eventId: String? = null) : Fragment() {
 
     private val eventService = ServiceBuilder.buildService(EventService::class.java)
 
@@ -73,9 +73,11 @@ class EventDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        rewardsRecyclerView = view.findViewById<RecyclerView>(R.id.recycler_reward_list)
+        super.onViewCreated(view, savedInstanceState)
+
+        rewardsRecyclerView = view.findViewById(R.id.recycler_reward_list)
         rewardsRecyclerView?.layoutManager = LinearLayoutManager(requireContext())
-        punishmentsRecyclerView = view.findViewById<RecyclerView>(R.id.recycler_punishment_list)
+        punishmentsRecyclerView = view.findViewById(R.id.recycler_punishment_list)
         punishmentsRecyclerView?.layoutManager = LinearLayoutManager(requireContext())
 
         // Init input fields
@@ -93,12 +95,12 @@ class EventDetailFragment : Fragment() {
         btnJoin = view.findViewById(R.id.btn_event_detail_join)
 
         // Show event detail
-        val id = arguments?.getString("eventId")
+        var id = arguments?.getString("eventId")
+        if(id == null) id = eventId
         if(id != null) {
             loadEvent(id)
         }
 
-        super.onViewCreated(view, savedInstanceState)
     }
 
     private fun loadEvent(id: String) {
