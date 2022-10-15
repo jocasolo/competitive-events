@@ -110,12 +110,15 @@ class EventCreationFragment : Fragment() {
         swtVisibility = view.findViewById(R.id.switch_event_visibility)
         txtMaxPlaces = view.findViewById(R.id.txt_event_max_places)
 
-        imgEventImage = view.findViewById(R.id.img_event_upload_image)
-        imgEventImage?.setColorFilter(ContextCompat.getColor(requireContext(), R.color.primary_dark), PorterDuff.Mode.SRC_IN)
-
         // Image upload button
         view.findViewById<Button>(R.id.btn_event_upload_image).setOnClickListener { imageChooser() }
+        imgEventImage = view.findViewById(R.id.img_event_upload_image)
+        imgEventImage?.setColorFilter(ContextCompat.getColor(requireContext(), R.color.primary_dark), PorterDuff.Mode.SRC_IN)
         imgEventImage?.setOnClickListener { imageChooser() }
+
+        // Switchs
+        swtInscription?.setOnCheckedChangeListener { _, isChecked -> if(isChecked) swtVisibility?.isChecked = false }
+        swtVisibility?.setOnCheckedChangeListener { _, isChecked -> if(isChecked) swtInscription?.isChecked = false }
 
         // EventTypes
         initEventTypesComboBox()
@@ -123,21 +126,35 @@ class EventCreationFragment : Fragment() {
         // ScoreTypes
         initScoreTypesComboBox()
 
-        // Create button
+        // Create event button
         view.findViewById<Button>(R.id.btn_event_creation).setOnClickListener { create(view) }
 
-        // Switchs
-        swtInscription?.setOnCheckedChangeListener { _, isChecked -> if(isChecked) swtVisibility?.isChecked = false }
-        swtVisibility?.setOnCheckedChangeListener { _, isChecked -> if(isChecked) swtInscription?.isChecked = false }
+        // Rewards list and add button
+        initRewards()
 
-        // Recycler views
-        initRecyclerViews();
+        // Punishments list and add button
+        initPunishments()
 
-        // Add reward/punishment button
-        view.findViewById<TextView>(R.id.btn_event_creation_add_reward).setOnClickListener { findNavController().navigate(R.id.action_event_creation_to_reward_creation) }
-        view.findViewById<TextView>(R.id.btn_event_creation_add_punishment).setOnClickListener { findNavController().navigate(R.id.action_event_creation_to_punishment_creation) }
+    }
 
-        // Observer reward added
+    /**
+     * Initializes the list of rewards and the add button actions. Register an observer to get a
+     * new award added in another fragment when comes back to this fragment.
+     */
+    private fun initRewards(){
+
+        // Reward list (RecyclerView)
+        if(rewardAdapter == null){
+            rewardAdapter = ListRewardLiteAdapter(requireContext(), null)
+        }
+        rewardsRecyclerView = requireView().findViewById(R.id.recycler_event_creation_reward_list)
+        rewardsRecyclerView?.layoutManager = LinearLayoutManager(requireContext())
+        rewardsRecyclerView?.adapter = rewardAdapter
+
+        // Rewards add button and observer
+        requireView().findViewById<TextView>(R.id.btn_event_creation_add_reward).setOnClickListener {
+            findNavController().navigate(R.id.action_event_creation_to_reward_creation)
+        }
         findNavController().currentBackStackEntry
             ?.savedStateHandle
             ?.getLiveData<RewardPunishmentDataDTO>("reward")
@@ -147,8 +164,26 @@ class EventCreationFragment : Fragment() {
                     ?.savedStateHandle
                     ?.remove<RewardPunishmentDataDTO>("reward")
             })
+    }
 
-        // Observer punishment added
+    /**
+     * Initializes the list of punishments and the add button actions. Register an observer to get a
+     * new punishment added in another fragment when comes back to this fragment.
+     */
+    private fun initPunishments() {
+
+        // Punishment list (RecyclerView)
+        if(punishmentAdapter == null){
+            punishmentAdapter = ListPunishmentLiteAdapter(requireContext(), null)
+        }
+        punishmentsRecyclerView = requireView().findViewById(R.id.recycler_event_creation_punishment_list)
+        punishmentsRecyclerView?.layoutManager = LinearLayoutManager(requireContext())
+        punishmentsRecyclerView?.adapter = punishmentAdapter
+
+        // Punishments add button and observer
+        requireView().findViewById<TextView>(R.id.btn_event_creation_add_punishment).setOnClickListener {
+            findNavController().navigate(R.id.action_event_creation_to_punishment_creation)
+        }
         findNavController().currentBackStackEntry
             ?.savedStateHandle
             ?.getLiveData<RewardPunishmentDataDTO>("punishment")
@@ -158,26 +193,6 @@ class EventCreationFragment : Fragment() {
                     ?.savedStateHandle
                     ?.remove<RewardPunishmentDataDTO>("punishment")
             })
-    }
-
-    private fun initRecyclerViews() {
-
-        // Reward list
-        if(rewardAdapter == null){
-            rewardAdapter = ListRewardLiteAdapter(requireContext(), null)
-        }
-        rewardsRecyclerView = requireView().findViewById(R.id.recycler_event_creation_reward_list)
-        rewardsRecyclerView?.layoutManager = LinearLayoutManager(requireContext())
-        rewardsRecyclerView?.adapter = rewardAdapter
-
-        // Punishment list
-        if(punishmentAdapter == null){
-            punishmentAdapter = ListPunishmentLiteAdapter(requireContext(), null)
-        }
-        punishmentsRecyclerView = requireView().findViewById(R.id.recycler_event_creation_punishment_list)
-        punishmentsRecyclerView?.layoutManager = LinearLayoutManager(requireContext())
-        punishmentsRecyclerView?.adapter = punishmentAdapter
-
     }
 
     /**
@@ -228,7 +243,6 @@ class EventCreationFragment : Fragment() {
     private fun create(view: View) {
         MyUtils.closeKeyboard(this.requireContext(), view)
         if(validate()) {
-            progressBar?.visibility = View.VISIBLE
             commit()
         }
     }
@@ -238,56 +252,13 @@ class EventCreationFragment : Fragment() {
      */
     private fun commit() {
 
-        // Dates
-        val sdfApi : SimpleDateFormat = SimpleDateFormat(getString(R.string.sdf_api_date))
-
-        var endDate : Date? = null
-        if(txtEndDate?.text?.isNotEmpty() == true)
-            endDate = sdf?.parse(txtEndDate?.text.toString())
-
-        var initDate : Date? = null
-        if(txtInitDate?.text?.isNotEmpty() == true)
-            initDate = sdf?.parse(txtInitDate?.text.toString())
-
-        // Build request
-        val eventDTO = EventPostDTO(txtTitle?.text.toString())
-        eventDTO.subtitle = txtSubtitle?.text.toString()
-        eventDTO.description = txtDescription?.text.toString()
-
-        endDate?.let { eventDTO.endDate = sdfApi.format(endDate) }
-        initDate?.let { eventDTO.initDate = sdfApi.format(initDate) }
-
-        if(txtMaxPlaces?.text != null && txtMaxPlaces?.text!!.isNotEmpty()) {
-            eventDTO.maxPlaces = Integer.valueOf(txtMaxPlaces?.text.toString())
-        }
-
-        val eventType = cmbEventType?.selectedItem as SpinnerEventType
-        eventDTO.type = eventType.key
-        val scoreType = cmbScoreType?.selectedItem as SpinnerScoreType
-        eventDTO.scoreType = scoreType.key
-
-        eventDTO.approvalNeeded = swtApproval?.isChecked
-
-        if(swtInscription?.isChecked == false){
-            eventDTO.inscription = EventInscriptionType.PUBLIC
-        } else {
-            eventDTO.inscription = EventInscriptionType.PRIVATE
-        }
-
-        if(swtSort?.isChecked == true){
-            eventDTO.sortScore = ScoreSortType.ASC
-        } else {
-            eventDTO.sortScore = ScoreSortType.DESC
-        }
-
-        if(swtVisibility?.isChecked == true){
-            eventDTO.visibility = EventVisibilityType.PUBLIC
-        } else {
-            eventDTO.visibility = EventVisibilityType.PRIVATE
-        }
+        // Generate de DTO for event creation
+        val eventPostDTO : EventPostDTO = generateRequestDTO()
 
         progressBar?.visibility = View.VISIBLE
-        eventService.create(eventDTO, UserAccount.getInstance(requireContext()).getToken()).enqueue(object : Callback<EventDTO> {
+
+        // Call to the event creation service
+        eventService.create(eventPostDTO, UserAccount.getInstance(requireContext()).getToken()).enqueue(object : Callback<EventDTO> {
             override fun onResponse(call: Call<EventDTO>, response: Response<EventDTO>) {
                 if(response.code() == HttpURLConnection.HTTP_CREATED){
                     val newEvent = response.body()
@@ -313,11 +284,79 @@ class EventCreationFragment : Fragment() {
 
     }
 
+    /**
+     * Generates the DTO required to call the event creation service
+     */
+    private fun generateRequestDTO(): EventPostDTO {
+
+        val sdfApi : SimpleDateFormat = SimpleDateFormat(getString(R.string.sdf_api_date))
+
+        // Build request
+        val eventDTO = EventPostDTO(txtTitle?.text.toString())
+        eventDTO.subtitle = txtSubtitle?.text.toString()
+        eventDTO.description = txtDescription?.text.toString()
+
+        // End date
+        var endDate : Date? = null
+        if(txtEndDate?.text?.isNotEmpty() == true)
+            endDate = sdf?.parse(txtEndDate?.text.toString())
+        endDate?.let { eventDTO.endDate = sdfApi.format(endDate) }
+
+        // Init date
+        var initDate : Date? = null
+        if(txtInitDate?.text?.isNotEmpty() == true)
+            initDate = sdf?.parse(txtInitDate?.text.toString())
+        initDate?.let { eventDTO.initDate = sdfApi.format(initDate) }
+
+        // Max places
+        if(txtMaxPlaces?.text != null && txtMaxPlaces?.text!!.isNotEmpty()) {
+            eventDTO.maxPlaces = Integer.valueOf(txtMaxPlaces?.text.toString())
+        }
+
+        // Event type
+        val eventType = cmbEventType?.selectedItem as SpinnerEventType
+        eventDTO.type = eventType.key
+        val scoreType = cmbScoreType?.selectedItem as SpinnerScoreType
+        eventDTO.scoreType = scoreType.key
+
+        // Approval needed
+        eventDTO.approvalNeeded = swtApproval?.isChecked
+
+        // Inscription type
+        if(swtInscription?.isChecked == false){
+            eventDTO.inscription = EventInscriptionType.PUBLIC
+        } else {
+            eventDTO.inscription = EventInscriptionType.PRIVATE
+        }
+
+        // Sort type
+        if(swtSort?.isChecked == true){
+            eventDTO.sortScore = ScoreSortType.ASC
+        } else {
+            eventDTO.sortScore = ScoreSortType.DESC
+        }
+
+        // Visibility type
+        if(swtVisibility?.isChecked == true){
+            eventDTO.visibility = EventVisibilityType.PUBLIC
+        } else {
+            eventDTO.visibility = EventVisibilityType.PRIVATE
+        }
+
+        return eventDTO
+    }
+
+    /**
+     * Adds a reward to the rewards adapter and recycler view. This award comes from another event from which it has been returned.
+     */
     private fun addReward(it: RewardPunishmentDataDTO?) {
         rewardAdapter?.addReward(it)
         rewardAdapter?.notifyDataSetChanged()
     }
 
+    /**
+     * Adds a reward to the rewards adapter and recycler view. This punishment comes from another event from which it has been returned.
+     */
     private fun addPunishment(it: RewardPunishmentDataDTO?) {
         punishmentAdapter?.addPunishment(it)
         punishmentAdapter?.notifyDataSetChanged()
