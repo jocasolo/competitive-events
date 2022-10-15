@@ -22,12 +22,18 @@ import es.jocasolo.competitiveeventsapp.dto.ErrorDTO
 import es.jocasolo.competitiveeventsapp.dto.RewardPunishmentDataDTO
 import es.jocasolo.competitiveeventsapp.dto.event.EventDTO
 import es.jocasolo.competitiveeventsapp.dto.event.EventPostDTO
+import es.jocasolo.competitiveeventsapp.dto.punishment.PunishmentDTO
+import es.jocasolo.competitiveeventsapp.dto.punishment.PunishmentPostDTO
+import es.jocasolo.competitiveeventsapp.dto.reward.RewardDTO
+import es.jocasolo.competitiveeventsapp.dto.reward.RewardPostDTO
 import es.jocasolo.competitiveeventsapp.enums.event.EventInscriptionType
 import es.jocasolo.competitiveeventsapp.enums.event.EventType
 import es.jocasolo.competitiveeventsapp.enums.event.EventVisibilityType
 import es.jocasolo.competitiveeventsapp.enums.score.ScoreSortType
 import es.jocasolo.competitiveeventsapp.enums.score.ScoreValueType
 import es.jocasolo.competitiveeventsapp.service.EventService
+import es.jocasolo.competitiveeventsapp.service.PunishmentService
+import es.jocasolo.competitiveeventsapp.service.RewardService
 import es.jocasolo.competitiveeventsapp.service.ServiceBuilder
 import es.jocasolo.competitiveeventsapp.singleton.UserAccount
 import es.jocasolo.competitiveeventsapp.ui.adapters.ListPunishmentLiteAdapter
@@ -55,6 +61,8 @@ import kotlin.collections.ArrayList
 class EventCreationFragment : Fragment() {
 
     private val eventService = ServiceBuilder.buildService(EventService::class.java)
+    private val rewardService = ServiceBuilder.buildService(RewardService::class.java)
+    private val punishmentService = ServiceBuilder.buildService(PunishmentService::class.java)
 
     private var sdf : SimpleDateFormat? = null
 
@@ -167,6 +175,14 @@ class EventCreationFragment : Fragment() {
     }
 
     /**
+     * Adds a reward to the rewards adapter and recycler view. This award comes from another event from which it has been returned.
+     */
+    private fun addReward(it: RewardPunishmentDataDTO?) {
+        rewardAdapter?.addReward(it)
+        rewardAdapter?.notifyDataSetChanged()
+    }
+
+    /**
      * Initializes the list of punishments and the add button actions. Register an observer to get a
      * new punishment added in another fragment when comes back to this fragment.
      */
@@ -193,6 +209,14 @@ class EventCreationFragment : Fragment() {
                     ?.savedStateHandle
                     ?.remove<RewardPunishmentDataDTO>("punishment")
             })
+    }
+
+    /**
+     * Adds a reward to the rewards adapter and recycler view. This punishment comes from another event from which it has been returned.
+     */
+    private fun addPunishment(it: RewardPunishmentDataDTO?) {
+        punishmentAdapter?.addPunishment(it)
+        punishmentAdapter?.notifyDataSetChanged()
     }
 
     /**
@@ -248,6 +272,58 @@ class EventCreationFragment : Fragment() {
     }
 
     /**
+     * Validate all the fields of the form.
+     * @return True if all fields are correct and false if not
+     */
+    private fun validate() : Boolean {
+        val validTitle = validateTitle()
+        val validDates = validateDates()
+        return validTitle && validDates
+    }
+
+    /**
+     * Check that the username has a value and with valid characters.
+     * @return True if the username is valid and false if not
+     */
+    private fun validateTitle() : Boolean {
+        var result = true
+
+        if(txtTitle?.text?.isEmpty()!!){
+            txtTitle?.error = getString(R.string.error_required)
+            result = false
+            val scrollView : ScrollView? = view?.findViewById(R.id.scrollview_events_creation)
+            scrollView?.scrollTo(0, 0)
+        }
+
+        return result
+    }
+
+    private fun validateDates(): Boolean {
+
+        var endDate : Date? = null
+        if(txtEndDate?.text?.isNotEmpty() == true)
+            endDate = sdf?.parse(txtEndDate?.text.toString())
+
+        var initDate : Date? = null
+        if(txtInitDate?.text?.isNotEmpty() == true)
+            initDate = sdf?.parse(txtInitDate?.text.toString())
+
+        if(initDate == null && endDate == null)
+            return true
+
+        if(initDate != null && endDate != null){
+            return if(initDate.before(endDate))
+                true
+            else {
+                txtInitDate?.error = getString(R.string.error_date_before)
+                false
+            }
+        }
+
+        return true
+    }
+
+    /**
      * Build the EventDTO to call the service of events creation
      */
     private fun commit() {
@@ -263,7 +339,9 @@ class EventCreationFragment : Fragment() {
                 if(response.code() == HttpURLConnection.HTTP_CREATED){
                     val newEvent = response.body()
                     if (newEvent != null) {
-                        uploadImage(newEvent.id)
+                        uploadEventImage(newEvent.id)
+                        commitRewards(newEvent.id)
+                        commitPunishments(newEvent.id)
                     }
                     showSuccessDialog()
                 } else {
@@ -346,91 +424,34 @@ class EventCreationFragment : Fragment() {
         return eventDTO
     }
 
-    /**
-     * Adds a reward to the rewards adapter and recycler view. This award comes from another event from which it has been returned.
-     */
-    private fun addReward(it: RewardPunishmentDataDTO?) {
-        rewardAdapter?.addReward(it)
-        rewardAdapter?.notifyDataSetChanged()
-    }
-
-    /**
-     * Adds a reward to the rewards adapter and recycler view. This punishment comes from another event from which it has been returned.
-     */
-    private fun addPunishment(it: RewardPunishmentDataDTO?) {
-        punishmentAdapter?.addPunishment(it)
-        punishmentAdapter?.notifyDataSetChanged()
-    }
-
-    private fun showSuccessDialog() {
-        MyDialog.confirmNavigate(this, getString(R.string.user_created_title), getString(R.string.user_created),
-                R.id.action_event_creation_to_home
-        )
-    }
-
-    private fun showErrorDialog(message: String) {
-        MyDialog.message(this, getString(R.string.error_title), message)
-    }
-
-    /**
-     * Validate all the fields of the form.
-     * @return True if all fields are correct and false if not
-     */
-    private fun validate() : Boolean {
-        val validTitle = validateTitle()
-        val validDates = validateDates()
-        return validTitle && validDates
-    }
-
-    /**
-     * Check that the username has a value and with valid characters.
-     * @return True if the username is valid and false if not
-     */
-    private fun validateTitle() : Boolean {
-        var result = true
-
-        if(txtTitle?.text?.isEmpty()!!){
-            txtTitle?.error = getString(R.string.error_required)
-            result = false
-            val scrollView : ScrollView? = view?.findViewById(R.id.scrollview_events_creation)
-            scrollView?.scrollTo(0, 0)
-        }
-
-        return result
-    }
-
-    private fun validateDates(): Boolean {
-
-        var endDate : Date? = null
-        if(txtEndDate?.text?.isNotEmpty() == true)
-            endDate = sdf?.parse(txtEndDate?.text.toString())
-
-        var initDate : Date? = null
-        if(txtInitDate?.text?.isNotEmpty() == true)
-            initDate = sdf?.parse(txtInitDate?.text.toString())
-
-        if(initDate == null && endDate == null)
-            return true
-
-        if(initDate != null && endDate != null){
-            return if(initDate.before(endDate))
-                true
-            else {
-                txtInitDate?.error = getString(R.string.error_date_before)
-                false
-            }
-        }
-
-        return true
-    }
-
-    private fun uploadImage(id : String) {
-
+    private fun uploadEventImage(id : String) {
         filePart?.let {
             eventService.updateImage(it, id, UserAccount.getInstance(requireContext()).getToken()).enqueue(object : Callback<EventDTO> {
                 override fun onResponse(call: Call<EventDTO>, response: Response<EventDTO>) {
                 }
                 override fun onFailure(call: Call<EventDTO>, t: Throwable) {
+                }
+            })
+        }
+    }
+
+    private fun uploadRewardImage(id : Integer, imagePart : MultipartBody.Part?) {
+        imagePart?.let {
+            rewardService.updateImage(it, id, UserAccount.getInstance(requireContext()).getToken()).enqueue(object : Callback<RewardDTO> {
+                override fun onResponse(call: Call<RewardDTO>, response: Response<RewardDTO>) {
+                }
+                override fun onFailure(call: Call<RewardDTO>, t: Throwable) {
+                }
+            })
+        }
+    }
+
+    private fun uploadPunishmentImage(id : Integer, imagePart : MultipartBody.Part?) {
+        imagePart?.let {
+            punishmentService.updateImage(it, id, UserAccount.getInstance(requireContext()).getToken()).enqueue(object : Callback<PunishmentDTO> {
+                override fun onResponse(call: Call<PunishmentDTO>, response: Response<PunishmentDTO>) {
+                }
+                override fun onFailure(call: Call<PunishmentDTO>, t: Throwable) {
                 }
             })
         }
@@ -478,6 +499,38 @@ class EventCreationFragment : Fragment() {
         return filePath
     }
 
+    private fun commitRewards(id: String) {
+        rewardAdapter?.rewards?.forEach { r ->
+            val rewardPostDTO = RewardPostDTO(r.title, r.description, id, r.sortScore, r.requiredPosition)
+            rewardService.create(rewardPostDTO, UserAccount.getInstance(requireContext()).getToken()).enqueue(object : Callback<RewardDTO> {
+                override fun onResponse(call: Call<RewardDTO>, response: Response<RewardDTO>) {
+                    val newReward = response.body()
+                    if(newReward != null) {
+                        uploadRewardImage(newReward.id, r.imagePart)
+                    }
+                }
+                override fun onFailure(call: Call<RewardDTO>, t: Throwable) {
+                }
+            })
+        }
+    }
+
+    private fun commitPunishments(id: String) {
+        punishmentAdapter?.punishments?.forEach { p ->
+            val punishmentPostDTO = PunishmentPostDTO(p.title, p.description, id, p.sortScore, p.requiredPosition)
+            punishmentService.create(punishmentPostDTO, UserAccount.getInstance(requireContext()).getToken()).enqueue(object : Callback<PunishmentDTO> {
+                override fun onResponse(call: Call<PunishmentDTO>, response: Response<PunishmentDTO>) {
+                    val newPuinshment = response.body()
+                    if(newPuinshment != null) {
+                        uploadPunishmentImage(newPuinshment.id, p.imagePart)
+                    }
+                }
+                override fun onFailure(call: Call<PunishmentDTO>, t: Throwable) {
+                }
+            })
+        }
+    }
+
     private fun showDatePicker(txt: TextView?){
 
         val calendar = Calendar.getInstance()
@@ -499,6 +552,16 @@ class EventCreationFragment : Fragment() {
 
     private fun updateDate(txt: TextView?, year: Int, month: Int, dayOfMonth: Int) {
         txt?.text = "$dayOfMonth-$month-$year"
+    }
+
+    private fun showSuccessDialog() {
+        MyDialog.confirmNavigate(this, getString(R.string.user_created_title), getString(R.string.user_created),
+            R.id.action_event_creation_to_home
+        )
+    }
+
+    private fun showErrorDialog(message: String) {
+        MyDialog.message(this, getString(R.string.error_title), message)
     }
 
 }
