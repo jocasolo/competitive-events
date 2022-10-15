@@ -35,6 +35,7 @@ public class RewardPostDTO extends DTO implements Serializable {
 	
 	@Getter
 	@Setter
+	@NotNull
 	private ScoreSortType sortScore;
 
 	@Override

@@ -31,12 +31,12 @@ public class PunishmentPostDTO extends DTO implements Serializable {
 	@Getter
 	@Setter
 	@NotNull
-	private ScoreSortType sortScore;
+	private Integer requiredPosition;
 	
 	@Getter
 	@Setter
 	@NotNull
-	private Integer requiredPosition;
+	private ScoreSortType sortScore;
 
 	@Override
 	public String toString() {

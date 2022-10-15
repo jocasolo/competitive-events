@@ -123,6 +123,7 @@ public class EventServiceImpl implements EventService {
 		final User user = authentication.getUser();
 		EventUser eventUser = createEventUser(event, user);
 		eventUser.setPrivilege(EventUserPrivilegeType.OWNER);
+		eventUser.setStatus(EventUserStatusType.ACCEPTED);
 		eventUserDao.save(eventUser);
 
 		return commonService.transform(event, EventDTO.class);
