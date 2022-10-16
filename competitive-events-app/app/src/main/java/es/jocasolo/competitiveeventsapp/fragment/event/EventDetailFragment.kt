@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.appcompat.app.AppCompatActivity
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -31,7 +31,6 @@ import es.jocasolo.competitiveeventsapp.utils.Message
 import es.jocasolo.competitiveeventsapp.utils.MyDialog
 import es.jocasolo.competitiveeventsapp.utils.MyUtils
 import org.apache.commons.lang3.StringUtils
-import org.w3c.dom.Text
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -42,7 +41,7 @@ import java.text.SimpleDateFormat
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
-class EventDetailFragment : Fragment() {
+class EventDetailFragment(var eventId: String? = null) : Fragment() {
 
     private val eventService = ServiceBuilder.buildService(EventService::class.java)
 
@@ -61,6 +60,8 @@ class EventDetailFragment : Fragment() {
     private var txtIdentifier : TextView? = null
     private var imgMain : ImageView? = null
     private var btnJoin : Button? = null
+    private var progressBar : ProgressBar? = null
+    private var scrollView : NestedScrollView? = null
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -73,9 +74,11 @@ class EventDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        rewardsRecyclerView = view.findViewById<RecyclerView>(R.id.recycler_reward_list)
+        super.onViewCreated(view, savedInstanceState)
+
+        rewardsRecyclerView = view.findViewById(R.id.recycler_reward_list)
         rewardsRecyclerView?.layoutManager = LinearLayoutManager(requireContext())
-        punishmentsRecyclerView = view.findViewById<RecyclerView>(R.id.recycler_punishment_list)
+        punishmentsRecyclerView = view.findViewById(R.id.recycler_punishment_list)
         punishmentsRecyclerView?.layoutManager = LinearLayoutManager(requireContext())
 
         // Init input fields
@@ -91,14 +94,16 @@ class EventDetailFragment : Fragment() {
         txtIdentifier = view.findViewById(R.id.txt_event_detail_id)
         imgMain = view.findViewById(R.id.img_event_detail_main)
         btnJoin = view.findViewById(R.id.btn_event_detail_join)
+        progressBar = view.findViewById(R.id.spn_event_detail)
+        scrollView = view.findViewById(R.id.scrollview_events_detail)
 
         // Show event detail
-        val id = arguments?.getString("eventId")
+        var id = arguments?.getString("eventId")
+        if(id == null) id = eventId
         if(id != null) {
             loadEvent(id)
         }
 
-        super.onViewCreated(view, savedInstanceState)
     }
 
     private fun loadEvent(id: String) {
@@ -130,8 +135,8 @@ class EventDetailFragment : Fragment() {
         val sdf : SimpleDateFormat = SimpleDateFormat("dd-MM-yyyy")
 
         // Action bar title
-        val actionBar = (activity as AppCompatActivity?)!!.supportActionBar!!
-        actionBar.title = event.title
+        val actionBar = requireActivity().actionBar
+        actionBar?.title = event.title
 
         // Title
         txtTitle?.text = event.title
@@ -214,6 +219,9 @@ class EventDetailFragment : Fragment() {
         // Button
         btnJoin?.setOnClickListener { joinToEvent(event) }
         setButtonText(event, null)
+
+        progressBar?.visibility = View.GONE
+        scrollView?.visibility = View.VISIBLE
 
     }
 

@@ -35,13 +35,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //supportActionBar?.setDisplayShowHomeEnabled(true);
-        //supportActionBar?.setLogo(R.drawable.basketball);
-        //supportActionBar?.setDisplayUseLogoEnabled(true);
-        //supportActionBar?.setDisplayShowTitleEnabled(false)
-        //supportActionBar?.title = " " + getString(R.string.your_events)
         setContentView(R.layout.activity_main)
 
+        // Navigation between fragments with the bottom icons
         val navView: BottomNavigationView = findViewById(R.id.nav_view)
 
         val navController = findNavController(R.id.nav_main_fragment)
