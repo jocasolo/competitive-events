@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -60,7 +61,7 @@ class EventDetailFragment(var eventId: String? = null) : Fragment() {
     private var imgMain : ImageView? = null
     private var btnJoin : Button? = null
     private var progressBar : ProgressBar? = null
-    private var scrollView : ScrollView? = null
+    private var scrollView : NestedScrollView? = null
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,

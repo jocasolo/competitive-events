@@ -15,7 +15,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollview_events_detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -240,6 +240,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="32dp" />
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
