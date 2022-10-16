@@ -121,6 +121,11 @@
     <string name="higher">más alta</string>
     <string name="lower">más baja</string>
 
+    <!-- Historic -->
+    <string name="date">Fecha</string>
+    <string name="message">Mensaje</string>
+    <string name="user_new_score">%1$s ha incluido una nueva puntuación personal. Su valor es %2$s.</string>
+
     <!-- Errors -->
     <string name="error_title">Error</string>
     <string name="error_api_undefined">Ha ocurrido un error en la llamada al servicio</string>

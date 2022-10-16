@@ -1,8 +1,10 @@
 package es.jocasolo.competitiveeventsapp.dto.event
 
 import com.google.gson.annotations.SerializedName
+import es.jocasolo.competitiveeventsapp.dto.comment.CommentDTO
 import es.jocasolo.competitiveeventsapp.dto.punishment.PunishmentDTO
 import es.jocasolo.competitiveeventsapp.dto.reward.RewardDTO
+import es.jocasolo.competitiveeventsapp.dto.score.ScoreDTO
 import es.jocasolo.competitiveeventsapp.dto.user.ImageDTO
 import es.jocasolo.competitiveeventsapp.dto.user.UserDTO
 import es.jocasolo.competitiveeventsapp.enums.event.EventInscriptionType
@@ -31,6 +33,8 @@ class EventDTO(
         @SerializedName("numParticipants") var numParticipants: Int?,
         @SerializedName("rewards") var rewards: List<RewardDTO>?,
         @SerializedName("punishments") var punishments: List<PunishmentDTO>?,
+        @SerializedName("comments") var comments: List<CommentDTO>?,
+        @SerializedName("scores") var scores: List<ScoreDTO>?,
         @SerializedName("users") var users: List<UserDTO>?,
 ) {
 }
