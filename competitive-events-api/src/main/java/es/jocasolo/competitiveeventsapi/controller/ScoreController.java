@@ -27,6 +27,7 @@ import es.jocasolo.competitiveeventsapi.exceptions.event.EventInvalidStatusExcep
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventNotFoundException;
 import es.jocasolo.competitiveeventsapi.exceptions.image.ImageUploadException;
 import es.jocasolo.competitiveeventsapi.exceptions.score.ScoreNotFoundException;
+import es.jocasolo.competitiveeventsapi.exceptions.score.ScoreWrongTypeException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotValidException;
 import es.jocasolo.competitiveeventsapi.service.CommonService;
 import es.jocasolo.competitiveeventsapi.service.ScoreService;
@@ -64,7 +65,8 @@ public class ScoreController {
 	@PostMapping(produces = "application/json;charset=utf8")
 	@ResponseStatus(HttpStatus.CREATED)
 	@ApiOperation(value = "Creates a new score.")
-	public ScoreDTO create(@Valid @RequestBody ScorePostDTO scoreDto) throws EventNotFoundException, UserNotValidException, EventInvalidStatusException {
+	public ScoreDTO create(@Valid @RequestBody ScorePostDTO scoreDto) 
+			throws EventNotFoundException, UserNotValidException, EventInvalidStatusException, ScoreWrongTypeException {
 		log.debug("Creating the score: {} ", scoreDto);
 		return scoreService.create(scoreDto);
 	}

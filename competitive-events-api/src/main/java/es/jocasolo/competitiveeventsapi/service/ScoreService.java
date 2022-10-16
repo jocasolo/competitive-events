@@ -11,6 +11,7 @@ import es.jocasolo.competitiveeventsapi.exceptions.event.EventInvalidStatusExcep
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventNotFoundException;
 import es.jocasolo.competitiveeventsapi.exceptions.image.ImageUploadException;
 import es.jocasolo.competitiveeventsapi.exceptions.score.ScoreNotFoundException;
+import es.jocasolo.competitiveeventsapi.exceptions.score.ScoreWrongTypeException;
 import es.jocasolo.competitiveeventsapi.exceptions.score.ScoreWrongUpdateException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotValidException;
 import es.jocasolo.competitiveeventsapi.model.Score;
@@ -30,8 +31,9 @@ public interface ScoreService {
 	 * @throws EventNotFoundException 
 	 * @throws UserNotValidException 
 	 * @throws EventInvalidStatusException 
+	 * @throws ScoreWrongTypeException 
 	 */
-	ScoreDTO create(ScorePostDTO scoreDto) throws EventNotFoundException, UserNotValidException, EventInvalidStatusException;
+	ScoreDTO create(ScorePostDTO scoreDto) throws EventNotFoundException, UserNotValidException, EventInvalidStatusException, ScoreWrongTypeException;
 
 	/**
 	 * @param id

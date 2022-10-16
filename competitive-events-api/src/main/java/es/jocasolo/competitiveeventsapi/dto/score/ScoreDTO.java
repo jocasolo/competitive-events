@@ -1,6 +1,7 @@
 package es.jocasolo.competitiveeventsapi.dto.score;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import es.jocasolo.competitiveeventsapi.dto.DTO;
 import es.jocasolo.competitiveeventsapi.dto.image.ImageDTO;
@@ -23,7 +24,7 @@ public class ScoreDTO extends DTO implements Serializable {
 
 	@Getter
 	@Setter
-	private String date;
+	private Date date;
 
 	@Getter
 	@Setter

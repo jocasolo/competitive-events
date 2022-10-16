@@ -2,6 +2,7 @@ package es.jocasolo.competitiveeventsapi.service;
 
 import java.util.Date;
 
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,7 +21,9 @@ import es.jocasolo.competitiveeventsapi.exceptions.event.EventInvalidStatusExcep
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventNotFoundException;
 import es.jocasolo.competitiveeventsapi.exceptions.image.ImageUploadException;
 import es.jocasolo.competitiveeventsapi.exceptions.score.ScoreNotFoundException;
+import es.jocasolo.competitiveeventsapi.exceptions.score.ScoreWrongTypeException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotValidException;
+import es.jocasolo.competitiveeventsapi.model.Event;
 import es.jocasolo.competitiveeventsapi.model.EventUser;
 import es.jocasolo.competitiveeventsapi.model.Image;
 import es.jocasolo.competitiveeventsapi.model.Score;
@@ -76,7 +79,8 @@ public class ScoreServiceImpl implements ScoreService {
 	}
 
 	@Override
-	public ScoreDTO create(ScorePostDTO scoreDto) throws EventNotFoundException, UserNotValidException, EventInvalidStatusException {
+	public ScoreDTO create(ScorePostDTO scoreDto) 
+			throws EventNotFoundException, UserNotValidException, EventInvalidStatusException, ScoreWrongTypeException {
 		
 		User user = authentication.getUser();
 		
@@ -87,14 +91,34 @@ public class ScoreServiceImpl implements ScoreService {
 		if(!eventUser.getEvent().isInDateRange())
 			throw new EventInvalidStatusException();
 		
+		final Event event = eventUser.getEvent();
+		if(!validScore(event, scoreDto.getValue())) {
+			throw new ScoreWrongTypeException(event.getScoreType());
+		}
+		
 		Score score = new Score();
 		score.setUser(user);
-		score.setEvent(eventUser.getEvent());
+		score.setEvent(event);
 		score.setStatus(ScoreStatusType.VALID);
 		score.setValue(scoreDto.getValue());
 		score.setDate(new Date());
 		
 		return commonService.transform(scoreDao.save(score), ScoreDTO.class);
+	}
+
+	private boolean validScore(Event event, String value) {
+		boolean result = false;
+		
+		switch (event.getScoreType()) {
+			case NUMERIC:
+			case TIME:
+				result = NumberUtils.isDigits(value);
+				break;
+			case DECIMAL:
+				result = NumberUtils.isCreatable(value);
+		}
+		
+		return result;
 	}
 
 	@Override

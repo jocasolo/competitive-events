@@ -136,9 +136,6 @@ public class EventServiceImpl implements EventService {
 		if(event == null)
 			throw new EventNotFoundException();
 		
-		if(!event.isInDateRange())
-			throw new EventInvalidStatusException();
-		
 		EventUser eventUser = eventUserDao.findOne(event, authentication.getUser());
 		if (eventUser != null && eventUser.isOwner()) {
 			event.setTitle(EventUtils.getValue(dto.getTitle(), event.getTitle()));
