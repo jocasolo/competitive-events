@@ -40,16 +40,21 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txt_punishment_item_looser" />
 
-        <TextView
+        <com.borjabravo.readmoretextview.ReadMoreTextView
             android:id="@+id/txt_punishment_item_description"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="8dp"
             android:text="@string/subtitle"
+            app:colorClickableText="@color/primary"
             app:layout_constraintEnd_toStartOf="@+id/cardViewImagePunishment"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txt_punishment_item_required_position" />
+            app:layout_constraintTop_toBottomOf="@+id/txt_punishment_item_required_position"
+            app:trimCollapsedText="@string/show_more"
+            app:trimExpandedText="@string/show_less"
+            app:trimLength="80"
+            app:trimMode="trimModeLength" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardViewImagePunishment"

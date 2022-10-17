@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.borjabravo.readmoretextview.ReadMoreTextView
 import com.squareup.picasso.Picasso
 import es.jocasolo.competitiveeventsapp.R
 import es.jocasolo.competitiveeventsapp.dto.reward.RewardDTO
@@ -67,7 +68,7 @@ open class ListRewardAdapter(var context : Context, var rewards: List<RewardDTO>
 
         var itemImage: ImageView = itemView.findViewById(R.id.img_reward_item_image)
         var itemTitle: TextView = itemView.findViewById(R.id.txt_reward_item_title)
-        var itemDescription: TextView = itemView.findViewById(R.id.txt_reward_item_description)
+        var itemDescription: ReadMoreTextView = itemView.findViewById(R.id.txt_reward_item_description)
         var itemWinner: TextView = itemView.findViewById(R.id.txt_reward_item_winner)
         var itemRequiredPosition: TextView = itemView.findViewById(R.id.txt_reward_item_required_position)
 

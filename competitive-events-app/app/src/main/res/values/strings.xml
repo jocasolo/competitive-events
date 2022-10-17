@@ -40,6 +40,8 @@
     <string name="punishments">Castigos</string>
     <string name="add">Añadir</string>
     <string name="value">Valor</string>
+    <string name="owner">Administrador</string>
+    <string name="user">User</string>
 
     <!-- Action bar -->
     <string name="logout">Cerrar sesión</string>
@@ -68,6 +70,13 @@
     <string name="update_avatar">Cambiar avatar…</string>
     <string name="success_updated_user">Usuario actualizado con éxito.</string>
     <string name="success_updated_avatar">Avatar actualizado con éxito.</string>
+
+    <!-- User status -->
+    <string name="user_invited">Invitación enviada</string>
+    <string name="user_waiting_approval">Esperando aprobación</string>
+    <string name="user_accepted">Aceptado</string>
+    <string name="user_rechazado">Rechazado</string>
+    <string name="user_eliminado">Eliminado</string>
 
     <!-- Events -->
     <string name="events_list">Listado de eventos</string>
@@ -102,6 +111,9 @@
     <string name="events_user_request_join">Has solicitado unirte al evento. Esperando a que un administrador del evento acepte la invitación</string>
     <string name="events_identifier">Identificador: %1$s</string>
     <string name="events_private">Este evento es privado</string>
+    <string name="event_created_title">Evento creado</string>
+    <string name="event_created">El evento se ha creado con éxito. Ahora te aparecerá en tu listado de eventos.</string>
+    <string name="event_participants">Participantes</string>
 
     <!-- Event Types -->
     <string name="events_all">Cualquiera</string>
