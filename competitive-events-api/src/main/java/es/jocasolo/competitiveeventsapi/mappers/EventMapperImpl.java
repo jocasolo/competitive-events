@@ -13,7 +13,6 @@ import es.jocasolo.competitiveeventsapi.dto.image.ImageDTO;
 import es.jocasolo.competitiveeventsapi.dto.punishment.PunishmentDTO;
 import es.jocasolo.competitiveeventsapi.dto.reward.RewardDTO;
 import es.jocasolo.competitiveeventsapi.dto.score.ScoreDTO;
-import es.jocasolo.competitiveeventsapi.dto.user.UserLiteDTO;
 import es.jocasolo.competitiveeventsapi.model.Event;
 import es.jocasolo.competitiveeventsapi.service.CommonService;
 
@@ -22,6 +21,9 @@ public class EventMapperImpl implements EventMapper {
 	
 	@Autowired
 	private CommonService commonService;
+	
+	@Autowired
+	private UserMapper userMapper;
 	
 	public EventDTO map(Event event) {
 		
@@ -67,7 +69,7 @@ public class EventMapperImpl implements EventMapper {
 		detail.setNumParticipants(event.getUsers().size());
 		detail.setVisibility(event.getVisibility());
 		detail.setDescription(event.getDescription());
-		detail.setUsers(commonService.transform(event.getUsers(), UserLiteDTO.class));
+		detail.setUsers(userMapper.map(event.getUsers(), event));
 		detail.setRewards(commonService.transform(event.getRewards(), RewardDTO.class));
 		detail.setPunishments(commonService.transform(event.getPunishments(), PunishmentDTO.class));
 		detail.setComments(commonService.transform(event.getComments(), CommentDTO.class));

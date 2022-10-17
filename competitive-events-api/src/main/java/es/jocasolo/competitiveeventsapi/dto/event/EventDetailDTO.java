@@ -8,7 +8,7 @@ import es.jocasolo.competitiveeventsapi.dto.comment.CommentDTO;
 import es.jocasolo.competitiveeventsapi.dto.punishment.PunishmentDTO;
 import es.jocasolo.competitiveeventsapi.dto.reward.RewardDTO;
 import es.jocasolo.competitiveeventsapi.dto.score.ScoreDTO;
-import es.jocasolo.competitiveeventsapi.dto.user.UserLiteDTO;
+import es.jocasolo.competitiveeventsapi.dto.user.UserLiteWithEventDTO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,7 +22,7 @@ public class EventDetailDTO extends EventDTO implements Serializable {
 	
 	@Getter
 	@Setter
-	private Set<UserLiteDTO> users;
+	private Set<UserLiteWithEventDTO> users;
 	
 	@Getter
 	@Setter
