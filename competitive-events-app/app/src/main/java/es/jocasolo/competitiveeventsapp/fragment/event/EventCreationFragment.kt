@@ -19,7 +19,7 @@ import com.google.gson.Gson
 import com.squareup.picasso.Picasso
 import es.jocasolo.competitiveeventsapp.R
 import es.jocasolo.competitiveeventsapp.dto.ErrorDTO
-import es.jocasolo.competitiveeventsapp.dto.RewardPunishmentDataDTO
+import es.jocasolo.competitiveeventsapp.dto.BackStackEntryDTO
 import es.jocasolo.competitiveeventsapp.dto.event.EventDTO
 import es.jocasolo.competitiveeventsapp.dto.event.EventPostDTO
 import es.jocasolo.competitiveeventsapp.dto.punishment.PunishmentDTO
@@ -165,19 +165,19 @@ class EventCreationFragment : Fragment() {
         }
         findNavController().currentBackStackEntry
             ?.savedStateHandle
-            ?.getLiveData<RewardPunishmentDataDTO>("reward")
+            ?.getLiveData<BackStackEntryDTO>("reward")
             ?.observe(viewLifecycleOwner, {
                 addReward(it)
                 findNavController().currentBackStackEntry
                     ?.savedStateHandle
-                    ?.remove<RewardPunishmentDataDTO>("reward")
+                    ?.remove<BackStackEntryDTO>("reward")
             })
     }
 
     /**
      * Adds a reward to the rewards adapter and recycler view. This award comes from another event from which it has been returned.
      */
-    private fun addReward(it: RewardPunishmentDataDTO?) {
+    private fun addReward(it: BackStackEntryDTO?) {
         rewardAdapter?.addReward(it)
         rewardAdapter?.notifyDataSetChanged()
     }
@@ -202,19 +202,19 @@ class EventCreationFragment : Fragment() {
         }
         findNavController().currentBackStackEntry
             ?.savedStateHandle
-            ?.getLiveData<RewardPunishmentDataDTO>("punishment")
+            ?.getLiveData<BackStackEntryDTO>("punishment")
             ?.observe(viewLifecycleOwner, {
                 addPunishment(it)
                 findNavController().currentBackStackEntry
                     ?.savedStateHandle
-                    ?.remove<RewardPunishmentDataDTO>("punishment")
+                    ?.remove<BackStackEntryDTO>("punishment")
             })
     }
 
     /**
      * Adds a reward to the rewards adapter and recycler view. This punishment comes from another event from which it has been returned.
      */
-    private fun addPunishment(it: RewardPunishmentDataDTO?) {
+    private fun addPunishment(it: BackStackEntryDTO?) {
         punishmentAdapter?.addPunishment(it)
         punishmentAdapter?.notifyDataSetChanged()
     }
@@ -501,7 +501,7 @@ class EventCreationFragment : Fragment() {
 
     private fun commitRewards(id: String) {
         rewardAdapter?.rewards?.forEach { r ->
-            val rewardPostDTO = RewardPostDTO(r.title, r.description, id, r.sortScore, r.requiredPosition)
+            val rewardPostDTO = r as RewardPostDTO
             rewardService.create(rewardPostDTO, UserAccount.getInstance(requireContext()).getToken()).enqueue(object : Callback<RewardDTO> {
                 override fun onResponse(call: Call<RewardDTO>, response: Response<RewardDTO>) {
                     val newReward = response.body()
@@ -517,12 +517,12 @@ class EventCreationFragment : Fragment() {
 
     private fun commitPunishments(id: String) {
         punishmentAdapter?.punishments?.forEach { p ->
-            val punishmentPostDTO = PunishmentPostDTO(p.title, p.description, id, p.sortScore, p.requiredPosition)
+            val punishmentPostDTO = p as PunishmentPostDTO
             punishmentService.create(punishmentPostDTO, UserAccount.getInstance(requireContext()).getToken()).enqueue(object : Callback<PunishmentDTO> {
                 override fun onResponse(call: Call<PunishmentDTO>, response: Response<PunishmentDTO>) {
-                    val newPuinshment = response.body()
-                    if(newPuinshment != null) {
-                        uploadPunishmentImage(newPuinshment.id, p.imagePart)
+                    val newPunishment = response.body()
+                    if(newPunishment != null) {
+                        uploadPunishmentImage(newPunishment.id, p.imagePart)
                     }
                 }
                 override fun onFailure(call: Call<PunishmentDTO>, t: Throwable) {

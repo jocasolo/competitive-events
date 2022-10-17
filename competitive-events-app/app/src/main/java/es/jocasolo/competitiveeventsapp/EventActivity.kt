@@ -3,6 +3,7 @@ package es.jocasolo.competitiveeventsapp
 import android.os.Bundle
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.findNavController
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import es.jocasolo.competitiveeventsapp.ui.adapters.ViewPagerAdapter
@@ -44,6 +45,7 @@ class EventActivity : AppCompatActivity() {
             override fun onTabReselected(tab: TabLayout.Tab) {
             }
         })
+
     }
 
     override fun onBackPressed() {

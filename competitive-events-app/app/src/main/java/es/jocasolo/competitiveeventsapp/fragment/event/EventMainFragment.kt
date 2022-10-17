@@ -1,44 +1,53 @@
 package es.jocasolo.competitiveeventsapp.fragment.event
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import es.jocasolo.competitiveeventsapp.R
+import es.jocasolo.competitiveeventsapp.dto.BackStackEntryDTO
 import es.jocasolo.competitiveeventsapp.dto.ErrorDTO
 import es.jocasolo.competitiveeventsapp.dto.HistoryItemDTO
 import es.jocasolo.competitiveeventsapp.dto.comment.CommentDTO
 import es.jocasolo.competitiveeventsapp.dto.comment.CommentPostDTO
 import es.jocasolo.competitiveeventsapp.dto.event.EventDTO
 import es.jocasolo.competitiveeventsapp.dto.reward.RewardDTO
+import es.jocasolo.competitiveeventsapp.dto.score.ScoreDTO
+import es.jocasolo.competitiveeventsapp.dto.score.ScorePostDTO
+import es.jocasolo.competitiveeventsapp.fragment.score.ScoreCreationFragment
 import es.jocasolo.competitiveeventsapp.service.CommentService
 import es.jocasolo.competitiveeventsapp.service.EventService
+import es.jocasolo.competitiveeventsapp.service.ScoreService
 import es.jocasolo.competitiveeventsapp.service.ServiceBuilder
 import es.jocasolo.competitiveeventsapp.singleton.UserAccount
 import es.jocasolo.competitiveeventsapp.ui.adapters.ListHistoricAdapter
 import es.jocasolo.competitiveeventsapp.utils.Message
 import es.jocasolo.competitiveeventsapp.utils.MyDialog
 import es.jocasolo.competitiveeventsapp.utils.MyUtils
+import okhttp3.MultipartBody
 import org.apache.commons.lang3.StringUtils
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.net.HttpURLConnection
 
+
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
-class EventMainFragment(var eventId: String? = null) : Fragment() {
+class EventMainFragment(var eventId: String? = null) : Fragment(), EventListener {
 
     private val eventService = ServiceBuilder.buildService(EventService::class.java)
     private val commentService = ServiceBuilder.buildService(CommentService::class.java)
+    private val scoreService = ServiceBuilder.buildService(ScoreService::class.java)
 
     private var recyclerView: RecyclerView? = null
     private var historicalAdapter : ListHistoricAdapter? = null
@@ -47,10 +56,19 @@ class EventMainFragment(var eventId: String? = null) : Fragment() {
     private var imgCommentCreate: ImageView? = null
     private var imgScoreCreate: ImageView? = null
 
+    private var id : String? = null
+
+    /**
+     * Action called when the score dialog is closed
+     */
+    override fun backStackAction(data: BackStackEntryDTO) {
+        val score = data as ScorePostDTO
+        createScore(score)
+    }
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_events_main, container, false)
@@ -59,7 +77,7 @@ class EventMainFragment(var eventId: String? = null) : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         // Show event detail
-        var id = arguments?.getString("eventId")
+        id = arguments?.getString("eventId")
         if(id == null) id = eventId
 
         // Comment edit text
@@ -77,6 +95,7 @@ class EventMainFragment(var eventId: String? = null) : Fragment() {
         }
 
         imgCommentCreate?.setOnClickListener { createComment(id!!) }
+        imgScoreCreate?.setOnClickListener { openCreateScoreFragment() }
 
         // Event list
         if(historicalAdapter == null){
@@ -87,35 +106,52 @@ class EventMainFragment(var eventId: String? = null) : Fragment() {
         recyclerView?.adapter = historicalAdapter
 
         if(id != null) {
-            loadEvent(id)
+            loadEvent(id!!)
         }
 
         super.onViewCreated(view, savedInstanceState)
     }
 
+    private fun openCreateScoreFragment() {
+        val ft: FragmentTransaction = parentFragmentManager.beginTransaction()
+        val prev = parentFragmentManager.findFragmentByTag("dialog")
+        if (prev != null) {
+            ft.remove(prev)
+        }
+        ft.addToBackStack(null)
+
+        // Create and show the dialog.
+        val newFragment: ScoreCreationFragment = ScoreCreationFragment(this)
+        newFragment.show(ft, "dialog")
+    }
+
     private fun loadEvent(id: String) {
-        eventService.findOne(id, UserAccount.getInstance(requireContext()).getToken()).enqueue(object :
-            Callback<EventDTO> {
-            override fun onResponse(call: Call<EventDTO>, response: Response<EventDTO>) {
-                if (response.code() == HttpURLConnection.HTTP_OK) {
-                    val event = response.body()
-                    if (event != null) {
-                        loadHistorical(event)
-                    }
-                } else {
-                    try {
-                        val errorDto = Gson().fromJson(response.errorBody()?.string(), ErrorDTO::class.java) as ErrorDTO
-                        showErrorDialog(getString(Message.forCode(errorDto.message)))
-                    } catch (e: Exception) {
-                        showErrorDialog(getString(R.string.error_api_undefined))
+        eventService.findOne(id, UserAccount.getInstance(requireContext()).getToken()).enqueue(
+            object :
+                Callback<EventDTO> {
+                override fun onResponse(call: Call<EventDTO>, response: Response<EventDTO>) {
+                    if (response.code() == HttpURLConnection.HTTP_OK) {
+                        val event = response.body()
+                        if (event != null) {
+                            loadHistorical(event)
+                        }
+                    } else {
+                        try {
+                            val errorDto = Gson().fromJson(
+                                response.errorBody()?.string(),
+                                ErrorDTO::class.java
+                            ) as ErrorDTO
+                            showErrorDialog(getString(Message.forCode(errorDto.message)))
+                        } catch (e: Exception) {
+                            showErrorDialog(getString(R.string.error_api_undefined))
+                        }
                     }
                 }
-            }
 
-            override fun onFailure(call: Call<EventDTO>, t: Throwable) {
-                showErrorDialog(getString(R.string.error_api_undefined))
-            }
-        })
+                override fun onFailure(call: Call<EventDTO>, t: Throwable) {
+                    showErrorDialog(getString(R.string.error_api_undefined))
+                }
+            })
     }
 
     private fun loadHistorical(event: EventDTO) {
@@ -151,27 +187,77 @@ class EventMainFragment(var eventId: String? = null) : Fragment() {
         MyUtils.closeKeyboard(this.requireContext(), requireView())
         val comment = CommentPostDTO(txtCommentCreate?.text.toString(), id)
 
-        commentService.create(comment, UserAccount.getInstance(requireContext()).getToken()).enqueue(object : Callback<CommentDTO> {
-            override fun onResponse(call: Call<CommentDTO>, response: Response<CommentDTO>) {
-                val newComment = response.body()
-                if(newComment != null) {
-                    newComment.sortDate = newComment.date
-                    newComment.historyType = HistoryItemDTO.HistoryItemType.COMMENT_OWN
-                    historicalAdapter?.addHistory(newComment)
-                    historicalAdapter?.notifyDataSetChanged()
-                    txtCommentCreate?.text = null
+        commentService.create(comment, UserAccount.getInstance(requireContext()).getToken()).enqueue(
+            object : Callback<CommentDTO> {
+                override fun onResponse(call: Call<CommentDTO>, response: Response<CommentDTO>) {
+                    val newComment = response.body()
+                    if (newComment != null) {
+                        newComment.sortDate = newComment.date
+                        newComment.historyType = HistoryItemDTO.HistoryItemType.COMMENT_OWN
+                        historicalAdapter?.addHistory(newComment)
+                        historicalAdapter?.notifyDataSetChanged()
+                        txtCommentCreate?.text = null
 
-                    // Scroll to bottom
-                    historicalAdapter?.itemCount?.minus(1)?.let { recyclerView?.scrollToPosition(it) }
+                        // Scroll to bottom
+                        historicalAdapter?.itemCount?.minus(1)
+                            ?.let { recyclerView?.scrollToPosition(it) }
+                    }
                 }
-            }
-            override fun onFailure(call: Call<CommentDTO>, t: Throwable) {
-            }
-        })
+
+                override fun onFailure(call: Call<CommentDTO>, t: Throwable) {
+                }
+            })
     }
 
+    private fun createScore(score: ScorePostDTO) {
+        score.eventId = id!!
+        scoreService.create(score, UserAccount.getInstance(requireContext()).getToken()).enqueue(
+            object : Callback<ScoreDTO> {
+                override fun onResponse(call: Call<ScoreDTO>, response: Response<ScoreDTO>) {
+                    val newScore = response.body()
+                    if (newScore != null) {
+
+                        if(score.imagePart != null) {
+                            uploadScoreImage(newScore.id, score.imagePart)
+                        } else {
+                            updateAdapter(newScore)
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<ScoreDTO>, t: Throwable) {
+                }
+            })
+    }
+
+    private fun updateAdapter(newScore: ScoreDTO) {
+        newScore.sortDate = newScore.date
+        newScore.historyType = HistoryItemDTO.HistoryItemType.SCORE
+        historicalAdapter?.addHistory(newScore)
+        historicalAdapter?.notifyDataSetChanged()
+
+        // Scroll to bottom
+        historicalAdapter?.itemCount?.minus(1)
+            ?.let { recyclerView?.scrollToPosition(it) }
+    }
+
+    private fun uploadScoreImage(id : String, imagePart : MultipartBody.Part?) {
+        imagePart?.let {
+            scoreService.updateImage(it, id.toInt(), UserAccount.getInstance(requireContext()).getToken()).enqueue(object : Callback<ScoreDTO> {
+                override fun onResponse(call: Call<ScoreDTO>, response: Response<ScoreDTO>) {
+                    val newScore = response.body()
+                    if (newScore != null) {
+                        updateAdapter(newScore)
+                    }
+                }
+                override fun onFailure(call: Call<ScoreDTO>, t: Throwable) {
+                }
+            })
+        }
+    }
 
     private fun showErrorDialog(message: String) {
         MyDialog.message(this, getString(R.string.error_title), message)
     }
+
 }

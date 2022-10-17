@@ -7,10 +7,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import es.jocasolo.competitiveeventsapp.R
-import es.jocasolo.competitiveeventsapp.dto.RewardPunishmentDataDTO
+import es.jocasolo.competitiveeventsapp.dto.BackStackEntryDTO
+import es.jocasolo.competitiveeventsapp.dto.reward.RewardPostDTO
 import es.jocasolo.competitiveeventsapp.enums.score.ScoreSortType
 
-open class ListRewardLiteAdapter(var context : Context, var rewards: MutableList<RewardPunishmentDataDTO>?): RecyclerView.Adapter<ListRewardLiteAdapter.ViewHolder>() {
+open class ListRewardLiteAdapter(var context : Context, var rewards: MutableList<BackStackEntryDTO>?): RecyclerView.Adapter<ListRewardLiteAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(
@@ -23,7 +24,7 @@ open class ListRewardLiteAdapter(var context : Context, var rewards: MutableList
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         if(rewards != null && rewards!!.size > position) {
-            val reward = rewards?.get(position)
+            val reward = rewards?.get(position) as RewardPostDTO
             reward.let {
                 holder.itemTitle.text = reward?.title
                 val sort = context.getString(getSortRequiredPosition(reward))
@@ -32,7 +33,7 @@ open class ListRewardLiteAdapter(var context : Context, var rewards: MutableList
         }
     }
 
-    fun addReward(newReward : RewardPunishmentDataDTO?){
+    fun addReward(newReward : BackStackEntryDTO?){
         if(rewards == null) {
             rewards = mutableListOf()
         }
@@ -48,8 +49,9 @@ open class ListRewardLiteAdapter(var context : Context, var rewards: MutableList
         return 0
     }
 
-    private fun getSortRequiredPosition(reward: RewardPunishmentDataDTO?): Int {
-        reward?.sortScore?.let {
+    private fun getSortRequiredPosition(reward: BackStackEntryDTO?): Int {
+        val r = reward as RewardPostDTO
+        r.sortScore?.let {
             if(it == ScoreSortType.ASC)
                 return R.string.higher
         }

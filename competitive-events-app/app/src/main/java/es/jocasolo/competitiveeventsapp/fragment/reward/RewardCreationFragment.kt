@@ -15,7 +15,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.squareup.picasso.Picasso
 import es.jocasolo.competitiveeventsapp.R
-import es.jocasolo.competitiveeventsapp.dto.RewardPunishmentDataDTO
+import es.jocasolo.competitiveeventsapp.dto.BackStackEntryDTO
+import es.jocasolo.competitiveeventsapp.dto.reward.RewardPostDTO
 import es.jocasolo.competitiveeventsapp.enums.score.ScoreSortType
 import es.jocasolo.competitiveeventsapp.service.EventService
 import es.jocasolo.competitiveeventsapp.service.ServiceBuilder
@@ -72,7 +73,7 @@ class RewardCreationFragment : Fragment() {
     private fun create(view: View) {
         MyUtils.closeKeyboard(this.requireContext(), view)
         if(validateTitle()) {
-            val reward = RewardPunishmentDataDTO(txtTitle?.text.toString())
+            val reward = RewardPostDTO(txtTitle?.text.toString())
             reward.description = txtDescription?.text.toString()
             reward.requiredPosition = txtPosition?.text.toString().toInt()
             reward.imagePart = filePart

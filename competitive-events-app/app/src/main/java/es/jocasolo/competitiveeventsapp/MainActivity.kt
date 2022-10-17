@@ -31,7 +31,6 @@ import java.net.HttpURLConnection
 class MainActivity : AppCompatActivity() {
 
     private val userService = ServiceBuilder.buildService(UserService::class.java)
-    private val eventService = ServiceBuilder.buildService(EventService::class.java)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
