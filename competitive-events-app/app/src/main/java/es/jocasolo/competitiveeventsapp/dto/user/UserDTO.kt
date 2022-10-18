@@ -4,13 +4,13 @@ import com.google.gson.annotations.SerializedName
 import java.time.LocalDateTime
 import java.util.*
 
-data class UserDTO(
-    @SerializedName("id") var id: String,
-    @SerializedName("name") var name: String,
-    @SerializedName("surname") var surname: String,
-    @SerializedName("description") var description: String,
-    @SerializedName("birthDate") var birthDate: Date?,
-    @SerializedName("registerDate") var registerDate: Date?,
-    @SerializedName("email") var email: String?,
-    @SerializedName("avatar") var avatar: ImageDTO?
+open class UserDTO(
+    @SerializedName("id") var id: String? = null,
+    @SerializedName("name") var name: String? = null,
+    @SerializedName("surname") var surname: String? = null,
+    @SerializedName("description") var description: String? = null,
+    @SerializedName("birthDate") var birthDate: Date? = null,
+    @SerializedName("registerDate") var registerDate: Date? = null,
+    @SerializedName("email") var email: String? = null,
+    @SerializedName("avatar") var avatar: ImageDTO? = null
 )

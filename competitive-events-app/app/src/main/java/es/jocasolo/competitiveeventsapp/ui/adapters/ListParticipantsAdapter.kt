@@ -7,14 +7,20 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.borjabravo.readmoretextview.ReadMoreTextView
 import com.squareup.picasso.Picasso
 import es.jocasolo.competitiveeventsapp.R
 import es.jocasolo.competitiveeventsapp.dto.ParticipantDTO
-import es.jocasolo.competitiveeventsapp.dto.reward.RewardDTO
-import es.jocasolo.competitiveeventsapp.enums.score.ScoreSortType
+import es.jocasolo.competitiveeventsapp.enums.eventuser.EventUserPrivilegeType
+import es.jocasolo.competitiveeventsapp.enums.score.ScoreValueType
+import java.lang.String
+import java.time.Duration
 
-open class ListParticipantsAdapter(var context : Context, var participants: List<ParticipantDTO>): RecyclerView.Adapter<ListParticipantsAdapter.ViewHolder>() {
+
+open class ListParticipantsAdapter(
+    var context: Context,
+    var participants: List<ParticipantDTO>,
+    var scoreValueType: ScoreValueType
+): RecyclerView.Adapter<ListParticipantsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(
@@ -30,8 +36,8 @@ open class ListParticipantsAdapter(var context : Context, var participants: List
         if(participants.size > position) {
             val participant = participants[position]
             participant.let {
-                holder.itemName.text = participant.name
-                holder.itemScore.text = participant.score.toString()
+                holder.itemName.text = participant.name+", " + getPrivilege(participant.privilege)
+                holder.itemScore.text = getScoreValue(participant.score)
                 if(participant.image != null) {
                     holder.itemImage.imageTintMode = null
                     Picasso.get()
@@ -45,18 +51,46 @@ open class ListParticipantsAdapter(var context : Context, var participants: List
         }
     }
 
+    private fun getScoreValue(score: Double?): CharSequence? {
+        return when(scoreValueType) {
+            ScoreValueType.NUMERIC -> score?.toInt().toString()
+            ScoreValueType.DECIMAL -> score?.toDouble().toString()
+            ScoreValueType.TIME -> getTime(score)
+            else -> score.toString()
+        }
+    }
+
+    private fun getTime(score: Double?): CharSequence? {
+        var timeInHHMMSS = score.toString()
+        if(score != null) {
+            val duration: Duration = Duration.ofMillis(score.toLong())
+            val seconds = duration.seconds
+            val hh = seconds / 3600
+            val mm = seconds % 3600 / 60
+            val ss = seconds % 60
+            if(hh > 0) {
+                timeInHHMMSS = String.format("%02d:%02d:%02d %s", hh, mm, ss, context.getString(R.string.hours))
+            } else if (mm > 0) {
+                timeInHHMMSS = String.format("%02d:%02d  %s", mm, ss, context.getString(R.string.minutes))
+            } else {
+                timeInHHMMSS = String.format("%02d  %s", ss, context.getString(R.string.seconds))
+            }
+        }
+        return timeInHHMMSS
+    }
+
+    private fun getPrivilege(privilege: EventUserPrivilegeType?): Any? {
+        return when(privilege) {
+            EventUserPrivilegeType.USER -> context.getString(R.string.user)
+            EventUserPrivilegeType.OWNER -> context.getString(R.string.owner)
+            else -> context.getString(R.string.user)
+        }
+    }
+
     override fun getItemCount(): Int {
         participants.let {
             return participants.size
         }
-    }
-
-    private fun getSortRequiredPosition(reward: RewardDTO): Int {
-        reward.sortScore?.let {
-            if(it == ScoreSortType.ASC)
-                return R.string.higher
-        }
-        return R.string.lower
     }
 
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){

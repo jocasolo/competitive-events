@@ -13,7 +13,6 @@ import es.jocasolo.competitiveeventsapp.dto.ErrorDTO
 import es.jocasolo.competitiveeventsapp.dto.ParticipantDTO
 import es.jocasolo.competitiveeventsapp.dto.event.EventDTO
 import es.jocasolo.competitiveeventsapp.dto.score.ScoreDTO
-import es.jocasolo.competitiveeventsapp.enums.eventuser.EventUserPrivilegeType
 import es.jocasolo.competitiveeventsapp.service.EventService
 import es.jocasolo.competitiveeventsapp.service.ServiceBuilder
 import es.jocasolo.competitiveeventsapp.singleton.UserAccount
@@ -89,7 +88,7 @@ class EventParticipantsFragment(var eventId: String? = null) : Fragment() {
         // Participants
         if(event.users != null) {
             val users = getSortedUsers(event)
-            participantsRecyclerView?.adapter = ListParticipantsAdapter(requireContext(), users.toList())
+            participantsRecyclerView?.adapter = ListParticipantsAdapter(requireContext(), users.toList(), event.scoreType!!)
 
         }
 
@@ -102,7 +101,7 @@ class EventParticipantsFragment(var eventId: String? = null) : Fragment() {
             val participant = ParticipantDTO(
                 it.id,
                 it.avatar?.link(),
-                getRole(it.privilege),
+                it.privilege,
                 getScore(event.scores, it.id!!))
             participants.add(participant)
         }
@@ -118,14 +117,6 @@ class EventParticipantsFragment(var eventId: String? = null) : Fragment() {
             }
         }
         return maxScore
-    }
-
-    private fun getRole(privilege: EventUserPrivilegeType?): String {
-        return when(privilege){
-            EventUserPrivilegeType.OWNER -> getString(R.string.owner)
-            EventUserPrivilegeType.USER -> getString(R.string.user)
-            else -> getString(R.string.user)
-        }
     }
 
     private fun showErrorDialog(message: String) {

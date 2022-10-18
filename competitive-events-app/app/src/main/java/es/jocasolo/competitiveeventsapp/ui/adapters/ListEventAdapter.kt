@@ -28,10 +28,6 @@ open class ListEventAdapter(
         HOME, SEARCH
     }
 
-    private var seconds: String? = null
-    private var minutes: String? = null
-    private var hours: String? = null
-    private var days: String? = null
     private var parent : ViewGroup? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

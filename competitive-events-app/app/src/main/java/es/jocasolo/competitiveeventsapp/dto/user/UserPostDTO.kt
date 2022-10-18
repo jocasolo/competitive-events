@@ -3,7 +3,7 @@ package es.jocasolo.competitiveeventsapp.dto.user
 import com.google.gson.annotations.SerializedName
 import java.util.*
 
-data class UserPostDTO(
+class UserPostDTO(
     @SerializedName("id") var username: String,
     @SerializedName("email") var email: String,
     @SerializedName("password") var password: String,

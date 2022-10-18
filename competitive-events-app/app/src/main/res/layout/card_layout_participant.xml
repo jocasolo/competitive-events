@@ -40,34 +40,23 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="16dp"
             android:text="@string/name"
             android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@+id/space5"
+            app:layout_constraintEnd_toStartOf="@+id/txt_participant_score"
             app:layout_constraintStart_toEndOf="@+id/card_participant_avatar"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <Space
-            android:id="@+id/space5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/txt_participant_score"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
             android:text="@string/score"
             android:textAlignment="textEnd"
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/img_participant_edit"
-            app:layout_constraintStart_toEndOf="@+id/space5"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView

@@ -42,6 +42,7 @@
     <string name="value">Valor</string>
     <string name="owner">Administrador</string>
     <string name="user">User</string>
+    <string name="best_score">Mejor puntuación</string>
 
     <!-- Action bar -->
     <string name="logout">Cerrar sesión</string>
@@ -130,7 +131,6 @@
     <string name="score_time">Tiempo</string>
     <string name="score_add">Añadir nueva puntuación</string>
     <string name="image_evidence">Puedes incluir una imagen que aporte información o demuestre que es real si quieres</string>
-
 
     <!-- Rewards -->
     <string name="reward_required_position">Posición requerida: %1$d (%2$s)</string>

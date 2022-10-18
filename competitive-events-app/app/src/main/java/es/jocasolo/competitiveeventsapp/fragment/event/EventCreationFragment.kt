@@ -555,7 +555,7 @@ class EventCreationFragment : Fragment() {
     }
 
     private fun showSuccessDialog() {
-        MyDialog.confirmNavigate(this, getString(R.string.user_created_title), getString(R.string.user_created),
+        MyDialog.confirmNavigate(this, getString(R.string.event_created_title), getString(R.string.event_created),
             R.id.action_event_creation_to_home
         )
     }

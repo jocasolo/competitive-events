@@ -15,7 +15,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.squareup.picasso.Picasso
 import es.jocasolo.competitiveeventsapp.R
-import es.jocasolo.competitiveeventsapp.dto.BackStackEntryDTO
 import es.jocasolo.competitiveeventsapp.dto.reward.RewardPostDTO
 import es.jocasolo.competitiveeventsapp.enums.score.ScoreSortType
 import es.jocasolo.competitiveeventsapp.service.EventService
@@ -136,7 +135,7 @@ class RewardCreationFragment : Fragment() {
                     // Upload image to storage service
                     val filePath: String = getImagePath(selectedImageUri)
                     val file = File(filePath)
-                    filePart = MultipartBody.Part.createFormData("file", file.name, RequestBody.create(MediaType.parse("image/*"), file));
+                    filePart = MultipartBody.Part.createFormData("file", file.name, RequestBody.create(MediaType.parse("image/*"), file))
 
                 }
             }
