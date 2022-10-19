@@ -17,8 +17,8 @@
 
     <fragment
         android:id="@+id/scoreCreationFragment"
-        android:name="es.jocasolo.competitiveeventsapp.fragment.score.ScoreCreationFragment"
+        android:name="es.jocasolo.competitiveeventsapp.fragment.score.ScoreCreationDialogFragment"
         android:label="Event Main Fragment"
-        tools:layout="@layout/fragment_score_creation"/>
+        tools:layout="@layout/dialog_score_creation"/>
 
 </navigation>

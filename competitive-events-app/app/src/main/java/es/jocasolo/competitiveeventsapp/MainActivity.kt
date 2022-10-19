@@ -139,4 +139,8 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    fun changeActionBarTitle(newTitle: String){
+        supportActionBar?.title = newTitle
+    }
+
 }

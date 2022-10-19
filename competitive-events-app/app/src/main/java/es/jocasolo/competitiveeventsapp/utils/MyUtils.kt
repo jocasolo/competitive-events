@@ -5,6 +5,8 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import es.jocasolo.competitiveeventsapp.R
 import es.jocasolo.competitiveeventsapp.dto.user.UserDTO
+import es.jocasolo.competitiveeventsapp.dto.user.UserLiteWithEventDTO
+import es.jocasolo.competitiveeventsapp.enums.eventuser.EventUserPrivilegeType
 import java.io.IOException
 import java.io.InputStream
 import java.time.Instant
@@ -55,5 +57,14 @@ object MyUtils {
                 return it
         }
         return null;
+    }
+
+    fun isAdmin(users: List<UserLiteWithEventDTO>?, username: String) : Boolean {
+        users?.forEach {
+            if(it.id.equals(username) && it.privilege == EventUserPrivilegeType.OWNER){
+                return true
+            }
+        }
+        return false
     }
 }

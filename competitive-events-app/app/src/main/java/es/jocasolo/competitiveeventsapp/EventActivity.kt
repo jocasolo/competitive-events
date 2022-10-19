@@ -24,6 +24,7 @@ class EventActivity : AppCompatActivity() {
         var id : String? = null
         if(extras != null) {
             id = extras.getString("eventId")
+            actionBar?.title = extras.getString("eventTitle")
         }
 
         // Page adapter for tabs
@@ -50,6 +51,10 @@ class EventActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         finish()
+    }
+
+    fun changeActionBarTitle(newTitle: String){
+        supportActionBar?.title = newTitle
     }
 
 }

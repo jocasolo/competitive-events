@@ -5,6 +5,7 @@ import es.jocasolo.competitiveeventsapp.dto.event.EventPageDTO
 import es.jocasolo.competitiveeventsapp.dto.event.EventPostDTO
 import es.jocasolo.competitiveeventsapp.dto.eventuser.EventUserDTO
 import es.jocasolo.competitiveeventsapp.dto.eventuser.EventUserPostDTO
+import es.jocasolo.competitiveeventsapp.dto.eventuser.EventUserPutDTO
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -44,5 +45,9 @@ interface EventService {
     @Headers("Content-Type: application/json")
     @POST("/events/{id}/users")
     fun addUser(@Path (value="id") id: String, @Body body: EventUserPostDTO, @Header(value="Authorization") authorization : String) : Call<EventUserDTO>
+
+    @Headers("Content-Type: application/json")
+    @PUT("/events/{id}/users")
+    fun updateUser(@Path (value="id") id: String, @Body body: EventUserPutDTO, @Header(value="Authorization") authorization : String) : Call<Void>
 
 }

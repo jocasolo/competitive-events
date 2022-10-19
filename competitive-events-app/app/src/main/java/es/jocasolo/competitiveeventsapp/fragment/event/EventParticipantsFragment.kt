@@ -4,21 +4,28 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
 import es.jocasolo.competitiveeventsapp.R
+import es.jocasolo.competitiveeventsapp.dto.BackStackEntryDTO
 import es.jocasolo.competitiveeventsapp.dto.ErrorDTO
 import es.jocasolo.competitiveeventsapp.dto.ParticipantDTO
 import es.jocasolo.competitiveeventsapp.dto.event.EventDTO
+import es.jocasolo.competitiveeventsapp.dto.eventuser.EventUserPutDTO
 import es.jocasolo.competitiveeventsapp.dto.score.ScoreDTO
+import es.jocasolo.competitiveeventsapp.enums.eventuser.EventUserPrivilegeType
+import es.jocasolo.competitiveeventsapp.enums.score.ScoreSortType
 import es.jocasolo.competitiveeventsapp.service.EventService
 import es.jocasolo.competitiveeventsapp.service.ServiceBuilder
 import es.jocasolo.competitiveeventsapp.singleton.UserAccount
 import es.jocasolo.competitiveeventsapp.ui.adapters.ListParticipantsAdapter
 import es.jocasolo.competitiveeventsapp.utils.Message
 import es.jocasolo.competitiveeventsapp.utils.MyDialog
+import es.jocasolo.competitiveeventsapp.utils.MyUtils
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -28,11 +35,16 @@ import java.net.HttpURLConnection
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
-class EventParticipantsFragment(var eventId: String? = null) : Fragment() {
+class EventParticipantsFragment(var eventId: String) : Fragment(), EventListener {
 
     private val eventService = ServiceBuilder.buildService(EventService::class.java)
 
     private var participantsRecyclerView: RecyclerView? = null
+    private var participantsAdapter: ListParticipantsAdapter? = null
+
+    override fun backStackAction(data: BackStackEntryDTO) {
+        loadEvent(eventId)
+    }
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -50,13 +62,28 @@ class EventParticipantsFragment(var eventId: String? = null) : Fragment() {
         participantsRecyclerView = view.findViewById(R.id.recycler_event_participants)
         participantsRecyclerView?.layoutManager = LinearLayoutManager(requireContext())
 
-        // Show event detail
+        // Show participants
         var id = arguments?.getString("eventId")
         if(id == null) id = eventId
-        if(id != null) {
-            loadEvent(id)
+        loadEvent(id)
+
+        view.findViewById<Button>(R.id.btn_participant_invite).setOnClickListener {
+            inviteParticipant(id)
         }
 
+    }
+
+    private fun inviteParticipant(eventId : String?) {
+        val ft: FragmentTransaction = parentFragmentManager.beginTransaction()
+        val prev = parentFragmentManager.findFragmentByTag("dialogParticipantsInvite")
+        if (prev != null) {
+            ft.remove(prev)
+        }
+        ft.addToBackStack(null)
+
+        // Create and show the dialog.
+        val newDialogFragment = EventParticipantsInviteDialogFragment(this, eventId!!)
+        newDialogFragment.show(ft, "dialogParticipantsInvite")
     }
 
     private fun loadEvent(id: String) {
@@ -84,12 +111,13 @@ class EventParticipantsFragment(var eventId: String? = null) : Fragment() {
     }
 
     private fun showEventParticipants(event: EventDTO) {
-
         // Participants
         if(event.users != null) {
             val users = getSortedUsers(event)
-            participantsRecyclerView?.adapter = ListParticipantsAdapter(requireContext(), users.toList(), event.scoreType!!)
-
+            participantsAdapter = ListParticipantsAdapter(
+                requireContext(), this, users.toList(), eventId, event.scoreType!!,
+                MyUtils.isAdmin(event.users, UserAccount.getInstance(requireContext()).getName()))
+            participantsRecyclerView?.adapter = participantsAdapter
         }
 
     }
@@ -102,11 +130,15 @@ class EventParticipantsFragment(var eventId: String? = null) : Fragment() {
                 it.id,
                 it.avatar?.link(),
                 it.privilege,
+                it.status,
                 getScore(event.scores, it.id!!))
-            participants.add(participant)
+                participants.add(participant)
         }
-
-        return participants.sortedBy { p -> p.score }
+        return if(event.sortScore == ScoreSortType.ASC) {
+            participants.sortedBy { p -> p.score }
+        } else {
+            participants.sortedByDescending { p -> p.score }
+        }
     }
 
     private fun getScore(scores: List<ScoreDTO>?, userId: String): Double? {

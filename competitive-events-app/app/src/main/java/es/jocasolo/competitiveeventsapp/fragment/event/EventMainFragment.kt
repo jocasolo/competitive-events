@@ -19,10 +19,9 @@ import es.jocasolo.competitiveeventsapp.dto.HistoryItemDTO
 import es.jocasolo.competitiveeventsapp.dto.comment.CommentDTO
 import es.jocasolo.competitiveeventsapp.dto.comment.CommentPostDTO
 import es.jocasolo.competitiveeventsapp.dto.event.EventDTO
-import es.jocasolo.competitiveeventsapp.dto.reward.RewardDTO
 import es.jocasolo.competitiveeventsapp.dto.score.ScoreDTO
 import es.jocasolo.competitiveeventsapp.dto.score.ScorePostDTO
-import es.jocasolo.competitiveeventsapp.fragment.score.ScoreCreationFragment
+import es.jocasolo.competitiveeventsapp.fragment.score.ScoreCreationDialogFragment
 import es.jocasolo.competitiveeventsapp.service.CommentService
 import es.jocasolo.competitiveeventsapp.service.EventService
 import es.jocasolo.competitiveeventsapp.service.ScoreService
@@ -98,9 +97,7 @@ class EventMainFragment(var eventId: String? = null) : Fragment(), EventListener
         imgScoreCreate?.setOnClickListener { openCreateScoreFragment() }
 
         // Event list
-        if(historicalAdapter == null){
-            historicalAdapter = ListHistoricAdapter(this, null)
-        }
+        historicalAdapter = ListHistoricAdapter(this, null)
         recyclerView = requireView().findViewById(R.id.recycler_event_main)
         recyclerView?.layoutManager = LinearLayoutManager(requireContext())
         recyclerView?.adapter = historicalAdapter
@@ -121,8 +118,8 @@ class EventMainFragment(var eventId: String? = null) : Fragment(), EventListener
         ft.addToBackStack(null)
 
         // Create and show the dialog.
-        val newFragment: ScoreCreationFragment = ScoreCreationFragment(this)
-        newFragment.show(ft, "dialog")
+        val newDialogFragment: ScoreCreationDialogFragment = ScoreCreationDialogFragment(this)
+        newDialogFragment.show(ft, "dialog")
     }
 
     private fun loadEvent(id: String) {

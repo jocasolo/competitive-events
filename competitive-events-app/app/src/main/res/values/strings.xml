@@ -43,6 +43,11 @@
     <string name="owner">Administrador</string>
     <string name="user">User</string>
     <string name="best_score">Mejor puntuación</string>
+    <string name="action_ban">Banear</string>
+    <string name="action_delete">Borrar</string>
+    <string name="action_accept">Aceptar</string>
+    <string name="action_reject">Rechazar</string>
+    <string name="status">Estado</string>
 
     <!-- Action bar -->
     <string name="logout">Cerrar sesión</string>
@@ -67,17 +72,19 @@
     <string name="register_title">Registro de usuario</string>
     <string name="register_intro">Regístrate en la aplicación y compite con tus amigos en un sin fín de actividades</string>
 
-    <!-- Update user -->
+    <!-- User -->
     <string name="update_avatar">Cambiar avatar…</string>
     <string name="success_updated_user">Usuario actualizado con éxito.</string>
     <string name="success_updated_avatar">Avatar actualizado con éxito.</string>
-
-    <!-- User status -->
     <string name="user_invited">Invitación enviada</string>
+    <string name="user_invited_confirmed">Se ha invitado al usuario con éxito</string>
     <string name="user_waiting_approval">Esperando aprobación</string>
     <string name="user_accepted">Aceptado</string>
-    <string name="user_rechazado">Rechazado</string>
-    <string name="user_eliminado">Eliminado</string>
+    <string name="user_reject">Rechazado</string>
+    <string name="user_deleted">Eliminado</string>
+    <string name="user_id">Identificador</string>
+    <string name="user_action">Acción sobre usuario</string>
+    <string name="user_action_success">Se ha actualizado al usuario con éxito</string>
 
     <!-- Events -->
     <string name="events_list">Listado de eventos</string>
@@ -155,6 +162,7 @@
     <string name="error_password_distinct">Las contraseñas no coinciden</string>
     <string name="error_date_before">La fecha inicial debe ser anterior a la final</string>
     <string name="title_activity_main2">MainActivity</string>
+    <string name="error_user_invite">Ha ocurrido un error al invitar a el usuario que has introducido. Asegúrate de que su identificador es correcto</string>
 
     <!-- Messages -->
     <string name="success_action_title">Acción realizada</string>

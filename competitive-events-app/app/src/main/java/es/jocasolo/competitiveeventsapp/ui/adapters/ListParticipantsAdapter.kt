@@ -6,20 +6,27 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import es.jocasolo.competitiveeventsapp.R
 import es.jocasolo.competitiveeventsapp.dto.ParticipantDTO
 import es.jocasolo.competitiveeventsapp.enums.eventuser.EventUserPrivilegeType
+import es.jocasolo.competitiveeventsapp.enums.eventuser.EventUserStatusType
 import es.jocasolo.competitiveeventsapp.enums.score.ScoreValueType
-import java.lang.String
+import es.jocasolo.competitiveeventsapp.fragment.event.EventParticipantsActionsDialogFragment
+import es.jocasolo.competitiveeventsapp.fragment.event.EventParticipantsFragment
+import es.jocasolo.competitiveeventsapp.singleton.UserAccount
 import java.time.Duration
 
 
 open class ListParticipantsAdapter(
     var context: Context,
+    var fragment: EventParticipantsFragment,
     var participants: List<ParticipantDTO>,
-    var scoreValueType: ScoreValueType
+    var eventId: String,
+    var scoreValueType: ScoreValueType,
+    var isAdmin: Boolean
 ): RecyclerView.Adapter<ListParticipantsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -36,12 +43,26 @@ open class ListParticipantsAdapter(
         if(participants.size > position) {
             val participant = participants[position]
             participant.let {
-                holder.itemName.text = participant.name+", " + getPrivilege(participant.privilege)
+                holder.itemName.text = participant.id
+                holder.itemStatus.text = getStatus(participant.status)
                 holder.itemScore.text = getScoreValue(participant.score)
-                if(participant.image != null) {
+                if(isAdmin){
+                    holder.itemEdit.visibility = View.VISIBLE
+                    holder.itemEdit.setOnClickListener {
+                        openParticipantActionsDialog(participant) }
+
+                    if(participant.status != EventUserStatusType.ACCEPTED) {
+                        holder.itemStatus.setTextColor(context.resources.getColor(R.color.accent))
+                    }
+                }
+                if(participant.id.equals(UserAccount.getInstance(context).getName())){
+                    holder.itemStatus.text = getPrivilege(participant.privilege)
+                    holder.itemEdit.visibility = View.GONE
+                }
+                if(participant.avatar != null) {
                     holder.itemImage.imageTintMode = null
                     Picasso.get()
-                        .load(participant.image)
+                        .load(participant.avatar)
                         .resize(100, 100)
                         .centerCrop()
                         .error(R.drawable.military_tech)
@@ -49,6 +70,32 @@ open class ListParticipantsAdapter(
                 }
             }
         }
+    }
+
+    private fun getStatus(status: EventUserStatusType?): String? {
+        return when(status) {
+            EventUserStatusType.ACCEPTED -> context.getString(R.string.user_accepted)
+            EventUserStatusType.DELETED -> context.getString(R.string.user_deleted)
+            EventUserStatusType.REJECTED -> context.getString(R.string.user_reject)
+            EventUserStatusType.WAITING_APPROVAL -> context.getString(R.string.user_waiting_approval)
+            EventUserStatusType.INVITED -> context.getString(R.string.user_invited)
+            else -> {
+                context.getString(R.string.user_accepted)
+            }
+        }
+    }
+
+    private fun openParticipantActionsDialog(participant: ParticipantDTO) {
+        val ft: FragmentTransaction = fragment.parentFragmentManager.beginTransaction()
+        val prev = fragment.parentFragmentManager.findFragmentByTag("dialogParticipants")
+        if (prev != null) {
+            ft.remove(prev)
+        }
+        ft.addToBackStack(null)
+
+        // Create and show the dialog.
+        val newDialogFragment: EventParticipantsActionsDialogFragment = EventParticipantsActionsDialogFragment(fragment, participant, eventId)
+        newDialogFragment.show(ft, "dialogParticipants")
     }
 
     private fun getScoreValue(score: Double?): CharSequence? {
@@ -79,7 +126,7 @@ open class ListParticipantsAdapter(
         return timeInHHMMSS
     }
 
-    private fun getPrivilege(privilege: EventUserPrivilegeType?): Any? {
+    private fun getPrivilege(privilege: EventUserPrivilegeType?): String {
         return when(privilege) {
             EventUserPrivilegeType.USER -> context.getString(R.string.user)
             EventUserPrivilegeType.OWNER -> context.getString(R.string.owner)
@@ -99,6 +146,7 @@ open class ListParticipantsAdapter(
         var itemEdit: ImageView = itemView.findViewById(R.id.img_participant_edit)
         var itemName: TextView = itemView.findViewById(R.id.txt_participant_name)
         var itemScore: TextView = itemView.findViewById(R.id.txt_participant_score)
+        var itemStatus: TextView = itemView.findViewById(R.id.txt_participant_status)
 
     }
 

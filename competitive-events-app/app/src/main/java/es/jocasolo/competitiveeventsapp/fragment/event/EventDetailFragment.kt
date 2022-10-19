@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.borjabravo.readmoretextview.ReadMoreTextView
 import com.google.gson.Gson
 import com.squareup.picasso.Picasso
+import es.jocasolo.competitiveeventsapp.EventActivity
+import es.jocasolo.competitiveeventsapp.MainActivity
 import es.jocasolo.competitiveeventsapp.R
 import es.jocasolo.competitiveeventsapp.dto.ErrorDTO
 import es.jocasolo.competitiveeventsapp.dto.event.EventDTO
@@ -135,8 +137,12 @@ class EventDetailFragment(var eventId: String? = null) : Fragment() {
         val sdf : SimpleDateFormat = SimpleDateFormat("dd-MM-yyyy")
 
         // Action bar title
-        val actionBar = requireActivity().actionBar
-        actionBar?.title = event.title
+        if(requireActivity() is MainActivity) {
+            (requireActivity() as MainActivity).changeActionBarTitle(event.title)
+        }
+        if(requireActivity() is EventActivity) {
+            (requireActivity() as EventActivity).changeActionBarTitle(event.title)
+        }
 
         // Title
         txtTitle?.text = event.title

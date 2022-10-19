@@ -15,7 +15,6 @@ import androidx.fragment.app.Fragment
 import com.squareup.picasso.Picasso
 import es.jocasolo.competitiveeventsapp.R
 import es.jocasolo.competitiveeventsapp.dto.score.ScorePostDTO
-import es.jocasolo.competitiveeventsapp.fragment.event.EventListener
 import es.jocasolo.competitiveeventsapp.fragment.event.EventMainFragment
 import es.jocasolo.competitiveeventsapp.utils.MyUtils
 import okhttp3.MediaType
@@ -28,7 +27,7 @@ import java.io.File
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
-class ScoreCreationFragment(private val previousFragment: EventMainFragment) : DialogFragment() {
+class ScoreCreationDialogFragment(private val previousFragment: EventMainFragment) : DialogFragment() {
 
     private var txtValue : TextView? = null
     private var btnCancel : Button? = null
@@ -41,7 +40,7 @@ class ScoreCreationFragment(private val previousFragment: EventMainFragment) : D
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_score_creation, container, false)
+        return inflater.inflate(R.layout.dialog_score_creation, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

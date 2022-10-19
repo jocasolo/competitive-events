@@ -74,7 +74,8 @@ open class ListEventAdapter(
         when(type) {
             ListEventType.HOME -> {
                 val myIntent = Intent(fragment.requireActivity(), EventActivity::class.java)
-                myIntent.putExtra("eventId", event.id) //Optional parameters
+                myIntent.putExtra("eventId", event.id)
+                myIntent.putExtra("eventTitle", event.title)
                 fragment.requireActivity().startActivity(myIntent)
             }
             ListEventType.SEARCH -> {

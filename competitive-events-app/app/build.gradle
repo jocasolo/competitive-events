@@ -17,8 +17,8 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
         // API E IMAGES URLS
-        buildConfigField "String", "API_URL", "\"http://192.168.0.15:8080\""
-        buildConfigField "String", "IMAGES_URL", "\"http://192.168.0.15:9000\""
+        buildConfigField "String", "API_URL", "\"http://192.168.0.21:8080\""
+        buildConfigField "String", "IMAGES_URL", "\"http://192.168.0.21:9000\""
     }
 
     buildTypes {
