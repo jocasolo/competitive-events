@@ -22,6 +22,7 @@ interface EventService {
             @Query (value="title") title: String?,
             @Query (value="type") type: String?,
             @Query (value="status") status: String?,
+            @Query (value="eventUserStatus") eventUserStatus: String?,
             @Query (value="inscription") inscription: String?,
             @Query (value="username") username: String?,
             @Query (value="page") page: Int?,

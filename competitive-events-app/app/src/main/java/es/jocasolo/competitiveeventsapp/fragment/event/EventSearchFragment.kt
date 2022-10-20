@@ -141,12 +141,14 @@ class EventSearchFragment : Fragment() {
 
         progressBar?.visibility = View.VISIBLE
 
-        eventService.search(title, type, EventStatusType.ACTIVE.name, EventInscriptionType.PUBLIC.name,
-                null,  page, 10, UserAccount.getInstance(requireContext()).getToken()).enqueue(object : Callback<EventPageDTO> {
+        eventService.search(
+            title, type, EventStatusType.ACTIVE.name, null, EventInscriptionType.PUBLIC.name,
+            null, page, 10, UserAccount.getInstance(requireContext()).getToken()
+        ).enqueue(object : Callback<EventPageDTO> {
             override fun onResponse(call: Call<EventPageDTO>, response: Response<EventPageDTO>) {
                 if (response.code() == HttpURLConnection.HTTP_OK) {
                     response.body()?.events?.let {
-                        if(page == 0) {
+                        if (page == 0) {
                             eventAdapter?.events = response.body()!!.events?.toMutableList()
                         } else {
                             eventAdapter?.addEvents(it)
@@ -156,8 +158,8 @@ class EventSearchFragment : Fragment() {
                 } else {
                     try {
                         val errorDto = Gson().fromJson(
-                                response.errorBody()?.string(),
-                                ErrorDTO::class.java
+                            response.errorBody()?.string(),
+                            ErrorDTO::class.java
                         ) as ErrorDTO
                         showErrorDialog(getString(Message.forCode(errorDto.message)))
                     } catch (e: Exception) {
@@ -166,6 +168,7 @@ class EventSearchFragment : Fragment() {
                 }
                 progressBar?.visibility = View.INVISIBLE
             }
+
             override fun onFailure(call: Call<EventPageDTO>, t: Throwable) {
                 showErrorDialog(getString(R.string.error_api_undefined))
                 progressBar?.visibility = View.INVISIBLE

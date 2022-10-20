@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_home_to_event_new"
             app:destination="@id/eventNewFragment" />
+        <action
+            android:id="@+id/action_home_to_event_detail"
+            app:destination="@id/eventDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"

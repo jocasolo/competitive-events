@@ -13,9 +13,9 @@ import es.jocasolo.competitiveeventsapp.R
 import es.jocasolo.competitiveeventsapp.ui.adapters.ListEventAdapter
 import es.jocasolo.competitiveeventsapp.dto.ErrorDTO
 import es.jocasolo.competitiveeventsapp.dto.event.EventPageDTO
+import es.jocasolo.competitiveeventsapp.enums.eventuser.EventUserStatusType
 import es.jocasolo.competitiveeventsapp.service.EventService
 import es.jocasolo.competitiveeventsapp.service.ServiceBuilder
-import es.jocasolo.competitiveeventsapp.service.UserService
 import es.jocasolo.competitiveeventsapp.singleton.UserAccount
 import es.jocasolo.competitiveeventsapp.utils.Message
 import es.jocasolo.competitiveeventsapp.utils.MyDialog
@@ -28,8 +28,11 @@ class HomeFragment : Fragment() {
 
     private val eventService = ServiceBuilder.buildService(EventService::class.java)
 
-    private var recyclerView: RecyclerView? = null
+    private var eventRecyclerView: RecyclerView? = null
     private var eventAdapter : ListEventAdapter? = null
+    private var eventInvitedRecyclerView: RecyclerView? = null
+    private var eventInvitedAdapter : ListEventAdapter? = null
+
     private var page = 0
 
     override fun onCreateView(
@@ -48,46 +51,73 @@ class HomeFragment : Fragment() {
 
         super.onViewCreated(view, savedInstanceState)
 
+        initUserEventsAccepted()
+        initUserEventsInvited()
+
+        loadUserEvents(EventUserStatusType.ACCEPTED.name, eventAdapter!!, true)
+        loadUserEvents(EventUserStatusType.INVITED.name, eventInvitedAdapter!!, false)
+
+    }
+
+    private fun initUserEventsAccepted() {
         // Events list view
         if(eventAdapter == null){
             eventAdapter = ListEventAdapter(this, null, ListEventAdapter.ListEventType.HOME)
         }
-        recyclerView = view.findViewById<RecyclerView>(R.id.recycler_event_list)
-        recyclerView?.layoutManager = LinearLayoutManager(requireContext())
-        recyclerView?.adapter = eventAdapter
+        eventRecyclerView = view?.findViewById(R.id.recycler_event_list)
+        eventRecyclerView?.layoutManager = LinearLayoutManager(requireContext())
+        eventRecyclerView?.adapter = eventAdapter
         val scrollListener = object : RecyclerView.OnScrollListener() {
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (!recyclerView.canScrollVertically(1)) {
                     page++
-                    loadUserEvents()
+                    loadUserEvents(EventUserStatusType.ACCEPTED.name, eventAdapter!!, true)
                 }
             }
         }
-        recyclerView?.addOnScrollListener(scrollListener)
-
-        // Load events
-        loadUserEvents()
-
+        eventRecyclerView?.addOnScrollListener(scrollListener)
     }
 
-    private fun loadUserEvents() {
-        eventService.search(null, null, null, null, UserAccount.getInstance(requireContext()).getName(), page, 10, UserAccount.getInstance(requireContext()).getToken()).enqueue(object : Callback<EventPageDTO> {
+    private fun initUserEventsInvited() {
+        // Events list view
+        eventInvitedAdapter = ListEventAdapter(this, null, ListEventAdapter.ListEventType.INVITATIONS)
+        eventInvitedRecyclerView = view?.findViewById(R.id.recycler_event_list_invited)
+        eventInvitedRecyclerView?.layoutManager = LinearLayoutManager(requireContext())
+        eventInvitedRecyclerView?.adapter = eventInvitedAdapter
+    }
+
+    private fun loadUserEvents(eventUserStatus: String?, adapter: ListEventAdapter, paginate: Boolean) {
+
+        val p = if(paginate) page else null
+        val size = if(paginate) 10 else null
+
+        eventService.search(
+            null,
+            null,
+            null,
+            eventUserStatus,
+            null,
+            UserAccount.getInstance(requireContext()).getName(),
+            p,
+            size,
+            UserAccount.getInstance(requireContext()).getToken()
+        ).enqueue(object : Callback<EventPageDTO> {
             override fun onResponse(call: Call<EventPageDTO>, response: Response<EventPageDTO>) {
                 if (response.code() == HttpURLConnection.HTTP_OK) {
                     response.body()?.events?.let {
-                        if(page == 0) {
-                            eventAdapter?.events = response.body()!!.events?.toMutableList()
+                        if (page == 0) {
+                            adapter.events = response.body()!!.events?.toMutableList()
                         } else {
-                            eventAdapter?.addEvents(it)
+                            adapter.addEvents(it)
                         }
-                        eventAdapter?.notifyDataSetChanged()
+                        adapter.notifyDataSetChanged()
                     }
                 } else {
                     try {
                         val errorDto = Gson().fromJson(
-                                response.errorBody()?.string(),
-                                ErrorDTO::class.java
+                            response.errorBody()?.string(),
+                            ErrorDTO::class.java
                         ) as ErrorDTO
                         showErrorDialog(getString(Message.forCode(errorDto.message)))
                     } catch (e: Exception) {
@@ -95,6 +125,7 @@ class HomeFragment : Fragment() {
                     }
                 }
             }
+
             override fun onFailure(call: Call<EventPageDTO>, t: Throwable) {
                 showErrorDialog(getString(R.string.error_api_undefined))
             }

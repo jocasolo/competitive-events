@@ -117,15 +117,17 @@
     <string name="events_joined">Ya te has unido a este evento</string>
     <string name="events_accept_invitation">Aceptar invitación</string>
     <string name="events_waiting_approval">Esperando aprobación para unirse</string>
-    <string name="events_request_rejected">Solicitud denegada</string>
+    <string name="events_request_rejected">Solicitud rechazada</string>
     <string name="events_user_deleted">Has sido eliminado del evento</string>
     <string name="events_user_join_success">Te has unido con éxito al evento</string>
     <string name="events_user_request_join">Has solicitado unirte al evento. Esperando a que un administrador del evento acepte la invitación</string>
+    <string name="events_user_request_reject">Has rechazado la invitación para unirte a este evento.</string>
     <string name="events_identifier">Identificador: %1$s</string>
     <string name="events_private">Este evento es privado</string>
     <string name="event_created_title">Evento creado</string>
     <string name="event_created">El evento se ha creado con éxito. Ahora te aparecerá en tu listado de eventos.</string>
     <string name="event_participants">Participantes</string>
+    <string name="event_invited">Te han invitado a este evento</string>
 
     <!-- Event Types -->
     <string name="events_all">Cualquiera</string>

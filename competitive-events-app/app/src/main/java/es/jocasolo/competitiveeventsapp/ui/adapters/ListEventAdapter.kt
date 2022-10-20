@@ -25,7 +25,7 @@ open class ListEventAdapter(
 ): RecyclerView.Adapter<ListEventAdapter.ViewHolder>() {
 
     enum class ListEventType {
-        HOME, SEARCH
+        HOME, SEARCH, INVITATIONS
     }
 
     private var parent : ViewGroup? = null
@@ -64,12 +64,14 @@ open class ListEventAdapter(
                     holder.itemClock.visibility = View.INVISIBLE
                     holder.imgClock.visibility = View.INVISIBLE
                 }
+                if(type == ListEventType.INVITATIONS) {
+                    holder.itemInvited.visibility = View.VISIBLE
+                }
             }
         }
     }
 
     private fun openDetail(event: EventDTO) {
-
 
         when(type) {
             ListEventType.HOME -> {
@@ -82,6 +84,12 @@ open class ListEventAdapter(
                 val data : Bundle = Bundle()
                 data.putString("eventId", event.id)
                 fragment.findNavController().navigate(R.id.action_event_search_to_event_detail, data)
+            }
+            ListEventType.INVITATIONS -> {
+                val data : Bundle = Bundle()
+                data.putString("eventId", event.id)
+                data.putBoolean("showRejectButton", true)
+                fragment.findNavController().navigate(R.id.action_home_to_event_detail, data)
             }
         }
 
@@ -110,6 +118,7 @@ open class ListEventAdapter(
         var itemClock: TextView = itemView.findViewById(R.id.txt_item_event_clock)
         var imgClock: ImageView = itemView.findViewById(R.id.img_item_event_clock)
         var card: CardView = itemView.findViewById(R.id.card_event)
+        var itemInvited: TextView = itemView.findViewById(R.id.txt_user_invited)
 
     }
 

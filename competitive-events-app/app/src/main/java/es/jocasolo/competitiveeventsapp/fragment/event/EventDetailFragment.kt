@@ -47,6 +47,8 @@ class EventDetailFragment(var eventId: String? = null) : Fragment() {
 
     private val eventService = ServiceBuilder.buildService(EventService::class.java)
 
+    private var showRejectButton : Boolean? = false
+
     private var rewardsRecyclerView: RecyclerView? = null
     private var punishmentsRecyclerView: RecyclerView? = null
 
@@ -62,6 +64,7 @@ class EventDetailFragment(var eventId: String? = null) : Fragment() {
     private var txtIdentifier : TextView? = null
     private var imgMain : ImageView? = null
     private var btnJoin : Button? = null
+    private var btnReject : Button? = null
     private var progressBar : ProgressBar? = null
     private var scrollView : NestedScrollView? = null
 
@@ -96,6 +99,7 @@ class EventDetailFragment(var eventId: String? = null) : Fragment() {
         txtIdentifier = view.findViewById(R.id.txt_event_detail_id)
         imgMain = view.findViewById(R.id.img_event_detail_main)
         btnJoin = view.findViewById(R.id.btn_event_detail_join)
+        btnReject = view.findViewById(R.id.btn_event_detail_reject)
         progressBar = view.findViewById(R.id.spn_event_detail)
         scrollView = view.findViewById(R.id.scrollview_events_detail)
 
@@ -104,6 +108,11 @@ class EventDetailFragment(var eventId: String? = null) : Fragment() {
         if(id == null) id = eventId
         if(id != null) {
             loadEvent(id)
+        }
+
+        showRejectButton = arguments?.getBoolean("showRejectButton")
+        if(showRejectButton == null){
+            showRejectButton = false
         }
 
     }
@@ -222,9 +231,15 @@ class EventDetailFragment(var eventId: String? = null) : Fragment() {
             view?.findViewById<View>(R.id.divider_event_detail_punishments)?.visibility = View.GONE
         }
 
-        // Button
-        btnJoin?.setOnClickListener { joinToEvent(event) }
+        // Button main
+        btnJoin?.setOnClickListener { joinToEvent(event, false) }
         setButtonText(event, null)
+
+        // Button reject
+        if(showRejectButton == true) {
+            btnReject?.setOnClickListener { joinToEvent(event, true) }
+            btnReject?.visibility = View.VISIBLE
+        }
 
         progressBar?.visibility = View.GONE
         scrollView?.visibility = View.VISIBLE
@@ -249,17 +264,23 @@ class EventDetailFragment(var eventId: String? = null) : Fragment() {
         }
     }
 
-    private fun joinToEvent(event: EventDTO) {
+    private fun joinToEvent(event: EventDTO, reject: Boolean = false) {
         val request  = EventUserPostDTO(UserAccount.getInstance(requireContext()).getName())
+        request.reject = reject
         eventService.addUser(event.id, request, UserAccount.getInstance(requireContext()).getToken()).enqueue(object : Callback<EventUserDTO> {
             override fun onResponse(call: Call<EventUserDTO>, response: Response<EventUserDTO>) {
                 if(response.code() == HttpURLConnection.HTTP_CREATED){
-                    if(event.approvalNeeded == true){
-                        showSuccessDialog(getString(R.string.events_user_request_join))
+                    if(!reject) {
+                        if(event.approvalNeeded == true){
+                            showSuccessDialog(getString(R.string.events_user_request_join))
+                        } else {
+                            showSuccessDialog(getString(R.string.events_user_join_success))
+                        }
                     } else {
-                        showSuccessDialog(getString(R.string.events_user_join_success))
+                        showSuccessDialog(getString(R.string.events_user_request_reject))
                     }
 
+                    btnReject?.visibility = View.GONE
                     setButtonText(event, UserAccount.getInstance(requireContext()).getName())
                 } else {
                     try {
