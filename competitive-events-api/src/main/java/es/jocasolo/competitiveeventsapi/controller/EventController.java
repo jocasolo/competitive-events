@@ -28,6 +28,7 @@ import es.jocasolo.competitiveeventsapi.dto.eventuser.EventUserPutDTO;
 import es.jocasolo.competitiveeventsapi.enums.event.EventInscriptionType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventStatusType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventType;
+import es.jocasolo.competitiveeventsapi.enums.eventuser.EventUserStatusType;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventInvalidStatusException;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventNotFoundException;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventUserAcceptedException;
@@ -65,12 +66,13 @@ public class EventController {
 			@RequestParam(value = "title", required = false) String title,
 			@RequestParam(value = "type", required = false) EventType type,
 			@RequestParam(value = "status", required = false) EventStatusType status,
+			@RequestParam(value = "eventUserStatus", required = false) EventUserStatusType eventUserStatus,
 			@RequestParam(value = "inscription", required = false) EventInscriptionType inscription,
 			@RequestParam(value = "username", required = false) String username,
 			@RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
 			@RequestParam(value = "size", required = false, defaultValue = "10") Integer size) throws UserNotValidException {
 		log.debug("Looking for events");
-		return eventService.search(title, type, status, inscription, username, PageRequest.of(page, size));
+		return eventService.search(title, type, status, eventUserStatus, inscription, username, PageRequest.of(page, size));
 	}
 	
 	@PostMapping(produces = "application/json;charset=utf8")

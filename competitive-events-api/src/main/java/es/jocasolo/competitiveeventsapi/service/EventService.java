@@ -14,6 +14,7 @@ import es.jocasolo.competitiveeventsapi.dto.eventuser.EventUserPutDTO;
 import es.jocasolo.competitiveeventsapi.enums.event.EventInscriptionType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventStatusType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventType;
+import es.jocasolo.competitiveeventsapi.enums.eventuser.EventUserStatusType;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventInvalidStatusException;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventNotFoundException;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventUserAcceptedException;
@@ -84,7 +85,8 @@ public interface EventService {
 	 * @return
 	 * @throws UserNotValidException 
 	 */
-	EventPageDTO search(String title, EventType type, EventStatusType status, EventInscriptionType inscription, String username, PageRequest pageRequest) throws UserNotValidException;
+	EventPageDTO search(String title, EventType type, EventStatusType status, EventUserStatusType eventUserStatus,
+			EventInscriptionType inscription, String username, PageRequest pageRequest) throws UserNotValidException;
 	
 	/**
 	 * Finish an event, called via rest

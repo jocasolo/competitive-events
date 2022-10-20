@@ -195,14 +195,15 @@ public class EventServiceImpl implements EventService {
 	}
 
 	@Override
-	public EventPageDTO search(String title, EventType type, EventStatusType status, EventInscriptionType inscription, 
-			String username, PageRequest pageRequest) throws UserNotValidException {
+	public EventPageDTO search(String title, EventType type, EventStatusType status, EventUserStatusType eventUserStatus,
+			EventInscriptionType inscription, String username, PageRequest pageRequest) throws UserNotValidException {
 		
 		Page<Event> events = null;
 		User user = authentication.getUser();
 		
 		final String typeName = type != null ? EventType.getEnumOrNull(type).name() : null;
 		final String statusName = status != null ? EventStatusType.getEnumOrNull(status).name() : null;
+		final String eventUserStatusName = eventUserStatus != null ? EventUserStatusType.getEnumOrNull(eventUserStatus).name() : null;
 		final String inscriptionName = inscription != null ? EventInscriptionType.getEnumOrNull(inscription).name() : null;
 		
 		if(StringUtils.isEmpty(username)) {
@@ -210,7 +211,7 @@ public class EventServiceImpl implements EventService {
 			events = eventDao.search(StringUtils.lowerCase(title), typeName, statusName, inscriptionName, pageRequest);
 		} else {
 			// User events
-			events = eventDao.searchByUser(title, typeName, statusName, inscriptionName, user, pageRequest);
+			events = eventDao.searchByUser(title, typeName, statusName, eventUserStatusName, inscriptionName, user, pageRequest);
 		}
 		
 		EventPageDTO dto = new EventPageDTO();

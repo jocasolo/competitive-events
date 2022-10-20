@@ -39,10 +39,11 @@ public interface EventDAO extends CrudRepository<Event, String> {
 			+ "AND (fuzzy_search(e.title, :title, 2) OR :title IS NULL) "
 			+ "AND (e.type LIKE :type OR :type IS NULL) "
 			+ "AND (e.status LIKE :status OR :status IS NULL) "
-			+ "AND (e.inscription LIKE :inscription OR :inscription IS NULL) AND eu.status = 'ACCEPTED' AND e.status <> 'DELETED'"
+			+ "AND (eu.status LIKE :eventUserStatus OR :eventUserStatus IS NULL) "
+			+ "AND (e.inscription LIKE :inscription OR :inscription IS NULL) AND e.status <> 'DELETED'"
 		)
 	public Page<Event> searchByUser(@Param("title") String title, @Param("type") String type, @Param("status") String status, 
-			@Param("inscription") String inscription, @Param("user") User user, Pageable pageRequest);
+			@Param("eventUserStatus") String eventUserStatus, @Param("inscription") String inscription, @Param("user") User user, Pageable pageRequest);
 	
 	@Query(value = "SELECT e FROM Event AS e WHERE status = 'NOT_ACTIVE' AND init_date < CURRENT_DATE")
 	public List<Event> getPendingActive();
