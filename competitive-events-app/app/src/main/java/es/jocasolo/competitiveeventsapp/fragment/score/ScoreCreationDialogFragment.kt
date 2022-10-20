@@ -7,14 +7,14 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
+import android.view.inputmethod.EditorInfo
+import android.widget.*
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import com.squareup.picasso.Picasso
 import es.jocasolo.competitiveeventsapp.R
 import es.jocasolo.competitiveeventsapp.dto.score.ScorePostDTO
+import es.jocasolo.competitiveeventsapp.enums.score.ScoreValueType
 import es.jocasolo.competitiveeventsapp.fragment.event.EventMainFragment
 import es.jocasolo.competitiveeventsapp.utils.MyUtils
 import okhttp3.MediaType
@@ -27,13 +27,19 @@ import java.io.File
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
-class ScoreCreationDialogFragment(private val previousFragment: EventMainFragment) : DialogFragment() {
+class ScoreCreationDialogFragment(
+    private val previousFragment: EventMainFragment,
+    private val scoreValueType: ScoreValueType) : DialogFragment() {
 
     private var txtValue : TextView? = null
+    private var txtHour : TextView? = null
+    private var txtMinute : TextView? = null
+    private var txtSecond : TextView? = null
     private var btnCancel : Button? = null
     private var btnAdd : Button? = null
     private var imgUpload : ImageView? = null
     private var filePart : MultipartBody.Part? = null
+    private var linearLayoutScoreValue : LinearLayout? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,27 +53,86 @@ class ScoreCreationDialogFragment(private val previousFragment: EventMainFragmen
         super.onViewCreated(view, savedInstanceState)
 
         txtValue = view.findViewById(R.id.txt_score_creation_value)
+        txtHour = view.findViewById(R.id.txt_score_hour)
+        txtMinute = view.findViewById(R.id.txt_score_minute)
+        txtSecond = view.findViewById(R.id.txt_score_second)
         btnCancel = view.findViewById(R.id.btn_score_creation_cancel)
         btnAdd = view.findViewById(R.id.btn_score_creation_add)
         imgUpload = view.findViewById(R.id.img_score_upload_image)
+        linearLayoutScoreValue = view.findViewById(R.id.linear_layout_score_time)
 
         btnAdd?.setOnClickListener { create(view) }
         btnCancel?.setOnClickListener { cancel() }
 
         view.findViewById<Button>(R.id.btn_score_creation_upload_image).setOnClickListener { imageChooser() }
         imgUpload?.setOnClickListener { imageChooser() }
+
+        when(scoreValueType) {
+            ScoreValueType.NUMERIC -> txtValue?.inputType = EditorInfo.TYPE_CLASS_NUMBER
+            ScoreValueType.DECIMAL -> txtValue?.inputType = EditorInfo.TYPE_NUMBER_FLAG_DECIMAL
+            ScoreValueType.TIME -> {
+                txtValue?.visibility = View.GONE
+                linearLayoutScoreValue?.visibility = View.VISIBLE
+            }
+        }
     }
 
     private fun create(view: View) {
         MyUtils.closeKeyboard(this.requireContext(), view)
-        if(validateValue()) {
-            val score = ScorePostDTO(txtValue?.text.toString())
-            score.imagePart = filePart
-
-            // Pass data to previous fragment
-            previousFragment.backStackAction(score)
-            dismiss()
+        val score = ScorePostDTO()
+        score.imagePart = filePart
+        if(scoreValueType != ScoreValueType.TIME){
+            if(validateValue()) {
+                score.value = txtValue?.text.toString()
+            }
+        } else {
+            score.value = getTimeScoreAsLong()
         }
+
+        // Pass data to previous fragment
+        previousFragment.backStackAction(score)
+        dismiss()
+    }
+
+    private fun getTimeScoreAsLong(): String {
+        var value : Long = 0
+
+        if(isValidTime()){
+            if(StringUtils.isNotEmpty(txtHour?.text.toString())){
+                value += txtHour?.text.toString().toLong() * 3600000
+            }
+            if(StringUtils.isNotEmpty(txtMinute?.text.toString())){
+                value += txtMinute?.text.toString().toLong() * 60000
+            }
+            if(StringUtils.isNotEmpty(txtSecond?.text.toString())){
+                value += txtSecond?.text.toString().toLong() * 1000
+            }
+        }
+
+        return value.toString()
+    }
+
+    private fun isValidTime(): Boolean {
+        var validHour = true
+        var validMinute = true
+        var validSecond = true
+
+        if(StringUtils.isNotEmpty(txtHour?.text?.toString()) && txtHour?.text.toString().toInt() !in 0..23){
+            txtHour?.error = getString(R.string.error_value_not_valid)
+            validHour = false
+        }
+
+        if(StringUtils.isEmpty(txtMinute?.text?.toString()) && txtMinute?.text.toString().toInt() !in 0..59){
+            txtMinute?.error = getString(R.string.error_value_not_valid)
+            validMinute = false
+        }
+
+        if(StringUtils.isEmpty(txtSecond?.text?.toString()) && txtSecond?.text.toString().toInt() !in 0..59){
+            txtSecond?.error = getString(R.string.error_value_not_valid)
+            validSecond = false
+        }
+
+        return validHour && validMinute && validSecond
     }
 
     /**

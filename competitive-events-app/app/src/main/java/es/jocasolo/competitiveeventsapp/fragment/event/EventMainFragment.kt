@@ -22,6 +22,7 @@ import es.jocasolo.competitiveeventsapp.dto.event.EventDTO
 import es.jocasolo.competitiveeventsapp.dto.score.ScoreDTO
 import es.jocasolo.competitiveeventsapp.dto.score.ScorePostDTO
 import es.jocasolo.competitiveeventsapp.dto.score.ScorePutDTO
+import es.jocasolo.competitiveeventsapp.enums.score.ScoreValueType
 import es.jocasolo.competitiveeventsapp.fragment.score.ScoreCreationDialogFragment
 import es.jocasolo.competitiveeventsapp.service.CommentService
 import es.jocasolo.competitiveeventsapp.service.EventService
@@ -99,9 +100,6 @@ class EventMainFragment(var eventId: String? = null) : Fragment(), EventListener
             }
         }
 
-        imgCommentCreate?.setOnClickListener { createComment(id!!) }
-        imgScoreCreate?.setOnClickListener { openCreateScoreFragment() }
-
         // Event list
         recyclerView = requireView().findViewById(R.id.recycler_event_main)
         recyclerView?.layoutManager = LinearLayoutManager(requireContext())
@@ -113,7 +111,7 @@ class EventMainFragment(var eventId: String? = null) : Fragment(), EventListener
         super.onViewCreated(view, savedInstanceState)
     }
 
-    private fun openCreateScoreFragment() {
+    private fun openCreateScoreFragment(scoreValueType: ScoreValueType) {
         val ft: FragmentTransaction = parentFragmentManager.beginTransaction()
         val prev = parentFragmentManager.findFragmentByTag("dialog")
         if (prev != null) {
@@ -122,7 +120,7 @@ class EventMainFragment(var eventId: String? = null) : Fragment(), EventListener
         ft.addToBackStack(null)
 
         // Create and show the dialog.
-        val newDialogFragment: ScoreCreationDialogFragment = ScoreCreationDialogFragment(this)
+        val newDialogFragment: ScoreCreationDialogFragment = ScoreCreationDialogFragment(this, scoreValueType)
         newDialogFragment.show(ft, "dialog")
     }
 
@@ -135,6 +133,8 @@ class EventMainFragment(var eventId: String? = null) : Fragment(), EventListener
                         val event = response.body()
                         if (event != null) {
                             loadHistorical(event)
+                            imgCommentCreate?.setOnClickListener { createComment(event.id) }
+                            imgScoreCreate?.setOnClickListener { openCreateScoreFragment(event.scoreType!!) }
                         }
                     } else {
                         try {

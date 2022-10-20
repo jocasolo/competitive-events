@@ -20,6 +20,7 @@ import es.jocasolo.competitiveeventsapp.dto.comment.CommentDTO
 import es.jocasolo.competitiveeventsapp.dto.event.EventDTO
 import es.jocasolo.competitiveeventsapp.dto.score.ScoreDTO
 import es.jocasolo.competitiveeventsapp.enums.score.ScoreStatusType
+import es.jocasolo.competitiveeventsapp.enums.score.ScoreValueType
 import es.jocasolo.competitiveeventsapp.fragment.event.EventMainFragment
 import es.jocasolo.competitiveeventsapp.fragment.participant.ParticipantsInviteDialogFragment
 import es.jocasolo.competitiveeventsapp.fragment.score.ScoreEditDialogFragment
@@ -27,6 +28,7 @@ import es.jocasolo.competitiveeventsapp.singleton.UserAccount
 import es.jocasolo.competitiveeventsapp.utils.MyUtils
 import org.apache.commons.lang3.StringUtils
 import java.text.SimpleDateFormat
+import java.time.Duration
 import java.util.*
 
 open class ListHistoricAdapter(
@@ -70,7 +72,11 @@ open class ListHistoricAdapter(
                     HistoryItemDTO.HistoryItemType.SCORE -> {
                         val score = history as ScoreDTO
                         holder.layoutScore.visibility = View.VISIBLE
-                        holder.txtScoreText.text = fragment.getString(R.string.user_new_score, score.user?.id, score.value)
+                        if(eventDTO.scoreType != ScoreValueType.TIME) {
+                            holder.txtScoreText.text = fragment.getString(R.string.user_new_score, score.user?.id, score.value)
+                        } else {
+                            holder.txtScoreText.text = fragment.getString(R.string.user_new_score, score.user?.id, getTime(score.value?.toDouble()))
+                        }
                         holder.txtScoreDate.text = getDateText(score.user?.id, score.date)
                         loadAvatarImage(score.user?.avatar?.link(), holder.imgScoreAvatar)
                         if(score.image != null) {
@@ -142,6 +148,25 @@ open class ListHistoricAdapter(
             historical = mutableListOf()
         }
         historical?.addAll(newHistorical)
+    }
+
+    private fun getTime(score: Double?): CharSequence? {
+        var timeInHHMMSS = score.toString()
+        if(score != null) {
+            val duration: Duration = Duration.ofMillis(score.toLong())
+            val seconds = duration.seconds
+            val hh = seconds / 3600
+            val mm = seconds % 3600 / 60
+            val ss = seconds % 60
+            if(hh > 0) {
+                timeInHHMMSS = String.format("%02d:%02d:%02d %s", hh, mm, ss, fragment.requireContext().getString(R.string.hours))
+            } else if (mm > 0) {
+                timeInHHMMSS = String.format("%02d:%02d  %s", mm, ss, fragment.requireContext().getString(R.string.minutes))
+            } else {
+                timeInHHMMSS = String.format("%02d  %s", ss, fragment.requireContext().getString(R.string.seconds))
+            }
+        }
+        return timeInHHMMSS
     }
 
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){

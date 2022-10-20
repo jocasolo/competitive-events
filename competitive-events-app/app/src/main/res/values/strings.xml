@@ -171,6 +171,7 @@
     <string name="title_activity_main2">MainActivity</string>
     <string name="error_user_invite">Ha ocurrido un error al invitar a el usuario que has introducido. Asegúrate de que su identificador es correcto</string>
     <string name="error_score_action">Ha ocurrido un error al actualizar la puntuación.</string>
+    <string name="error_value_not_valid">Valor no válido.</string>
 
     <!-- Messages -->
     <string name="success_action_title">Acción realizada</string>
