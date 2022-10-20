@@ -1,11 +1,9 @@
-package es.jocasolo.competitiveeventsapp.fragment.event
+package es.jocasolo.competitiveeventsapp.fragment.participant
 
-import android.app.ActionBar
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import android.widget.*
 import androidx.fragment.app.DialogFragment
 import com.google.gson.Gson
@@ -16,7 +14,7 @@ import es.jocasolo.competitiveeventsapp.dto.eventuser.EventUserPostDTO
 import es.jocasolo.competitiveeventsapp.service.EventService
 import es.jocasolo.competitiveeventsapp.service.ServiceBuilder
 import es.jocasolo.competitiveeventsapp.singleton.UserAccount
-import es.jocasolo.competitiveeventsapp.ui.spinners.SpinnerEditParticipantType
+import es.jocasolo.competitiveeventsapp.ui.spinners.SpinnerParticipantActions
 import es.jocasolo.competitiveeventsapp.utils.Message
 import es.jocasolo.competitiveeventsapp.utils.MyDialog
 import es.jocasolo.competitiveeventsapp.utils.MyUtils
@@ -26,8 +24,8 @@ import retrofit2.Response
 import java.net.HttpURLConnection
 
 
-class EventParticipantsInviteDialogFragment(
-    private val previousFragment: EventParticipantsFragment,
+class ParticipantsInviteDialogFragment(
+    private val previousListFragment: ParticipantsListFragment,
     var eventId: String
 ) : DialogFragment() {
 
@@ -49,7 +47,7 @@ class EventParticipantsInviteDialogFragment(
         txtUsername = view.findViewById(R.id.txt_participant_invite_id)
 
         // Combo box participant actions
-        val eventTypes: MutableList<SpinnerEditParticipantType> = ArrayList()
+        val eventActions: MutableList<SpinnerParticipantActions> = ArrayList()
 
         // Buttons
         view.findViewById<Button>(R.id.btn_participant_invite_cancel).setOnClickListener { cancel() }
@@ -108,7 +106,7 @@ class EventParticipantsInviteDialogFragment(
 
     private fun closeDialog(eventUserDTO: EventUserDTO){
         // Pass data to previous fragment
-        previousFragment.backStackAction(eventUserDTO)
+        previousListFragment.backStackAction(eventUserDTO)
         dismiss()
     }
 

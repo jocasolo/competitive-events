@@ -4,32 +4,42 @@ import android.graphics.PorterDuff
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import es.jocasolo.competitiveeventsapp.R
 import es.jocasolo.competitiveeventsapp.dto.HistoryItemDTO
 import es.jocasolo.competitiveeventsapp.dto.comment.CommentDTO
+import es.jocasolo.competitiveeventsapp.dto.event.EventDTO
 import es.jocasolo.competitiveeventsapp.dto.score.ScoreDTO
+import es.jocasolo.competitiveeventsapp.enums.score.ScoreStatusType
+import es.jocasolo.competitiveeventsapp.fragment.event.EventMainFragment
+import es.jocasolo.competitiveeventsapp.fragment.participant.ParticipantsInviteDialogFragment
+import es.jocasolo.competitiveeventsapp.fragment.score.ScoreEditDialogFragment
+import es.jocasolo.competitiveeventsapp.singleton.UserAccount
+import es.jocasolo.competitiveeventsapp.utils.MyUtils
 import org.apache.commons.lang3.StringUtils
 import java.text.SimpleDateFormat
 import java.util.*
 
 open class ListHistoricAdapter(
-    var fragment: Fragment,
-    var historical: MutableList<HistoryItemDTO>?
+    var fragment: EventMainFragment,
+    var historical: MutableList<HistoryItemDTO>?,
+    var eventDTO: EventDTO
 ): RecyclerView.Adapter<ListHistoricAdapter.ViewHolder>() {
 
     private val sdf = SimpleDateFormat("dd-MM-yyyy HH:mm")
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = LayoutInflater.from(parent.context).inflate(
-            R.layout.card_layout_historic,
+            R.layout.card_layout_history,
             parent,
             false
         )
@@ -67,10 +77,30 @@ open class ListHistoricAdapter(
                             holder.imgScoreImage.visibility = View.VISIBLE
                             loadAvatarImage(score.image?.link(), holder.imgScoreImage, 150, 100)
                         }
+                        if(MyUtils.isAdmin(eventDTO.users, UserAccount.getInstance(fragment.requireContext()).getName())) {
+                            holder.btnScoreEdit.setOnClickListener { openScoreEditDialog(score) }
+                            holder.btnScoreEdit.visibility = View.VISIBLE
+                        }
+                        if(score.status == ScoreStatusType.NOT_VALID){
+                            holder.txtScoreNotValid.visibility = View.VISIBLE
+                        }
                     }
                 }
             }
         }
+    }
+
+    private fun openScoreEditDialog(score : ScoreDTO) {
+        val ft: FragmentTransaction = fragment.parentFragmentManager.beginTransaction()
+        val prev = fragment.parentFragmentManager.findFragmentByTag("dialogScoreEdit")
+        if (prev != null) {
+            ft.remove(prev)
+        }
+        ft.addToBackStack(null)
+
+        // Create and show the dialog.
+        val newDialogFragment = ScoreEditDialogFragment (fragment, score, fragment.eventId!!)
+        newDialogFragment.show(ft, "dialogScoreEdit")
     }
 
     private fun getDateText(id: String?, date: Date?): CharSequence? {
@@ -134,6 +164,8 @@ open class ListHistoricAdapter(
         var txtScoreDate: TextView = itemView.findViewById(R.id.txt_score_date)
         var imgScoreAvatar: ImageView = itemView.findViewById(R.id.img_score_avatar)
         var imgScoreImage: ImageView = itemView.findViewById(R.id.img_score_image)
+        var btnScoreEdit: ImageView = itemView.findViewById(R.id.btn_score_edit)
+        var txtScoreNotValid: TextView = itemView.findViewById(R.id.txt_score_not_valid)
 
     }
 

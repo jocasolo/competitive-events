@@ -21,6 +21,7 @@ import es.jocasolo.competitiveeventsapp.dto.comment.CommentPostDTO
 import es.jocasolo.competitiveeventsapp.dto.event.EventDTO
 import es.jocasolo.competitiveeventsapp.dto.score.ScoreDTO
 import es.jocasolo.competitiveeventsapp.dto.score.ScorePostDTO
+import es.jocasolo.competitiveeventsapp.dto.score.ScorePutDTO
 import es.jocasolo.competitiveeventsapp.fragment.score.ScoreCreationDialogFragment
 import es.jocasolo.competitiveeventsapp.service.CommentService
 import es.jocasolo.competitiveeventsapp.service.EventService
@@ -55,14 +56,19 @@ class EventMainFragment(var eventId: String? = null) : Fragment(), EventListener
     private var imgCommentCreate: ImageView? = null
     private var imgScoreCreate: ImageView? = null
 
-    private var id : String? = null
+    var id : String? = null
 
     /**
      * Action called when the score dialog is closed
      */
     override fun backStackAction(data: BackStackEntryDTO) {
-        val score = data as ScorePostDTO
-        createScore(score)
+        if(data is ScorePostDTO) {
+            val score = data as ScorePostDTO
+            createScore(score)
+        }
+        if(data is ScorePutDTO) {
+            loadEvent(eventId!!)
+        }
     }
 
     override fun onCreateView(
@@ -97,10 +103,8 @@ class EventMainFragment(var eventId: String? = null) : Fragment(), EventListener
         imgScoreCreate?.setOnClickListener { openCreateScoreFragment() }
 
         // Event list
-        historicalAdapter = ListHistoricAdapter(this, null)
         recyclerView = requireView().findViewById(R.id.recycler_event_main)
         recyclerView?.layoutManager = LinearLayoutManager(requireContext())
-        recyclerView?.adapter = historicalAdapter
 
         if(id != null) {
             loadEvent(id!!)
@@ -172,7 +176,8 @@ class EventMainFragment(var eventId: String? = null) : Fragment(), EventListener
 
         historical.sortBy { it.sortDate }
 
-        historicalAdapter?.addHistorical(historical)
+        historicalAdapter = ListHistoricAdapter(this, historical, event)
+        recyclerView?.adapter = historicalAdapter
         historicalAdapter?.notifyDataSetChanged()
 
         // Scroll to bottom
@@ -189,15 +194,7 @@ class EventMainFragment(var eventId: String? = null) : Fragment(), EventListener
                 override fun onResponse(call: Call<CommentDTO>, response: Response<CommentDTO>) {
                     val newComment = response.body()
                     if (newComment != null) {
-                        newComment.sortDate = newComment.date
-                        newComment.historyType = HistoryItemDTO.HistoryItemType.COMMENT_OWN
-                        historicalAdapter?.addHistory(newComment)
-                        historicalAdapter?.notifyDataSetChanged()
-                        txtCommentCreate?.text = null
-
-                        // Scroll to bottom
-                        historicalAdapter?.itemCount?.minus(1)
-                            ?.let { recyclerView?.scrollToPosition(it) }
+                        loadEvent(eventId!!)
                     }
                 }
 
@@ -213,11 +210,10 @@ class EventMainFragment(var eventId: String? = null) : Fragment(), EventListener
                 override fun onResponse(call: Call<ScoreDTO>, response: Response<ScoreDTO>) {
                     val newScore = response.body()
                     if (newScore != null) {
-
                         if(score.imagePart != null) {
                             uploadScoreImage(newScore.id, score.imagePart)
                         } else {
-                            updateAdapter(newScore)
+                            loadEvent(eventId!!)
                         }
                     }
                 }
@@ -227,24 +223,13 @@ class EventMainFragment(var eventId: String? = null) : Fragment(), EventListener
             })
     }
 
-    private fun updateAdapter(newScore: ScoreDTO) {
-        newScore.sortDate = newScore.date
-        newScore.historyType = HistoryItemDTO.HistoryItemType.SCORE
-        historicalAdapter?.addHistory(newScore)
-        historicalAdapter?.notifyDataSetChanged()
-
-        // Scroll to bottom
-        historicalAdapter?.itemCount?.minus(1)
-            ?.let { recyclerView?.scrollToPosition(it) }
-    }
-
     private fun uploadScoreImage(id : String, imagePart : MultipartBody.Part?) {
         imagePart?.let {
             scoreService.updateImage(it, id.toInt(), UserAccount.getInstance(requireContext()).getToken()).enqueue(object : Callback<ScoreDTO> {
                 override fun onResponse(call: Call<ScoreDTO>, response: Response<ScoreDTO>) {
                     val newScore = response.body()
                     if (newScore != null) {
-                        updateAdapter(newScore)
+                        loadEvent(eventId!!)
                     }
                 }
                 override fun onFailure(call: Call<ScoreDTO>, t: Throwable) {

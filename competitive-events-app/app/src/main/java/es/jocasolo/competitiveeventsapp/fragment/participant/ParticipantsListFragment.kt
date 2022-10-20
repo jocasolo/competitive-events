@@ -1,4 +1,4 @@
-package es.jocasolo.competitiveeventsapp.fragment.event
+package es.jocasolo.competitiveeventsapp.fragment.participant
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,10 +15,10 @@ import es.jocasolo.competitiveeventsapp.dto.BackStackEntryDTO
 import es.jocasolo.competitiveeventsapp.dto.ErrorDTO
 import es.jocasolo.competitiveeventsapp.dto.ParticipantDTO
 import es.jocasolo.competitiveeventsapp.dto.event.EventDTO
-import es.jocasolo.competitiveeventsapp.dto.eventuser.EventUserPutDTO
 import es.jocasolo.competitiveeventsapp.dto.score.ScoreDTO
-import es.jocasolo.competitiveeventsapp.enums.eventuser.EventUserPrivilegeType
 import es.jocasolo.competitiveeventsapp.enums.score.ScoreSortType
+import es.jocasolo.competitiveeventsapp.enums.score.ScoreStatusType
+import es.jocasolo.competitiveeventsapp.fragment.event.EventListener
 import es.jocasolo.competitiveeventsapp.service.EventService
 import es.jocasolo.competitiveeventsapp.service.ServiceBuilder
 import es.jocasolo.competitiveeventsapp.singleton.UserAccount
@@ -35,7 +35,7 @@ import java.net.HttpURLConnection
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
-class EventParticipantsFragment(var eventId: String) : Fragment(), EventListener {
+class ParticipantsListFragment(var eventId: String) : Fragment(), EventListener {
 
     private val eventService = ServiceBuilder.buildService(EventService::class.java)
 
@@ -82,7 +82,7 @@ class EventParticipantsFragment(var eventId: String) : Fragment(), EventListener
         ft.addToBackStack(null)
 
         // Create and show the dialog.
-        val newDialogFragment = EventParticipantsInviteDialogFragment(this, eventId!!)
+        val newDialogFragment = ParticipantsInviteDialogFragment(this, eventId!!)
         newDialogFragment.show(ft, "dialogParticipantsInvite")
     }
 
@@ -144,7 +144,8 @@ class EventParticipantsFragment(var eventId: String) : Fragment(), EventListener
     private fun getScore(scores: List<ScoreDTO>?, userId: String): Double? {
         var maxScore : Double? = 0.0
         scores?.forEach {
-            if(it.user?.id.equals(userId)){
+            if(it.user?.id.equals(userId) && it.status == ScoreStatusType.VALID){
+                maxScore = (maxScore!!).coerceAtLeast(it.value?.toDouble()!!)
                 maxScore = (maxScore!!).coerceAtLeast(it.value?.toDouble()!!)
             }
         }

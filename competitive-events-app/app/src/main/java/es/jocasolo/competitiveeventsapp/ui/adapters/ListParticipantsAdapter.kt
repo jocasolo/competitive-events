@@ -14,15 +14,15 @@ import es.jocasolo.competitiveeventsapp.dto.ParticipantDTO
 import es.jocasolo.competitiveeventsapp.enums.eventuser.EventUserPrivilegeType
 import es.jocasolo.competitiveeventsapp.enums.eventuser.EventUserStatusType
 import es.jocasolo.competitiveeventsapp.enums.score.ScoreValueType
-import es.jocasolo.competitiveeventsapp.fragment.event.EventParticipantsActionsDialogFragment
-import es.jocasolo.competitiveeventsapp.fragment.event.EventParticipantsFragment
+import es.jocasolo.competitiveeventsapp.fragment.participant.ParticipantsEditDialogFragment
+import es.jocasolo.competitiveeventsapp.fragment.participant.ParticipantsListFragment
 import es.jocasolo.competitiveeventsapp.singleton.UserAccount
 import java.time.Duration
 
 
 open class ListParticipantsAdapter(
     var context: Context,
-    var fragment: EventParticipantsFragment,
+    var listFragment: ParticipantsListFragment,
     var participants: List<ParticipantDTO>,
     var eventId: String,
     var scoreValueType: ScoreValueType,
@@ -86,15 +86,15 @@ open class ListParticipantsAdapter(
     }
 
     private fun openParticipantActionsDialog(participant: ParticipantDTO) {
-        val ft: FragmentTransaction = fragment.parentFragmentManager.beginTransaction()
-        val prev = fragment.parentFragmentManager.findFragmentByTag("dialogParticipants")
+        val ft: FragmentTransaction = listFragment.parentFragmentManager.beginTransaction()
+        val prev = listFragment.parentFragmentManager.findFragmentByTag("dialogParticipants")
         if (prev != null) {
             ft.remove(prev)
         }
         ft.addToBackStack(null)
 
         // Create and show the dialog.
-        val newDialogFragment: EventParticipantsActionsDialogFragment = EventParticipantsActionsDialogFragment(fragment, participant, eventId)
+        val newDialogFragment: ParticipantsEditDialogFragment = ParticipantsEditDialogFragment(listFragment, participant, eventId)
         newDialogFragment.show(ft, "dialogParticipants")
     }
 

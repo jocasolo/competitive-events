@@ -5,7 +5,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import es.jocasolo.competitiveeventsapp.fragment.event.EventDetailFragment
 import es.jocasolo.competitiveeventsapp.fragment.event.EventMainFragment
-import es.jocasolo.competitiveeventsapp.fragment.event.EventParticipantsFragment
+import es.jocasolo.competitiveeventsapp.fragment.participant.ParticipantsListFragment
 
 class ViewPagerAdapter(
     fm: FragmentManager,
@@ -22,7 +22,7 @@ class ViewPagerAdapter(
                 EventDetailFragment(eventId)
             }
             2 -> {
-                EventParticipantsFragment(eventId)
+                ParticipantsListFragment(eventId)
             }
             else -> EventMainFragment(eventId)
         }

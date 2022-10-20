@@ -1,4 +1,4 @@
-package es.jocasolo.competitiveeventsapp.fragment.event
+package es.jocasolo.competitiveeventsapp.fragment.participant
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,14 +10,13 @@ import com.google.gson.Gson
 import es.jocasolo.competitiveeventsapp.R
 import es.jocasolo.competitiveeventsapp.dto.ErrorDTO
 import es.jocasolo.competitiveeventsapp.dto.ParticipantDTO
-import es.jocasolo.competitiveeventsapp.dto.eventuser.EventUserDTO
 import es.jocasolo.competitiveeventsapp.dto.eventuser.EventUserPutDTO
 import es.jocasolo.competitiveeventsapp.enums.actions.ParticipantActions
 import es.jocasolo.competitiveeventsapp.enums.eventuser.EventUserStatusType
 import es.jocasolo.competitiveeventsapp.service.EventService
 import es.jocasolo.competitiveeventsapp.service.ServiceBuilder
 import es.jocasolo.competitiveeventsapp.singleton.UserAccount
-import es.jocasolo.competitiveeventsapp.ui.spinners.SpinnerEditParticipantType
+import es.jocasolo.competitiveeventsapp.ui.spinners.SpinnerParticipantActions
 import es.jocasolo.competitiveeventsapp.utils.Message
 import es.jocasolo.competitiveeventsapp.utils.MyDialog
 import es.jocasolo.competitiveeventsapp.utils.MyUtils
@@ -27,8 +26,8 @@ import retrofit2.Response
 import java.net.HttpURLConnection
 
 
-class EventParticipantsActionsDialogFragment(
-    private val previousFragment: EventParticipantsFragment,
+class ParticipantsEditDialogFragment(
+    private val previousListFragment: ParticipantsListFragment,
     var participant: ParticipantDTO,
     var eventId: String) : DialogFragment() {
 
@@ -52,31 +51,31 @@ class EventParticipantsActionsDialogFragment(
         cmbParticipantActions = view.findViewById(R.id.cmb_participant_actions)
 
         // Combo box participant actions
-        val eventTypes: MutableList<SpinnerEditParticipantType> = ArrayList()
+        val eventActions: MutableList<SpinnerParticipantActions> = ArrayList()
 
         when(participant.status) {
             EventUserStatusType.ACCEPTED -> {
-                eventTypes.add(SpinnerEditParticipantType(ParticipantActions.DELETE, getString(R.string.action_delete)))
+                eventActions.add(SpinnerParticipantActions(ParticipantActions.DELETE, getString(R.string.action_delete)))
             }
             EventUserStatusType.INVITED -> {
-                eventTypes.add(SpinnerEditParticipantType(ParticipantActions.DELETE, getString(R.string.action_delete)))
+                eventActions.add(SpinnerParticipantActions(ParticipantActions.DELETE, getString(R.string.action_delete)))
             }
             EventUserStatusType.WAITING_APPROVAL -> {
-                eventTypes.add(SpinnerEditParticipantType(ParticipantActions.ACCEPT, getString(R.string.action_accept)))
-                eventTypes.add(SpinnerEditParticipantType(ParticipantActions.REJECT, getString(R.string.action_reject)))
+                eventActions.add(SpinnerParticipantActions(ParticipantActions.ACCEPT, getString(R.string.action_accept)))
+                eventActions.add(SpinnerParticipantActions(ParticipantActions.REJECT, getString(R.string.action_reject)))
             }
             EventUserStatusType.REJECTED -> {
-                eventTypes.add(SpinnerEditParticipantType(ParticipantActions.ACCEPT, getString(R.string.action_accept)))
+                eventActions.add(SpinnerParticipantActions(ParticipantActions.ACCEPT, getString(R.string.action_accept)))
             }
             EventUserStatusType.DELETED -> {
-                eventTypes.add(SpinnerEditParticipantType(ParticipantActions.ACCEPT, getString(R.string.action_accept)))
+                eventActions.add(SpinnerParticipantActions(ParticipantActions.ACCEPT, getString(R.string.action_accept)))
             }
         }
 
         ArrayAdapter(
             requireContext(),
             android.R.layout.simple_spinner_dropdown_item,
-            eventTypes
+            eventActions
         ).also {  adapter ->
             cmbParticipantActions?.adapter = adapter
         }
@@ -96,7 +95,7 @@ class EventParticipantsActionsDialogFragment(
     private fun accept(view: View) {
         MyUtils.closeKeyboard(this.requireContext(), view)
 
-        val selectedAction = cmbParticipantActions?.selectedItem as SpinnerEditParticipantType
+        val selectedAction = cmbParticipantActions?.selectedItem as SpinnerParticipantActions
         val action = selectedAction.key
 
         val eventUserPutDTO = EventUserPutDTO(participant.id)
@@ -111,7 +110,7 @@ class EventParticipantsActionsDialogFragment(
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 if(response.code() == HttpURLConnection.HTTP_OK){
                     showSuccessDialog()
-                    previousFragment.backStackAction(eventUserPutDTO)
+                    previousListFragment.backStackAction(eventUserPutDTO)
                     dismiss()
                 } else {
                     try {
