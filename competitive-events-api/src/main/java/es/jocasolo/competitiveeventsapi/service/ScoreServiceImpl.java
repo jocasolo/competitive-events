@@ -2,6 +2,7 @@ package es.jocasolo.competitiveeventsapi.service;
 
 import java.util.Date;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -139,10 +140,14 @@ public class ScoreServiceImpl implements ScoreService {
 		if(!eventUser.getEvent().isInDateRange())
 			throw new EventInvalidStatusException();
 		
-		if(eventUser.isOwner())
+		if(eventUser.isOwner() && scoreDto.getStatus() != null) {
 			score.setStatus(scoreDto.getStatus());
+		}
 		
-		score.setValue(scoreDto.getValue());
+		if(StringUtils.isNotEmpty(scoreDto.getValue())){
+			score.setValue(scoreDto.getValue());
+		}
+		
 		score.setDate(new Date());
 		
 		scoreDao.save(score);
