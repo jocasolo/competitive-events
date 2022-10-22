@@ -6,7 +6,7 @@ import es.jocasolo.competitiveeventsapp.dto.user.UserDTO
 import es.jocasolo.competitiveeventsapp.enums.score.ScoreSortType
 
 class PunishmentDTO(
-        @SerializedName("id") var id: Integer,
+        @SerializedName("id") var id: Int,
         @SerializedName("title") var title: String,
         @SerializedName("description") var description: String?,
         @SerializedName("looser") var looser: UserDTO?,

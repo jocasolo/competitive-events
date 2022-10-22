@@ -37,6 +37,15 @@
                 android:scaleType="centerCrop"
                 app:srcCompat="@drawable/steampunk_room" />
 
+            <ImageView
+                android:id="@+id/img_event_detail_open_edition"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_margin="8dp"
+                app:srcCompat="@drawable/edit"
+                app:tint="@color/primary_dark" />
+
             <TextView
                 android:id="@+id/txt_event_detail_title"
                 android:layout_width="match_parent"

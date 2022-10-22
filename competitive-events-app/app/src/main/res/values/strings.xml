@@ -52,6 +52,7 @@
     <string name="status">Estado</string>
     <string name="valid">Válidada</string>
     <string name="no_valid">No válida</string>
+    <string name="edit">Editar</string>
 
     <!-- Action bar -->
     <string name="logout">Cerrar sesión</string>
@@ -97,6 +98,7 @@
     <string name="events_num_participants">Núm. participantes: %1$d</string>
     <string name="events_available_places">Plazas disponibles: %1$d</string>
     <string name="events_new">Nuevo evento</string>
+    <string name="events_edit">Editar evento</string>tst
     <string name="events_find_new">Encuentra nuevos Eventos</string>
     <string name="events_find_or_create">Crea tu propio evento, busca o únete a tus favoritos</string>
     <string name="events_create_new">Crear un nuevo evento</string>
@@ -128,6 +130,7 @@
     <string name="event_created">El evento se ha creado con éxito. Ahora te aparecerá en tu listado de eventos.</string>
     <string name="event_participants">Participantes</string>
     <string name="event_invited">Te han invitado a este evento</string>
+    <string name="event_edit_success">Evento editado con éxito</string>
 
     <!-- Event Types -->
     <string name="events_all">Cualquiera</string>

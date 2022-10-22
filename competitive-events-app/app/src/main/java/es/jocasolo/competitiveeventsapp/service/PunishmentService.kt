@@ -16,8 +16,12 @@ interface PunishmentService {
     @POST("/punishments")
     fun create(@Body body: PunishmentPostDTO, @Header(value="Authorization") authorization : String) : Call<PunishmentDTO>
 
+    @Headers("Content-Type: application/json")
+    @DELETE("/punishments/{id}")
+    fun delete(@Path (value="id") id: Int, @Header(value="Authorization") authorization : String) : Call<Void>
+
     @Multipart
     @PUT("/punishments/{id}/image")
-    fun updateImage(@Part file : MultipartBody.Part, @Path (value="id") id: Integer, @Header(value="Authorization") authorization : String) : Call<PunishmentDTO>
+    fun updateImage(@Part file : MultipartBody.Part, @Path (value="id") id: Int, @Header(value="Authorization") authorization : String) : Call<PunishmentDTO>
 
 }

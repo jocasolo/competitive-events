@@ -3,7 +3,6 @@ package es.jocasolo.competitiveeventsapp
 import android.os.Bundle
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import es.jocasolo.competitiveeventsapp.ui.adapters.ViewPagerAdapter
@@ -31,6 +30,7 @@ class EventActivity : AppCompatActivity() {
         val tabLayout = findViewById<TabLayout>(R.id.tab_event_main)
         val viewPager = findViewById<ViewPager>(R.id.viewpager_event_main)
 
+        // Tabs navigation
         val pagerAdapter = ViewPagerAdapter(supportFragmentManager, 3, id!!)
         viewPager?.adapter = pagerAdapter
         viewPager?.clearOnPageChangeListeners()

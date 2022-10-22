@@ -1,7 +1,7 @@
-package es.jocasolo.competitiveeventsapp.fragment.event
+package es.jocasolo.competitiveeventsapp.fragment
 
 import es.jocasolo.competitiveeventsapp.dto.BackStackEntryDTO
 
-interface EventListener {
+interface BackStackListener {
     fun backStackAction(data : BackStackEntryDTO)
 }

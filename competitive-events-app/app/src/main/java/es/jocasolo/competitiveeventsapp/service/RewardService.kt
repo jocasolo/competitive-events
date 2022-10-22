@@ -16,8 +16,12 @@ interface RewardService {
     @POST("/rewards")
     fun create(@Body body: RewardPostDTO, @Header(value="Authorization") authorization : String) : Call<RewardDTO>
 
+    @Headers("Content-Type: application/json")
+    @DELETE("/rewards/{id}")
+    fun delete(@Path (value="id") id: Int, @Header(value="Authorization") authorization : String) : Call<Void>
+
     @Multipart
     @PUT("/rewards/{id}/image")
-    fun updateImage(@Part file : MultipartBody.Part, @Path (value="id") id: Integer, @Header(value="Authorization") authorization : String) : Call<RewardDTO>
+    fun updateImage(@Part file : MultipartBody.Part, @Path (value="id") id: Int, @Header(value="Authorization") authorization : String) : Call<RewardDTO>
 
 }

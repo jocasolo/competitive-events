@@ -37,5 +37,5 @@ class EventDTO(
         @SerializedName("comments") var comments: List<CommentDTO>?,
         @SerializedName("scores") var scores: List<ScoreDTO>?,
         @SerializedName("users") var users: List<UserLiteWithEventDTO>?,
-) {
+) :Serializable {
 }

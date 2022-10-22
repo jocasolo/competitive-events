@@ -435,7 +435,7 @@ class EventCreationFragment : Fragment() {
         }
     }
 
-    private fun uploadRewardImage(id : Integer, imagePart : MultipartBody.Part?) {
+    private fun uploadRewardImage(id : Int, imagePart : MultipartBody.Part?) {
         imagePart?.let {
             rewardService.updateImage(it, id, UserAccount.getInstance(requireContext()).getToken()).enqueue(object : Callback<RewardDTO> {
                 override fun onResponse(call: Call<RewardDTO>, response: Response<RewardDTO>) {
@@ -446,7 +446,7 @@ class EventCreationFragment : Fragment() {
         }
     }
 
-    private fun uploadPunishmentImage(id : Integer, imagePart : MultipartBody.Part?) {
+    private fun uploadPunishmentImage(id : Int, imagePart : MultipartBody.Part?) {
         imagePart?.let {
             punishmentService.updateImage(it, id, UserAccount.getInstance(requireContext()).getToken()).enqueue(object : Callback<PunishmentDTO> {
                 override fun onResponse(call: Call<PunishmentDTO>, response: Response<PunishmentDTO>) {

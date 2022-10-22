@@ -30,8 +30,6 @@ import java.io.File
  */
 class RewardCreationFragment : Fragment() {
 
-    private val eventService = ServiceBuilder.buildService(EventService::class.java)
-
     private var txtTitle : TextView? = null
     private var txtDescription : TextView? = null
     private var txtPosition : TextView? = null

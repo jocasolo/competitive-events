@@ -3,6 +3,7 @@ package es.jocasolo.competitiveeventsapp.service
 import es.jocasolo.competitiveeventsapp.dto.event.EventDTO
 import es.jocasolo.competitiveeventsapp.dto.event.EventPageDTO
 import es.jocasolo.competitiveeventsapp.dto.event.EventPostDTO
+import es.jocasolo.competitiveeventsapp.dto.event.EventPutDTO
 import es.jocasolo.competitiveeventsapp.dto.eventuser.EventUserDTO
 import es.jocasolo.competitiveeventsapp.dto.eventuser.EventUserPostDTO
 import es.jocasolo.competitiveeventsapp.dto.eventuser.EventUserPutDTO
@@ -32,6 +33,10 @@ interface EventService {
     @Headers("Content-Type: application/json")
     @POST("/events")
     fun create(@Body body: EventPostDTO, @Header(value="Authorization") authorization : String) : Call<EventDTO>
+
+    @Headers("Content-Type: application/json")
+    @PUT("/events/{id}")
+    fun update(@Path (value="id") id: String,@Body body: EventPutDTO, @Header(value="Authorization") authorization : String) : Call<Void>
 
     @Multipart
     @PUT("/events/{id}/image")

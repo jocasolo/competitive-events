@@ -23,6 +23,7 @@ import es.jocasolo.competitiveeventsapp.dto.score.ScoreDTO
 import es.jocasolo.competitiveeventsapp.dto.score.ScorePostDTO
 import es.jocasolo.competitiveeventsapp.dto.score.ScorePutDTO
 import es.jocasolo.competitiveeventsapp.enums.score.ScoreValueType
+import es.jocasolo.competitiveeventsapp.fragment.BackStackListener
 import es.jocasolo.competitiveeventsapp.fragment.score.ScoreCreationDialogFragment
 import es.jocasolo.competitiveeventsapp.service.CommentService
 import es.jocasolo.competitiveeventsapp.service.EventService
@@ -44,7 +45,7 @@ import java.net.HttpURLConnection
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
-class EventMainFragment(var eventId: String? = null) : Fragment(), EventListener {
+class EventMainFragment(var eventId: String? = null) : Fragment(), BackStackListener {
 
     private val eventService = ServiceBuilder.buildService(EventService::class.java)
     private val commentService = ServiceBuilder.buildService(CommentService::class.java)

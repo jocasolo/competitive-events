@@ -6,7 +6,7 @@ import es.jocasolo.competitiveeventsapp.dto.user.UserDTO
 import es.jocasolo.competitiveeventsapp.enums.score.ScoreSortType
 
 class RewardDTO(
-        @SerializedName("id") var id: Integer,
+        @SerializedName("id") var id: Int,
         @SerializedName("title") var title: String,
         @SerializedName("description") var description: String?,
         @SerializedName("winner") var winner: UserDTO?,

@@ -11,6 +11,7 @@ class PunishmentPostDTO(
         @SerializedName("description") var description: String? = null,
         @SerializedName("eventId") var eventId: String? = null,
         @SerializedName("sortScore") var sortScore: ScoreSortType? = null,
-        @SerializedName("requiredPosition") var requiredPosition: Int? = null
+        @SerializedName("requiredPosition") var requiredPosition: Int? = null,
+        @SerializedName("id") var id: Int? = null,
 ) : BackStackEntryDTO() {
 }

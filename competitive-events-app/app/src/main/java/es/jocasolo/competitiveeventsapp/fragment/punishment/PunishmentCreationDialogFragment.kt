@@ -11,15 +11,13 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.RadioButton
 import android.widget.TextView
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.squareup.picasso.Picasso
+import es.jocasolo.competitiveeventsapp.EventEditionActivity
 import es.jocasolo.competitiveeventsapp.R
-import es.jocasolo.competitiveeventsapp.dto.BackStackEntryDTO
 import es.jocasolo.competitiveeventsapp.dto.punishment.PunishmentPostDTO
 import es.jocasolo.competitiveeventsapp.enums.score.ScoreSortType
-import es.jocasolo.competitiveeventsapp.service.EventService
-import es.jocasolo.competitiveeventsapp.service.ServiceBuilder
 import es.jocasolo.competitiveeventsapp.utils.MyUtils
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -29,7 +27,9 @@ import java.io.File
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
-class PunishmentCreationFragment : Fragment() {
+class PunishmentCreationDialogFragment(
+        private val previousEditActivity: EventEditionActivity
+    ) : DialogFragment() {
 
     private var txtTitle : TextView? = null
     private var txtDescription : TextView? = null
@@ -77,11 +77,8 @@ class PunishmentCreationFragment : Fragment() {
             punishment.imagePart = filePart
             punishment.sortScore = getSortScore()
 
-            findNavController().previousBackStackEntry
-                ?.savedStateHandle
-                ?.set("punishment", punishment)
-
-            findNavController().navigateUp()
+            previousEditActivity.backStackAction(punishment)
+            dismiss()
         }
     }
 
@@ -109,7 +106,7 @@ class PunishmentCreationFragment : Fragment() {
     }
 
     private fun cancel(){
-        findNavController().popBackStack()
+        dismiss()
     }
 
     private fun imageChooser() {

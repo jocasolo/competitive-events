@@ -18,7 +18,7 @@ import es.jocasolo.competitiveeventsapp.dto.event.EventDTO
 import es.jocasolo.competitiveeventsapp.dto.score.ScoreDTO
 import es.jocasolo.competitiveeventsapp.enums.score.ScoreSortType
 import es.jocasolo.competitiveeventsapp.enums.score.ScoreStatusType
-import es.jocasolo.competitiveeventsapp.fragment.event.EventListener
+import es.jocasolo.competitiveeventsapp.fragment.BackStackListener
 import es.jocasolo.competitiveeventsapp.service.EventService
 import es.jocasolo.competitiveeventsapp.service.ServiceBuilder
 import es.jocasolo.competitiveeventsapp.singleton.UserAccount
@@ -35,7 +35,7 @@ import java.net.HttpURLConnection
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.
  */
-class ParticipantsListFragment(var eventId: String) : Fragment(), EventListener {
+class ParticipantsListFragment(var eventId: String) : Fragment(), BackStackListener {
 
     private val eventService = ServiceBuilder.buildService(EventService::class.java)
 

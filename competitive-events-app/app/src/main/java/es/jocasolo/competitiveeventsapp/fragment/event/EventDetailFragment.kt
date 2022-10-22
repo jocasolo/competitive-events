@@ -1,5 +1,7 @@
 package es.jocasolo.competitiveeventsapp.fragment.event
 
+import android.content.Intent
+import android.media.Image
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +15,7 @@ import com.borjabravo.readmoretextview.ReadMoreTextView
 import com.google.gson.Gson
 import com.squareup.picasso.Picasso
 import es.jocasolo.competitiveeventsapp.EventActivity
+import es.jocasolo.competitiveeventsapp.EventEditionActivity
 import es.jocasolo.competitiveeventsapp.MainActivity
 import es.jocasolo.competitiveeventsapp.R
 import es.jocasolo.competitiveeventsapp.dto.ErrorDTO
@@ -123,7 +126,17 @@ class EventDetailFragment(var eventId: String? = null) : Fragment() {
                 if (response.code() == HttpURLConnection.HTTP_OK) {
                     val event = response.body()
                     if (event != null) {
+
                         showEventDetail(event)
+
+                        // Button open edition
+                        requireView().findViewById<ImageView>(R.id.img_event_detail_open_edition).setOnClickListener {
+                            val myIntent = Intent(requireActivity(), EventEditionActivity::class.java)
+                            myIntent.putExtra("eventId", event.id)
+                            myIntent.putExtra("eventTitle", event.title)
+                            requireActivity().startActivity(myIntent)
+                        }
+
                     }
                 } else {
                     try {
