@@ -6,6 +6,7 @@ import android.graphics.PorterDuff
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.ActionBar
@@ -89,6 +90,17 @@ class EventEditionActivity : AppCompatActivity(), BackStackListener {
     private var rewardsToCreate : MutableList<RewardPostDTO> = mutableListOf()
     private var punishmentsToDelete : MutableList<String> = mutableListOf()
     private var punishmentsToCreate : MutableList<PunishmentPostDTO> = mutableListOf()
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        when(item.itemId) {
+            android.R.id.home -> {
+                finish()
+            }
+        }
+
+        return true
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -360,36 +372,45 @@ class EventEditionActivity : AppCompatActivity(), BackStackListener {
         return eventDTO
     }
 
-    private fun uploadEventImage(id : String) {
+    private fun uploadEventImage(id: String) {
         filePart?.let {
-            eventService.updateImage(it, id, UserAccount.getInstance(this).getToken()).enqueue(object : Callback<EventDTO> {
-                override fun onResponse(call: Call<EventDTO>, response: Response<EventDTO>) {
-                }
-                override fun onFailure(call: Call<EventDTO>, t: Throwable) {
-                }
-            })
+            eventService.updateImage(it, id, UserAccount.getInstance(this).getToken()).enqueue(
+                object : Callback<EventDTO> {
+                    override fun onResponse(call: Call<EventDTO>, response: Response<EventDTO>) {
+                    }
+
+                    override fun onFailure(call: Call<EventDTO>, t: Throwable) {
+                    }
+                })
         }
     }
 
-    private fun uploadRewardImage(id : Int, imagePart : MultipartBody.Part?) {
+    private fun uploadRewardImage(id: Int, imagePart: MultipartBody.Part?) {
         imagePart?.let {
-            rewardService.updateImage(it, id, UserAccount.getInstance(this).getToken()).enqueue(object : Callback<RewardDTO> {
-                override fun onResponse(call: Call<RewardDTO>, response: Response<RewardDTO>) {
-                }
-                override fun onFailure(call: Call<RewardDTO>, t: Throwable) {
-                }
-            })
+            rewardService.updateImage(it, id, UserAccount.getInstance(this).getToken()).enqueue(
+                object : Callback<RewardDTO> {
+                    override fun onResponse(call: Call<RewardDTO>, response: Response<RewardDTO>) {
+                    }
+
+                    override fun onFailure(call: Call<RewardDTO>, t: Throwable) {
+                    }
+                })
         }
     }
 
-    private fun uploadPunishmentImage(id : Int, imagePart : MultipartBody.Part?) {
+    private fun uploadPunishmentImage(id: Int, imagePart: MultipartBody.Part?) {
         imagePart?.let {
-            punishmentService.updateImage(it, id, UserAccount.getInstance(this).getToken()).enqueue(object : Callback<PunishmentDTO> {
-                override fun onResponse(call: Call<PunishmentDTO>, response: Response<PunishmentDTO>) {
-                }
-                override fun onFailure(call: Call<PunishmentDTO>, t: Throwable) {
-                }
-            })
+            punishmentService.updateImage(it, id, UserAccount.getInstance(this).getToken()).enqueue(
+                object : Callback<PunishmentDTO> {
+                    override fun onResponse(
+                        call: Call<PunishmentDTO>,
+                        response: Response<PunishmentDTO>
+                    ) {
+                    }
+
+                    override fun onFailure(call: Call<PunishmentDTO>, t: Throwable) {
+                    }
+                })
         }
     }
 
@@ -397,24 +418,28 @@ class EventEditionActivity : AppCompatActivity(), BackStackListener {
         // Create new rewards
         rewardsToCreate.forEach { r ->
             r.eventId = eventId
-            rewardService.create(r, UserAccount.getInstance(this).getToken()).enqueue(object : Callback<RewardDTO> {
+            rewardService.create(r, UserAccount.getInstance(this).getToken()).enqueue(object :
+                Callback<RewardDTO> {
                 override fun onResponse(call: Call<RewardDTO>, response: Response<RewardDTO>) {
-                    if(response.code() == HttpURLConnection.HTTP_CREATED) {
+                    if (response.code() == HttpURLConnection.HTTP_CREATED) {
                         val newReward = response.body()
                         if (newReward != null) {
                             uploadRewardImage(newReward.id, r.imagePart)
                         }
                     }
                 }
+
                 override fun onFailure(call: Call<RewardDTO>, t: Throwable) {
                 }
             })
         }
         // Delete rewards
         rewardAdapter?.rewardsToDelete?.forEach {
-            rewardService.delete(it, UserAccount.getInstance(this).getToken()).enqueue(object : Callback<Void> {
+            rewardService.delete(it, UserAccount.getInstance(this).getToken()).enqueue(object :
+                Callback<Void> {
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 }
+
                 override fun onFailure(call: Call<Void>, t: Throwable) {
                 }
             })
@@ -425,24 +450,31 @@ class EventEditionActivity : AppCompatActivity(), BackStackListener {
         // Create new punishments
         punishmentsToCreate.forEach { p ->
             p.eventId = eventId
-            punishmentService.create(p, UserAccount.getInstance(this).getToken()).enqueue(object : Callback<PunishmentDTO> {
-                override fun onResponse(call: Call<PunishmentDTO>, response: Response<PunishmentDTO>) {
-                    if(response.code() == HttpURLConnection.HTTP_CREATED) {
+            punishmentService.create(p, UserAccount.getInstance(this).getToken()).enqueue(object :
+                Callback<PunishmentDTO> {
+                override fun onResponse(
+                    call: Call<PunishmentDTO>,
+                    response: Response<PunishmentDTO>
+                ) {
+                    if (response.code() == HttpURLConnection.HTTP_CREATED) {
                         val newPunishment = response.body()
                         if (newPunishment != null) {
                             uploadPunishmentImage(newPunishment.id, p.imagePart)
                         }
                     }
                 }
+
                 override fun onFailure(call: Call<PunishmentDTO>, t: Throwable) {
                 }
             })
         }
         // Delete punishments
         punishmentAdapter?.punishmentsToDelete?.forEach {
-            punishmentService.delete(it, UserAccount.getInstance(this).getToken()).enqueue(object : Callback<Void> {
+            punishmentService.delete(it, UserAccount.getInstance(this).getToken()).enqueue(object :
+                Callback<Void> {
                 override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 }
+
                 override fun onFailure(call: Call<Void>, t: Throwable) {
                 }
             })

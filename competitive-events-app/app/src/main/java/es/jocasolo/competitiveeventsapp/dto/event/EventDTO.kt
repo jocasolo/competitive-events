@@ -9,6 +9,7 @@ import es.jocasolo.competitiveeventsapp.dto.user.ImageDTO
 import es.jocasolo.competitiveeventsapp.dto.user.UserDTO
 import es.jocasolo.competitiveeventsapp.dto.user.UserLiteWithEventDTO
 import es.jocasolo.competitiveeventsapp.enums.event.EventInscriptionType
+import es.jocasolo.competitiveeventsapp.enums.event.EventStatusType
 import es.jocasolo.competitiveeventsapp.enums.event.EventType
 import es.jocasolo.competitiveeventsapp.enums.event.EventVisibilityType
 import es.jocasolo.competitiveeventsapp.enums.score.ScoreSortType
@@ -37,5 +38,6 @@ class EventDTO(
         @SerializedName("comments") var comments: List<CommentDTO>?,
         @SerializedName("scores") var scores: List<ScoreDTO>?,
         @SerializedName("users") var users: List<UserLiteWithEventDTO>?,
+        @SerializedName("status") var status: EventStatusType?
 ) :Serializable {
 }

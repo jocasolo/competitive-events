@@ -38,6 +38,14 @@ interface EventService {
     @PUT("/events/{id}")
     fun update(@Path (value="id") id: String,@Body body: EventPutDTO, @Header(value="Authorization") authorization : String) : Call<Void>
 
+    @Headers("Content-Type: application/json")
+    @PUT("/events/{id}/init")
+    fun init(@Path (value="id") id: String, @Header(value="Authorization") authorization : String) : Call<Void>
+
+    @Headers("Content-Type: application/json")
+    @PUT("/events/{id}/finish")
+    fun finish(@Path (value="id") id: String, @Header(value="Authorization") authorization : String) : Call<Void>
+
     @Multipart
     @PUT("/events/{id}/image")
     fun updateImage(@Part file : MultipartBody.Part, @Path (value="id") id: String, @Header(value="Authorization") authorization : String) : Call<EventDTO>

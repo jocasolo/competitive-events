@@ -1,6 +1,7 @@
 package es.jocasolo.competitiveeventsapp.fragment.event
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,6 +23,7 @@ import es.jocasolo.competitiveeventsapp.dto.event.EventDTO
 import es.jocasolo.competitiveeventsapp.dto.score.ScoreDTO
 import es.jocasolo.competitiveeventsapp.dto.score.ScorePostDTO
 import es.jocasolo.competitiveeventsapp.dto.score.ScorePutDTO
+import es.jocasolo.competitiveeventsapp.enums.event.EventStatusType
 import es.jocasolo.competitiveeventsapp.enums.score.ScoreValueType
 import es.jocasolo.competitiveeventsapp.fragment.BackStackListener
 import es.jocasolo.competitiveeventsapp.fragment.score.ScoreCreationDialogFragment
@@ -135,7 +137,11 @@ class EventMainFragment(var eventId: String? = null) : Fragment(), BackStackList
                         if (event != null) {
                             loadHistorical(event)
                             imgCommentCreate?.setOnClickListener { createComment(event.id) }
-                            imgScoreCreate?.setOnClickListener { openCreateScoreFragment(event.scoreType!!) }
+                            if(event.status == EventStatusType.ACTIVE) {
+                                imgScoreCreate?.setOnClickListener { openCreateScoreFragment(event.scoreType!!) }
+                            } else {
+                                imgScoreCreate?.visibility = View.GONE
+                            }
                         }
                     } else {
                         try {

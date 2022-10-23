@@ -59,6 +59,13 @@ class HomeFragment : Fragment() {
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        if(eventAdapter != null) {
+            loadUserEvents(EventUserStatusType.ACCEPTED.name, eventAdapter!!, true)
+        }
+    }
+
     private fun initUserEventsAccepted() {
         // Events list view
         if(eventAdapter == null){

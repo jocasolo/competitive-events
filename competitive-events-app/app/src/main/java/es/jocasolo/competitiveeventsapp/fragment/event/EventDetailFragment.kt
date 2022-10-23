@@ -1,8 +1,7 @@
 package es.jocasolo.competitiveeventsapp.fragment.event
 
-import android.content.Intent
-import android.media.Image
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +14,6 @@ import com.borjabravo.readmoretextview.ReadMoreTextView
 import com.google.gson.Gson
 import com.squareup.picasso.Picasso
 import es.jocasolo.competitiveeventsapp.EventActivity
-import es.jocasolo.competitiveeventsapp.EventEditionActivity
 import es.jocasolo.competitiveeventsapp.MainActivity
 import es.jocasolo.competitiveeventsapp.R
 import es.jocasolo.competitiveeventsapp.dto.ErrorDTO
@@ -126,17 +124,7 @@ class EventDetailFragment(var eventId: String? = null) : Fragment() {
                 if (response.code() == HttpURLConnection.HTTP_OK) {
                     val event = response.body()
                     if (event != null) {
-
                         showEventDetail(event)
-
-                        // Button open edition
-                        requireView().findViewById<ImageView>(R.id.img_event_detail_open_edition).setOnClickListener {
-                            val myIntent = Intent(requireActivity(), EventEditionActivity::class.java)
-                            myIntent.putExtra("eventId", event.id)
-                            myIntent.putExtra("eventTitle", event.title)
-                            requireActivity().startActivity(myIntent)
-                        }
-
                     }
                 } else {
                     try {
@@ -171,6 +159,7 @@ class EventDetailFragment(var eventId: String? = null) : Fragment() {
         // Subtitle
         if(StringUtils.isNotEmpty(event.subtitle)){
             txtSubtitle?.text = event.subtitle
+            txtSubtitle?.visibility = View.VISIBLE
         } else {
             txtSubtitle?.visibility = View.GONE
         }
@@ -178,6 +167,7 @@ class EventDetailFragment(var eventId: String? = null) : Fragment() {
         // Description
         if(StringUtils.isNotEmpty(event.description)){
             txtDescription?.text = event.description
+            txtDescription?.visibility = View.VISIBLE
         } else {
             txtDescription?.visibility = View.GONE
         }
@@ -193,6 +183,7 @@ class EventDetailFragment(var eventId: String? = null) : Fragment() {
         // Init date
         if(event.initDate != null){
             txtInitDate?.text = getString(R.string.events_init, sdf.format(event.initDate))
+            txtInitDate?.visibility = View.VISIBLE
         } else {
             txtInitDate?.visibility = View.GONE
         }
@@ -200,6 +191,7 @@ class EventDetailFragment(var eventId: String? = null) : Fragment() {
         // End date
         if(event.endDate != null){
             txtEndDate?.text = getString(R.string.events_end, sdf.format(event.endDate), MyUtils.getTimeToFinish(requireContext(), event.endDate))
+            txtEndDate?.visibility = View.VISIBLE
         } else {
             txtEndDate?.visibility = View.GONE
         }
@@ -207,6 +199,7 @@ class EventDetailFragment(var eventId: String? = null) : Fragment() {
         // Event type
         if(event.type != null) {
             txtEventType?.text = getString(R.string.event_type, getEventTypeName(event.type!!))
+            txtEventType?.visibility = View.VISIBLE
         } else {
             txtEventType?.visibility = View.GONE
         }
@@ -214,6 +207,7 @@ class EventDetailFragment(var eventId: String? = null) : Fragment() {
         // Num participants
         if(event.numParticipants != null) {
             txtNumParticipants?.text = getString(R.string.events_num_participants, event.numParticipants)
+            txtNumParticipants?.visibility = View.VISIBLE
         } else {
             txtNumParticipants?.visibility = View.GONE
         }
@@ -221,6 +215,7 @@ class EventDetailFragment(var eventId: String? = null) : Fragment() {
         // Max places
         if(event.numParticipants != null && event.maxPlaces != null) {
             txtAvailablePlaces?.text = getString(R.string.events_available_places, event.maxPlaces!! - event.numParticipants!!)
+            txtAvailablePlaces?.visibility = View.VISIBLE
         } else {
             txtAvailablePlaces?.visibility = View.GONE
         }
@@ -229,6 +224,8 @@ class EventDetailFragment(var eventId: String? = null) : Fragment() {
         if(event.rewards != null && event.rewards!!.isNotEmpty()) {
             val rewards = getSortedRewards(event.rewards!!)
             rewardsRecyclerView?.adapter = ListRewardAdapter(requireContext(), rewards)
+            rewardsRecyclerView?.visibility = View.VISIBLE
+            view?.findViewById<TextView>(R.id.label_event_detail_rewards)?.visibility = View.VISIBLE
         } else {
             rewardsRecyclerView?.visibility = View.GONE
             view?.findViewById<TextView>(R.id.label_event_detail_rewards)?.visibility = View.GONE
@@ -238,6 +235,9 @@ class EventDetailFragment(var eventId: String? = null) : Fragment() {
         if(event.punishments != null && event.punishments!!.isNotEmpty()) {
             val punishments = getSortedPunishments(event.punishments!!)
             punishmentsRecyclerView?.adapter = ListPunishmentAdapter(requireContext(), punishments)
+            punishmentsRecyclerView?.visibility = View.VISIBLE
+            view?.findViewById<TextView>(R.id.label_event_detail_punishments)?.visibility = View.VISIBLE
+            view?.findViewById<View>(R.id.divider_event_detail_punishments)?.visibility = View.VISIBLE
         } else {
             punishmentsRecyclerView?.visibility = View.GONE
             view?.findViewById<TextView>(R.id.label_event_detail_punishments)?.visibility = View.GONE
@@ -358,6 +358,17 @@ class EventDetailFragment(var eventId: String? = null) : Fragment() {
                 override fun onFailure(call: Call<EventUserDTO>, t: Throwable) {
                 }
             })
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if(requireActivity() is EventActivity){
+            val eventActivity = requireActivity() as EventActivity
+            if(eventActivity.wasPaused){
+                loadEvent(eventId!!)
+                Log.e("Resume", "recarga evento")
+            }
         }
     }
 
