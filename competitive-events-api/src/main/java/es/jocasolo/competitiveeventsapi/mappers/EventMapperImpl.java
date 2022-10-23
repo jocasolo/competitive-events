@@ -44,6 +44,7 @@ public class EventMapperImpl implements EventMapper {
 		detail.setType(event.getType());
 		detail.setNumParticipants(event.getUsers().size());
 		detail.setVisibility(event.getVisibility());
+		detail.setStatus(event.getStatus());
 		
 		return detail;
 	}
@@ -69,6 +70,7 @@ public class EventMapperImpl implements EventMapper {
 		detail.setNumParticipants(event.getUsers().size());
 		detail.setVisibility(event.getVisibility());
 		detail.setDescription(event.getDescription());
+		detail.setStatus(event.getStatus());
 		detail.setUsers(userMapper.map(event.getUsers(), event));
 		detail.setRewards(commonService.transform(event.getRewards(), RewardDTO.class));
 		detail.setPunishments(commonService.transform(event.getPunishments(), PunishmentDTO.class));

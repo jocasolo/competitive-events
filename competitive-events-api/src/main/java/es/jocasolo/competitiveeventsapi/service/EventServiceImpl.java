@@ -533,7 +533,9 @@ public class EventServiceImpl implements EventService {
 			targetEventUser.setPrivilege(eventUserDto.getPrivilege());
 		}
 		
-		if(eventUserDto.getStatus() != null && authenticatedEventUser.isOwner()) {
+		// If is the admin doing changes or is the user leaving the event
+		if((eventUserDto.getStatus() != null && authenticatedEventUser.isOwner())
+				|| eventUserDto.getStatus() == EventUserStatusType.DELETED && targetUser.getId().equals(authenticatedUser.getId())) {
 			targetEventUser.setStatus(eventUserDto.getStatus());
 			targetEventUser.setLastStatusDate(new Date());
 		}

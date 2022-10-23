@@ -6,6 +6,7 @@ import java.util.Date;
 import es.jocasolo.competitiveeventsapi.dto.DTO;
 import es.jocasolo.competitiveeventsapi.dto.image.ImageDTO;
 import es.jocasolo.competitiveeventsapi.enums.event.EventInscriptionType;
+import es.jocasolo.competitiveeventsapi.enums.event.EventStatusType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventVisibilityType;
 import es.jocasolo.competitiveeventsapi.enums.score.ScoreValueType;
@@ -67,6 +68,11 @@ public class EventDTO extends DTO implements Serializable {
 	@Getter
 	@Setter
 	private ScoreValueType scoreType;	
+	
+	@Getter
+	@Setter
+	private EventStatusType status;
+	
 
 	@Override
 	public String toString() {
