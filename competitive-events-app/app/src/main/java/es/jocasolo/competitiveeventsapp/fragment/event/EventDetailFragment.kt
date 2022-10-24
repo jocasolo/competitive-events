@@ -22,6 +22,8 @@ import es.jocasolo.competitiveeventsapp.dto.eventuser.EventUserDTO
 import es.jocasolo.competitiveeventsapp.dto.eventuser.EventUserPostDTO
 import es.jocasolo.competitiveeventsapp.dto.punishment.PunishmentDTO
 import es.jocasolo.competitiveeventsapp.dto.reward.RewardDTO
+import es.jocasolo.competitiveeventsapp.dto.user.UserDTO
+import es.jocasolo.competitiveeventsapp.dto.user.UserLiteWithEventDTO
 import es.jocasolo.competitiveeventsapp.enums.event.EventInscriptionType
 import es.jocasolo.competitiveeventsapp.enums.event.EventType
 import es.jocasolo.competitiveeventsapp.enums.eventuser.EventUserStatusType
@@ -311,7 +313,7 @@ class EventDetailFragment(var eventId: String? = null) : Fragment() {
     }
 
     private fun setButtonText(event: EventDTO, userId : String?) {
-        val user = MyUtils.searchUser(event.users, UserAccount.getInstance(requireContext()).getName())
+        val user = searchUser(event.users, UserAccount.getInstance(requireContext()).getName())
         if(user == null && userId == null) {
             btnJoin?.text = getString(R.string.events_join)
             if(event.inscription == EventInscriptionType.PRIVATE){
@@ -370,6 +372,14 @@ class EventDetailFragment(var eventId: String? = null) : Fragment() {
                 Log.e("Resume", "recarga evento")
             }
         }
+    }
+
+    fun searchUser(users : List<UserLiteWithEventDTO>?, username : String) : UserLiteWithEventDTO? {
+        users?.forEach {
+            if(it.id == username)
+                return it
+        }
+        return null;
     }
 
     private fun showSuccessDialog(message : String) {

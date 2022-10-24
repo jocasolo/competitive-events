@@ -1,6 +1,7 @@
 package es.jocasolo.competitiveeventsapp.dto.punishment
 
 import com.google.gson.annotations.SerializedName
+import es.jocasolo.competitiveeventsapp.dto.HistoryItemDTO
 import es.jocasolo.competitiveeventsapp.dto.user.ImageDTO
 import es.jocasolo.competitiveeventsapp.dto.user.UserDTO
 import es.jocasolo.competitiveeventsapp.enums.score.ScoreSortType
@@ -13,5 +14,5 @@ class PunishmentDTO(
         @SerializedName("sortScore") var sortScore: ScoreSortType?,
         @SerializedName("requiredPosition") var requiredPosition: Int?,
         @SerializedName("image") var image: ImageDTO?
-) {
+) : HistoryItemDTO() {
 }

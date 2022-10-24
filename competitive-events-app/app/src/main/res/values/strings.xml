@@ -161,6 +161,11 @@
     <string name="date">Fecha</string>
     <string name="message">Mensaje</string>
     <string name="user_new_score">%1$s ha incluido una nueva puntuación personal. Su valor es %2$s.</string>
+    <string name="user_join_notification">%1$s se ha unido al evento</string>
+    <string name="winner_notification">%1$s ha ganado un premio!</string>
+    <string name="looser_notification">%1$s ha recibido un castigo!</string>
+    <string name="init_event">El evento ha empezado! Ahora puedes enviar tus puntuaciones.</string>
+    <string name="end_event">El evento ha finalizado.</string>
 
     <!-- Errors -->
     <string name="error_title">Error</string>

@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.ScrollView
+import androidx.core.widget.NestedScrollView
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
@@ -42,6 +44,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.net.HttpURLConnection
+import java.util.*
 
 
 /**
@@ -165,6 +168,15 @@ class EventMainFragment(var eventId: String? = null) : Fragment(), BackStackList
     private fun loadHistorical(event: EventDTO) {
         val historical : MutableList<HistoryItemDTO> = mutableListOf()
         val username = UserAccount.getInstance(requireContext()).getName()
+
+        // Init event
+        if(event.initDate != null && event.initDate!!.before(Date())) {
+            val history = HistoryItemDTO()
+            history.historyType = HistoryItemDTO.HistoryItemType.INIT_EVENT
+            history.sortDate = event.initDate
+            historical.add(history)
+        }
+        // Comments
         event.comments?.forEach {
             if (username == it.user?.id) {
                 it.historyType = HistoryItemDTO.HistoryItemType.COMMENT_OWN
@@ -175,12 +187,47 @@ class EventMainFragment(var eventId: String? = null) : Fragment(), BackStackList
             }
             historical.add(it)
         }
+        // Scores
         event.scores?.forEach {
             it.historyType = HistoryItemDTO.HistoryItemType.SCORE
             it.sortDate = it.date
             historical.add(it)
         }
+        // Users
+        event.users?.forEach {
+            it.historyType = HistoryItemDTO.HistoryItemType.USER_JOIN
+            it.sortDate = it.incorporationDate
+            historical.add(it)
+        }
+        var addMillis = 0;
+        // Finish event
+        if(event.endDate != null && event.status == EventStatusType.FINISHED) {
+            val history = HistoryItemDTO()
+            history.historyType = HistoryItemDTO.HistoryItemType.END_EVENT
+            event.endDate?.time = event.endDate?.time!! + addMillis++;
+            history.sortDate = event.endDate
+            historical.add(history)
+        }
+        // Rewards
+        event.rewards?.forEach {
+            if(StringUtils.isNotEmpty(it.winner?.id)){
+                it.historyType = HistoryItemDTO.HistoryItemType.WINNER
+                event.endDate?.time = event.endDate?.time!! + addMillis++;
+                it.sortDate = event.endDate
+                historical.add(it)
+            }
+        }
+        // Punishments
+        event.punishments?.forEach {
+            if(StringUtils.isNotEmpty(it.looser?.id)){
+                it.historyType = HistoryItemDTO.HistoryItemType.LOOSER
+                event.endDate?.time = event.endDate?.time!! + addMillis++;
+                it.sortDate = event.endDate
+                historical.add(it)
+            }
+        }
 
+        // Sort by date
         historical.sortBy { it.sortDate }
 
         historicalAdapter = ListHistoricAdapter(this, historical, event)
@@ -188,7 +235,8 @@ class EventMainFragment(var eventId: String? = null) : Fragment(), BackStackList
         historicalAdapter?.notifyDataSetChanged()
 
         // Scroll to bottom
-        historicalAdapter?.itemCount?.minus(1)?.let { recyclerView?.scrollToPosition(it) }
+        val scrollView = requireView().findViewById<NestedScrollView>(R.id.scroll_event_historical)
+        scrollView.fullScroll(ScrollView.FOCUS_DOWN)
 
     }
 

@@ -1,16 +1,11 @@
 package es.jocasolo.competitiveeventsapp.ui.adapters
 
-import android.graphics.PorterDuff
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
@@ -18,11 +13,13 @@ import es.jocasolo.competitiveeventsapp.R
 import es.jocasolo.competitiveeventsapp.dto.HistoryItemDTO
 import es.jocasolo.competitiveeventsapp.dto.comment.CommentDTO
 import es.jocasolo.competitiveeventsapp.dto.event.EventDTO
+import es.jocasolo.competitiveeventsapp.dto.punishment.PunishmentDTO
+import es.jocasolo.competitiveeventsapp.dto.reward.RewardDTO
 import es.jocasolo.competitiveeventsapp.dto.score.ScoreDTO
+import es.jocasolo.competitiveeventsapp.dto.user.UserLiteWithEventDTO
 import es.jocasolo.competitiveeventsapp.enums.score.ScoreStatusType
 import es.jocasolo.competitiveeventsapp.enums.score.ScoreValueType
 import es.jocasolo.competitiveeventsapp.fragment.event.EventMainFragment
-import es.jocasolo.competitiveeventsapp.fragment.participant.ParticipantsInviteDialogFragment
 import es.jocasolo.competitiveeventsapp.fragment.score.ScoreEditDialogFragment
 import es.jocasolo.competitiveeventsapp.singleton.UserAccount
 import es.jocasolo.competitiveeventsapp.utils.MyUtils
@@ -55,6 +52,7 @@ open class ListHistoricAdapter(
 
 
                 when (history.historyType){
+                    // Comment another user
                     HistoryItemDTO.HistoryItemType.COMMENT_USER -> {
                         val comment = history as CommentDTO
                         holder.layoutUserComment.visibility = View.VISIBLE
@@ -62,6 +60,7 @@ open class ListHistoricAdapter(
                         holder.txtUserCommentDate.text = getDateText(comment.user?.id, comment.date)
                         loadAvatarImage(comment.user?.avatar?.link(), holder.imgUserCommentAvatar)
                     }
+                    // Comment own
                     HistoryItemDTO.HistoryItemType.COMMENT_OWN -> {
                         val comment = history as CommentDTO
                         holder.layoutOwnComment.visibility = View.VISIBLE
@@ -69,6 +68,7 @@ open class ListHistoricAdapter(
                         holder.txtOwnCommentDate.text = getDateText(comment.user?.id, comment.date)
                         loadAvatarImage(comment.user?.avatar?.link(), holder.imgOwnCommentAvatar)
                     }
+                    // Score
                     HistoryItemDTO.HistoryItemType.SCORE -> {
                         val score = history as ScoreDTO
                         holder.layoutScore.visibility = View.VISIBLE
@@ -91,6 +91,48 @@ open class ListHistoricAdapter(
                             holder.txtScoreNotValid.visibility = View.VISIBLE
                         }
                     }
+                    // User join
+                    HistoryItemDTO.HistoryItemType.USER_JOIN -> {
+                        val user = history as UserLiteWithEventDTO
+                        holder.layoutNotification.visibility = View.VISIBLE
+                        holder.txtNotificationDate.text = getDateText(null, user.incorporationDate)
+                        holder.txtNotificationTitle.text = fragment.getString(R.string.user_join_notification, user.id)
+                        holder.txtNotificationText.visibility = View.GONE
+                        holder.imgNotificationImage.setImageResource(R.drawable.person_add)
+                    }
+                    // Winner
+                    /*HistoryItemDTO.HistoryItemType.WINNER -> {
+                        val reward = history as RewardDTO
+                        holder.layoutNotification.visibility = View.VISIBLE
+                        holder.txtWinnerDate.text = getDateText(null, history.sortDate)
+                        holder.txtWinnerTitle.text = fragment.getString(R.string.winner_notification, reward.winner?.id)
+                        holder.txtWinnerText2.text = reward.title
+                    }
+                    // Looser
+                    HistoryItemDTO.HistoryItemType.LOOSER -> {
+                        val punishment = history as PunishmentDTO
+                        holder.imgNotificationImage.setImageResource(R.drawable.mood_bad)
+                        holder.layoutWinner.visibility = View.VISIBLE
+                        holder.txtWinnerDate.text = getDateText(null, history.sortDate)
+                        holder.txtWinnerTitle.text = fragment.getString(R.string.looser_notification, punishment.looser?.id)
+                        holder.txtWinnerText2.text = punishment.title
+                    }*/
+                    HistoryItemDTO.HistoryItemType.INIT_EVENT -> {
+                        val h = history as HistoryItemDTO
+                        holder.layoutNotification.visibility = View.VISIBLE
+                        holder.txtNotificationDate.text = getDateText(null, h.sortDate)
+                        holder.txtNotificationTitle.text = fragment.getString(R.string.init_event)
+                        holder.txtNotificationText.visibility = View.GONE
+                        holder.imgNotificationImage.setImageResource(R.drawable.play_arrow)
+                    }
+                    HistoryItemDTO.HistoryItemType.END_EVENT -> {
+                        val h = history as HistoryItemDTO
+                        holder.layoutNotification.visibility = View.VISIBLE
+                        holder.txtNotificationDate.text = getDateText(null, h.sortDate)
+                        holder.txtNotificationTitle.text = fragment.getString(R.string.end_event)
+                        holder.txtNotificationText.visibility = View.GONE
+                        holder.imgNotificationImage.setImageResource(R.drawable.block)
+                    }
                 }
             }
         }
@@ -110,9 +152,12 @@ open class ListHistoricAdapter(
     }
 
     private fun getDateText(id: String?, date: Date?): CharSequence? {
-        var result = id
+        var result = ""
+        if(id != null) {
+            result += "$id, "
+        }
         if(date != null) {
-            result += ", " + sdf.format(date)
+            result += sdf.format(date)
         }
        return result
     }
@@ -192,6 +237,21 @@ open class ListHistoricAdapter(
         var btnScoreEdit: ImageView = itemView.findViewById(R.id.btn_score_edit)
         var txtScoreNotValid: TextView = itemView.findViewById(R.id.txt_score_not_valid)
 
+        // Card notification
+        var layoutNotification : ConstraintLayout = itemView.findViewById(R.id.layout_notification)
+        var txtNotificationTitle: TextView = itemView.findViewById(R.id.txt_notification_title)
+        var txtNotificationText: TextView = itemView.findViewById(R.id.txt_notification_text)
+        var txtNotificationDate: TextView = itemView.findViewById(R.id.txt_notification_date)
+        var imgNotificationImage: ImageView = itemView.findViewById(R.id.img_notification_image)
+
+        // Card winner
+        var layoutWinner : ConstraintLayout = itemView.findViewById(R.id.layout_winner)
+        var txtWinnerTitle: TextView = itemView.findViewById(R.id.txt_winner_title)
+        var txtWinnerText: TextView = itemView.findViewById(R.id.txt_winner_text)
+        var txtWinnerText2: TextView = itemView.findViewById(R.id.txt_winner_text)
+        var txtWinnerDate: TextView = itemView.findViewById(R.id.txt_winner_date)
+        var imgWinnerImage: ImageView = itemView.findViewById(R.id.img_winner_image)
+        var imgWinnerRewardImage: ImageView = itemView.findViewById(R.id.img_winner_reward_image)
     }
 
 }

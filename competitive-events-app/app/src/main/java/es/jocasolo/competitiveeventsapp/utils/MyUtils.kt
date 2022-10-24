@@ -51,14 +51,6 @@ object MyUtils {
         return result;
     }
 
-    fun searchUser(users : List<UserDTO>?, username : String) : UserDTO? {
-        users?.forEach {
-            if(it.id == username)
-                return it
-        }
-        return null;
-    }
-
     fun isAdmin(users: List<UserLiteWithEventDTO>?, username: String) : Boolean {
         users?.forEach {
             if(it.id.equals(username) && it.privilege == EventUserPrivilegeType.OWNER){
