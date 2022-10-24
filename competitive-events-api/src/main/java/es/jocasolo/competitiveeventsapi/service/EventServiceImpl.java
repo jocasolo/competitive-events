@@ -245,6 +245,7 @@ public class EventServiceImpl implements EventService {
 	@Override
 	public void initEvent(Event event) {
 		event.setStatus(EventStatusType.ACTIVE);
+		event.setInitDate(new Date());
 		eventDao.save(event);
 	}
 	
@@ -269,6 +270,7 @@ public class EventServiceImpl implements EventService {
 	public void finishEvent(Event event) {
 		
 		event.setStatus(EventStatusType.FINISHED);
+		event.setEndDate(new Date());
 		
 		// Assign rewards to users
 		asignRewards(event);
@@ -399,8 +401,6 @@ public class EventServiceImpl implements EventService {
 	 */
 	private EventUserStatusType addUserToEvent(Event event, User targetUser, User authenticatedUser, EventUser newEventUser) 
 			throws EventWrongUpdateException, EventUserRejectedException, EventUserAcceptedException {
-		
-		// TODO test private and public
 		
 		EventUserStatusType status = null;
 		EventUser authenticatedEventUser = eventUserDao.findOneAllStatus(event, authenticatedUser);
