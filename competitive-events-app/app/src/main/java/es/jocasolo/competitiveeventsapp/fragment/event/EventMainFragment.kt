@@ -26,6 +26,7 @@ import es.jocasolo.competitiveeventsapp.dto.score.ScoreDTO
 import es.jocasolo.competitiveeventsapp.dto.score.ScorePostDTO
 import es.jocasolo.competitiveeventsapp.dto.score.ScorePutDTO
 import es.jocasolo.competitiveeventsapp.enums.event.EventStatusType
+import es.jocasolo.competitiveeventsapp.enums.eventuser.EventUserStatusType
 import es.jocasolo.competitiveeventsapp.enums.score.ScoreValueType
 import es.jocasolo.competitiveeventsapp.fragment.BackStackListener
 import es.jocasolo.competitiveeventsapp.fragment.score.ScoreCreationDialogFragment
@@ -195,9 +196,11 @@ class EventMainFragment(var eventId: String? = null) : Fragment(), BackStackList
         }
         // Users
         event.users?.forEach {
-            it.historyType = HistoryItemDTO.HistoryItemType.USER_JOIN
-            it.sortDate = it.incorporationDate
-            historical.add(it)
+            if(it.status == EventUserStatusType.ACCEPTED) {
+                it.historyType = HistoryItemDTO.HistoryItemType.USER_JOIN
+                it.sortDate = it.incorporationDate
+                historical.add(it)
+            }
         }
         var addMillis = 0;
         // Finish event
@@ -235,9 +238,7 @@ class EventMainFragment(var eventId: String? = null) : Fragment(), BackStackList
         historicalAdapter?.notifyDataSetChanged()
 
         // Scroll to bottom
-        val scrollView = requireView().findViewById<NestedScrollView>(R.id.scroll_event_historical)
-        scrollView.fullScroll(ScrollView.FOCUS_DOWN)
-
+        recyclerView?.scrollToPosition(historical.size - 1);
     }
 
     private fun createComment(id: String) {
@@ -250,6 +251,7 @@ class EventMainFragment(var eventId: String? = null) : Fragment(), BackStackList
                     val newComment = response.body()
                     if (newComment != null) {
                         loadEvent(eventId!!)
+                        txtCommentCreate?.text = null
                     }
                 }
 

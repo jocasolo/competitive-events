@@ -44,19 +44,18 @@ open class ListParticipantsAdapter(
             val participant = participants[position]
             participant.let {
                 holder.itemName.text = participant.id
-                holder.itemStatus.text = getStatus(participant.status)
+                holder.itemStatus.text = getPrivilege(participant.privilege)
+                if(participant.status != EventUserStatusType.ACCEPTED) {
+                    holder.itemStatus.text = getStatus(participant.status)
+                    holder.itemStatus.setTextColor(context.resources.getColor(R.color.accent))
+                }
                 holder.itemScore.text = getScoreValue(participant.score)
                 if(isAdmin){
                     holder.itemEdit.visibility = View.VISIBLE
                     holder.itemEdit.setOnClickListener {
                         openParticipantActionsDialog(participant) }
-
-                    if(participant.status != EventUserStatusType.ACCEPTED) {
-                        holder.itemStatus.setTextColor(context.resources.getColor(R.color.accent))
-                    }
                 }
                 if(participant.id.equals(UserAccount.getInstance(context).getName())){
-                    holder.itemStatus.text = getPrivilege(participant.privilege)
                     holder.itemEdit.visibility = View.GONE
                 }
                 if(participant.avatar != null) {

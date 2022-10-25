@@ -73,7 +73,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/military_tech"
+                app:srcCompat="@drawable/mood_bad"
                 app:tint="@color/primary_dark" />
 
         </androidx.cardview.widget.CardView>

@@ -30,6 +30,7 @@ import es.jocasolo.competitiveeventsapp.utils.MyUtils
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import org.apache.commons.lang3.StringUtils
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -86,7 +87,7 @@ import java.util.*
     private fun showDatePicker(){
 
         val calendar = Calendar.getInstance()
-        if (txtBirthDate?.text != null){
+        if (StringUtils.isNotEmpty(txtBirthDate?.text)){
             calendar.time = sdf?.parse(txtBirthDate?.text.toString())
         } else {
             calendar.time = Date()
@@ -114,90 +115,65 @@ import java.util.*
         }
         user?.name?.let {
             txtName?.text = user.name
-        } ?: run {
-            txtName?.visibility = View.INVISIBLE
         }
         user?.surname?.let {
             txtSurname?.text = user.surname
-        } ?: run {
-            txtSurname?.visibility = View.INVISIBLE
         }
         user?.birthDate?.let {
             txtBirthDate?.text = sdf?.format(user.birthDate!!)
-        } ?: run {
-            txtBirthDate?.visibility = View.INVISIBLE
         }
         user?.description?.let {
             txtDescription?.text = user.description
-        } ?: run {
-            txtDescription?.visibility = View.INVISIBLE
         }
     }
 
     private fun update(view: View){
         MyUtils.closeKeyboard(this.requireContext(), view)
-        if(validate()) {
 
-            val sdfApi : SimpleDateFormat = SimpleDateFormat(getString(R.string.sdf_api_date))
-            val birthDate = sdf?.parse(txtBirthDate?.text.toString())
+        val sdfApi : SimpleDateFormat = SimpleDateFormat(getString(R.string.sdf_api_date))
+        val birthDate = sdf?.parse(txtBirthDate?.text.toString())
 
-            spinner?.visibility = View.VISIBLE
+        spinner?.visibility = View.VISIBLE
 
-            val actualUserDto = UserInfo.getInstance(requireContext()).getUserDTO();
-            val updatedUserDto = UserPutDTO(
-                    null,
-                    txtName?.text.toString(),
-                    txtSurname?.text.toString(),
-                    txtDescription?.text.toString(),
-                    sdfApi.format(birthDate!!)
-            )
+        val actualUserDto = UserInfo.getInstance(requireContext()).getUserDTO();
+        val updatedUserDto = UserPutDTO(
+                null,
+                txtName?.text.toString(),
+                txtSurname?.text.toString(),
+                txtDescription?.text.toString(),
+                sdfApi.format(birthDate!!)
+        )
 
-            userService.update(
-                    actualUserDto?.id.toString(), updatedUserDto, UserAccount.getInstance(
-                    requireContext()).getToken()
-            ).enqueue(object : Callback<Void> {
-                override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                    if (response.code() == HttpURLConnection.HTTP_OK) {
-                        actualUserDto?.name = updatedUserDto.name.toString();
-                        actualUserDto?.surname = updatedUserDto.surname.toString();
-                        showSuccessDialog(getString(R.string.success_updated_user))
-                    } else {
-                        try {
-                            val errorDto = Gson().fromJson(
-                                    response.errorBody()?.string(),
-                                    ErrorDTO::class.java
-                            ) as ErrorDTO
-                            showErrorDialog(getString(Message.forCode(errorDto.message)))
-                        } catch (e: Exception) {
-                            showErrorDialog(getString(R.string.error_api_undefined))
-                        }
+        userService.update(
+                actualUserDto?.id.toString(), updatedUserDto, UserAccount.getInstance(
+                requireContext()).getToken()
+        ).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if (response.code() == HttpURLConnection.HTTP_OK) {
+                    actualUserDto?.name = updatedUserDto.name.toString();
+                    actualUserDto?.surname = updatedUserDto.surname.toString();
+                    actualUserDto?.description = updatedUserDto.description.toString()
+                    actualUserDto?.birthDate = sdfApi.parse(updatedUserDto.birthDate)
+                    showSuccessDialog(getString(R.string.success_updated_user))
+                } else {
+                    try {
+                        val errorDto = Gson().fromJson(
+                                response.errorBody()?.string(),
+                                ErrorDTO::class.java
+                        ) as ErrorDTO
+                        showErrorDialog(getString(Message.forCode(errorDto.message)))
+                    } catch (e: Exception) {
+                        showErrorDialog(getString(R.string.error_api_undefined))
                     }
-                    spinner?.visibility = View.INVISIBLE
                 }
+                spinner?.visibility = View.INVISIBLE
+            }
 
-                override fun onFailure(call: Call<Void>, t: Throwable) {
-                    showErrorDialog(getString(R.string.error_api_undefined))
-                    spinner?.visibility = View.INVISIBLE
-                }
-            })
-        }
-    }
-
-    private fun validate() : Boolean{
-        var result = true
-        if(txtName?.text?.isEmpty()!!){
-            result = false
-            txtName?.error = getString(R.string.error_required)
-        }
-        if(txtSurname?.text?.isEmpty()!!){
-            result = false
-            txtSurname?.error = getString(R.string.error_required)
-        }
-        if(txtBirthDate?.text?.isEmpty()!!) {
-            result = false
-            txtBirthDate?.error = getString(R.string.error_required)
-        }
-        return result
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                showErrorDialog(getString(R.string.error_api_undefined))
+                spinner?.visibility = View.INVISIBLE
+            }
+        })
     }
 
      private fun imageChooser() {
