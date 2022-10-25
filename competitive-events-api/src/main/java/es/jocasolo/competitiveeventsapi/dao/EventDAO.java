@@ -29,7 +29,7 @@ public interface EventDAO extends CrudRepository<Event, String> {
 			+ "(fuzzy_search(e.title, :title, 2) OR :title IS NULL) "
 			+ "AND (e.type LIKE :type OR :type IS NULL) "
 			+ "AND (e.status LIKE :status OR :status IS NULL) "
-			+ "AND (e.inscription LIKE :inscription OR :inscription IS NULL) AND e.visibility = 'PUBLIC' AND status <> 'DELETED'"
+			+ "AND (e.inscription LIKE :inscription OR :inscription IS NULL) AND e.visibility = 'PUBLIC' AND status <> 'DELETED' AND status <> 'FINISHED'"
 		)
 	public Page<Event> search(@Param("title") String title, @Param("type") String type, @Param("status") String status, 
 			@Param("inscription") String inscription, Pageable pageRequest);

@@ -208,7 +208,7 @@ public class EventServiceImpl implements EventService {
 		
 		if(StringUtils.isEmpty(username)) {
 			// Public events
-			events = eventDao.search(StringUtils.lowerCase(title), typeName, statusName, inscriptionName, pageRequest);
+			events = eventDao.search(StringUtils.lowerCase(title), typeName, null, inscriptionName, pageRequest);
 		} else {
 			// User events
 			events = eventDao.searchByUser(title, typeName, statusName, eventUserStatusName, inscriptionName, user, pageRequest);
@@ -358,7 +358,7 @@ public class EventServiceImpl implements EventService {
 		if(event == null)
 			throw new EventNotFoundException();
 		
-		if(!event.isInDateRange())
+		if(event.getStatus() == EventStatusType.DELETED || event.getStatus() == EventStatusType.FINISHED)
 			throw new EventInvalidStatusException();
 
 		User authenticatedUser = authentication.getUser();
