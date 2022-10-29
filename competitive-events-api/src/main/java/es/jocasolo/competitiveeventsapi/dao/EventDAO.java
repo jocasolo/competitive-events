@@ -26,12 +26,13 @@ public interface EventDAO extends CrudRepository<Event, String> {
 	public Event findOne(@Param("id") String id);
 	
 	@Query(nativeQuery=true, value = "SELECT * from Event as e WHERE "
-			+ "(fuzzy_search(e.title, :title, 2) OR :title IS NULL) "
+			+ "(fuzzy_search(e.title, :title, 2) OR e.id = :title OR :title IS NULL) "
+			+ "AND (e.id = :id OR :id IS NULL) "
 			+ "AND (e.type LIKE :type OR :type IS NULL) "
 			+ "AND (e.status LIKE :status OR :status IS NULL) "
 			+ "AND (e.inscription LIKE :inscription OR :inscription IS NULL) AND e.visibility = 'PUBLIC' AND status <> 'DELETED' AND status <> 'FINISHED'"
 		)
-	public Page<Event> search(@Param("title") String title, @Param("type") String type, @Param("status") String status, 
+	public Page<Event> search(@Param("id") String id, @Param("title") String title, @Param("type") String type, @Param("status") String status, 
 			@Param("inscription") String inscription, Pageable pageRequest);
 	
 	@Query(nativeQuery=true, value = "SELECT * from Event as e INNER JOIN Event_User as eu ON e.id = eu.event_id WHERE "

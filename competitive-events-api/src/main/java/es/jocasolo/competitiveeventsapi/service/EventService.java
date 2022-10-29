@@ -85,7 +85,7 @@ public interface EventService {
 	 * @return
 	 * @throws UserNotValidException 
 	 */
-	EventPageDTO search(String title, EventType type, EventStatusType status, EventUserStatusType eventUserStatus,
+	EventPageDTO search(String id, String title, EventType type, EventStatusType status, EventUserStatusType eventUserStatus,
 			EventInscriptionType inscription, String username, PageRequest pageRequest) throws UserNotValidException;
 	
 	/**

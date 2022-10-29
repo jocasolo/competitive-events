@@ -63,6 +63,7 @@ public class EventController {
 	@GetMapping(produces = "application/json;charset=utf8")
 	@ApiOperation(value = "Find all events that match your search parameters.")
 	public EventPageDTO search(
+			@RequestParam(value = "id", required = false) String id,
 			@RequestParam(value = "title", required = false) String title,
 			@RequestParam(value = "type", required = false) EventType type,
 			@RequestParam(value = "status", required = false) EventStatusType status,
@@ -72,7 +73,7 @@ public class EventController {
 			@RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
 			@RequestParam(value = "size", required = false, defaultValue = "10") Integer size) throws UserNotValidException {
 		log.debug("Looking for events");
-		return eventService.search(title, type, status, eventUserStatus, inscription, username, PageRequest.of(page, size));
+		return eventService.search(id, title, type, status, eventUserStatus, inscription, username, PageRequest.of(page, size));
 	}
 	
 	@PostMapping(produces = "application/json;charset=utf8")

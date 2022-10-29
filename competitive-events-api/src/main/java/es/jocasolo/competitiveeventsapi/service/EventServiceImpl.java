@@ -195,7 +195,7 @@ public class EventServiceImpl implements EventService {
 	}
 
 	@Override
-	public EventPageDTO search(String title, EventType type, EventStatusType status, EventUserStatusType eventUserStatus,
+	public EventPageDTO search(String id, String title, EventType type, EventStatusType status, EventUserStatusType eventUserStatus,
 			EventInscriptionType inscription, String username, PageRequest pageRequest) throws UserNotValidException {
 		
 		Page<Event> events = null;
@@ -208,7 +208,7 @@ public class EventServiceImpl implements EventService {
 		
 		if(StringUtils.isEmpty(username)) {
 			// Public events
-			events = eventDao.search(StringUtils.lowerCase(title), typeName, null, inscriptionName, pageRequest);
+			events = eventDao.search(id, StringUtils.lowerCase(title), typeName, null, inscriptionName, pageRequest);
 		} else {
 			// User events
 			events = eventDao.searchByUser(title, typeName, statusName, eventUserStatusName, inscriptionName, user, pageRequest);
