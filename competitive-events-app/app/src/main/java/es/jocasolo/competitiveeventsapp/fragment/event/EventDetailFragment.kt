@@ -1,11 +1,15 @@
 package es.jocasolo.competitiveeventsapp.fragment.event
 
+import android.R.attr.label
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -22,7 +26,6 @@ import es.jocasolo.competitiveeventsapp.dto.eventuser.EventUserDTO
 import es.jocasolo.competitiveeventsapp.dto.eventuser.EventUserPostDTO
 import es.jocasolo.competitiveeventsapp.dto.punishment.PunishmentDTO
 import es.jocasolo.competitiveeventsapp.dto.reward.RewardDTO
-import es.jocasolo.competitiveeventsapp.dto.user.UserDTO
 import es.jocasolo.competitiveeventsapp.dto.user.UserLiteWithEventDTO
 import es.jocasolo.competitiveeventsapp.enums.event.EventInscriptionType
 import es.jocasolo.competitiveeventsapp.enums.event.EventType
@@ -72,8 +75,8 @@ class EventDetailFragment(var eventId: String? = null) : Fragment() {
     private var scrollView : NestedScrollView? = null
 
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
 
         // Inflate the layout for this fragment
@@ -121,27 +124,31 @@ class EventDetailFragment(var eventId: String? = null) : Fragment() {
     }
 
     private fun loadEvent(id: String) {
-        eventService.findOne(id, UserAccount.getInstance(requireContext()).getToken()).enqueue(object : Callback<EventDTO> {
-            override fun onResponse(call: Call<EventDTO>, response: Response<EventDTO>) {
-                if (response.code() == HttpURLConnection.HTTP_OK) {
-                    val event = response.body()
-                    if (event != null) {
-                        showEventDetail(event)
-                    }
-                } else {
-                    try {
-                        val errorDto = Gson().fromJson(response.errorBody()?.string(), ErrorDTO::class.java) as ErrorDTO
-                        showErrorDialog(getString(Message.forCode(errorDto.message)))
-                    } catch (e: Exception) {
-                        showErrorDialog(getString(R.string.error_api_undefined))
+        eventService.findOne(id, UserAccount.getInstance(requireContext()).getToken()).enqueue(
+            object : Callback<EventDTO> {
+                override fun onResponse(call: Call<EventDTO>, response: Response<EventDTO>) {
+                    if (response.code() == HttpURLConnection.HTTP_OK) {
+                        val event = response.body()
+                        if (event != null) {
+                            showEventDetail(event)
+                        }
+                    } else {
+                        try {
+                            val errorDto = Gson().fromJson(
+                                response.errorBody()?.string(),
+                                ErrorDTO::class.java
+                            ) as ErrorDTO
+                            showErrorDialog(getString(Message.forCode(errorDto.message)))
+                        } catch (e: Exception) {
+                            showErrorDialog(getString(R.string.error_api_undefined))
+                        }
                     }
                 }
-            }
 
-            override fun onFailure(call: Call<EventDTO>, t: Throwable) {
-                showErrorDialog(getString(R.string.error_api_undefined))
-            }
-        })
+                override fun onFailure(call: Call<EventDTO>, t: Throwable) {
+                    showErrorDialog(getString(R.string.error_api_undefined))
+                }
+            })
     }
 
     private fun showEventDetail(event: EventDTO) {
@@ -176,6 +183,7 @@ class EventDetailFragment(var eventId: String? = null) : Fragment() {
 
         // Identifier
         txtIdentifier?.text = getString(R.string.events_identifier, event.id)
+        requireView().findViewById<ImageView>(R.id.btn_event_detail_copy_id)?.setOnClickListener { copyToClipBoard(event.id) }
 
         // Image
         event.image?.let {
@@ -193,7 +201,12 @@ class EventDetailFragment(var eventId: String? = null) : Fragment() {
 
         // End date
         if(event.endDate != null){
-            txtEndDate?.text = getString(R.string.events_end, sdf.format(event.endDate), MyUtils.getTimeToFinish(requireContext(), event.endDate))
+            txtEndDate?.text = getString(
+                R.string.events_end, sdf.format(event.endDate), MyUtils.getTimeToFinish(
+                    requireContext(),
+                    event.endDate
+                )
+            )
             txtEndDate?.visibility = View.VISIBLE
         } else {
             txtEndDate?.visibility = View.GONE
@@ -209,7 +222,10 @@ class EventDetailFragment(var eventId: String? = null) : Fragment() {
 
         // Num participants
         if(event.numParticipants != null) {
-            txtNumParticipants?.text = getString(R.string.events_num_participants, event.numParticipants)
+            txtNumParticipants?.text = getString(
+                R.string.events_num_participants,
+                event.numParticipants
+            )
             txtNumParticipants?.visibility = View.VISIBLE
         } else {
             txtNumParticipants?.visibility = View.GONE
@@ -217,7 +233,10 @@ class EventDetailFragment(var eventId: String? = null) : Fragment() {
 
         // Max places
         if(event.numParticipants != null && event.maxPlaces != null) {
-            txtAvailablePlaces?.text = getString(R.string.events_available_places, event.maxPlaces!! - event.numParticipants!!)
+            txtAvailablePlaces?.text = getString(
+                R.string.events_available_places,
+                event.maxPlaces!! - event.numParticipants!!
+            )
             txtAvailablePlaces?.visibility = View.VISIBLE
         } else {
             txtAvailablePlaces?.visibility = View.GONE
@@ -283,11 +302,15 @@ class EventDetailFragment(var eventId: String? = null) : Fragment() {
     private fun joinToEvent(event: EventDTO, reject: Boolean = false) {
         val request  = EventUserPostDTO(UserAccount.getInstance(requireContext()).getName())
         request.reject = reject
-        eventService.addUser(event.id, request, UserAccount.getInstance(requireContext()).getToken()).enqueue(object : Callback<EventUserDTO> {
+        eventService.addUser(
+            event.id,
+            request,
+            UserAccount.getInstance(requireContext()).getToken()
+        ).enqueue(object : Callback<EventUserDTO> {
             override fun onResponse(call: Call<EventUserDTO>, response: Response<EventUserDTO>) {
-                if(response.code() == HttpURLConnection.HTTP_CREATED){
-                    if(!reject) {
-                        if(event.approvalNeeded == true){
+                if (response.code() == HttpURLConnection.HTTP_CREATED) {
+                    if (!reject) {
+                        if (event.approvalNeeded == true) {
                             showSuccessDialog(getString(R.string.events_user_request_join))
                         } else {
                             showSuccessDialog(getString(R.string.events_user_join_success))
@@ -300,20 +323,24 @@ class EventDetailFragment(var eventId: String? = null) : Fragment() {
                     setButtonText(event, UserAccount.getInstance(requireContext()).getName())
                 } else {
                     try {
-                        val errorDto = Gson().fromJson(response.errorBody()?.string(), ErrorDTO::class.java) as ErrorDTO
+                        val errorDto = Gson().fromJson(
+                            response.errorBody()?.string(),
+                            ErrorDTO::class.java
+                        ) as ErrorDTO
                         showErrorDialog(getString(Message.forCode(errorDto.message)))
-                    } catch (e : Exception) {
+                    } catch (e: Exception) {
                         showErrorDialog(getString(R.string.error_api_undefined))
                     }
                 }
             }
+
             override fun onFailure(call: Call<EventUserDTO>, t: Throwable) {
                 showErrorDialog(getString(R.string.error_api_undefined))
             }
         })
     }
 
-    private fun setButtonText(event: EventDTO, userId : String?) {
+    private fun setButtonText(event: EventDTO, userId: String?) {
         val user = searchUser(event.users, UserAccount.getInstance(requireContext()).getName())
         if(user == null && userId == null) {
             btnJoin?.text = getString(R.string.events_join)
@@ -327,10 +354,17 @@ class EventDetailFragment(var eventId: String? = null) : Fragment() {
             }
         } else {
             val requestId = user?.id ?: userId
-            eventService.findEventAndUser(event.id, requestId!!, UserAccount.getInstance(requireContext()).getToken()).enqueue(object : Callback<EventUserDTO> {
-                override fun onResponse(call: Call<EventUserDTO>, response: Response<EventUserDTO>) {
-                    if(response.code() == HttpURLConnection.HTTP_OK){
-                        val eventUser : EventUserDTO? = response.body()
+            eventService.findEventAndUser(
+                event.id, requestId!!, UserAccount.getInstance(
+                    requireContext()
+                ).getToken()
+            ).enqueue(object : Callback<EventUserDTO> {
+                override fun onResponse(
+                    call: Call<EventUserDTO>,
+                    response: Response<EventUserDTO>
+                ) {
+                    if (response.code() == HttpURLConnection.HTTP_OK) {
+                        val eventUser: EventUserDTO? = response.body()
                         when (eventUser?.status) {
                             EventUserStatusType.ACCEPTED -> {
                                 btnJoin?.visibility = View.GONE
@@ -358,6 +392,7 @@ class EventDetailFragment(var eventId: String? = null) : Fragment() {
                         }
                     }
                 }
+
                 override fun onFailure(call: Call<EventUserDTO>, t: Throwable) {
                 }
             })
@@ -374,7 +409,7 @@ class EventDetailFragment(var eventId: String? = null) : Fragment() {
         }
     }
 
-    fun searchUser(users : List<UserLiteWithEventDTO>?, username : String) : UserLiteWithEventDTO? {
+    private fun searchUser(users: List<UserLiteWithEventDTO>?, username: String) : UserLiteWithEventDTO? {
         users?.forEach {
             if(it.id == username)
                 return it
@@ -382,7 +417,14 @@ class EventDetailFragment(var eventId: String? = null) : Fragment() {
         return null;
     }
 
-    private fun showSuccessDialog(message : String) {
+    private fun copyToClipBoard(text: String) {
+        val clipboard: ClipboardManager = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val clip = ClipData.newPlainText(getString(R.string.identifier), text)
+        clipboard.setPrimaryClip(clip)
+        Toast.makeText(context, getString(R.string.identifier_copy), Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showSuccessDialog(message: String) {
         MyDialog.message(this, getString(R.string.events), message)
     }
 

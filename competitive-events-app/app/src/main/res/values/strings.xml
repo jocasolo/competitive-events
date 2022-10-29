@@ -53,6 +53,8 @@
     <string name="valid">Válidada</string>
     <string name="no_valid">No válida</string>
     <string name="edit">Editar</string>
+    <string name="identifier">Identificador</string>
+    <string name="identifier_copy">Identificador copiado</string>
 
     <!-- Action bar -->
     <string name="logout">Cerrar sesión</string>
