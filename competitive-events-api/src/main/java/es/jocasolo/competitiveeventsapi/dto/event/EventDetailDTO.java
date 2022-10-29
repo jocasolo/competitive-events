@@ -1,6 +1,7 @@
 package es.jocasolo.competitiveeventsapi.dto.event;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -19,6 +20,10 @@ public class EventDetailDTO extends EventDTO implements Serializable {
 	@Getter
 	@Setter
 	private String description;
+	
+	@Getter
+	@Setter
+	private Date creationDate;
 	
 	@Getter
 	@Setter

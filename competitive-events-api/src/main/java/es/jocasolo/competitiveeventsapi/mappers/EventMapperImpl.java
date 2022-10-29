@@ -71,6 +71,7 @@ public class EventMapperImpl implements EventMapper {
 		detail.setVisibility(event.getVisibility());
 		detail.setDescription(event.getDescription());
 		detail.setStatus(event.getStatus());
+		detail.setCreationDate(event.getCreationDate());
 		detail.setUsers(userMapper.map(event.getUsers(), event));
 		detail.setRewards(commonService.transform(event.getRewards(), RewardDTO.class));
 		detail.setPunishments(commonService.transform(event.getPunishments(), PunishmentDTO.class));
