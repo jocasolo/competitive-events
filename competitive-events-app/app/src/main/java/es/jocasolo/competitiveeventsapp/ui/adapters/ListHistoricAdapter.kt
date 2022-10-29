@@ -22,6 +22,7 @@ import es.jocasolo.competitiveeventsapp.enums.score.ScoreStatusType
 import es.jocasolo.competitiveeventsapp.enums.score.ScoreValueType
 import es.jocasolo.competitiveeventsapp.fragment.event.EventMainFragment
 import es.jocasolo.competitiveeventsapp.fragment.score.ScoreEditDialogFragment
+import es.jocasolo.competitiveeventsapp.fragment.user.ProfileFragment
 import es.jocasolo.competitiveeventsapp.singleton.UserAccount
 import es.jocasolo.competitiveeventsapp.utils.MyUtils
 import org.apache.commons.lang3.StringUtils
@@ -61,6 +62,7 @@ open class ListHistoricAdapter(
                         holder.txtUserCommentText.text = comment.text
                         holder.txtUserCommentDate.text = getDateText(comment.user?.id, comment.date)
                         loadAvatarImage(comment.user?.avatar?.link(), holder.imgUserCommentAvatar)
+                        holder.imgUserCommentAvatar.setOnClickListener { openParticipantDialog(comment.user?.id!!) }
                     }
                     // Comment own
                     HistoryItemDTO.HistoryItemType.COMMENT_OWN -> {
@@ -69,6 +71,7 @@ open class ListHistoricAdapter(
                         holder.txtOwnCommentText.text = comment.text
                         holder.txtOwnCommentDate.text = getDateText(comment.user?.id, comment.date)
                         loadAvatarImage(comment.user?.avatar?.link(), holder.imgOwnCommentAvatar)
+                        holder.imgOwnCommentAvatar.setOnClickListener { openParticipantDialog(comment.user?.id!!) }
                     }
                     // Score
                     HistoryItemDTO.HistoryItemType.SCORE -> {
@@ -107,6 +110,7 @@ open class ListHistoricAdapter(
                         if (score.status == ScoreStatusType.NOT_VALID) {
                             holder.txtScoreNotValid.visibility = View.VISIBLE
                         }
+                        holder.imgScoreAvatar.setOnClickListener { openParticipantDialog(score.user?.id!!) }
                     }
                     // User join
                     HistoryItemDTO.HistoryItemType.USER_JOIN -> {
@@ -256,6 +260,19 @@ open class ListHistoricAdapter(
             }
         }
         return timeInHHMMSS
+    }
+
+    private fun openParticipantDialog(userId: String) {
+        val ft: FragmentTransaction = fragment.parentFragmentManager.beginTransaction()
+        val prev = fragment.parentFragmentManager.findFragmentByTag("dialogParticipant")
+        if (prev != null) {
+            ft.remove(prev)
+        }
+        ft.addToBackStack(null)
+
+        // Create and show the dialog.
+        val newDialogFragment = ProfileFragment(userId)
+        newDialogFragment.show(ft, "dialogParticipant")
     }
 
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){

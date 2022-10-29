@@ -204,7 +204,6 @@ import java.util.*
                      val filePart = MultipartBody.Part.createFormData("file", file.name, RequestBody.create(MediaType.parse("image/*"), file));
 
                      userService.updateAvatar(filePart, UserAccount.getInstance(requireContext()).getName(), UserAccount.getInstance(requireContext()).getToken()).enqueue(object : Callback<UserDTO> {
-
                          override fun onResponse(call: Call<UserDTO>, response: Response<UserDTO>) {
                              if (response.code() == HttpURLConnection.HTTP_OK) {
                                  UserInfo.getInstance(requireContext()).getUserDTO()?.avatar = response.body()?.avatar;
@@ -222,13 +221,10 @@ import java.util.*
                              }
                              spinner?.visibility = View.INVISIBLE
                          }
-
                          override fun onFailure(call: Call<UserDTO>, t: Throwable) {
-                             System.out.println(t)
                              showErrorDialog(getString(R.string.error_api_undefined))
                              spinner?.visibility = View.INVISIBLE
                          }
-
                      })
                  }
              }

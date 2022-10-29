@@ -1,5 +1,6 @@
 package es.jocasolo.competitiveeventsapp.dto
 
+import es.jocasolo.competitiveeventsapp.dto.user.UserDTO
 import es.jocasolo.competitiveeventsapp.enums.eventuser.EventUserPrivilegeType
 import es.jocasolo.competitiveeventsapp.enums.eventuser.EventUserStatusType
 

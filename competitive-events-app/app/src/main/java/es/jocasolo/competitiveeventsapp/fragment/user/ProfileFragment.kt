@@ -8,17 +8,30 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.google.gson.Gson
 import com.squareup.picasso.Picasso
 import es.jocasolo.competitiveeventsapp.R
+import es.jocasolo.competitiveeventsapp.dto.ErrorDTO
 import es.jocasolo.competitiveeventsapp.dto.user.UserDTO
+import es.jocasolo.competitiveeventsapp.service.ServiceBuilder
+import es.jocasolo.competitiveeventsapp.service.UserService
+import es.jocasolo.competitiveeventsapp.singleton.UserAccount
 import es.jocasolo.competitiveeventsapp.singleton.UserInfo
+import es.jocasolo.competitiveeventsapp.utils.Message
 import es.jocasolo.competitiveeventsapp.utils.MyUtils
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.net.HttpURLConnection
 import java.text.SimpleDateFormat
 
 
-class ProfileFragment : Fragment() {
+class ProfileFragment(private val userId: String? = null) : DialogFragment() {
+
+    private val userService = ServiceBuilder.buildService(UserService::class.java)
 
     private var txtUsername : TextView? = null
     private var txtEmail : TextView? = null
@@ -53,15 +66,35 @@ class ProfileFragment : Fragment() {
         txtRegisterDate = view.findViewById(R.id.txt_profile_registerDate)
         txtDescription = view.findViewById(R.id.txt_profile_description)
 
-        // Navigate to profile update
-        view.findViewById<Button>(R.id.btn_profile_modify).setOnClickListener {
-            findNavController().navigate(R.id.action_profile_to_update_profile)
+        // Load user info
+        if(userId == null) {
+            // Navigate to profile update
+            view.findViewById<Button>(R.id.btn_profile_modify).setOnClickListener {
+                findNavController().navigate(R.id.action_profile_to_update_profile)
+            }
+            // Init own user profile
+            initFields(UserInfo.getInstance(requireContext()).getUserDTO())
+
+        } else {
+            view.findViewById<Button>(R.id.btn_profile_modify)?.text = getString(R.string.back)
+            view.findViewById<Button>(R.id.btn_profile_modify)?.setOnClickListener { dismiss() }
+            txtEmail?.visibility = View.GONE
+            findUser(userId)
         }
 
-        // Load user info
-        initFields(UserInfo.getInstance(requireContext()).getUserDTO())
-
         super.onViewCreated(view, savedInstanceState)
+    }
+
+    private fun findUser(userId: String) {
+        userService.findUser(userId, UserAccount.getInstance(requireContext()).getToken()).enqueue(object : Callback<UserDTO> {
+            override fun onResponse(call: Call<UserDTO>, response: Response<UserDTO>) {
+                if (response.code() == HttpURLConnection.HTTP_OK) {
+                    initFields(response.body())
+                }
+            }
+            override fun onFailure(call: Call<UserDTO>, t: Throwable) {
+            }
+        })
     }
 
     private fun initFields(user: UserDTO?) {

@@ -370,7 +370,6 @@ class EventDetailFragment(var eventId: String? = null) : Fragment() {
             val eventActivity = requireActivity() as EventActivity
             if(eventActivity.wasPaused){
                 loadEvent(eventId!!)
-                Log.e("Resume", "recarga evento")
             }
         }
     }

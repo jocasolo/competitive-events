@@ -11,11 +11,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import es.jocasolo.competitiveeventsapp.R
 import es.jocasolo.competitiveeventsapp.dto.ParticipantDTO
+import es.jocasolo.competitiveeventsapp.dto.score.ScoreDTO
+import es.jocasolo.competitiveeventsapp.dto.user.UserDTO
 import es.jocasolo.competitiveeventsapp.enums.eventuser.EventUserPrivilegeType
 import es.jocasolo.competitiveeventsapp.enums.eventuser.EventUserStatusType
 import es.jocasolo.competitiveeventsapp.enums.score.ScoreValueType
 import es.jocasolo.competitiveeventsapp.fragment.participant.ParticipantsEditDialogFragment
 import es.jocasolo.competitiveeventsapp.fragment.participant.ParticipantsListFragment
+import es.jocasolo.competitiveeventsapp.fragment.score.ScoreEditDialogFragment
+import es.jocasolo.competitiveeventsapp.fragment.user.ProfileFragment
 import es.jocasolo.competitiveeventsapp.singleton.UserAccount
 import java.time.Duration
 
@@ -67,6 +71,8 @@ open class ListParticipantsAdapter(
                         .error(R.drawable.military_tech)
                         .into(holder.itemImage)
                 }
+                holder.itemImage.setOnClickListener { openParticipantDialog(participant.id!!) }
+                holder.itemName.setOnClickListener { openParticipantDialog(participant.id!!) }
             }
         }
     }
@@ -137,6 +143,19 @@ open class ListParticipantsAdapter(
         participants.let {
             return participants.size
         }
+    }
+
+    private fun openParticipantDialog(userId: String) {
+        val ft: FragmentTransaction = listFragment.parentFragmentManager.beginTransaction()
+        val prev = listFragment.parentFragmentManager.findFragmentByTag("dialogParticipant")
+        if (prev != null) {
+            ft.remove(prev)
+        }
+        ft.addToBackStack(null)
+
+        // Create and show the dialog.
+        val newDialogFragment = ProfileFragment(userId)
+        newDialogFragment.show(ft, "dialogParticipant")
     }
 
     inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
