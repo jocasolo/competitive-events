@@ -5,8 +5,7 @@ import es.jocasolo.competitiveeventsapp.dto.comment.CommentDTO
 import es.jocasolo.competitiveeventsapp.dto.punishment.PunishmentDTO
 import es.jocasolo.competitiveeventsapp.dto.reward.RewardDTO
 import es.jocasolo.competitiveeventsapp.dto.score.ScoreDTO
-import es.jocasolo.competitiveeventsapp.dto.user.ImageDTO
-import es.jocasolo.competitiveeventsapp.dto.user.UserDTO
+import es.jocasolo.competitiveeventsapp.dto.image.ImageDTO
 import es.jocasolo.competitiveeventsapp.dto.user.UserLiteWithEventDTO
 import es.jocasolo.competitiveeventsapp.enums.event.EventInscriptionType
 import es.jocasolo.competitiveeventsapp.enums.event.EventStatusType
@@ -26,6 +25,7 @@ class EventDTO(
         @SerializedName("inscription") var inscription: EventInscriptionType?,
         @SerializedName("visibility") var visibility: EventVisibilityType?,
         @SerializedName("approvalNeeded") var approvalNeeded: Boolean?,
+        @SerializedName("creationDate") var creationDate: Date?,
         @SerializedName("initDate") var initDate: Date?,
         @SerializedName("endDate") var endDate: Date?,
         @SerializedName("maxPlaces") var maxPlaces: Int?,

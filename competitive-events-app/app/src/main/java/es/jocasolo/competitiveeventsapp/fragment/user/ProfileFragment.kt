@@ -14,6 +14,7 @@ import com.squareup.picasso.Picasso
 import es.jocasolo.competitiveeventsapp.R
 import es.jocasolo.competitiveeventsapp.dto.user.UserDTO
 import es.jocasolo.competitiveeventsapp.singleton.UserInfo
+import es.jocasolo.competitiveeventsapp.utils.MyUtils
 import java.text.SimpleDateFormat
 
 
@@ -68,7 +69,10 @@ class ProfileFragment : Fragment() {
         txtUsername?.text = user?.id
         txtEmail?.text = user?.email
         user?.avatar?.let {
-            Picasso.get().load(user.avatar!!.link()).into(view?.findViewById<ImageView>(R.id.img_profile_avatar))
+            Picasso.get().load(user.avatar!!.link()).into(view?.findViewById(R.id.img_profile_avatar))
+            view?.findViewById<ImageView>(R.id.img_profile_avatar)?.setOnClickListener {
+                MyUtils.zoomToThisImage(requireContext(), user.avatar!!)
+            }
         }
         user?.name?.let {
             txtName?.text = user.name

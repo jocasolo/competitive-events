@@ -2,9 +2,9 @@ package es.jocasolo.competitiveeventsapp.dto.user
 
 import com.google.gson.annotations.SerializedName
 import es.jocasolo.competitiveeventsapp.dto.HistoryItemDTO
+import es.jocasolo.competitiveeventsapp.dto.image.ImageDTO
 import es.jocasolo.competitiveeventsapp.enums.eventuser.EventUserPrivilegeType
 import es.jocasolo.competitiveeventsapp.enums.eventuser.EventUserStatusType
-import java.time.LocalDateTime
 import java.util.*
 
 class UserLiteWithEventDTO(

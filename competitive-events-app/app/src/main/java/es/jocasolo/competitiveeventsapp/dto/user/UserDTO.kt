@@ -1,7 +1,7 @@
 package es.jocasolo.competitiveeventsapp.dto.user
 
 import com.google.gson.annotations.SerializedName
-import java.time.LocalDateTime
+import es.jocasolo.competitiveeventsapp.dto.image.ImageDTO
 import java.util.*
 
 open class UserDTO(

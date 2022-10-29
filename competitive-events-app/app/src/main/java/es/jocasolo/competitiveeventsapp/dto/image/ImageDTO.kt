@@ -1,4 +1,4 @@
-package es.jocasolo.competitiveeventsapp.dto.user
+package es.jocasolo.competitiveeventsapp.dto.image
 
 import com.google.gson.annotations.SerializedName
 import es.jocasolo.competitiveeventsapp.BuildConfig

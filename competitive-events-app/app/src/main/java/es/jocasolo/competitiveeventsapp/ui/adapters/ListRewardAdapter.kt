@@ -12,6 +12,7 @@ import com.squareup.picasso.Picasso
 import es.jocasolo.competitiveeventsapp.R
 import es.jocasolo.competitiveeventsapp.dto.reward.RewardDTO
 import es.jocasolo.competitiveeventsapp.enums.score.ScoreSortType
+import es.jocasolo.competitiveeventsapp.utils.MyUtils
 
 open class ListRewardAdapter(var context : Context, var rewards: List<RewardDTO>): RecyclerView.Adapter<ListRewardAdapter.ViewHolder>() {
 
@@ -45,6 +46,7 @@ open class ListRewardAdapter(var context : Context, var rewards: List<RewardDTO>
                             .centerCrop()
                             .error(R.drawable.military_tech)
                             .into(holder.itemImage)
+                    holder.itemImage.setOnClickListener { MyUtils.zoomToThisImage(context, reward.image!!) }
                 }
             }
         }

@@ -180,6 +180,7 @@ class EventDetailFragment(var eventId: String? = null) : Fragment() {
         // Image
         event.image?.let {
             Picasso.get().load(it.link()).into(imgMain)
+            imgMain?.setOnClickListener { MyUtils.zoomToThisImage(requireContext(), event.image!!) }
         }
 
         // Init date

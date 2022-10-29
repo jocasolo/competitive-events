@@ -1,7 +1,7 @@
 package es.jocasolo.competitiveeventsapp.singleton
 
 import android.content.Context
-import es.jocasolo.competitiveeventsapp.dto.user.ImageDTO
+import es.jocasolo.competitiveeventsapp.dto.image.ImageDTO
 import es.jocasolo.competitiveeventsapp.dto.user.UserDTO
 
 class UserInfo private constructor(context: Context) {

@@ -2,8 +2,6 @@ package es.jocasolo.competitiveeventsapp.dto.punishment
 
 import com.google.gson.annotations.SerializedName
 import es.jocasolo.competitiveeventsapp.dto.BackStackEntryDTO
-import es.jocasolo.competitiveeventsapp.dto.user.ImageDTO
-import es.jocasolo.competitiveeventsapp.dto.user.UserDTO
 import es.jocasolo.competitiveeventsapp.enums.score.ScoreSortType
 
 class PunishmentPostDTO(

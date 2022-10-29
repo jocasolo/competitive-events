@@ -1,9 +1,12 @@
 package es.jocasolo.competitiveeventsapp.utils
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import es.jocasolo.competitiveeventsapp.R
+import es.jocasolo.competitiveeventsapp.dto.image.ImageDTO
 import es.jocasolo.competitiveeventsapp.dto.user.UserDTO
 import es.jocasolo.competitiveeventsapp.dto.user.UserLiteWithEventDTO
 import es.jocasolo.competitiveeventsapp.enums.eventuser.EventUserPrivilegeType
@@ -58,5 +61,12 @@ object MyUtils {
             }
         }
         return false
+    }
+
+    fun zoomToThisImage(context: Context, image: ImageDTO) {
+        val intent = Intent()
+        intent.action = Intent.ACTION_VIEW
+        intent.setDataAndType(Uri.parse(image.link()), "image/*")
+        context.startActivity(intent)
     }
 }

@@ -13,6 +13,7 @@ import es.jocasolo.competitiveeventsapp.R
 import es.jocasolo.competitiveeventsapp.dto.punishment.PunishmentDTO
 import es.jocasolo.competitiveeventsapp.dto.reward.RewardDTO
 import es.jocasolo.competitiveeventsapp.enums.score.ScoreSortType
+import es.jocasolo.competitiveeventsapp.utils.MyUtils
 
 class ListPunishmentAdapter (var context : Context, var punishments: List<PunishmentDTO>): RecyclerView.Adapter<ListPunishmentAdapter.ViewHolder>() {
 
@@ -46,6 +47,7 @@ class ListPunishmentAdapter (var context : Context, var punishments: List<Punish
                             .centerCrop()
                             .error(R.drawable.military_tech)
                             .into(holder.itemImage)
+                    holder.itemImage.setOnClickListener { MyUtils.zoomToThisImage(context, punishment.image!!) }
                 }
             }
         }

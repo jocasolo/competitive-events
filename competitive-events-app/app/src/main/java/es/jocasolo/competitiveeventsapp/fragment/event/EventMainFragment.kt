@@ -171,6 +171,7 @@ class EventMainFragment(var eventId: String? = null) : Fragment(), BackStackList
         val username = UserAccount.getInstance(requireContext()).getName()
 
         // Init event
+        event.initDate = if(event.initDate != null) event.initDate else event.creationDate
         if(event.initDate != null && event.initDate!!.before(Date())) {
             val history = HistoryItemDTO()
             history.historyType = HistoryItemDTO.HistoryItemType.INIT_EVENT

@@ -1,5 +1,7 @@
 package es.jocasolo.competitiveeventsapp.ui.adapters
 
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,8 +15,7 @@ import es.jocasolo.competitiveeventsapp.R
 import es.jocasolo.competitiveeventsapp.dto.HistoryItemDTO
 import es.jocasolo.competitiveeventsapp.dto.comment.CommentDTO
 import es.jocasolo.competitiveeventsapp.dto.event.EventDTO
-import es.jocasolo.competitiveeventsapp.dto.punishment.PunishmentDTO
-import es.jocasolo.competitiveeventsapp.dto.reward.RewardDTO
+import es.jocasolo.competitiveeventsapp.dto.image.ImageDTO
 import es.jocasolo.competitiveeventsapp.dto.score.ScoreDTO
 import es.jocasolo.competitiveeventsapp.dto.user.UserLiteWithEventDTO
 import es.jocasolo.competitiveeventsapp.enums.score.ScoreStatusType
@@ -27,6 +28,7 @@ import org.apache.commons.lang3.StringUtils
 import java.text.SimpleDateFormat
 import java.time.Duration
 import java.util.*
+
 
 open class ListHistoricAdapter(
     var fragment: EventMainFragment,
@@ -72,22 +74,37 @@ open class ListHistoricAdapter(
                     HistoryItemDTO.HistoryItemType.SCORE -> {
                         val score = history as ScoreDTO
                         holder.layoutScore.visibility = View.VISIBLE
-                        if(eventDTO.scoreType != ScoreValueType.TIME) {
-                            holder.txtScoreText.text = fragment.getString(R.string.user_new_score, score.user?.id, score.value)
+                        if (eventDTO.scoreType != ScoreValueType.TIME) {
+                            holder.txtScoreText.text = fragment.getString(
+                                R.string.user_new_score,
+                                score.user?.id,
+                                score.value
+                            )
                         } else {
-                            holder.txtScoreText.text = fragment.getString(R.string.user_new_score, score.user?.id, getTime(score.value?.toDouble()))
+                            holder.txtScoreText.text = fragment.getString(
+                                R.string.user_new_score, score.user?.id, getTime(
+                                    score.value?.toDouble()
+                                )
+                            )
                         }
                         holder.txtScoreDate.text = getDateText(score.user?.id, score.date)
                         loadAvatarImage(score.user?.avatar?.link(), holder.imgScoreAvatar)
-                        if(score.image != null) {
+                        if (score.image != null) {
                             holder.imgScoreImage.visibility = View.VISIBLE
                             loadAvatarImage(score.image?.link(), holder.imgScoreImage, 150, 100)
+                            holder.imgScoreImage.setOnClickListener {
+                                MyUtils.zoomToThisImage(fragment.requireActivity(), score.image!! )
+                            }
                         }
-                        if(MyUtils.isAdmin(eventDTO.users, UserAccount.getInstance(fragment.requireContext()).getName())) {
+                        if (MyUtils.isAdmin(
+                                eventDTO.users,
+                                UserAccount.getInstance(fragment.requireContext()).getName()
+                            )
+                        ) {
                             holder.btnScoreEdit.setOnClickListener { openScoreEditDialog(score) }
                             holder.btnScoreEdit.visibility = View.VISIBLE
                         }
-                        if(score.status == ScoreStatusType.NOT_VALID){
+                        if (score.status == ScoreStatusType.NOT_VALID) {
                             holder.txtScoreNotValid.visibility = View.VISIBLE
                         }
                     }
@@ -96,7 +113,10 @@ open class ListHistoricAdapter(
                         val user = history as UserLiteWithEventDTO
                         holder.layoutNotification.visibility = View.VISIBLE
                         holder.txtNotificationDate.text = getDateText(null, user.incorporationDate)
-                        holder.txtNotificationTitle.text = fragment.getString(R.string.user_join_notification, user.id)
+                        holder.txtNotificationTitle.text = fragment.getString(
+                            R.string.user_join_notification,
+                            user.id
+                        )
                         holder.txtNotificationText.visibility = View.GONE
                         holder.imgNotificationImage.setImageResource(R.drawable.person_add)
                     }
@@ -138,7 +158,14 @@ open class ListHistoricAdapter(
         }
     }
 
-    private fun openScoreEditDialog(score : ScoreDTO) {
+    private fun zoomToThisImage(image: ImageDTO) {
+        val intent = Intent()
+        intent.action = Intent.ACTION_VIEW
+        intent.setDataAndType(Uri.parse(image.link()), "image/*")
+        fragment.requireActivity().startActivity(intent)
+    }
+
+    private fun openScoreEditDialog(score: ScoreDTO) {
         val ft: FragmentTransaction = fragment.parentFragmentManager.beginTransaction()
         val prev = fragment.parentFragmentManager.findFragmentByTag("dialogScoreEdit")
         if (prev != null) {
@@ -147,7 +174,7 @@ open class ListHistoricAdapter(
         ft.addToBackStack(null)
 
         // Create and show the dialog.
-        val newDialogFragment = ScoreEditDialogFragment (fragment, score, fragment.eventId!!)
+        val newDialogFragment = ScoreEditDialogFragment(fragment, score, fragment.eventId!!)
         newDialogFragment.show(ft, "dialogScoreEdit")
     }
 
@@ -162,7 +189,12 @@ open class ListHistoricAdapter(
        return result
     }
 
-    private fun loadAvatarImage(imageLink: String?, imageView: ImageView?, width: Int = 30, height : Int = 30) {
+    private fun loadAvatarImage(
+        imageLink: String?,
+        imageView: ImageView?,
+        width: Int = 30,
+        height: Int = 30
+    ) {
         if (StringUtils.isNotEmpty(imageLink)) {
             Picasso.get()
                 .load(imageLink)
@@ -204,11 +236,23 @@ open class ListHistoricAdapter(
             val mm = seconds % 3600 / 60
             val ss = seconds % 60
             if(hh > 0) {
-                timeInHHMMSS = String.format("%02d:%02d:%02d %s", hh, mm, ss, fragment.requireContext().getString(R.string.hours))
+                timeInHHMMSS = String.format(
+                    "%02d:%02d:%02d %s", hh, mm, ss, fragment.requireContext().getString(
+                        R.string.hours
+                    )
+                )
             } else if (mm > 0) {
-                timeInHHMMSS = String.format("%02d:%02d  %s", mm, ss, fragment.requireContext().getString(R.string.minutes))
+                timeInHHMMSS = String.format(
+                    "%02d:%02d  %s", mm, ss, fragment.requireContext().getString(
+                        R.string.minutes
+                    )
+                )
             } else {
-                timeInHHMMSS = String.format("%02d  %s", ss, fragment.requireContext().getString(R.string.seconds))
+                timeInHHMMSS = String.format(
+                    "%02d  %s",
+                    ss,
+                    fragment.requireContext().getString(R.string.seconds)
+                )
             }
         }
         return timeInHHMMSS
