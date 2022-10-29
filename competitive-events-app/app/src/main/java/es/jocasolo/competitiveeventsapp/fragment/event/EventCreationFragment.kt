@@ -502,6 +502,7 @@ class EventCreationFragment : Fragment() {
     private fun commitRewards(id: String) {
         rewardAdapter?.rewards?.forEach { r ->
             val rewardPostDTO = r as RewardPostDTO
+            rewardPostDTO.eventId = id
             rewardService.create(rewardPostDTO, UserAccount.getInstance(requireContext()).getToken()).enqueue(object : Callback<RewardDTO> {
                 override fun onResponse(call: Call<RewardDTO>, response: Response<RewardDTO>) {
                     val newReward = response.body()
@@ -518,6 +519,7 @@ class EventCreationFragment : Fragment() {
     private fun commitPunishments(id: String) {
         punishmentAdapter?.punishments?.forEach { p ->
             val punishmentPostDTO = p as PunishmentPostDTO
+            punishmentPostDTO.eventId = id
             punishmentService.create(punishmentPostDTO, UserAccount.getInstance(requireContext()).getToken()).enqueue(object : Callback<PunishmentDTO> {
                 override fun onResponse(call: Call<PunishmentDTO>, response: Response<PunishmentDTO>) {
                     val newPunishment = response.body()
