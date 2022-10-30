@@ -50,7 +50,6 @@ open class ListEventAdapter(
                 holder.card.setOnClickListener { openDetail(event) }
                 holder.itemTitle.text = event.title.toString()
                 holder.itemSubtitle.text = event.subtitle.toString()
-                holder.itemParticipants.text = event.numParticipants.toString()
                 Picasso.get()
                         .load(event.image?.link())
                         .resize(65, 65)
@@ -114,7 +113,6 @@ open class ListEventAdapter(
         var itemImage: ImageView = itemView.findViewById(R.id.img_event_item_image)
         var itemTitle: TextView = itemView.findViewById(R.id.txt_event_item_title)
         var itemSubtitle: TextView = itemView.findViewById(R.id.txt_event_item_subtitle)
-        var itemParticipants: TextView = itemView.findViewById(R.id.txt_item_event_participants)
         var itemClock: TextView = itemView.findViewById(R.id.txt_item_event_clock)
         var imgClock: ImageView = itemView.findViewById(R.id.img_item_event_clock)
         var card: CardView = itemView.findViewById(R.id.card_event)

@@ -82,6 +82,8 @@ class LoginFragment : Fragment() {
                             startActivity(Intent(requireActivity(), MainActivity::class.java))
                             requireActivity().finish()
                         }
+                    } else if(response.code() == HttpURLConnection.HTTP_FORBIDDEN) {
+                        showErrorDialog(getString(R.string.error_login_forbidden))
                     } else {
                         try {
                             val errorDto = Gson().fromJson(response.errorBody()?.string(), ErrorDTO::class.java) as ErrorDTO

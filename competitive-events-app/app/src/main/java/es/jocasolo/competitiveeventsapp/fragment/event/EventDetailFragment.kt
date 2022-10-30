@@ -74,6 +74,8 @@ class EventDetailFragment(var eventId: String? = null) : Fragment() {
     private var progressBar : ProgressBar? = null
     private var scrollView : NestedScrollView? = null
 
+    private var status : EventUserStatusType? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -310,7 +312,7 @@ class EventDetailFragment(var eventId: String? = null) : Fragment() {
             override fun onResponse(call: Call<EventUserDTO>, response: Response<EventUserDTO>) {
                 if (response.code() == HttpURLConnection.HTTP_CREATED) {
                     if (!reject) {
-                        if (event.approvalNeeded == true) {
+                        if (event.approvalNeeded == true && status != EventUserStatusType.INVITED) {
                             showSuccessDialog(getString(R.string.events_user_request_join))
                         } else {
                             showSuccessDialog(getString(R.string.events_user_join_success))
@@ -365,6 +367,7 @@ class EventDetailFragment(var eventId: String? = null) : Fragment() {
                 ) {
                     if (response.code() == HttpURLConnection.HTTP_OK) {
                         val eventUser: EventUserDTO? = response.body()
+                        status = eventUser?.status
                         when (eventUser?.status) {
                             EventUserStatusType.ACCEPTED -> {
                                 btnJoin?.visibility = View.GONE

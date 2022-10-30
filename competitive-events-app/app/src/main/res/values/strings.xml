@@ -202,6 +202,8 @@
     <string name="error_username_exists">Este identificador ya existe</string>
     <string name="error_email_not_valid">Este email no es válido</string>
     <string name="error_email_exists">Este email ya existe</string>
+    <string name="error_login_forbidden">Usuario o contraseña no válidos</string>
+    <string name="error_event_not_available_places">No hay más plazas disponibles en el evento.</string>
     <string name="error_password_not_valid">Contraseña no válida. Debe contener al menos una mayúscula, un número y 8 caracteres</string>
     <string name="error_password_distinct">Las contraseñas no coinciden</string>
     <string name="error_date_before">La fecha inicial debe ser anterior a la final</string>
