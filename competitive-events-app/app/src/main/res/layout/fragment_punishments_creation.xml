@@ -148,13 +148,13 @@
             android:id="@+id/rad_punishments_creation_asc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:checked="true"
             android:text="Ascendentemente" />
 
         <RadioButton
             android:id="@+id/rad_punishments_creation_desc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:checked="true"
             android:text="Descendentemente" />
     </RadioGroup>
 

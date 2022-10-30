@@ -161,7 +161,13 @@ class EventCreationFragment : Fragment() {
 
         // Rewards add button and observer
         requireView().findViewById<TextView>(R.id.btn_event_creation_add_reward).setOnClickListener {
-            findNavController().navigate(R.id.action_event_creation_to_reward_creation)
+            val data = Bundle()
+            if(rewardAdapter!=null && rewardAdapter?.rewards != null){
+                var nextPosition = 0
+                nextPosition = rewardAdapter!!.rewards?.size!! + 1
+                data.putInt("nextPosition", nextPosition)
+            }
+            findNavController().navigate(R.id.action_event_creation_to_reward_creation, data)
         }
         findNavController().currentBackStackEntry
             ?.savedStateHandle
@@ -198,7 +204,13 @@ class EventCreationFragment : Fragment() {
 
         // Punishments add button and observer
         requireView().findViewById<TextView>(R.id.btn_event_creation_add_punishment).setOnClickListener {
-            findNavController().navigate(R.id.action_event_creation_to_punishment_creation)
+            val data = Bundle()
+            if(punishmentAdapter!=null && punishmentAdapter?.punishments != null){
+                var nextPosition = 0
+                nextPosition = punishmentAdapter!!.punishments?.size!! + 1
+                data.putInt("nextPosition", nextPosition)
+            }
+            findNavController().navigate(R.id.action_event_creation_to_punishment_creation, data)
         }
         findNavController().currentBackStackEntry
             ?.savedStateHandle

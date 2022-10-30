@@ -7,10 +7,7 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.RadioButton
-import android.widget.TextView
+import android.widget.*
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.squareup.picasso.Picasso
@@ -32,7 +29,7 @@ class RewardCreationFragment : Fragment() {
 
     private var txtTitle : TextView? = null
     private var txtDescription : TextView? = null
-    private var txtPosition : TextView? = null
+    private var txtPosition : EditText? = null
     private var radSortAsc : RadioButton? = null
     private var radSortDesc : RadioButton? = null
     private var btnCancel : Button? = null
@@ -65,6 +62,11 @@ class RewardCreationFragment : Fragment() {
 
         view.findViewById<Button>(R.id.btn_rewards_creation_upload_image).setOnClickListener { imageChooser() }
         imgUpload?.setOnClickListener { imageChooser() }
+
+        if(arguments?.containsKey("nextPosition") == true){
+            txtPosition?.setText(arguments?.getInt("nextPosition")!!.toString())
+        }
+
     }
 
     private fun create(view: View) {
