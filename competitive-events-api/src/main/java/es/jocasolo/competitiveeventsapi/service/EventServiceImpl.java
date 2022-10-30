@@ -526,8 +526,11 @@ public class EventServiceImpl implements EventService {
 		EventUser authenticatedEventUser = eventUserDao.findOne(event, authenticatedUser);
 		EventUser targetEventUser = eventUserDao.findOne(event, targetUser);
 		
-		if(authenticatedEventUser == null || targetEventUser == null)
-			throw new EventWrongUpdateException();
+		if(authenticatedEventUser == null || targetEventUser == null) {
+			targetEventUser = eventUserDao.findOneAllStatus(event, targetUser);
+			if((authenticatedEventUser == null || !authenticatedEventUser.isOwner() || targetEventUser == null))
+				throw new EventWrongUpdateException();
+		}
 		
 		if(!targetEventUser.isOwner() && authenticatedEventUser.isOwner() && eventUserDto.getPrivilege() != null && !eventUserDto.getPrivilege().equals(EventUserPrivilegeType.OWNER)) {
 			targetEventUser.setPrivilege(eventUserDto.getPrivilege());
