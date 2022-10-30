@@ -19,21 +19,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:icon="@drawable/chat"
-            android:text="Home" />
+            android:text="@string/home" />
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/tab_event_main_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:icon="@drawable/info"
-            android:text="Detalles" />
+            android:text="@string/details" />
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/tab_event_main_users"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:icon="@drawable/group"
-            android:text="Paricipantes" />
+            android:text="@string/event_participants" />
 
     </com.google.android.material.tabs.TabLayout>
 

@@ -35,7 +35,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:scaleType="centerCrop"
-                app:srcCompat="@drawable/steampunk_room" />
+                app:srcCompat="@drawable/steampunk_room"
+                android:contentDescription="@string/image" />
 
             <TextView
                 android:id="@+id/txt_event_detail_title"
@@ -129,7 +130,7 @@
                     android:id="@+id/btn_event_detail_copy_id"
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:layout_gravity="left|center_vertical"
+                    android:layout_gravity="start|center_vertical"
                     app:srcCompat="?attr/actionModeCopyDrawable"
                     app:tint="@color/primary_dark" />
             </LinearLayout>

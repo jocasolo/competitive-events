@@ -94,7 +94,8 @@
         android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider10" />
+        app:layout_constraintTop_toBottomOf="@+id/divider10"
+        android:autofillHints="" />
 
     <LinearLayout
         android:id="@+id/linear_layout_score_time"
@@ -118,8 +119,9 @@
             android:layout_marginStart="8dp"
             android:layout_weight="1"
             android:gravity="center"
-            android:hint="Hora"
-            android:inputType="number" />
+            android:hint="@string/hour"
+            android:inputType="number"
+            android:autofillHints="" />
 
         <TextView
             android:id="@+id/textView35"
@@ -127,7 +129,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:gravity="center"
-            android:text=":" />
+            android:text="@string/two_dots" />
 
         <EditText
             android:id="@+id/txt_score_minute"
@@ -136,7 +138,8 @@
             android:layout_weight="1"
             android:gravity="center"
             android:inputType="number"
-            android:hint="Minuto" />
+            android:hint="@string/minute"
+            android:autofillHints="" />
 
         <TextView
             android:id="@+id/textView36"
@@ -144,7 +147,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:gravity="center"
-            android:text=":" />
+            android:text="@string/two_dots" />
 
         <EditText
             android:id="@+id/txt_score_second"
@@ -153,7 +156,8 @@
             android:layout_weight="1"
             android:gravity="center"
             android:inputType="number"
-            android:hint="Segundo" />
+            android:hint="@string/second"
+            android:autofillHints="" />
     </LinearLayout>
 
     <Space

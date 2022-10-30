@@ -28,6 +28,9 @@
     <string name="seconds">segundos</string>
     <string name="minutes">minutos</string>
     <string name="hours">horas</string>
+    <string name="hour">Hora</string>
+    <string name="minute">Minuto</string>
+    <string name="second">Segundo</string>
     <string name="days">días</string>
     <string name="init_date">Fecha de inicio</string>
     <string name="end_date">Fecha de fin</string>
@@ -56,6 +59,10 @@
     <string name="edit">Editar</string>
     <string name="identifier">Identificador</string>
     <string name="identifier_copy">Identificador copiado</string>
+    <string name="details">Detalles</string>
+    <string name="required_position">Posición requerida</string>
+    <string name="two_dots">:</string>
+    <string name="one">1</string>
 
     <!-- Action bar -->
     <string name="logout">Cerrar sesión</string>
@@ -93,6 +100,9 @@
     <string name="user_id">Identificador</string>
     <string name="user_action">Acción sobre usuario</string>
     <string name="user_action_success">Se ha actualizado al usuario con éxito</string>
+    <string name="user_edit">Editar usuario</string>
+    <string name="user_available_actions">Acciones a realizar sobre el usario</string>
+    <string name="user_invite">Invitar a usuario</string>
 
     <!-- Events -->
     <string name="events_list">Listado de eventos</string>
@@ -134,6 +144,12 @@
     <string name="event_participants">Participantes</string>
     <string name="event_invited">Te han invitado a este evento</string>
     <string name="event_edit_success">Evento editado con éxito</string>
+    <string name="event_public_search">Aparecer en búsquedas públicas</string>
+    <string name="event_approval_nedded">Se necesita invitación para unirse</string>
+    <string name="event_new_participants_approval">Nuevos participantes necesitan aprobación</string>
+    <string name="event_sort_asc">Evento editado con éxito</string>
+    <string name="event_add_reward">+ Añadir nuevo premio…</string>
+    <string name="event_add_punishment">+ Añadir nuevo castigo…</string>
 
     <!-- Event Types -->
     <string name="events_all">Cualquiera</string>
@@ -153,12 +169,19 @@
     <string name="score_action">Acción sobre puntuación</string>
     <string name="score_action_success">Se ha actualizado la puntuación correctamente</string>
     <string name="score_not_valid">Esta puntuación ha sido marcada como no válida</string>
+    <string name="score_looser">Perdedor</string>
+    <string name="score_edit">Editar puntuación</string>
+    <string name="score_available_actions">Acciones a realizar sobre la puntuación</string>
+    <string name="score_sort">Ordenación de puntuaciones</string>
+    <string name="score_asc">Ascendentemente</string>
+    <string name="score_desc">Descendentemente</string>
 
     <!-- Rewards -->
     <string name="reward_required_position">Posición requerida: %1$d (%2$s)</string>
     <string name="reward_winner">Ganador: %1$s</string>
     <string name="higher">más alta</string>
     <string name="lower">más baja</string>
+    <string name="winner">Ganador</string>
 
     <!-- Historic -->
     <string name="date">Fecha</string>
@@ -169,6 +192,7 @@
     <string name="looser_notification">%1$s ha recibido un castigo!</string>
     <string name="init_event">El evento ha empezado! Ahora puedes enviar tus puntuaciones.</string>
     <string name="end_event">El evento ha finalizado.</string>
+    <string name="comment_write">Escribe un mensaje…</string>
 
     <!-- Errors -->
     <string name="error_title">Error</string>

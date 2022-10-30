@@ -276,7 +276,7 @@
                 android:paddingStart="35dp"
                 android:paddingTop="16dp"
                 android:paddingEnd="32dp"
-                android:text="Aparecer en búsquedas públicas"
+                android:text="@string/event_public_search"
                 android:textSize="16sp"
                 android:theme="@style/Theme.AppCompat.Light" />
 
@@ -288,7 +288,7 @@
                 android:paddingStart="35dp"
                 android:paddingTop="16dp"
                 android:paddingEnd="32dp"
-                android:text="Se necesita invitación para unirse"
+                android:text="@string/event_approval_nedded"
                 android:textSize="16sp"
                 android:theme="@style/Theme.AppCompat.Light" />
 
@@ -300,7 +300,7 @@
                 android:paddingStart="35dp"
                 android:paddingTop="16dp"
                 android:paddingEnd="32dp"
-                android:text="Nuevos participantes necesitan aprobación"
+                android:text="@string/event_new_participants_approval"
                 android:textSize="16sp"
                 android:theme="@style/Theme.AppCompat.Light" />
 
@@ -362,7 +362,7 @@
                 android:paddingStart="35dp"
                 android:paddingTop="16dp"
                 android:paddingEnd="32dp"
-                android:text="Ordenar puntuaciones ascendentemente"
+                android:text="@string/event_sort_asc"
                 android:textSize="16sp"
                 android:theme="@style/Theme.AppCompat.Light" />
 
@@ -409,7 +409,7 @@
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="32dp"
-                android:text="+ Añadir nuevo premio..."
+                android:text="@string/score_add"
                 android:textAlignment="textEnd"
                 android:textColor="@color/primary_dark"
                 android:textSize="14sp" />
@@ -457,7 +457,7 @@
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="32dp"
-                android:text="+ Añadir nuevo castigo..."
+                android:text="@string/event_add_punishment"
                 android:textAlignment="textEnd"
                 android:textColor="@color/primary_dark"
                 android:textSize="14sp" />

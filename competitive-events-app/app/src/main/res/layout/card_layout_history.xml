@@ -263,7 +263,8 @@
                     app:layout_constraintTop_toTopOf="parent"
                     app:srcCompat="@drawable/edit"
                     app:tint="@color/primary_dark"
-                    tools:visibility="visible" />
+                    tools:visibility="visible"
+                    android:contentDescription="@string/image" />
 
                 <TextView
                     android:id="@+id/txt_score_not_valid"

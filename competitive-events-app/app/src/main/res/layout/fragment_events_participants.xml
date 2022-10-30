@@ -39,10 +39,10 @@
 
                 <TextView
                     android:id="@+id/label_event_detail_rewards2"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="right"
+                    android:gravity="end"
                     android:paddingStart="32dp"
                     android:paddingTop="16dp"
                     android:paddingEnd="32dp"
@@ -67,7 +67,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="32dp"
-                android:text="Invitar a un usuario" />
+                android:text="@string/user_invite" />
 
             <Space
                 android:layout_width="match_parent"

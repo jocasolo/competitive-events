@@ -19,7 +19,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/military_tech"
-            app:tint="@color/primary_dark" />
+            app:tint="@color/primary_dark"
+            android:contentDescription="@string/image" />
 
         <TextView
             android:id="@+id/txt_reward_lite_item_title"
@@ -41,7 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:text="Posición requerida"
+            android:text="@string/required_position"
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/img_reward_delete"
             app:layout_constraintStart_toEndOf="@+id/imageView14"
@@ -58,7 +59,8 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/delete"
             app:tint="@color/primary_dark"
-            tools:visibility="visible" />
+            tools:visibility="visible"
+            android:contentDescription="@string/image" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

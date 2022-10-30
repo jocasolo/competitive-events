@@ -2,7 +2,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -18,7 +17,8 @@
         android:hint="@string/user_id"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider10" />
+        app:layout_constraintTop_toBottomOf="@+id/divider10"
+        android:autofillHints="" />
 
     <TextView
         android:id="@+id/textView27"
@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
-        android:text="Invitar a usuario"
+        android:text="@string/user_invite"
         android:textAllCaps="true"
         android:textColor="@color/primary_dark"
         android:textSize="18sp"
@@ -63,7 +63,6 @@
         android:layout_marginEnd="32dp"
         android:text="@string/action_accept"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btn_participant_actions_cancel"
         app:layout_constraintTop_toBottomOf="@+id/space4" />
 
     <Button

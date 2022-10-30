@@ -2,7 +2,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -39,7 +38,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
-        android:text="Añadir"
+        android:text="@string/add"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btn_rewards_creation_cancel"
         app:layout_constraintTop_toBottomOf="@+id/img_rewards_upload_image" />
@@ -52,7 +51,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
-        android:text="Cancelar"
+        android:text="@string/cancel"
         app:layout_constraintEnd_toStartOf="@+id/space4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/img_rewards_upload_image" />
@@ -63,7 +62,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
-        android:text="Añadir premio al evento"
+        android:text="@string/event_add_reward"
         android:textAllCaps="true"
         android:textColor="@color/primary_dark"
         android:textSize="18sp"
@@ -95,7 +94,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:hint="@string/title"
-        app:layout_constraintTop_toBottomOf="@+id/divider10" />
+        app:layout_constraintTop_toBottomOf="@+id/divider10"
+        android:autofillHints="" />
 
     <EditText
         android:id="@+id/txt_rewards_creation_description"
@@ -110,7 +110,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:hint="@string/description"
-        app:layout_constraintTop_toBottomOf="@+id/txt_rewards_creation_title" />
+        app:layout_constraintTop_toBottomOf="@+id/txt_rewards_creation_title"
+        android:autofillHints="" />
 
     <EditText
         android:id="@+id/txt_rewards_creation_position"
@@ -120,7 +121,7 @@
         android:layout_marginTop="8dp"
         android:ems="10"
         android:inputType="number"
-        android:text="1"
+        android:text="@string/one"
         app:layout_constraintStart_toEndOf="@+id/textView29"
         app:layout_constraintTop_toBottomOf="@+id/txt_rewards_creation_description" />
 
@@ -139,7 +140,7 @@
             android:id="@+id/textView28"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Ordenación de puntuaciones"
+            android:text="@string/score_sort"
             android:textColor="@color/black"
 
             android:textSize="18sp" />
@@ -149,13 +150,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:checked="true"
-            android:text="Ascendentemente" />
+            android:text="@string/score_asc" />
 
         <RadioButton
             android:id="@+id/rad_rewards_creation_desc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Descendentemente" />
+            android:text="@string/score_desc" />
     </RadioGroup>
 
     <TextView
@@ -164,7 +165,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
-        android:text="Posición requerida"
+        android:text="@string/required_position"
         android:textColor="@color/black"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"

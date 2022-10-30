@@ -22,7 +22,8 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/edit"
             app:tint="@color/primary_dark"
-            tools:visibility="visible" />
+            tools:visibility="visible"
+            android:contentDescription="@string/image" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/card_participant_avatar"
