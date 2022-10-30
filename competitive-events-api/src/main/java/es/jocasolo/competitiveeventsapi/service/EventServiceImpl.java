@@ -37,6 +37,7 @@ import es.jocasolo.competitiveeventsapi.enums.eventuser.EventUserStatusType;
 import es.jocasolo.competitiveeventsapi.enums.score.ScoreSortType;
 import es.jocasolo.competitiveeventsapi.enums.score.ScoreValueType;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventInvalidStatusException;
+import es.jocasolo.competitiveeventsapi.exceptions.event.EventNotAvailablePlacesException;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventNotFoundException;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventUserAcceptedException;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventUserRejectedException;
@@ -346,7 +347,8 @@ public class EventServiceImpl implements EventService {
 
 	@Override
 	public EventUserDTO addUser(String eventId, EventUserPostDTO eventUserDto) 
-			throws EventWrongUpdateException, UserNotValidException, UserNotFoundException, EventUserRejectedException, EventNotFoundException, EventInvalidStatusException, EventUserAcceptedException {
+			throws EventWrongUpdateException, UserNotValidException, UserNotFoundException, EventUserRejectedException, EventNotFoundException, 
+			EventInvalidStatusException, EventUserAcceptedException, EventNotAvailablePlacesException {
 
 		EventUserStatusType status = null;
 
@@ -360,7 +362,11 @@ public class EventServiceImpl implements EventService {
 		
 		if(event.getStatus() == EventStatusType.DELETED || event.getStatus() == EventStatusType.FINISHED)
 			throw new EventInvalidStatusException();
-
+		
+		EventDetailDTO detail = eventMapper.mapDetail(event);
+		if(Boolean.FALSE.equals(eventUserDto.getReject()) && event.getMaxPlaces() != null && detail.getNumParticipants() >= event.getMaxPlaces())
+			throw new EventNotAvailablePlacesException();
+		
 		User authenticatedUser = authentication.getUser();
 		EventUser newEventUser = createEventUser(event, targetUser);
 
@@ -414,10 +420,12 @@ public class EventServiceImpl implements EventService {
 			targetEventUser = newEventUser;
 		}
 		
-		// if the type of registration is private
-		if (event.getInscription().equals(EventInscriptionType.PRIVATE)) {
+		if(authenticatedEventUser == targetEventUser && targetEventUser.getStatus() == EventUserStatusType.INVITED) {
+			// User accept invitation
+			status = addUserToPrivateEvent(targetUser, authenticatedUser, newEventUser, status, authenticatedEventUser, targetEventUser);
 			
-			// Private event
+		} else if (event.getInscription().equals(EventInscriptionType.PRIVATE)) {
+			// if the type of registration is private
 			status = addUserToPrivateEvent(targetUser, authenticatedUser, newEventUser, status, authenticatedEventUser, targetEventUser);
 
 		} else {

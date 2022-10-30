@@ -30,6 +30,7 @@ import es.jocasolo.competitiveeventsapi.enums.event.EventStatusType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventType;
 import es.jocasolo.competitiveeventsapi.enums.eventuser.EventUserStatusType;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventInvalidStatusException;
+import es.jocasolo.competitiveeventsapi.exceptions.event.EventNotAvailablePlacesException;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventNotFoundException;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventUserAcceptedException;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventUserRejectedException;
@@ -144,7 +145,7 @@ public class EventController {
 			@PathVariable("id") String id,
 			@RequestBody EventUserPostDTO event) 
 					throws EventWrongUpdateException, UserNotValidException, UserNotFoundException, EventUserRejectedException, 
-					EventNotFoundException, EventInvalidStatusException, EventUserAcceptedException {
+					EventNotFoundException, EventInvalidStatusException, EventUserAcceptedException, EventNotAvailablePlacesException {
 		log.debug("Adding user to event: {} ", event);
 		return eventService.addUser(id, event);
 	}

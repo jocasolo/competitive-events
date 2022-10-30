@@ -2,6 +2,7 @@ package es.jocasolo.competitiveeventsapi.mappers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,8 @@ import es.jocasolo.competitiveeventsapi.dto.image.ImageDTO;
 import es.jocasolo.competitiveeventsapi.dto.punishment.PunishmentDTO;
 import es.jocasolo.competitiveeventsapi.dto.reward.RewardDTO;
 import es.jocasolo.competitiveeventsapi.dto.score.ScoreDTO;
+import es.jocasolo.competitiveeventsapi.dto.user.UserLiteWithEventDTO;
+import es.jocasolo.competitiveeventsapi.enums.eventuser.EventUserStatusType;
 import es.jocasolo.competitiveeventsapi.model.Event;
 import es.jocasolo.competitiveeventsapi.service.CommonService;
 
@@ -67,12 +70,16 @@ public class EventMapperImpl implements EventMapper {
 		detail.setSubtitle(event.getSubtitle());
 		detail.setTitle(event.getTitle());
 		detail.setType(event.getType());
-		detail.setNumParticipants(event.getUsers().size());
+		
 		detail.setVisibility(event.getVisibility());
 		detail.setDescription(event.getDescription());
 		detail.setStatus(event.getStatus());
 		detail.setCreationDate(event.getCreationDate());
-		detail.setUsers(userMapper.map(event.getUsers(), event));
+		
+		Set<UserLiteWithEventDTO> users = userMapper.map(event.getUsers(), event);
+		detail.setNumParticipants(getNumParticipants(users));
+		detail.setUsers(users);
+		
 		detail.setRewards(commonService.transform(event.getRewards(), RewardDTO.class));
 		detail.setPunishments(commonService.transform(event.getPunishments(), PunishmentDTO.class));
 		detail.setComments(commonService.transform(event.getComments(), CommentDTO.class));
@@ -81,6 +88,16 @@ public class EventMapperImpl implements EventMapper {
 		return detail;
 	}
 	
+	private Integer getNumParticipants(Set<UserLiteWithEventDTO> users) {
+		int cont = 0;
+		for(UserLiteWithEventDTO user : users) {
+			if(user.getStatus() == EventUserStatusType.ACCEPTED) {
+				cont++;
+			}
+		}
+		return cont;
+	}
+
 	public List<EventDTO> map(List<Event> events) {
 		
 		List<EventDTO> result = new ArrayList<>();
