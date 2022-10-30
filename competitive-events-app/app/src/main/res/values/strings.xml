@@ -49,6 +49,7 @@
     <string name="action_reject">Rechazar</string>
     <string name="action_validate">Validar</string>
     <string name="action_invalidate">Marca como no válida</string>
+    <string name="action_invite">Invitar</string>
     <string name="status">Estado</string>
     <string name="valid">Válidada</string>
     <string name="no_valid">No válida</string>

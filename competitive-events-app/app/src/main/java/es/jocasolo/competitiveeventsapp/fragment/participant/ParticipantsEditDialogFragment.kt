@@ -12,6 +12,7 @@ import es.jocasolo.competitiveeventsapp.dto.ErrorDTO
 import es.jocasolo.competitiveeventsapp.dto.ParticipantDTO
 import es.jocasolo.competitiveeventsapp.dto.eventuser.EventUserPutDTO
 import es.jocasolo.competitiveeventsapp.enums.actions.ParticipantActions
+import es.jocasolo.competitiveeventsapp.enums.event.EventStatusType
 import es.jocasolo.competitiveeventsapp.enums.eventuser.EventUserStatusType
 import es.jocasolo.competitiveeventsapp.service.EventService
 import es.jocasolo.competitiveeventsapp.service.ServiceBuilder
@@ -65,10 +66,10 @@ class ParticipantsEditDialogFragment(
                 eventActions.add(SpinnerParticipantActions(ParticipantActions.REJECT, getString(R.string.action_reject)))
             }
             EventUserStatusType.REJECTED -> {
-                eventActions.add(SpinnerParticipantActions(ParticipantActions.ACCEPT, getString(R.string.action_accept)))
+                eventActions.add(SpinnerParticipantActions(ParticipantActions.DELETE, getString(R.string.action_delete)))
             }
             EventUserStatusType.DELETED -> {
-                eventActions.add(SpinnerParticipantActions(ParticipantActions.ACCEPT, getString(R.string.action_accept)))
+                eventActions.add(SpinnerParticipantActions(ParticipantActions.INVITE, getString(R.string.action_invite)))
             }
         }
 
@@ -103,6 +104,7 @@ class ParticipantsEditDialogFragment(
             ParticipantActions.ACCEPT -> {EventUserStatusType.ACCEPTED}
             ParticipantActions.REJECT -> {EventUserStatusType.REJECTED}
             ParticipantActions.DELETE -> {EventUserStatusType.DELETED}
+            ParticipantActions.INVITE -> {EventUserStatusType.INVITED}
         }
 
         eventService.updateUser(eventId, eventUserPutDTO, UserAccount.getInstance(requireContext()).getToken()).enqueue(object :
