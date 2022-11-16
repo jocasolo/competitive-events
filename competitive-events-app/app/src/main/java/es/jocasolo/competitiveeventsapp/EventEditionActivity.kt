@@ -47,6 +47,7 @@ import es.jocasolo.competitiveeventsapp.utils.MyDialog
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import org.apache.commons.lang3.StringUtils
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -638,9 +639,11 @@ class EventEditionActivity : AppCompatActivity(), BackStackListener {
 
     private fun showDatePicker(txt: TextView?){
 
+        sdf = SimpleDateFormat(getString(R.string.sdf_date))
+
         val calendar = Calendar.getInstance()
-        if (txt?.text != null && txt.text!!.isNotEmpty()){
-            calendar.time = sdf?.parse(txt.text.toString())
+        if (StringUtils.isNotEmpty(txt?.text)){
+            calendar.time = sdf?.parse(txt?.text.toString())
         } else {
             calendar.time = Date()
         }

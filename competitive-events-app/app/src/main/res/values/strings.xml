@@ -147,9 +147,13 @@
     <string name="event_public_search">Aparecer en búsquedas públicas</string>
     <string name="event_approval_nedded">Se necesita invitación para unirse</string>
     <string name="event_new_participants_approval">Nuevos participantes necesitan aprobación</string>
-    <string name="event_sort_asc">Evento editado con éxito</string>
+    <string name="event_sort_asc">Puntuación ordenada ascendentemente</string>
+    <string name="event_new_reward">Nuevo premio</string>
     <string name="event_add_reward">+ Añadir nuevo premio…</string>
     <string name="event_add_punishment">+ Añadir nuevo castigo…</string>
+    <string name="event_new_punishment">Nuevo castigo</string>
+    <string name="event_empty_list">No tienes ningún evento</string>
+    <string name="event_empty_list_search"><u>Busca o crea un nuevo evento</u></string>
 
     <!-- Event Types -->
     <string name="events_all">Cualquiera</string>

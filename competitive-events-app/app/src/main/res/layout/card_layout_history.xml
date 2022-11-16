@@ -72,6 +72,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
+                android:maxWidth="328dp"
                 android:text="@string/message"
                 android:textColor="@color/black" />
         </androidx.cardview.widget.CardView>
@@ -140,6 +141,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
+                android:maxWidth="328dp"
                 android:text="@string/message"
                 android:textColor="@color/black" />
         </androidx.cardview.widget.CardView>

@@ -4,8 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
@@ -50,6 +52,10 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         super.onViewCreated(view, savedInstanceState)
+
+        view.findViewById<TextView>(R.id.txt_events_empty_search).setOnClickListener {
+            findNavController().navigate(R.id.action_home_to_event_new)
+        }
 
         initUserEventsAccepted()
         initUserEventsInvited()
@@ -119,6 +125,10 @@ class HomeFragment : Fragment() {
                             adapter.addEvents(it)
                         }
                         adapter.notifyDataSetChanged()
+                        if(adapter.events != null && adapter.events?.isEmpty() == false){
+                            requireView().findViewById<TextView>(R.id.txt_events_empty).visibility = View.GONE
+                            requireView().findViewById<TextView>(R.id.txt_events_empty_search).visibility = View.GONE
+                        }
                     }
                 } else {
                     try {

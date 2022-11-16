@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.squareup.picasso.Picasso
@@ -47,6 +48,10 @@ class RewardCreationFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Action bar title
+        val actionBar = (activity as AppCompatActivity?)!!.supportActionBar!!
+        actionBar.title = getString(R.string.event_new_reward)
 
         txtTitle = view.findViewById(R.id.txt_rewards_creation_title)
         txtDescription = view.findViewById(R.id.txt_rewards_creation_description)

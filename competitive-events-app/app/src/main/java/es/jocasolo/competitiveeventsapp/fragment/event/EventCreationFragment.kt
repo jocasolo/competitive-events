@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -98,6 +99,10 @@ class EventCreationFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // Action bar title
+        val actionBar = (activity as AppCompatActivity?)!!.supportActionBar!!
+        actionBar.title = getString(R.string.create_event)
 
         sdf = SimpleDateFormat(getString(R.string.sdf_date))
 
