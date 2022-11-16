@@ -125,8 +125,8 @@ a[x-apple-data-detectors='true'] {
       <td style="overflow-wrap:break-word;word-break:break-word;padding:0px;font-family:'Montserrat',sans-serif;" align="left">
 
   <div style="color: #018eea; line-height: 170%; text-align: left; word-wrap: break-word;">
-    <p style="font-size: 14px; line-height: 170%; text-align: center;"><span style="font-size: 24px; line-height: 40.8px;"><strong><span style="line-height: 40.8px; font-size: 24px;">Smart Competition </span></strong></span></p>
-<p style="font-size: 14px; line-height: 170%; text-align: center;"><span style="font-size: 20px; line-height: 34px;"><span style="line-height: 34px; font-size: 20px;">Compite en cualquier cosa con tus amigos</span></span></p>
+    <p style="font-size: 14px; line-height: 170%; text-align: center;"><span style="font-size: 24px; line-height: 40.8px;"><strong><span style="line-height: 40.8px; font-size: 24px;">Competitive Events </span></strong></span></p>
+<p style="font-size: 14px; line-height: 170%; text-align: center;"><span style="font-size: 20px; line-height: 34px;"><span style="line-height: 34px; font-size: 20px;">Compite en cualquier evento con tus amigos</span></span></p>
   </div>
   <div style="height:35px">
   </div>
@@ -251,7 +251,7 @@ a[x-apple-data-detectors='true'] {
       <td style="overflow-wrap:break-word;word-break:break-word;padding:18px;font-family:'Montserrat',sans-serif;" align="left">
 
   <div style="color: #ffffff; line-height: 140%; text-align: center; word-wrap: break-word;">
-    <p style="font-size: 14px; line-height: 140%;"><span style="font-size: 14px; line-height: 19.6px;">Copyright Smart Competition | Todos los derechos reservados</span></p>
+    <p style="font-size: 14px; line-height: 140%;"><span style="font-size: 14px; line-height: 19.6px;">Copyright Competitive Events | Todos los derechos reservados</span></p>
   </div>
 
       </td>

@@ -129,13 +129,14 @@ public class ScoreServiceImpl implements ScoreService {
 		if(score == null)
 			throw new ScoreNotFoundException();
 		
-		User user = authentication.getUser();
-		if(!score.getUser().equals(user))
-			throw new UserNotValidException();
+		User authenticatedUser = authentication.getUser();
 		
-		EventUser eventUser = eventUserDao.findOneByIds(score.getEvent().getId(), user.getId());
+		EventUser eventUser = eventUserDao.findOneByIds(score.getEvent().getId(), authenticatedUser.getId());
 		if(eventUser == null)
 			throw new EventNotFoundException();
+		
+		if(!eventUser.isOwner() && !score.getUser().equals(authenticatedUser))
+			throw new UserNotValidException();
 		
 		if(!eventUser.getEvent().isInDateRange())
 			throw new EventInvalidStatusException();
