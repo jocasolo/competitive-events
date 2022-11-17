@@ -35,7 +35,7 @@ class TestCommonService {
 	@BeforeEach
 	void init() {
 		
-		MockitoAnnotations.initMocks(this);
+		MockitoAnnotations.openMocks(this);
 		
 		events.add(event1);
 		events.add(event2);

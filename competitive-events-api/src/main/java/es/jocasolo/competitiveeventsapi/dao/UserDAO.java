@@ -2,8 +2,6 @@ package es.jocasolo.competitiveeventsapi.dao;
 
 import java.util.List;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -40,6 +38,6 @@ public interface UserDAO extends CrudRepository<User, String> {
 	@Query(value = "SELECT u from User as u WHERE "
 			+ "(u.id LIKE %:id% OR :id IS NULL) "
 		)
-	public Page<User> search(String id, PageRequest pageRequest);
+	public User search(String id);
 	
 }

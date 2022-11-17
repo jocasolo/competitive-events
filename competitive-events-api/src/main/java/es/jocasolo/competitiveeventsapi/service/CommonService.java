@@ -6,7 +6,7 @@ import java.util.Set;
 public interface CommonService {
 
 	/**
-	 * Transforma un objeto de un tipo, en el tipo indicado por parámetro.
+	 * Transforma un objeto de un tipo, en el tipo indicado por parametro.
 	 * @param source
 	 * @param destinationClass
 	 * @return
@@ -15,7 +15,7 @@ public interface CommonService {
 
 	/**
 	 * Transforma una lista de objetos de un tipo, en otra lista de objetos del
-	 * tipo indicado por parámetro.
+	 * tipo indicado por parametro.
 	 * @param sources
 	 * @param destinationClass
 	 * @return
@@ -24,7 +24,7 @@ public interface CommonService {
 	
 	/**
 	 * Transforma un set de objetos de un tipo, en otra lista de objetos del
-	 * tipo indicado por parámetro.
+	 * tipo indicado por parametro.
 	 * @param sources
 	 * @param destinationClass
 	 * @return

@@ -5,7 +5,6 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,7 +22,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import es.jocasolo.competitiveeventsapi.dto.user.UserCompleteDTO;
 import es.jocasolo.competitiveeventsapi.dto.user.UserDTO;
-import es.jocasolo.competitiveeventsapi.dto.user.UserPageDTO;
 import es.jocasolo.competitiveeventsapi.dto.user.UserPasswordDTO;
 import es.jocasolo.competitiveeventsapi.dto.user.UserPostDTO;
 import es.jocasolo.competitiveeventsapi.dto.user.UserPutDTO;
@@ -68,16 +66,6 @@ public class UserController {
 			return new ResponseEntity<>(HttpStatus.OK);
 		else
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-	}
-	
-	@GetMapping(produces = "application/json;charset=utf8")
-	@ApiOperation(value = "Find all users that match your search parameters.")
-	public UserPageDTO search(
-			@RequestParam(value = "username", required = false) String username,
-			@RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
-			@RequestParam(value = "size", required = false, defaultValue = "10") Integer size) throws UserNotValidException {
-		log.debug("Looking for events");
-		return userService.search(username, PageRequest.of(page, size));
 	}
 	
 	@GetMapping(value = "/confirm/{key}", produces = "application/json;charset=utf8")
