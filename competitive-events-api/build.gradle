@@ -29,6 +29,7 @@ dependencies {
 	compile group: 'net.sf.dozer', name: 'dozer', version: '5.5.1'
 	compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '3.0.0'
 	compile group: 'io.springfox', name: 'springfox-swagger2', version: '3.0.0'
+	implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
 	implementation group: 'org.springframework.security', name: 'spring-security-crypto', version: '5.4.5'
 	implementation group: 'org.springframework.security', name: 'spring-security-config', version: '5.4.5'
 	implementation group: 'org.springframework.security', name: 'spring-security-core', version: '5.4.5'

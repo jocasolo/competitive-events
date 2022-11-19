@@ -49,7 +49,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers(HttpMethod.POST, "/login").permitAll()
 			.antMatchers(HttpMethod.GET, "/users/confirm/**").permitAll()
 			.antMatchers(HttpMethod.HEAD, "/users/**").permitAll()
+			.antMatchers(HttpMethod.HEAD, "/users/phone/**").permitAll()
 			.antMatchers(HttpMethod.POST, "/users/**").permitAll()
+			.antMatchers("/v2/api-docs/**",
+                    "/configuration/ui",
+                    "/swagger-resources/**",
+                    "/configuration/security",
+                    "/swagger-ui.html",
+                    "/swagger-ui/**",
+                    "/webjars/**").permitAll()
 			.anyRequest().authenticated().and()
 			.addFilter(new JWTAuthenticationFilter(authenticationManager()))
 			.addFilter(new JWTAuthorizationFilter(authenticationManager()));
