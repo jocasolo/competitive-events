@@ -2,7 +2,8 @@
 	"info": {
 		"_postman_id": "2e71c7e3-32bd-441b-a0b3-ad25776489d1",
 		"name": "API TFG",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "4865741"
 	},
 	"item": [
 		{
@@ -10,13 +11,38 @@
 			"item": [
 				{
 					"name": "User Search One",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response must be valid and have a body\", function () {\r",
+									"     pm.response.to.be.ok;\r",
+									"     pm.response.to.be.withBody;\r",
+									"     pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response should be okay to process\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"    pm.response.to.have.jsonBody(\"id\");\r",
+									"    pm.response.to.not.have.jsonBody(\"error\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NDExNDE1MDMsImlzcyI6ImNvbXBldGl0aXZlZXZlbnRzIiwic3ViIjoidGVzdDEiLCJleHAiOjE2NDE0MDA3MDN9.WSkfatDfdB_Y6VxPc7Kyn_0G6vzJWx7fSMUYCSpkDPo8NCnfdX4NtTpnts3n3KiVMwQr2S44jmBA75odVSZRog",
+									"value": "{{token}}",
 									"type": "string"
 								}
 							]
@@ -38,7 +64,88 @@
 					"response": []
 				},
 				{
+					"name": "User Search One By Phone",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response must be valid and have a body\", function () {\r",
+									"     pm.response.to.be.ok;\r",
+									"     pm.response.to.be.withBody;\r",
+									"     pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response should be okay to process\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"    pm.response.to.have.jsonBody(\"id\");\r",
+									"    pm.response.to.not.have.jsonBody(\"error\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/users/611111111?searchTerm=PHONE",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"611111111"
+							],
+							"query": [
+								{
+									"key": "searchTerm",
+									"value": "PHONE"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "User Exists",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response must be valid and have a body\", function () {\r",
+									"     pm.response.to.be.ok;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response should be okay to process\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "HEAD",
 						"header": [],
@@ -58,12 +165,36 @@
 				},
 				{
 					"name": "User Create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response must be valid and have a body\", function () {\r",
+									"     pm.response.to.be.withBody;\r",
+									"     pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response should be okay to process\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"    pm.response.to.have.jsonBody(\"id\");\r",
+									"    pm.response.to.not.have.jsonBody(\"error\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": \"test3\",\r\n    \"name\": \"Name\",\r\n    \"surname\": \"Surname\",\r\n    \"description\": \"Description\",\r\n    \"email\": \"competitive.events01@yopmail.com\",\r\n    \"password\": \"Test123456\"\r\n}",
+							"raw": "{\r\n    \"id\": \"test03\",\r\n    \"name\": \"Name\",\r\n    \"surname\": \"Surname\",\r\n    \"description\": \"Description\",\r\n    \"email\": \"competitive.events03@test.com\",\r\n    \"password\": \"Test123456\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -85,13 +216,34 @@
 				},
 				{
 					"name": "User Update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response must be valid and have a body\", function () {\r",
+									"     pm.response.to.be.ok;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response should be okay to process\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NDEzOTk3MzQsImlzcyI6ImNvbXBldGl0aXZlZXZlbnRzIiwic3ViIjoidGVzdDMiLCJleHAiOjE2NDE2NTg5MzR9.vsHXQBSerMjXXMVTCQH32R20dasfRHOw9QDQhe89jGG3i-y2jlRG7lFve4nlNp9UEck0WyzwmU4yxDHH3dyKZw",
+									"value": "{{token}}",
 									"type": "string"
 								}
 							]
@@ -100,7 +252,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Test\",\r\n    \"surname\": \"Tercero\",\r\n    \"description\": \"Descripción\",\r\n\r\n    \"birthDate\": \"1988-01-28T00:00:00Z\"\r\n}",
+							"raw": "{\r\n    \"name\": \"Test\",\r\n    \"surname\": \"Tercero\",\r\n    \"description\": \"Descripción\",\r\n    \"birthDate\": \"1988-01-28T00:00:00Z\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -123,13 +275,34 @@
 				},
 				{
 					"name": "User Avatar",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response must be valid and have a body\", function () {\r",
+									"     pm.response.to.be.ok;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response should be okay to process\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2MTY4NTI5MjQsImlzcyI6InRlc3QiLCJzdWIiOiJ0ZXN0MiIsImV4cCI6MTYxOTQ0NDkyNH0.Oafpe3V7gOGt1sPO7G18omvHZ8h88HPCsKtxHuc1NTYiucMFPRMGFsdlk5gdvA3rULuTbz_CaIfcXxeYWBdGgQ",
+									"value": "{{token}}",
 									"type": "string"
 								}
 							]
@@ -142,19 +315,19 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/C:/Users/carlo/OneDrive/Imágenes/Saved Pictures/mc_beicon.jpg"
+									"src": "/C:/Users/carlo/OneDrive/Imágenes/Saved Pictures/avatar-buho.jpg"
 								}
 							]
 						},
 						"url": {
-							"raw": "localhost:8080/users/test2/avatar",
+							"raw": "localhost:8080/users/test3/avatar",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
 								"users",
-								"test2",
+								"test3",
 								"avatar"
 							]
 						}
@@ -163,12 +336,43 @@
 				},
 				{
 					"name": "User Password Update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response must be valid and have a body\", function () {\r",
+									"     pm.response.to.be.ok;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response should be okay to process\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"identifier\": \"test\",\r\n    \"password\": \"Pruebas123\",\r\n    \"newPassword\": \"NewPassword1235235623\"\r\n}",
+							"raw": "{\r\n    \"id\": \"test3\",\r\n    \"password\": \"NewPassword1235235623\",\r\n    \"newPassword\": \"Test123456\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -176,14 +380,14 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/user/test/password",
+							"raw": "localhost:8080/users/test3/password",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
-								"user",
-								"test",
+								"users",
+								"test3",
 								"password"
 							]
 						}
@@ -192,32 +396,30 @@
 				},
 				{
 					"name": "User Delete",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "localhost:8080/users/caindream2",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"users",
-								"caindream2"
-							]
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response should be okay to process\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
 						}
-					},
-					"response": []
-				},
-				{
-					"name": "User Delete Avatar",
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2MTY4NTI5MjQsImlzcyI6InRlc3QiLCJzdWIiOiJ0ZXN0MiIsImV4cCI6MTYxOTQ0NDkyNH0.Oafpe3V7gOGt1sPO7G18omvHZ8h88HPCsKtxHuc1NTYiucMFPRMGFsdlk5gdvA3rULuTbz_CaIfcXxeYWBdGgQ",
+									"value": "{{token}}",
 									"type": "string"
 								}
 							]
@@ -225,14 +427,60 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/users/test2/avatar",
+							"raw": "localhost:8080/users/test345346",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
 								"users",
-								"test2",
+								"test345346"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Delete Avatar",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response should be okay to process\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/users/test3/avatar",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"users",
+								"test3",
 								"avatar"
 							]
 						}
@@ -246,13 +494,38 @@
 			"item": [
 				{
 					"name": "Event Search",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response must be valid and have a body\", function () {\r",
+									"     pm.response.to.be.ok;\r",
+									"     pm.response.to.be.withBody;\r",
+									"     pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response should be okay to process\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"    pm.response.to.have.jsonBody(\"events\");\r",
+									"    pm.response.to.not.have.jsonBody(\"error\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2MTU4MDE3MjUsImlzcyI6InRlc3QiLCJzdWIiOiJ0ZXN0MSIsImV4cCI6MTYxODM5MzcyNX0.zsIXQZpz7nQvdztbqiGf-rM4As09eSwPov42IW8HVjA2wNlmLjqro8Hb0OGQYQgpNoHYPpKudOZtLxi3VoZCVQ",
+									"value": "{{token}}",
 									"type": "string"
 								}
 							]
@@ -260,7 +533,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/events?page=0&size=3",
+							"raw": "localhost:8080/events?page=0&size=10&username=test3",
 							"host": [
 								"localhost"
 							],
@@ -275,7 +548,11 @@
 								},
 								{
 									"key": "size",
-									"value": "3"
+									"value": "10"
+								},
+								{
+									"key": "username",
+									"value": "test3"
 								}
 							]
 						}
@@ -284,13 +561,37 @@
 				},
 				{
 					"name": "Event Create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response must be valid and have a body\", function () {\r",
+									"     pm.response.to.be.withBody;\r",
+									"     pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response should be okay to process\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"    pm.response.to.have.jsonBody(\"id\");\r",
+									"    pm.response.to.not.have.jsonBody(\"error\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NDE4MzgwNjksImlzcyI6ImNvbXBldGl0aXZlZXZlbnRzIiwic3ViIjoidGVzdDMiLCJleHAiOjE2NDIwOTcyNjl9.QSh-zbxI5B06R8XX7Dei6R9qT1-Za662gry0IADFSycOWEybEXamy_5r-KZ-y1WuTvqaNQ_MqTm01rixNtcd7g",
+									"value": "{{token}}",
 									"type": "string"
 								}
 							]
@@ -321,12 +622,43 @@
 				},
 				{
 					"name": "Event Update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response must be valid and have a body\", function () {\r",
+									"     pm.response.to.be.ok;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response should be okay to process\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"code\": \"sFq3I3wv\",\r\n    \"title\": \"Test update\",\r\n    \"subtitle\": \"test subtitle\",\r\n    \"description\": \"Descripción update\",\r\n    \"initDate\": \"2021-01-16T22:45:30\",\r\n    \"endDate\": \"2021-01-18T22:45:30\",\r\n    \"appovalNeeded\": true,\r\n    \"type\": \"SPORTS\",\r\n    \"inscription\": \"PUBLIC\",\r\n    \"visibility\": \"PUBLIC\",\r\n    \"status\": \"ACTIVE\",\r\n    \"maxPlaces\": 15\r\n}",
+							"raw": "{\r\n    \"code\": \"QmZwW5H0\",\r\n    \"title\": \"Test update\",\r\n    \"subtitle\": \"test subtitle\",\r\n    \"description\": \"Descripción update\",\r\n    \"initDate\": \"2021-01-16T22:45:30\",\r\n    \"endDate\": \"2021-01-18T22:45:30\",\r\n    \"appovalNeeded\": true,\r\n    \"type\": \"SPORTS\",\r\n    \"inscription\": \"PUBLIC\",\r\n    \"visibility\": \"PUBLIC\",\r\n    \"status\": \"ACTIVE\",\r\n    \"maxPlaces\": 15\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -334,14 +666,14 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/events/sFq3I3wv",
+							"raw": "localhost:8080/events/QmZwW5H0",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
 								"events",
-								"sFq3I3wv"
+								"QmZwW5H0"
 							]
 						}
 					},
@@ -349,13 +681,34 @@
 				},
 				{
 					"name": "Event Image",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response must be valid and have a body\", function () {\r",
+									"     pm.response.to.be.ok;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response should be okay to process\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2MTcyNzcwNTcsImlzcyI6InRlc3QiLCJzdWIiOiJ0ZXN0MSIsImV4cCI6MTYxOTg2OTA1N30.PcBaed35dfJ2kkg01QoIpKqGJi8LHt5ASuW4AxU_s-AQbvfjUI6tOash9cg86HCmiPgMFtC7rt7hz-TAPmNFTQ",
+									"value": "{{token}}",
 									"type": "string"
 								}
 							]
@@ -368,19 +721,19 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/C:/Users/carlo/OneDrive/Imágenes/Saved Pictures/wallpaper.jpg"
+									"src": "/C:/Users/carlo/OneDrive/Imágenes/Saved Pictures/bombilla.jpg"
 								}
 							]
 						},
 						"url": {
-							"raw": "localhost:8080/events/j8cuKcFa/image",
+							"raw": "localhost:8080/events/2jYlZetI/image",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
 								"events",
-								"j8cuKcFa",
+								"2jYlZetI",
 								"image"
 							]
 						}
@@ -389,13 +742,38 @@
 				},
 				{
 					"name": "Event Search One",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response must be valid and have a body\", function () {\r",
+									"     pm.response.to.be.ok;\r",
+									"     pm.response.to.be.withBody;\r",
+									"     pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response should be okay to process\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"    pm.response.to.have.jsonBody(\"id\");\r",
+									"    pm.response.to.not.have.jsonBody(\"error\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NDE4MzgwNjksImlzcyI6ImNvbXBldGl0aXZlZXZlbnRzIiwic3ViIjoidGVzdDMiLCJleHAiOjE2NDIwOTcyNjl9.QSh-zbxI5B06R8XX7Dei6R9qT1-Za662gry0IADFSycOWEybEXamy_5r-KZ-y1WuTvqaNQ_MqTm01rixNtcd7g",
+									"value": "{{token}}",
 									"type": "string"
 								}
 							]
@@ -403,14 +781,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/events/SU0AH3Si",
+							"raw": "localhost:8080/events/QmZwW5H0",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
 								"events",
-								"SU0AH3Si"
+								"QmZwW5H0"
 							]
 						}
 					},
@@ -418,13 +796,30 @@
 				},
 				{
 					"name": "Event Delete",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response should be okay to process\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2MTU4MDI3MjQsImlzcyI6InRlc3QiLCJzdWIiOiJ0ZXN0NSIsImV4cCI6MTYxODM5NDcyNH0.anht56kvi_PK4Qu3Q7583Qf3FOLYdYhTiY857gt3sh5E0Su7wffvKr1Aa8OnB2EKNjfxg7-0RwiAL-JNmE7YJw",
+									"value": "{{token}}",
 									"type": "string"
 								}
 							]
@@ -432,14 +827,14 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/events/dDN2B1as",
+							"raw": "localhost:8080/events/z9T1QPcf",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
 								"events",
-								"dDN2B1as"
+								"z9T1QPcf"
 							]
 						}
 					},
@@ -447,13 +842,37 @@
 				},
 				{
 					"name": "Event Invite/Join",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response must be valid and have a body\", function () {\r",
+									"     pm.response.to.be.withBody;\r",
+									"     pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response should be okay to process\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"    pm.response.to.have.jsonBody(\"userId\");\r",
+									"    pm.response.to.not.have.jsonBody(\"error\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2MTU4MDE3MjUsImlzcyI6InRlc3QiLCJzdWIiOiJ0ZXN0MSIsImV4cCI6MTYxODM5MzcyNX0.zsIXQZpz7nQvdztbqiGf-rM4As09eSwPov42IW8HVjA2wNlmLjqro8Hb0OGQYQgpNoHYPpKudOZtLxi3VoZCVQ",
+									"value": "{{token}}",
 									"type": "string"
 								}
 							]
@@ -462,7 +881,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"userId\": \"test2\"\r\n}",
+							"raw": "{\r\n    \"username\": \"test1\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -470,14 +889,14 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/events/SCQejvWL/users",
+							"raw": "localhost:8080/events/QmZwW5H0/users",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
 								"events",
-								"SCQejvWL",
+								"QmZwW5H0",
 								"users"
 							]
 						}
@@ -486,13 +905,37 @@
 				},
 				{
 					"name": "Event User Reject",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response must be valid and have a body\", function () {\r",
+									"     pm.response.to.be.withBody;\r",
+									"     pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response should be okay to process\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"    pm.response.to.have.jsonBody(\"userId\");\r",
+									"    pm.response.to.not.have.jsonBody(\"error\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2MTU4MDE3MjUsImlzcyI6InRlc3QiLCJzdWIiOiJ0ZXN0MSIsImV4cCI6MTYxODM5MzcyNX0.zsIXQZpz7nQvdztbqiGf-rM4As09eSwPov42IW8HVjA2wNlmLjqro8Hb0OGQYQgpNoHYPpKudOZtLxi3VoZCVQ",
+									"value": "{{token}}",
 									"type": "string"
 								}
 							]
@@ -501,7 +944,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"userId\": \"test2\",\r\n    \"reject\": true\r\n}",
+							"raw": "{\r\n    \"username\": \"test1\",\r\n    \"reject\": true\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -509,14 +952,14 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/events/SCQejvWL/users",
+							"raw": "localhost:8080/events/QmZwW5H0/users",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
 								"events",
-								"SCQejvWL",
+								"QmZwW5H0",
 								"users"
 							]
 						}
@@ -525,13 +968,34 @@
 				},
 				{
 					"name": "Event User Update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response must be valid and have a body\", function () {\r",
+									"     pm.response.to.be.ok;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response should be okay to process\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2MTU4MDE3MjUsImlzcyI6InRlc3QiLCJzdWIiOiJ0ZXN0MSIsImV4cCI6MTYxODM5MzcyNX0.zsIXQZpz7nQvdztbqiGf-rM4As09eSwPov42IW8HVjA2wNlmLjqro8Hb0OGQYQgpNoHYPpKudOZtLxi3VoZCVQ",
+									"value": "{{token}}",
 									"type": "string"
 								}
 							]
@@ -540,7 +1004,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"userId\": \"test2\",\r\n    \"reject\": true\r\n}",
+							"raw": "{\r\n    \"username\": \"test1\",\r\n    \"reject\": true\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -548,14 +1012,14 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/events/SCQejvWL/users",
+							"raw": "localhost:8080/events/QmZwW5H0/users",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
 								"events",
-								"SCQejvWL",
+								"QmZwW5H0",
 								"users"
 							]
 						}
@@ -564,13 +1028,34 @@
 				},
 				{
 					"name": "Event Init",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response must be valid and have a body\", function () {\r",
+									"     pm.response.to.be.ok;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response should be okay to process\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NDE4MzgwNjksImlzcyI6ImNvbXBldGl0aXZlZXZlbnRzIiwic3ViIjoidGVzdDMiLCJleHAiOjE2NDIwOTcyNjl9.QSh-zbxI5B06R8XX7Dei6R9qT1-Za662gry0IADFSycOWEybEXamy_5r-KZ-y1WuTvqaNQ_MqTm01rixNtcd7g",
+									"value": "{{token}}",
 									"type": "string"
 								}
 							]
@@ -578,14 +1063,14 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/events/SU0AH3Si/init",
+							"raw": "localhost:8080/events/z9T1QPcf/init",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
 								"events",
-								"SU0AH3Si",
+								"z9T1QPcf",
 								"init"
 							]
 						}
@@ -594,13 +1079,34 @@
 				},
 				{
 					"name": "Event Finish",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response must be valid and have a body\", function () {\r",
+									"     pm.response.to.be.ok;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response should be okay to process\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2MTc2OTY5NzUsImlzcyI6InRlc3QiLCJzdWIiOiJ0ZXN0MSIsImV4cCI6MTYyMDI4ODk3NX0.9k71riHhroSORbSPaQGwvR0cfiVCnDvi5tXhtnnrWP8b60OwxkWur412s0g0kRUY8Ji_haAGosrtV5JjGs1g8A",
+									"value": "{{token}}",
 									"type": "string"
 								}
 							]
@@ -608,15 +1114,71 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/events/GELs2DCC/finish",
+							"raw": "localhost:8080/events/z9T1QPcf/finish",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
 								"events",
-								"GELs2DCC",
+								"z9T1QPcf",
 								"finish"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Event User Search One",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response must be valid and have a body\", function () {\r",
+									"     pm.response.to.be.ok;\r",
+									"     pm.response.to.be.withBody;\r",
+									"     pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response should be okay to process\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"    pm.response.to.have.jsonBody(\"userId\");\r",
+									"    pm.response.to.not.have.jsonBody(\"error\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/events/EGCbBuUe/users/test3",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"events",
+								"EGCbBuUe",
+								"users",
+								"test3"
 							]
 						}
 					},
@@ -629,13 +1191,38 @@
 			"item": [
 				{
 					"name": "Image Upload",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response must be valid and have a body\", function () {\r",
+									"     pm.response.to.be.ok;\r",
+									"     pm.response.to.be.withBody;\r",
+									"     pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response should be okay to process\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"    pm.response.to.have.jsonBody(\"id\");\r",
+									"    pm.response.to.not.have.jsonBody(\"error\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2MTYzMzMxMTYsImlzcyI6InRlc3QiLCJzdWIiOiJ0ZXN0MSIsImV4cCI6MTYxODkyNTExNn0.89zKY--j3k_VFohwV_Pg3fcIfHKW84wApTi2jvJa-7Tu5IIJiX64lFEBPTTriKssfudk7Usfit5zdCJHAueK9A",
+									"value": "{{token}}",
 									"type": "string"
 								}
 							]
@@ -643,8 +1230,8 @@
 						"method": "POST",
 						"header": [
 							{
-								"key": "",
-								"value": "",
+								"key": "Authorization",
+								"value": "{{token}}",
 								"type": "text"
 							}
 						],
@@ -654,7 +1241,7 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/C:/Users/carlo/OneDrive/Imágenes/Saved Pictures/wallpaper.jpg"
+									"src": "/C:/Users/carlo/OneDrive/Imágenes/Saved Pictures/ExLm-eWVEBMupm3.jpg"
 								},
 								{
 									"key": "type",
@@ -682,14 +1269,92 @@
 			"name": "Reward",
 			"item": [
 				{
-					"name": "Reward Create",
+					"name": "Reward Search One",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response must be valid and have a body\", function () {\r",
+									"     pm.response.to.be.ok;\r",
+									"     pm.response.to.be.withBody;\r",
+									"     pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response should be okay to process\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"    pm.response.to.have.jsonBody(\"id\");\r",
+									"    pm.response.to.not.have.jsonBody(\"error\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2MTcyNzcwNTcsImlzcyI6InRlc3QiLCJzdWIiOiJ0ZXN0MSIsImV4cCI6MTYxOTg2OTA1N30.PcBaed35dfJ2kkg01QoIpKqGJi8LHt5ASuW4AxU_s-AQbvfjUI6tOash9cg86HCmiPgMFtC7rt7hz-TAPmNFTQ",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/rewards/61",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"rewards",
+								"61"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reward Create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response must be valid and have a body\", function () {\r",
+									"     pm.response.to.be.withBody;\r",
+									"     pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response should be okay to process\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"    pm.response.to.have.jsonBody(\"id\");\r",
+									"    pm.response.to.not.have.jsonBody(\"error\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
 									"type": "string"
 								}
 							]
@@ -698,7 +1363,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"title\": \"Recompensa 1\",\r\n    \"description\": \"Descripción\",\r\n    \"eventId\": \"j8cuKcFa\",\r\n    \"sortScore\": \"ASC\",\r\n    \"requiredPosition\": 1\r\n}",
+							"raw": "{\r\n    \"title\": \"Camiseta firmada por Miliki\",\r\n    \"description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.\",\r\n    \"eventId\": \"EGCbBuUe\",\r\n    \"sortScore\": \"ASC\",\r\n    \"requiredPosition\": 2\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -720,13 +1385,34 @@
 				},
 				{
 					"name": "Reward Update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response must be valid and have a body\", function () {\r",
+									"     pm.response.to.be.ok;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response should be okay to process\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2MTcyNzcwNTcsImlzcyI6InRlc3QiLCJzdWIiOiJ0ZXN0MSIsImV4cCI6MTYxOTg2OTA1N30.PcBaed35dfJ2kkg01QoIpKqGJi8LHt5ASuW4AxU_s-AQbvfjUI6tOash9cg86HCmiPgMFtC7rt7hz-TAPmNFTQ",
+									"value": "{{token}}",
 									"type": "string"
 								}
 							]
@@ -735,7 +1421,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"title\": \"Recompensa 2\",\r\n    \"description\": \"Descripción 2\",\r\n    \"eventId\": \"j8cuKcFa\",\r\n    \"requiredPosition\": 2\r\n}",
+							"raw": "{\r\n    \"title\": \"Recompensa 2\",\r\n    \"description\": \"Descripción 2\",\r\n    \"eventId\": \"SU0AH3Si\",\r\n    \"requiredPosition\": 2\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -743,14 +1429,14 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/rewards/4",
+							"raw": "localhost:8080/rewards/200",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
 								"rewards",
-								"4"
+								"200"
 							]
 						}
 					},
@@ -758,13 +1444,38 @@
 				},
 				{
 					"name": "Reward Image",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response must be valid and have a body\", function () {\r",
+									"     pm.response.to.be.ok;\r",
+									"     pm.response.to.be.withBody;\r",
+									"     pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response should be okay to process\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"    pm.response.to.have.jsonBody(\"id\");\r",
+									"    pm.response.to.not.have.jsonBody(\"error\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2MTcyNzcwNTcsImlzcyI6InRlc3QiLCJzdWIiOiJ0ZXN0MSIsImV4cCI6MTYxOTg2OTA1N30.PcBaed35dfJ2kkg01QoIpKqGJi8LHt5ASuW4AxU_s-AQbvfjUI6tOash9cg86HCmiPgMFtC7rt7hz-TAPmNFTQ",
+									"value": "{{token}}",
 									"type": "string"
 								}
 							]
@@ -777,19 +1488,19 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/C:/Users/carlo/OneDrive/Imágenes/Saved Pictures/mc_beicon.jpg"
+									"src": "/C:/Users/carlo/OneDrive/Imágenes/Saved Pictures/ExWA4O6XEAMvuUL.jpg"
 								}
 							]
 						},
 						"url": {
-							"raw": "localhost:8080/rewards/4/image",
+							"raw": "localhost:8080/rewards/61/image",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
 								"rewards",
-								"4",
+								"61",
 								"image"
 							]
 						}
@@ -798,13 +1509,30 @@
 				},
 				{
 					"name": "Reward Delete",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response should be okay to process\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2MTcyNzcwNTcsImlzcyI6InRlc3QiLCJzdWIiOiJ0ZXN0MSIsImV4cCI6MTYxOTg2OTA1N30.PcBaed35dfJ2kkg01QoIpKqGJi8LHt5ASuW4AxU_s-AQbvfjUI6tOash9cg86HCmiPgMFtC7rt7hz-TAPmNFTQ",
+									"value": "{{token}}",
 									"type": "string"
 								}
 							]
@@ -812,14 +1540,14 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/rewards/7",
+							"raw": "localhost:8080/rewards/61",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
 								"rewards",
-								"7"
+								"61"
 							]
 						}
 					},
@@ -832,13 +1560,37 @@
 			"item": [
 				{
 					"name": "Punishment Create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response must be valid and have a body\", function () {\r",
+									"     pm.response.to.be.withBody;\r",
+									"     pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response should be okay to process\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"    pm.response.to.have.jsonBody(\"id\");\r",
+									"    pm.response.to.not.have.jsonBody(\"error\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2NDI4NDcxODgsImlzcyI6ImNvbXBldGl0aXZlZXZlbnRzIiwic3ViIjoidGVzdDMiLCJleHAiOjE2NDMxMDYzODh9.smbkawTM5RUrW8gZV41uYuYY5GY1bCU1gZ54dusFBuZOCuVwhRiycUEI6a3nldtYpITa5PA439VCWf_0k9R0BQ",
+									"value": "{{token}}",
 									"type": "string"
 								}
 							]
@@ -847,7 +1599,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"title\": \"Castigo 2\",\r\n    \"description\": \"Descripción\",\r\n    \"eventId\": \"SU0AH3Si\",\r\n    \"sortScore\": \"DESC\",\r\n    \"requiredPosition\": 2\r\n}",
+							"raw": "{\r\n    \"title\": \"Lavar los platos 1 semanada\",\r\n    \"description\": \"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud\",\r\n    \"eventId\": \"EGCbBuUe\",\r\n    \"sortScore\": \"DESC\",\r\n    \"requiredPosition\": 1\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -869,13 +1621,34 @@
 				},
 				{
 					"name": "Punishment Update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response must be valid and have a body\", function () {\r",
+									"     pm.response.to.be.ok;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response should be okay to process\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2MTcyNzcwNTcsImlzcyI6InRlc3QiLCJzdWIiOiJ0ZXN0MSIsImV4cCI6MTYxOTg2OTA1N30.PcBaed35dfJ2kkg01QoIpKqGJi8LHt5ASuW4AxU_s-AQbvfjUI6tOash9cg86HCmiPgMFtC7rt7hz-TAPmNFTQ",
+									"value": "{{token}}",
 									"type": "string"
 								}
 							]
@@ -892,14 +1665,14 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/punishments/4",
+							"raw": "localhost:8080/punishments/204",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
 								"punishments",
-								"4"
+								"204"
 							]
 						}
 					},
@@ -907,13 +1680,34 @@
 				},
 				{
 					"name": "Punishment Image",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response must be valid and have a body\", function () {\r",
+									"     pm.response.to.be.ok;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response should be okay to process\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2MTcyNzcwNTcsImlzcyI6InRlc3QiLCJzdWIiOiJ0ZXN0MSIsImV4cCI6MTYxOTg2OTA1N30.PcBaed35dfJ2kkg01QoIpKqGJi8LHt5ASuW4AxU_s-AQbvfjUI6tOash9cg86HCmiPgMFtC7rt7hz-TAPmNFTQ",
+									"value": "{{token}}",
 									"type": "string"
 								}
 							]
@@ -926,19 +1720,19 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/C:/Users/carlo/OneDrive/Imágenes/Saved Pictures/mc_beicon.jpg"
+									"src": "/C:/Users/carlo/OneDrive/Imágenes/Saved Pictures/bombilla.jpg"
 								}
 							]
 						},
 						"url": {
-							"raw": "localhost:8080/punishments/4/image",
+							"raw": "localhost:8080/punishments/64/image",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
 								"punishments",
-								"4",
+								"64",
 								"image"
 							]
 						}
@@ -947,13 +1741,30 @@
 				},
 				{
 					"name": "Punishment Delete",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response should be okay to process\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2MTcyNzcwNTcsImlzcyI6InRlc3QiLCJzdWIiOiJ0ZXN0MSIsImV4cCI6MTYxOTg2OTA1N30.PcBaed35dfJ2kkg01QoIpKqGJi8LHt5ASuW4AxU_s-AQbvfjUI6tOash9cg86HCmiPgMFtC7rt7hz-TAPmNFTQ",
+									"value": "{{token}}",
 									"type": "string"
 								}
 							]
@@ -961,14 +1772,14 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/punishments/7",
+							"raw": "localhost:8080/punishments/204",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
 								"punishments",
-								"7"
+								"204"
 							]
 						}
 					},
@@ -981,13 +1792,37 @@
 			"item": [
 				{
 					"name": "Score Create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response must be valid and have a body\", function () {\r",
+									"     pm.response.to.be.withBody;\r",
+									"     pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response should be okay to process\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"    pm.response.to.have.jsonBody(\"id\");\r",
+									"    pm.response.to.not.have.jsonBody(\"error\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2MTcyNzcwNTcsImlzcyI6InRlc3QiLCJzdWIiOiJ0ZXN0MSIsImV4cCI6MTYxOTg2OTA1N30.PcBaed35dfJ2kkg01QoIpKqGJi8LHt5ASuW4AxU_s-AQbvfjUI6tOash9cg86HCmiPgMFtC7rt7hz-TAPmNFTQ",
+									"value": "{{token}}",
 									"type": "string"
 								}
 							]
@@ -996,7 +1831,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"value\": \"1.5\",\r\n    \"eventId\": \"j8cuKcFa\"\r\n}",
+							"raw": "{\r\n    \"value\": \"9\",\r\n    \"eventId\": \"XwOkNgCi\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1018,13 +1853,34 @@
 				},
 				{
 					"name": "Score Update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response must be valid and have a body\", function () {\r",
+									"     pm.response.to.be.ok;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response should be okay to process\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2MTcyNzcwNTcsImlzcyI6InRlc3QiLCJzdWIiOiJ0ZXN0MSIsImV4cCI6MTYxOTg2OTA1N30.PcBaed35dfJ2kkg01QoIpKqGJi8LHt5ASuW4AxU_s-AQbvfjUI6tOash9cg86HCmiPgMFtC7rt7hz-TAPmNFTQ",
+									"value": "{{token}}",
 									"type": "string"
 								}
 							]
@@ -1033,7 +1889,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": 13,\r\n    \"value\": \"1.6\",\r\n    \"status\": \"NOT_VALID\",\r\n    \"eventId\": \"j8cuKcFa\"\r\n}",
+							"raw": "{\r\n    \"id\": 209,\r\n    \"value\": \"1.6\",\r\n    \"status\": \"NOT_VALID\",\r\n    \"eventId\": \"j8cuKcFa\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1041,14 +1897,14 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/scores/13",
+							"raw": "localhost:8080/scores/209",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
 								"scores",
-								"13"
+								"209"
 							]
 						}
 					},
@@ -1056,13 +1912,38 @@
 				},
 				{
 					"name": "Score Image",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response must be valid and have a body\", function () {\r",
+									"     pm.response.to.be.ok;\r",
+									"     pm.response.to.be.withBody;\r",
+									"     pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response should be okay to process\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"    pm.response.to.have.jsonBody(\"id\");\r",
+									"    pm.response.to.not.have.jsonBody(\"error\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2MTcyNzcwNTcsImlzcyI6InRlc3QiLCJzdWIiOiJ0ZXN0MSIsImV4cCI6MTYxOTg2OTA1N30.PcBaed35dfJ2kkg01QoIpKqGJi8LHt5ASuW4AxU_s-AQbvfjUI6tOash9cg86HCmiPgMFtC7rt7hz-TAPmNFTQ",
+									"value": "{{token}}",
 									"type": "string"
 								}
 							]
@@ -1075,19 +1956,19 @@
 								{
 									"key": "file",
 									"type": "file",
-									"src": "/C:/Users/carlo/OneDrive/Imágenes/Saved Pictures/bombilla.jpg"
+									"src": "/C:/Users/carlo/OneDrive/Imágenes/Saved Pictures/avatar.PNG"
 								}
 							]
 						},
 						"url": {
-							"raw": "localhost:8080/scores/13/image",
+							"raw": "localhost:8080/scores/209/image",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
 								"scores",
-								"13",
+								"209",
 								"image"
 							]
 						}
@@ -1096,13 +1977,30 @@
 				},
 				{
 					"name": "Score Delete",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response should be okay to process\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2MTcyNzcwNTcsImlzcyI6InRlc3QiLCJzdWIiOiJ0ZXN0MSIsImV4cCI6MTYxOTg2OTA1N30.PcBaed35dfJ2kkg01QoIpKqGJi8LHt5ASuW4AxU_s-AQbvfjUI6tOash9cg86HCmiPgMFtC7rt7hz-TAPmNFTQ",
+									"value": "{{token}}",
 									"type": "string"
 								}
 							]
@@ -1110,14 +2008,14 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/scores/13",
+							"raw": "localhost:8080/scores/209",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
 								"scores",
-								"13"
+								"209"
 							]
 						}
 					},
@@ -1130,13 +2028,37 @@
 			"item": [
 				{
 					"name": "Comment Create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {\r",
+									"    pm.response.to.have.status(201);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response must be valid and have a body\", function () {\r",
+									"     pm.response.to.be.withBody;\r",
+									"     pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response should be okay to process\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"    pm.response.to.have.jsonBody(\"id\");\r",
+									"    pm.response.to.not.have.jsonBody(\"error\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2MTcyNzcwNTcsImlzcyI6InRlc3QiLCJzdWIiOiJ0ZXN0MSIsImV4cCI6MTYxOTg2OTA1N30.PcBaed35dfJ2kkg01QoIpKqGJi8LHt5ASuW4AxU_s-AQbvfjUI6tOash9cg86HCmiPgMFtC7rt7hz-TAPmNFTQ",
+									"value": "{{token}}",
 									"type": "string"
 								}
 							]
@@ -1145,7 +2067,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"text\": \"Esto es un comentario de prueba.\",\r\n    \"eventId\": \"j8cuKcFa\"\r\n}",
+							"raw": "{\r\n    \"text\": \"Comentario de test 3\",\r\n    \"eventId\": \"QmZwW5H0\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1167,13 +2089,34 @@
 				},
 				{
 					"name": "Comment Update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response must be valid and have a body\", function () {\r",
+									"     pm.response.to.be.ok;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response should be okay to process\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2MTcyNzcwNTcsImlzcyI6InRlc3QiLCJzdWIiOiJ0ZXN0MSIsImV4cCI6MTYxOTg2OTA1N30.PcBaed35dfJ2kkg01QoIpKqGJi8LHt5ASuW4AxU_s-AQbvfjUI6tOash9cg86HCmiPgMFtC7rt7hz-TAPmNFTQ",
+									"value": "{{token}}",
 									"type": "string"
 								}
 							]
@@ -1190,14 +2133,14 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/comments/15",
+							"raw": "localhost:8080/comments/212",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
 								"comments",
-								"15"
+								"212"
 							]
 						}
 					},
@@ -1205,13 +2148,30 @@
 				},
 				{
 					"name": "Comment Delete",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status test\", function () {\r",
+									"    pm.response.to.have.status(204);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response should be okay to process\", function () {\r",
+									"    pm.response.to.not.be.error;\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": [
 								{
 									"key": "token",
-									"value": "eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE2MTcyNzcwNTcsImlzcyI6InRlc3QiLCJzdWIiOiJ0ZXN0MSIsImV4cCI6MTYxOTg2OTA1N30.PcBaed35dfJ2kkg01QoIpKqGJi8LHt5ASuW4AxU_s-AQbvfjUI6tOash9cg86HCmiPgMFtC7rt7hz-TAPmNFTQ",
+									"value": "{{token}}",
 									"type": "string"
 								}
 							]
@@ -1219,14 +2179,14 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/comments/15",
+							"raw": "localhost:8080/comments/212",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
 								"comments",
-								"15"
+								"212"
 							]
 						}
 					},
@@ -1236,7 +2196,35 @@
 		},
 		{
 			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status test\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response must be valid and have a body\", function () {\r",
+							"     pm.response.to.be.ok;\r",
+							"     pm.response.to.be.withBody;\r",
+							"     pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response should be okay to process\", function () {\r",
+							"    pm.response.to.not.be.error;\r",
+							"    pm.response.to.have.jsonBody(\"access_token\");\r",
+							"    pm.response.to.not.have.jsonBody(\"error\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
+				"auth": {
+					"type": "noauth"
+				},
 				"method": "POST",
 				"header": [],
 				"body": {
