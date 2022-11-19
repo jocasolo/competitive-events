@@ -80,6 +80,8 @@ public class User implements UserDetails, Serializable {
 	private String surname;
 
 	private String confirmKey;
+	
+	private String phone;
 
 	// GETTERS AND SETTERS
 
@@ -195,6 +197,14 @@ public class User implements UserDetails, Serializable {
 	@JsonProperty("username")
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 
 	@Override

@@ -352,7 +352,17 @@ public class EventServiceImpl implements EventService {
 
 		EventUserStatusType status = null;
 
+		// Id search
 		User targetUser = userDao.findOne(eventUserDto.getUsername());
+		
+		// Phone search
+		if(targetUser == null && StringUtils.isNotEmpty(eventUserDto.getPhone()))
+			targetUser = userDao.findOneByPhone(eventUserDto.getPhone().replaceAll("[^\\d.]", ""));
+		
+		// Email search
+		if(targetUser == null && StringUtils.isNotEmpty(eventUserDto.getEmail()))
+			targetUser = userDao.findOneByEmail(eventUserDto.getEmail());
+		
 		if (targetUser == null)
 			throw new UserNotFoundException();
 		

@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class UserNotFoundException extends Exception {
 
 	private static final long serialVersionUID = 1L;
-	private static final String MSG = "User not found";
+	private static final String MSG = "error.user.not-found";
 	
 	@Override
 	public String getMessage() {
