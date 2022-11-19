@@ -23,6 +23,7 @@ import es.jocasolo.competitiveeventsapi.dto.user.UserPasswordDTO;
 import es.jocasolo.competitiveeventsapi.dto.user.UserPostDTO;
 import es.jocasolo.competitiveeventsapi.dto.user.UserPutDTO;
 import es.jocasolo.competitiveeventsapi.enums.ImageType;
+import es.jocasolo.competitiveeventsapi.enums.SearchTerm;
 import es.jocasolo.competitiveeventsapi.enums.user.UserStatusType;
 import es.jocasolo.competitiveeventsapi.enums.user.UserType;
 import es.jocasolo.competitiveeventsapi.exceptions.image.ImageNotFoundException;
@@ -31,6 +32,7 @@ import es.jocasolo.competitiveeventsapi.exceptions.user.UserEmailExistsException
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserInvalidStatusException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotFoundException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotValidException;
+import es.jocasolo.competitiveeventsapi.exceptions.user.UserPhoneExistsException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserUsenameExistsException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserWrongPasswordException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserWrongUpdateException;
@@ -62,8 +64,21 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public UserCompleteDTO findOne(String id) throws UserNotFoundException {
-		final User user = userDao.findOne(id);
+	public UserCompleteDTO findOne(String id, SearchTerm searchTerm) throws UserNotFoundException {
+		
+		User user = null;
+		switch (searchTerm) {
+			case PHONE:
+				user = userDao.findOneByPhone(id.replaceAll("[^\\d.]", ""));
+				break;
+			case EMAIL:
+				user = userDao.findOneByEmail(id);
+				break;
+			case ID:
+			default:
+				user = userDao.findOne(id);
+		}
+		
 		if (user == null)
 			throw new UserNotFoundException();
 		
@@ -75,7 +90,17 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	@Override
-	public UserDTO create(UserPostDTO userDto) throws UserEmailExistsException, UserUsenameExistsException {
+	@Transactional(readOnly = true)
+	public UserCompleteDTO findOneByPhone(String phone) throws UserNotFoundException {
+		final User user = userDao.findOneByPhone(phone);
+		if (user == null)
+			throw new UserNotFoundException();
+		
+		return commonService.transform(user, UserCompleteDTO.class);
+	}
+	
+	@Override
+	public UserDTO create(UserPostDTO userDto) throws UserEmailExistsException, UserUsenameExistsException, UserPhoneExistsException {
 		User user = commonService.transform(userDto, User.class);
 
 		if (emailExist(userDto.getEmail()))
@@ -83,6 +108,10 @@ public class UserServiceImpl implements UserService {
 
 		if (usernameExists(userDto.getId()))
 			throw new UserUsenameExistsException();
+		
+		if(phoneExists(userDto.getPhone())) {
+			throw new UserPhoneExistsException();
+		}
 		
 		user.setType(UserType.NORMAL);
 		user.setStatus(UserStatusType.NOT_CONFIRMED);
@@ -169,6 +198,16 @@ public class UserServiceImpl implements UserService {
 	 */
 	private boolean emailExist(String email) {
 		final User user = userDao.findOneByEmail(email);
+		return user != null;
+	}
+	
+	/**
+	 * Checks if there is another user with the same phone
+	 * @param phone User phone number
+	 * @return True if there is an user with the same phone
+	 */
+	private boolean phoneExists(String phone) {
+		final User user = userDao.findOneByPhone(phone);
 		return user != null;
 	}
 

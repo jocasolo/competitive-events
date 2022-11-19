@@ -21,6 +21,14 @@ public interface UserDAO extends CrudRepository<User, String> {
 	public User findOne(@Param("id") String id);
 	
 	/**
+	 * Search for a user by id.
+	 * @param id
+	 * @return User corresponding to the id searched.
+	 */
+	@Query(value = "SELECT u FROM User AS u WHERE phone = :phone AND status = 'ACTIVE'")
+	public User findOneByPhone(@Param("phone") String phone);
+	
+	/**
 	 * Search for a user by email.
 	 * @param email User email
 	 * @return User corresponding to the email searched.

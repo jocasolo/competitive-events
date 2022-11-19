@@ -17,6 +17,10 @@ public class UserPutDTO extends DTO implements Serializable {
 	@Setter
 	@Email
 	private String email;
+	
+	@Getter
+	@Setter
+	private String phone;
 
 	@Getter
 	@Setter
