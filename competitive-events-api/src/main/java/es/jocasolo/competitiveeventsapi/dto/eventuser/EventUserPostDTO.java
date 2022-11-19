@@ -17,6 +17,14 @@ public class EventUserPostDTO extends DTO implements Serializable {
 	@Getter
 	@Setter
 	private Boolean reject = false; // Reject invitation to join event
+	
+	@Getter
+	@Setter
+	private String phone;
+	
+	@Getter
+	@Setter
+	private String email;
 
 	@Override
 	public String toString() {

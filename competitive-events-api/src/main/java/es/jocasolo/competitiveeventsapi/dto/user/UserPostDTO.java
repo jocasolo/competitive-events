@@ -31,6 +31,10 @@ public class UserPostDTO extends DTO implements Serializable {
 	@NotBlank
 	@ValidPassword
 	private String password;
+	
+	@Getter
+	@Setter
+	private String phone;
 
 	@Getter
 	@Setter

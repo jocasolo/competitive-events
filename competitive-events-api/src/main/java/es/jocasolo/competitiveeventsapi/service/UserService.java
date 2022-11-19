@@ -8,12 +8,14 @@ import es.jocasolo.competitiveeventsapi.dto.user.UserDTO;
 import es.jocasolo.competitiveeventsapi.dto.user.UserPasswordDTO;
 import es.jocasolo.competitiveeventsapi.dto.user.UserPostDTO;
 import es.jocasolo.competitiveeventsapi.dto.user.UserPutDTO;
+import es.jocasolo.competitiveeventsapi.enums.SearchTerm;
 import es.jocasolo.competitiveeventsapi.exceptions.image.ImageNotFoundException;
 import es.jocasolo.competitiveeventsapi.exceptions.image.ImageUploadException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserEmailExistsException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserInvalidStatusException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotFoundException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotValidException;
+import es.jocasolo.competitiveeventsapi.exceptions.user.UserPhoneExistsException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserUsenameExistsException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserWrongPasswordException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserWrongUpdateException;
@@ -27,15 +29,25 @@ public interface UserService extends UserDetailsService {
 	 * @return User corresponding to the id searched.
 	 * @throws UserNotFoundException
 	 */
-	UserCompleteDTO findOne(String id) throws UserNotFoundException;
+	UserCompleteDTO findOne(String id, SearchTerm searchTerm) throws UserNotFoundException;
+	
+	/**
+	 * Search for a user by phone.
+	 * 
+	 * @param phone User phone
+	 * @return User corresponding to the phone searched.
+	 * @throws UserNotFoundException
+	 */
+	UserCompleteDTO findOneByPhone(String phone) throws UserNotFoundException;
 	
 	/**
 	 * Creates a new user.
 	 * 
 	 * @param userDTO DTO with creation properties
 	 * @return The new user.
+	 * @throws UserPhoneExistsException 
 	 */
-	UserDTO create(UserPostDTO userDto) throws UserEmailExistsException, UserUsenameExistsException;
+	UserDTO create(UserPostDTO userDto) throws UserEmailExistsException, UserUsenameExistsException, UserPhoneExistsException;
 
 	/**
 	 * Updates an user.

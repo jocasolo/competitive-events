@@ -25,12 +25,14 @@ import es.jocasolo.competitiveeventsapi.dto.user.UserDTO;
 import es.jocasolo.competitiveeventsapi.dto.user.UserPasswordDTO;
 import es.jocasolo.competitiveeventsapi.dto.user.UserPostDTO;
 import es.jocasolo.competitiveeventsapi.dto.user.UserPutDTO;
+import es.jocasolo.competitiveeventsapi.enums.SearchTerm;
 import es.jocasolo.competitiveeventsapi.exceptions.image.ImageNotFoundException;
 import es.jocasolo.competitiveeventsapi.exceptions.image.ImageUploadException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserEmailExistsException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserInvalidStatusException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotFoundException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotValidException;
+import es.jocasolo.competitiveeventsapi.exceptions.user.UserPhoneExistsException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserUsenameExistsException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserWrongPasswordException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserWrongUpdateException;
@@ -52,16 +54,20 @@ public class UserController {
 	
 	@GetMapping(value = "/{id}", produces = "application/json;charset=utf8")
 	@ApiOperation(value = "Search for an user based on its id.")
-	public UserCompleteDTO findOne(@PathVariable("id") String id) throws UserNotFoundException {
+	public UserCompleteDTO findOne(
+			@PathVariable("id") String id,
+			@RequestParam(value="searchTerm", required=false, defaultValue="ID") SearchTerm searchTerm) throws UserNotFoundException {
 		log.debug("Looking for the user with id: {}", id);
-		return userService.findOne(id);
+		return userService.findOne(id, searchTerm);
 	}
 	
 	@RequestMapping(method = RequestMethod.HEAD, value = "/{id}", produces = "application/json;charset=utf8")
 	@ApiOperation(value = "Search for an user based on its id.")
-	public ResponseEntity<String> exists(@PathVariable("id") String id) throws UserNotFoundException {
+	public ResponseEntity<String> exists(
+			@PathVariable("id") String id, 
+			@RequestParam(value="searchTerm", required=false, defaultValue="ID") SearchTerm searchTerm) throws UserNotFoundException {
 		log.debug("Looking for the user with id: {}", id);
-		final UserCompleteDTO user = userService.findOne(id);
+		final UserCompleteDTO user = userService.findOne(id, searchTerm);
 		if(user != null)		
 			return new ResponseEntity<>(HttpStatus.OK);
 		else
@@ -78,7 +84,7 @@ public class UserController {
 	@PostMapping(produces = "application/json;charset=utf8")
 	@ResponseStatus(HttpStatus.CREATED)
 	@ApiOperation(value = "Creates a new user.")
-	public UserDTO create(@Valid @RequestBody UserPostDTO user) throws UserEmailExistsException, UserUsenameExistsException {
+	public UserDTO create(@Valid @RequestBody UserPostDTO user) throws UserEmailExistsException, UserUsenameExistsException, UserPhoneExistsException {
 		log.debug("Creating the user: {} ", user);
 		return userService.create(user);
 	}
