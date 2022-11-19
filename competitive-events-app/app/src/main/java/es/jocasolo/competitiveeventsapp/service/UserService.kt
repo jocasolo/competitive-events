@@ -22,7 +22,7 @@ interface UserService {
     fun findUser(@Path (value="id") id: String, @Header(value="Authorization") authorization : String) : Call<UserDTO>
 
     @HEAD("/users/{id}")
-    fun exists(@Path (value="id") id: String) : Call<Void>
+    fun exists(@Path (value="id") id: String, @Query (value="searchTerm") searchTerm: String? = null) : Call<Void>
 
     @Headers("Content-Type: application/json")
     @POST("/users")

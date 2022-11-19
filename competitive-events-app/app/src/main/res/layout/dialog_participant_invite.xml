@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -11,14 +12,14 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginEnd="24dp"
+        android:autofillHints=""
         android:ems="10"
+        android:hint="@string/invite_string"
         android:inputType="textPersonName"
-        android:hint="@string/user_id"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/txt_contact_select"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider10"
-        android:autofillHints="" />
+        app:layout_constraintTop_toBottomOf="@+id/divider10" />
 
     <TextView
         android:id="@+id/textView27"
@@ -59,10 +60,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
         android:text="@string/action_accept"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btn_participant_invite_cancel"
         app:layout_constraintTop_toBottomOf="@+id/space4" />
 
     <Button
@@ -71,21 +73,39 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginTop="32dp"
         android:text="@string/cancel"
-        app:layout_constraintEnd_toStartOf="@+id/space4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/space4" />
 
     <Space
         android:id="@+id/space44"
-        android:layout_width="0dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_participant_invite_cancel" />
+
+    <TextView
+        android:id="@+id/txt_contact_select"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:text="@string/contacts"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img_contact_select" />
+
+    <ImageView
+        android:id="@+id/img_contact_select"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="@+id/txt_contact_select"
+        app:layout_constraintTop_toBottomOf="@+id/divider10"
+        app:srcCompat="@drawable/account"
+        app:tint="@color/primary_dark" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

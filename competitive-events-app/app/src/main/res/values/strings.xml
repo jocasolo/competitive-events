@@ -80,6 +80,7 @@
     <string name="user_created_title">Usuario creado</string>
     <string name="username">Identificador de usuario</string>
     <string name="email">Email</string>
+    <string name="phone">Phone</string>
     <string name="password">Contraseña</string>
     <string name="password_confirm">Confirmar contraseña</string>
     <string name="login">Login</string>
@@ -103,6 +104,7 @@
     <string name="user_edit">Editar usuario</string>
     <string name="user_available_actions">Acciones a realizar sobre el usario</string>
     <string name="user_invite">Invitar a usuario</string>
+    <string name="contacts">Contactos</string>
 
     <!-- Events -->
     <string name="events_list">Listado de eventos</string>
@@ -154,6 +156,7 @@
     <string name="event_new_punishment">Nuevo castigo</string>
     <string name="event_empty_list">No tienes ningún evento</string>
     <string name="event_empty_list_search"><u>Busca o crea un nuevo evento</u></string>
+    <string name="invite_string"><u>Indentificador/email</u></string>
 
     <!-- Event Types -->
     <string name="events_all">Cualquiera</string>
@@ -205,7 +208,8 @@
     <string name="error_username_not_valid">Este identificador no es válido. Sólo caracteres alfanuméricos</string>
     <string name="error_username_exists">Este identificador ya existe</string>
     <string name="error_email_not_valid">Este email no es válido</string>
-    <string name="error_email_exists">Este email ya existe</string>
+    <string name="error_email_exists">Este email ya existe para otro usuario</string>
+    <string name="error_phone_exists">Este teléfono ya existe para otro usuario</string>
     <string name="error_login_forbidden">Usuario o contraseña no válidos</string>
     <string name="error_event_not_available_places">No hay más plazas disponibles en el evento.</string>
     <string name="error_password_not_valid">Contraseña no válida. Debe contener al menos una mayúscula, un número y 8 caracteres</string>
@@ -215,6 +219,7 @@
     <string name="error_user_invite">Ha ocurrido un error al invitar a el usuario que has introducido. Asegúrate de que su identificador es correcto</string>
     <string name="error_score_action">Ha ocurrido un error al actualizar la puntuación.</string>
     <string name="error_value_not_valid">Valor no válido.</string>
+    <string name="error_user_not_found">El usuario no ha sido encontrado en el sistema</string>
 
     <!-- Messages -->
     <string name="success_action_title">Acción realizada</string>

@@ -37,6 +37,7 @@ class RegisterFragment : Fragment() {
 
     private var txtUsername : TextView? = null
     private var txtEmail : TextView? = null
+    private var txtPhone : TextView? = null
     private var txtPassword : TextView? = null
     private var txtPasswordConfirm : TextView? = null
     private var spinner : ProgressBar? = null
@@ -55,6 +56,7 @@ class RegisterFragment : Fragment() {
         // Init input fields
         txtUsername = view.findViewById(R.id.txt_username)
         txtEmail = view.findViewById(R.id.txt_email)
+        txtPhone = view.findViewById(R.id.txt_phone)
         txtPassword = view.findViewById(R.id.txt_password)
         txtPasswordConfirm = view.findViewById(R.id.txt_password_confirm)
         spinner = view.findViewById(R.id.spn_register)
@@ -95,6 +97,7 @@ class RegisterFragment : Fragment() {
 
     private fun commit() {
         val userDTO = UserPostDTO(txtUsername?.text.toString(), txtEmail?.text.toString(), txtPassword?.text.toString())
+        userDTO.phone = txtPhone?.text.toString()
         userService.create(userDTO).enqueue(object : Callback<UserDTO> {
             override fun onResponse(call: Call<UserDTO>, response: Response<UserDTO>) {
                 if(response.code() == HttpURLConnection.HTTP_CREATED){
@@ -104,6 +107,8 @@ class RegisterFragment : Fragment() {
                         val errorDto = Gson().fromJson(response.errorBody()?.string(), ErrorDTO::class.java) as ErrorDTO
                         if(errorDto.message == Message.ERROR_EMAIL_EXISTS){
                             txtEmail?.error = getString(R.string.error_email_exists)
+                        } else if (errorDto.message == Message.ERROR_PHONE_EXISTS){
+                            txtPhone?.error = getString(R.string.error_phone_exists)
                         }
                         showErrorDialog(getString(Message.forCode(errorDto.message)))
                     } catch (e : Exception) {

@@ -10,5 +10,6 @@ class UserPostDTO(
     @SerializedName("name") var name: String? = null,
     @SerializedName("surname") var surname: String? = null,
     @SerializedName("description") var description: String? = null,
-    @SerializedName("birthDate") var birthDate: Date? = null
+    @SerializedName("birthDate") var birthDate: Date? = null,
+    @SerializedName("phone") var phone: String? = null
 )
