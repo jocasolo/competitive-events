@@ -1,5 +1,6 @@
 package es.jocasolo.competitiveeventsapp.fragment.participant
 
+import android.Manifest
 import android.content.DialogInterface
 import android.content.Intent
 import android.net.Uri
@@ -17,6 +18,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.DialogFragment
 import com.google.gson.Gson
+import es.jocasolo.competitiveeventsapp.MainActivity
 import es.jocasolo.competitiveeventsapp.R
 import es.jocasolo.competitiveeventsapp.dto.ErrorDTO
 import es.jocasolo.competitiveeventsapp.dto.eventuser.EventUserDTO
@@ -140,7 +142,7 @@ class ParticipantsInviteDialogFragment(
     }
 
     private fun selectSingleContact() {
-        var pickContact = Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+        val pickContact = Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
         pickContact.setType(ContactsContract.CommonDataKinds.Phone.CONTENT_TYPE)
         startActivityForResult(pickContact, 1);
     }

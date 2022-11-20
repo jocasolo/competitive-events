@@ -1,12 +1,18 @@
 package es.jocasolo.competitiveeventsapp
 
+import android.Manifest
 import android.accounts.AccountManager
+import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -22,6 +28,7 @@ import es.jocasolo.competitiveeventsapp.singleton.UserAccount
 import es.jocasolo.competitiveeventsapp.singleton.UserInfo
 import es.jocasolo.competitiveeventsapp.utils.Message
 import es.jocasolo.competitiveeventsapp.utils.MyDialog
+import es.jocasolo.competitiveeventsapp.utils.MyUtils
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -45,6 +52,9 @@ class MainActivity : AppCompatActivity() {
                 R.id.homeFragment, R.id.profileFragment, R.id.profileUpdateFragment))
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        // Check storage and contact permissions
+        checkPermission()
 
         // Asynchronous call for user info
         loadUser()
@@ -140,6 +150,20 @@ class MainActivity : AppCompatActivity() {
 
     fun changeActionBarTitle(newTitle: String){
         supportActionBar?.title = newTitle
+    }
+
+    // Function to check and request permission.
+    private fun checkPermission() {
+        val permissions: MutableList<String> = mutableListOf()
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+            permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) == PackageManager.PERMISSION_DENIED) {
+            permissions.add(Manifest.permission.READ_CONTACTS)
+        }
+        if(permissions.isNotEmpty()) {
+            ActivityCompat.requestPermissions(this, permissions.toTypedArray(), 50)
+        }
     }
 
 }
