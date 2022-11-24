@@ -76,7 +76,7 @@ public class EventDTO extends DTO implements Serializable {
 
 	@Override
 	public String toString() {
-		return "EventDTO [id=" + id + "]";
+		return String.format("EventDTO [id=%s]", id);
 	}
 
 }

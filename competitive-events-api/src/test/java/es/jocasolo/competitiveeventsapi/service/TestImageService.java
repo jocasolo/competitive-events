@@ -31,7 +31,6 @@ import es.jocasolo.competitiveeventsapi.model.Image;
 import es.jocasolo.competitiveeventsapi.model.User;
 import es.jocasolo.competitiveeventsapi.utils.security.AuthenticationFacade;
 import io.minio.MinioClient;
-import io.minio.RemoveObjectArgs;
 import io.minio.errors.ErrorResponseException;
 import io.minio.errors.InsufficientDataException;
 import io.minio.errors.InternalException;

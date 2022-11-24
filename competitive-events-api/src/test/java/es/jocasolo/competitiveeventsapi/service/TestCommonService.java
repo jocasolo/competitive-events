@@ -4,7 +4,9 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.dozer.DozerBeanMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -60,6 +62,17 @@ class TestCommonService {
 	void testTransformList(){
 		final List<EventDTO> eventsTransformed = commonService.transform(events, EventDTO.class);
 		assertEquals(2, eventsTransformed.size());
+	}
+	
+	@Test
+	void testTransformSet() {
+		Set<Event> events = new HashSet<>();
+		events.add(event1);
+		events.add(event2);
+		
+		Set<EventDTO> result = commonService.transform(events, EventDTO.class);
+		assertNotNull(result);
+		assertEquals(2, result.size());
 	}
 
 }

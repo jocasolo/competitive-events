@@ -29,11 +29,11 @@ public class RewardPageDTO extends DTO implements Serializable {
 	
 	@Getter
 	@Setter
-	private List<RewardDTO> events;
+	private List<RewardDTO> rewards;
 
 	@Override
 	public String toString() {
-		return "EventPageDTO [total=" + total + "]";
+		return "RewardPageDTO [total=" + total + "]";
 	}
 
 }

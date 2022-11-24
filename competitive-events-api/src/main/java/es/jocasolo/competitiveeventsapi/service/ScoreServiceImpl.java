@@ -116,6 +116,7 @@ public class ScoreServiceImpl implements ScoreService {
 				result = NumberUtils.isDigits(value);
 				break;
 			case DECIMAL:
+			default:
 				result = NumberUtils.isCreatable(value);
 		}
 		

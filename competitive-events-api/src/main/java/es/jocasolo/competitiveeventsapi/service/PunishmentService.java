@@ -54,6 +54,6 @@ public interface PunishmentService {
 	 * @throws PunishmentNotFoundException 
 	 * @throws UserNotValidException 
 	 */
-	Object updateImage(Integer id, MultipartFile file) throws ImageUploadException, PunishmentNotFoundException, UserNotValidException;
+	PunishmentDTO updateImage(Integer id, MultipartFile file) throws ImageUploadException, PunishmentNotFoundException, UserNotValidException;
 	
 }

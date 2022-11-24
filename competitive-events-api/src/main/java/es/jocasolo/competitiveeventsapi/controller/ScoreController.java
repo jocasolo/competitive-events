@@ -77,7 +77,7 @@ public class ScoreController {
 			@PathVariable("id") Integer id, 
 			@RequestParam("file") MultipartFile file) throws ImageUploadException, ScoreNotFoundException, UserNotValidException, EventInvalidStatusException {
 		log.debug("Updating score image with id: {}", id);
-		return commonService.transform(scoreService.updateImage(id, file), ScoreDTO.class);
+		return scoreService.updateImage(id, file);
 	}
 	
 	@PutMapping(value = "/{id}", produces = "application/json;charset=utf8")

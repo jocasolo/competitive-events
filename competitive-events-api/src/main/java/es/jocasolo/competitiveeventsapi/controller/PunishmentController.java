@@ -62,7 +62,7 @@ public class PunishmentController {
 			@PathVariable("id") Integer id, 
 			@RequestParam("file") MultipartFile file) throws ImageUploadException, PunishmentNotFoundException, UserNotValidException {
 		log.debug("Updating punishment image with id: {}", id);
-		return commonService.transform(punishmentService.updateImage(id, file), PunishmentDTO.class);
+		return punishmentService.updateImage(id, file);
 	}
 	
 	@PutMapping(value = "/{id}", produces = "application/json;charset=utf8")

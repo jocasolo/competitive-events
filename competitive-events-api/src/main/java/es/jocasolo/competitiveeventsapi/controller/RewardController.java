@@ -62,7 +62,7 @@ public class RewardController {
 			@PathVariable("id") Integer id, 
 			@RequestParam("file") MultipartFile file) throws ImageUploadException, RewardNotFoundException, UserNotValidException {
 		log.debug("Updating reward image with id: {}", id);
-		return commonService.transform(rewardService.updateImage(id, file), RewardDTO.class);
+		return rewardService.updateImage(id, file);
 	}
 	
 	@PutMapping(value = "/{id}", produces = "application/json;charset=utf8")

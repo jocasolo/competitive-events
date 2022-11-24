@@ -38,7 +38,6 @@ import es.jocasolo.competitiveeventsapi.exceptions.event.EventWrongUpdateExcepti
 import es.jocasolo.competitiveeventsapi.exceptions.image.ImageUploadException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotFoundException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotValidException;
-import es.jocasolo.competitiveeventsapi.service.CommonService;
 import es.jocasolo.competitiveeventsapi.service.EventService;
 import io.swagger.annotations.ApiOperation;
 
@@ -50,9 +49,6 @@ public class EventController {
 	
 	@Autowired
 	private EventService eventService;
-	
-	@Autowired
-	private CommonService commonService;
 	
 	@GetMapping(value = "/{id}", produces = "application/json;charset=utf8")
 	@ApiOperation(value = "Search for an event based on its id.")
@@ -116,7 +112,7 @@ public class EventController {
 			@PathVariable("id") String id, 
 			@RequestParam("file") MultipartFile file) throws ImageUploadException, EventNotFoundException, UserNotValidException {
 		log.debug("Updating event image with id: {}", id);
-		return commonService.transform(eventService.updateImage(id, file), EventDTO.class);
+		return eventService.updateImage(id, file);
 	}
 
 	@DeleteMapping(value = "/{id}")

@@ -15,31 +15,31 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.web.multipart.MultipartFile;
 
 import es.jocasolo.competitiveeventsapi.dao.EventUserDAO;
-import es.jocasolo.competitiveeventsapi.dao.RewardDAO;
-import es.jocasolo.competitiveeventsapi.dto.reward.RewardDTO;
-import es.jocasolo.competitiveeventsapi.dto.reward.RewardPostDTO;
-import es.jocasolo.competitiveeventsapi.dto.reward.RewardPutDTO;
+import es.jocasolo.competitiveeventsapi.dao.PunishmentDAO;
+import es.jocasolo.competitiveeventsapi.dto.punishment.PunishmentDTO;
+import es.jocasolo.competitiveeventsapi.dto.punishment.PunishmentPostDTO;
+import es.jocasolo.competitiveeventsapi.dto.punishment.PunishmentPutDTO;
 import es.jocasolo.competitiveeventsapi.enums.ImageType;
 import es.jocasolo.competitiveeventsapi.enums.eventuser.EventUserPrivilegeType;
 import es.jocasolo.competitiveeventsapi.exceptions.event.EventNotFoundException;
 import es.jocasolo.competitiveeventsapi.exceptions.image.ImageUploadException;
-import es.jocasolo.competitiveeventsapi.exceptions.reward.RewardNotFoundException;
+import es.jocasolo.competitiveeventsapi.exceptions.punishment.PunishmentNotFoundException;
 import es.jocasolo.competitiveeventsapi.exceptions.user.UserNotValidException;
 import es.jocasolo.competitiveeventsapi.model.Event;
 import es.jocasolo.competitiveeventsapi.model.EventUser;
 import es.jocasolo.competitiveeventsapi.model.Image;
-import es.jocasolo.competitiveeventsapi.model.Reward;
+import es.jocasolo.competitiveeventsapi.model.Punishment;
 import es.jocasolo.competitiveeventsapi.model.User;
 import es.jocasolo.competitiveeventsapi.utils.security.AuthenticationFacade;
 
 @RunWith(MockitoJUnitRunner.class)
-class TestRewardService {
+class TestPunishmentService {
 	
 	@InjectMocks
-	private RewardService rewardService = new RewardServiceImpl();
+	private PunishmentService punishmentService = new PunishmentServiceImpl();
 	
 	@Mock
-	private RewardDAO rewardDao;
+	private PunishmentDAO punishmentDao;
 	
 	@Mock
 	private EventUserDAO eventUserDao;
@@ -56,8 +56,8 @@ class TestRewardService {
 	private static final String EVENT1 = "event1";
 	private static final String USER1 = "user1";
 	
-	private Reward reward = new Reward();
-	private RewardDTO rewardDto = new RewardDTO();
+	private Punishment punishment = new Punishment();
+	private PunishmentDTO punishmentDto = new PunishmentDTO();
 	private Event event = new Event();
 	private EventUser eventUser = new EventUser();
 	private User user = new User();
@@ -68,11 +68,11 @@ class TestRewardService {
 		
 		MockitoAnnotations.openMocks(this);
 		
-		reward.setId(1);
-		reward.setRequiredPosition(1);
-		reward.setEvent(event);
-		rewardDto.setId(reward.getId());
-		rewardDto.setRequiredPosition(reward.getRequiredPosition());
+		punishment.setId(1);
+		punishment.setRequiredPosition(1);
+		punishment.setEvent(event);
+		punishmentDto.setId(punishment.getId());
+		punishmentDto.setRequiredPosition(punishment.getRequiredPosition());
 		
 		event.setId(EVENT1);
 		user.setId(USER1);
@@ -84,51 +84,51 @@ class TestRewardService {
 		image.setId(1);
 		
 		file = Mockito.mock(MultipartFile.class);
-		Mockito.when(rewardDao.findOne(1)).thenReturn(reward);
-		Mockito.when(rewardDao.save(reward)).thenReturn(reward);
+		Mockito.when(punishmentDao.findOne(1)).thenReturn(punishment);
+		Mockito.when(punishmentDao.save(punishment)).thenReturn(punishment);
 		Mockito.when(eventUserDao.findOneByIds(EVENT1, USER1)).thenReturn(eventUser);
 		Mockito.when(authentication.getUser()).thenReturn(user);
-		Mockito.when(commonService.transform(reward, RewardDTO.class)).thenReturn(rewardDto);
-		Mockito.when(imageService.upload(file, ImageType.REWARD)).thenReturn(image);
+		Mockito.when(commonService.transform(punishment, PunishmentDTO.class)).thenReturn(punishmentDto);
+		Mockito.when(imageService.upload(file, ImageType.PUNISHMENT)).thenReturn(image);
 	}
 	
 	@Test
-	void testFindOne() throws RewardNotFoundException {
-		Reward result = rewardService.findOne(1);
+	void testFindOne() throws PunishmentNotFoundException {
+		Punishment result = punishmentService.findOne(1);
 		assertNotNull(result);
 		assertEquals("event1", result.getEvent().getId());
 		assertEquals(1, result.getRequiredPosition());
 		
-		assertThrows(RewardNotFoundException.class, () -> {
-			rewardService.findOne(-1);
+		assertThrows(PunishmentNotFoundException.class, () -> {
+			punishmentService.findOne(-1);
 		});
 	}
 	
 	@Test
 	void testCreate() throws EventNotFoundException, UserNotValidException {
-		RewardPostDTO dto = new RewardPostDTO();
+		PunishmentPostDTO dto = new PunishmentPostDTO();
 		dto.setEventId(EVENT1);
-		rewardService.create(dto);
+		punishmentService.create(dto);
 		assertEquals(EVENT1, dto.getEventId());
 	}
 	
 	@Test
-	void testUpdate() throws UserNotValidException, RewardNotFoundException {
-		RewardPutDTO dto = new RewardPutDTO();
+	void testUpdate() throws UserNotValidException, PunishmentNotFoundException {
+		PunishmentPutDTO dto = new PunishmentPutDTO();
 		dto.setDescription("new description");
-		rewardService.update(1, dto);
-		assertEquals("new description", reward.getDescription());
+		punishmentService.update(1, dto);
+		assertEquals("new description", punishment.getDescription());
 	}
 	
 	@Test
-	void testDelete() throws EventNotFoundException, UserNotValidException, RewardNotFoundException{
-		rewardService.delete(1);
+	void testDelete() throws EventNotFoundException, UserNotValidException, PunishmentNotFoundException{
+		punishmentService.delete(1);
 	}
 	
 	@Test
-	void testUpdateImage() throws ImageUploadException, RewardNotFoundException, UserNotValidException {
-		RewardDTO result = rewardService.updateImage(1, file);
+	void testUpdateImage() throws ImageUploadException, PunishmentNotFoundException, UserNotValidException {
+		PunishmentDTO result = punishmentService.updateImage(1, file);
 		assertNotNull(result);
-		assertNotNull(reward.getImage());
+		assertNotNull(punishment.getImage());
 	}
 }

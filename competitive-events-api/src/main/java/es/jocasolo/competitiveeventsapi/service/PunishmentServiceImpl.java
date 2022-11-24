@@ -109,7 +109,7 @@ public class PunishmentServiceImpl implements PunishmentService {
 	}
 
 	@Override
-	public Object updateImage(Integer id, MultipartFile multipart) throws ImageUploadException, PunishmentNotFoundException, UserNotValidException {
+	public PunishmentDTO updateImage(Integer id, MultipartFile multipart) throws ImageUploadException, PunishmentNotFoundException, UserNotValidException {
 		
 		Punishment punishment = punishmentDao.findOne(id);
 		if(punishment == null)
