@@ -42,7 +42,7 @@
                 android:paddingStart="0dp"
                 android:paddingTop="5dp"
                 android:paddingEnd="15dp"
-                android:text="@string/events_find_or_create"
+                android:text="Crea o busca eventos"
                 android:textSize="18sp" />
         </LinearLayout>
 

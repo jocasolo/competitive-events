@@ -565,12 +565,13 @@ class EventCreationFragment : Fragment() {
                 month,
                 dayOfMonth
         ) }
-        val dialog = DatePickerDialog(requireContext(), listener, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH))
+        val dialog = DatePickerDialog(requireContext(), listener, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
         dialog.show()
     }
 
     private fun updateDate(txt: TextView?, year: Int, month: Int, dayOfMonth: Int) {
-        txt?.text = "$dayOfMonth-$month-$year"
+        var monthAdd = month +1
+        txt?.text = "$dayOfMonth-$monthAdd-$year"
     }
 
     private fun showSuccessDialog() {

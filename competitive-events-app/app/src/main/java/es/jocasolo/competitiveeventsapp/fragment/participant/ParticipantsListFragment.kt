@@ -131,8 +131,9 @@ class ParticipantsListFragment(var eventId: String) : Fragment(), BackStackListe
                 it.avatar?.link(),
                 it.privilege,
                 it.status,
-                getScore(event.scores, it.id!!))
-                participants.add(participant)
+                getScore(event.scores, it.id!!)
+            )
+            participants.add(participant)
         }
         return if(event.sortScore == ScoreSortType.ASC) {
             participants.sortedBy { p -> p.score }

@@ -98,12 +98,13 @@ import java.util.*
                 month,
                 dayOfMonth
         ) }
-        val dialog = DatePickerDialog(requireContext(), listener, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH))
+        val dialog = DatePickerDialog(requireContext(), listener, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
         dialog.show()
     }
 
     private fun updateBirthDayDate(year: Int, month: Int, dayOfMonth: Int) {
-        txtBirthDate?.text = "$dayOfMonth-$month-$year"
+        val monthAdd = month + 1
+        txtBirthDate?.text = "$dayOfMonth-$monthAdd-$year"
     }
 
     private fun initFields(user: UserDTO?) {
@@ -131,7 +132,14 @@ import java.util.*
         MyUtils.closeKeyboard(this.requireContext(), view)
 
         val sdfApi : SimpleDateFormat = SimpleDateFormat(getString(R.string.sdf_api_date))
-        val birthDate = sdf?.parse(txtBirthDate?.text.toString())
+        var birthDateText : Date? = null
+        if(StringUtils.isNotEmpty(txtBirthDate?.text)){
+            birthDateText = sdf?.parse(txtBirthDate?.text.toString())
+        }
+        var birthDate : String? = null
+        if(birthDateText != null){
+            birthDate = sdfApi.format(birthDateText)
+        }
 
         spinner?.visibility = View.VISIBLE
 
@@ -141,7 +149,7 @@ import java.util.*
                 txtName?.text.toString(),
                 txtSurname?.text.toString(),
                 txtDescription?.text.toString(),
-                sdfApi.format(birthDate!!)
+                birthDate
         )
 
         userService.update(
@@ -153,7 +161,9 @@ import java.util.*
                     actualUserDto?.name = updatedUserDto.name.toString();
                     actualUserDto?.surname = updatedUserDto.surname.toString();
                     actualUserDto?.description = updatedUserDto.description.toString()
-                    actualUserDto?.birthDate = sdfApi.parse(updatedUserDto.birthDate)
+                    updatedUserDto.birthDate?.let {
+                        actualUserDto?.birthDate = sdfApi.parse(updatedUserDto.birthDate)
+                    }
                     showSuccessDialog(getString(R.string.success_updated_user))
                 } else {
                     try {

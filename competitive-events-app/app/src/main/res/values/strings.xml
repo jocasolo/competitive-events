@@ -109,7 +109,7 @@
     <!-- Events -->
     <string name="events_list">Listado de eventos</string>
     <string name="events_init">Inicio: %1$s</string>
-    <string name="events_end">Fin: %1$s (%2$s)</string>
+    <string name="events_end">Fin: %1$s %2$s</string>
     <string name="events_num_participants">Núm. participantes: %1$d</string>
     <string name="events_available_places">Plazas disponibles: %1$d</string>
     <string name="events_new">Nuevo evento</string>

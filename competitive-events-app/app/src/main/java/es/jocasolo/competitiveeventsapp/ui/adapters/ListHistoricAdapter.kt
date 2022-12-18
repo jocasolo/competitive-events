@@ -49,6 +49,7 @@ open class ListHistoricAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.setIsRecyclable(false)
         if(historical != null && historical!!.size > position) {
             val history = historical?.get(position)
             history?.let {
