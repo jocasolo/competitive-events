@@ -67,6 +67,7 @@ public class EventMapperImpl implements EventMapper {
 		detail.setInscription(event.getInscription());
 		detail.setMaxPlaces(event.getMaxPlaces());
 		detail.setScoreType(event.getScoreType());
+		detail.setSortScore(event.getSortScore());
 		detail.setSubtitle(event.getSubtitle());
 		detail.setTitle(event.getTitle());
 		detail.setType(event.getType());

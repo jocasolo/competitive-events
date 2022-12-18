@@ -109,7 +109,7 @@ public class UserServiceImpl implements UserService {
 		if (usernameExists(userDto.getId()))
 			throw new UserUsenameExistsException();
 		
-		if(phoneExists(userDto.getPhone())) {
+		if(StringUtils.isNotEmpty(userDto.getPhone()) && phoneExists(userDto.getPhone())) {
 			throw new UserPhoneExistsException();
 		}
 		

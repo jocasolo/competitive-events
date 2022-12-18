@@ -9,6 +9,7 @@ import es.jocasolo.competitiveeventsapi.enums.event.EventInscriptionType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventStatusType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventType;
 import es.jocasolo.competitiveeventsapi.enums.event.EventVisibilityType;
+import es.jocasolo.competitiveeventsapi.enums.score.ScoreSortType;
 import es.jocasolo.competitiveeventsapi.enums.score.ScoreValueType;
 import lombok.Getter;
 import lombok.Setter;
@@ -68,6 +69,10 @@ public class EventDTO extends DTO implements Serializable {
 	@Getter
 	@Setter
 	private ScoreValueType scoreType;	
+	
+	@Getter
+	@Setter
+	private ScoreSortType sortScore;	
 	
 	@Getter
 	@Setter

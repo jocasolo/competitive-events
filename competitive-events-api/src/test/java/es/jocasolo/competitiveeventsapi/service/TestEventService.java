@@ -195,7 +195,7 @@ class TestEventService {
 		dto.setVisibility(EventVisibilityType.PRIVATE);
 		dto.setStatus(EventStatusType.ACTIVE);
 		dto.setMaxPlaces(1);
-		dto.setAppovalNeeded(false);
+		dto.setApprovalNeeded(false);
 		
 		eventService.update(EVENT1, dto);
 		

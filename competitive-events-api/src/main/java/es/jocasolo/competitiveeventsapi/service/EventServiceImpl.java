@@ -142,7 +142,7 @@ public class EventServiceImpl implements EventService {
 			event.setTitle(EventUtils.getValue(dto.getTitle(), event.getTitle()));
 			event.setSubtitle(EventUtils.getValue(dto.getSubtitle(), event.getSubtitle()));
 			event.setDescription(EventUtils.getValue(dto.getDescription(), event.getDescription()));
-			event.setApprovalNeeded(EventUtils.getValue(dto.getAppovalNeeded(), event.getApprovalNeeded()));
+			event.setApprovalNeeded(EventUtils.getValue(dto.getApprovalNeeded(), event.getApprovalNeeded()));
 			event.setInitDate(EventUtils.getValue(dto.getInitDate(), event.getInitDate()));
 			event.setEndDate(EventUtils.getValue(dto.getEndDate(), event.getEndDate()));
 			event.setStatus(event.isInDateRange() ? EventStatusType.ACTIVE : EventStatusType.NOT_ACTIVE); // ACTIVE when is in date range
@@ -292,8 +292,8 @@ public class EventServiceImpl implements EventService {
 				scores = scoreDao.findAllSortedDesc(event);
 			
 			for(Reward reward : event.getRewards()) {
-				if(reward.getWinner() == null && reward.getRequiredPosition() < scores.size()) {
-					final User winner = scores.get(reward.getRequiredPosition()).getUser();
+				if(reward.getWinner() == null && reward.getRequiredPosition()-1 < scores.size()) {
+					final User winner = scores.get(reward.getRequiredPosition()-1).getUser();
 					reward.setWinner(winner);
 					rewardDao.save(reward);
 				}
@@ -310,8 +310,8 @@ public class EventServiceImpl implements EventService {
 				scores = scoreDao.findAllSortedAsc(event);
 			
 			for(Punishment punishment : event.getPunishments()) {
-				if(punishment.getLooser() == null && punishment.getRequiredPosition() < scores.size()) {
-					final User looser = scores.get(punishment.getRequiredPosition()).getUser();
+				if(punishment.getLooser() == null && punishment.getRequiredPosition()-1 < scores.size()) {
+					final User looser = scores.get(punishment.getRequiredPosition()-1).getUser();
 					punishment.setLooser(looser);
 					punishmentDao.save(punishment);
 				}
@@ -430,7 +430,7 @@ public class EventServiceImpl implements EventService {
 			targetEventUser = newEventUser;
 		}
 		
-		if(authenticatedEventUser == targetEventUser && targetEventUser.getStatus() == EventUserStatusType.INVITED) {
+		if(authenticatedEventUser == targetEventUser && event.getInscription().equals(EventInscriptionType.PRIVATE) && targetEventUser.getStatus() == EventUserStatusType.INVITED) {
 			// User accept invitation
 			status = addUserToPrivateEvent(targetUser, authenticatedUser, newEventUser, status, authenticatedEventUser, targetEventUser);
 			

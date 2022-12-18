@@ -59,7 +59,7 @@ public class EventPutDTO extends DTO implements Serializable {
 
 	@Getter
 	@Setter
-	private Boolean appovalNeeded;
+	private Boolean approvalNeeded;
 
 	@Getter
 	@Setter
