@@ -23,7 +23,8 @@
                 android:value=".MainActivity"/>
         </activity>
         <activity android:name=".EventEditionActivity"/>
-        <activity android:name=".LoginActivity">
+        <activity android:name=".LoginActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -31,7 +32,8 @@
         </activity>
 
         <service
-            android:name="es.jocasolo.competitiveeventsapp.authenticator.AuthenticatorService">
+            android:name="es.jocasolo.competitiveeventsapp.authenticator.AuthenticatorService"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.accounts.AccountAuthenticator"/>
             </intent-filter>
